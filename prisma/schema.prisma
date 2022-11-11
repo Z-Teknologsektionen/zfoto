@@ -15,3 +15,22 @@ model Example {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Album {
+  id        String   @id @default(cuid())
+  tilte     String   @unique
+  images    Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  date      DateTime @default(now())
+}
+
+model Image {
+  id           String   @id @default(cuid())
+  filename     String   @unique
+  album        Album    @relation(fields: [albumId], references: [id])
+  albumId      String
+  photographer String
+  date         DateTime @default(now())
+  createdAt    DateTime @default(now())
+}
