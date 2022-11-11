@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import Link from "next/link";
 
 import { trpc } from "../utils/trpc";
 
@@ -19,12 +20,13 @@ const Home: NextPage = () => {
           ? "Error..."
           : albums.map((album) => {
               return (
-                <div
+                <Link
+                  href={`/album/${album.id}`}
                   className="aspect-square max-w-xs p-2 shadow"
                   key={album.id}
                 >
                   {album.id}
-                </div>
+                </Link>
               );
             })}
       </section>

@@ -17,12 +17,13 @@ model Example {
 }
 
 model Album {
-  id        String   @id @default(cuid())
-  tilte     String   @unique
-  images    Image[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  date      DateTime @default(now())
+  id          String   @id @default(cuid())
+  tilte       String   @unique
+  description String   @default("")
+  images      Image[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  date        DateTime @default(now())
 }
 
 model Image {
