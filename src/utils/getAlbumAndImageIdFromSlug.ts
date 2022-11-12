@@ -8,6 +8,7 @@ export const getAlbumAndImageIdFromSlug = (
   } else if (slug?.length === 1) {
     albumId = slug[0] || "";
   } else if (slug?.length === 3 && slug[1] === "image") {
+    albumId = slug[0] || "";
     imageId = slug[2] || "";
   }
 

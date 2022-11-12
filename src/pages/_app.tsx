@@ -18,7 +18,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       </Head>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <main className="flex-grow">
+        <main className="my-8 flex-grow">
           <Component {...pageProps} />
         </main>
         <Footer />
@@ -31,7 +31,7 @@ export default trpc.withTRPC(MyApp);
 
 const Header: FC = () => {
   return (
-    <header className="mb-8 flex h-16 flex-row items-center justify-between bg-[#333333] py-3 px-4 text-[#a7a7a7] shadow-xl sm:px-14">
+    <header className="flex h-16 flex-row items-center justify-between bg-[#333333] py-3 px-4 text-[#a7a7a7] shadow-xl sm:px-14">
       <Link href={"/"} className="flex flex-row items-center justify-center">
         <Image
           src="/zFoto.png"
