@@ -1,12 +1,9 @@
 import { type AppType } from "next/app";
-
-import { trpc } from "../utils/trpc";
-
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import type { FC } from "react";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 import "../styles/globals.css";
+import { trpc } from "../utils/trpc";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -28,72 +25,3 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 };
 
 export default trpc.withTRPC(MyApp);
-
-const Header: FC = () => {
-  return (
-    <header className="flex h-16 flex-row items-center justify-between bg-[#333333] py-3 px-4 text-[#a7a7a7] shadow-xl sm:px-14">
-      <Link href={"/"} className="flex flex-row items-center justify-center">
-        <Image
-          src="/zFoto.png"
-          alt={""}
-          height="40"
-          width="40"
-          className="object-contain object-center"
-        />
-        <h1 className="ml-3 mr-6 text-lg font-semibold">zFoto</h1>
-      </Link>
-      <div>
-        <nav>
-          <ul className="flex flex-row gap-3 sm:gap-6">
-            <NavigationLinks />
-          </ul>
-        </nav>
-      </div>
-    </header>
-  );
-};
-const NavigationLinks: FC = () => {
-  return (
-    <>
-      <li>
-        <Link href={"/"}>Hem</Link>
-      </li>
-      <li>
-        <Link href={"/about"}>Om</Link>
-      </li>
-      <li>
-        <Link href={"/contact"}>Kontakt</Link>
-      </li>
-    </>
-  );
-};
-
-const Footer: FC = () => {
-  return (
-    <div className="bg-[#333333] text-[#a7a7a7] shadow-xl">
-      <footer className="mx-auto mt-5 mb-16 grid max-w-lg grid-cols-1 items-start justify-center gap-5 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <h1 className="text-center text-2xl font-semibold underline underline-offset-8">
-            zFoto
-          </h1>
-        </div>
-        <div className="flex flex-col gap-4">
-          <h2 className="text-center font-semibold underline underline-offset-8">
-            Sociala medier
-          </h2>
-          <ul className="flex flex-row items-center gap-3 sm:flex-col">
-            <li>Instagram</li>
-          </ul>
-        </div>
-        <div className="flex flex-col gap-4">
-          <h2 className="text-center font-semibold underline underline-offset-8">
-            Navigation
-          </h2>
-          <ul className="flex flex-row items-center gap-3 text-sm sm:flex-col">
-            <NavigationLinks />
-          </ul>
-        </div>
-      </footer>
-    </div>
-  );
-};

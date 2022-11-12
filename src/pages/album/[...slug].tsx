@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { AlbumGrid } from "../../components/AlbumGrid";
-import { ImagePage } from "../../components/ImagePage";
+import { AlbumGrid } from "../../components/albumGrid/AlbumGrid";
+import { ImagePage } from "../../components/imageGrid/ImagePage";
 import { getAlbumAndImageIdFromSlug } from "../../utils/getAlbumAndImageIdFromSlug";
 
 const AlbumPage: NextPage = () => {

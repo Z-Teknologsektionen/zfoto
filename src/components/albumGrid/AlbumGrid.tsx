@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 
 export const AlbumGrid: FC<{ albumId: string }> = ({ albumId }) => {
   const {

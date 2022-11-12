@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import type { FC } from "react";
-import { copyToClipboard } from "../utils/copyToClipboard";
-import { trpc } from "../utils/trpc";
+import { copyToClipboard } from "../../utils/copyToClipboard";
+import { trpc } from "../../utils/trpc";
 
 export const ImagePage: FC<{ imageId: string; albumId: string }> = ({
   imageId,
