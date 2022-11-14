@@ -14,7 +14,7 @@ export const ImageGridItem: FC<{
       className="relative aspect-[5/4] h-full w-full max-w-xs overflow-hidden p-2"
       key={id}
       onClick={() => {
-        router.push(`/test/${album.id}?imageId=${id}`);
+        router.push(`/album/${album.id}?imageId=${id}`);
         document.body.classList.add("overflow-hidden");
       }}
     >

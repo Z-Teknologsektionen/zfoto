@@ -22,17 +22,17 @@ const ImagePopup: FC<{
     if (!hasNextImage) {
       return;
     }
-    router.push(`/test/${album?.id}?imageId=${nextImageId}`);
+    router.push(`/album/${album?.id}?imageId=${nextImageId}`);
   };
   const prevImage = () => {
     if (!hasPrevImage) {
       return;
     }
-    router.push(`/test/${album?.id}?imageId=${prevImageId}`);
+    router.push(`/album/${album?.id}?imageId=${prevImageId}`);
   };
   function closeNav() {
     document.body.classList.remove("overflow-hidden");
-    router.push(`/test/${album?.id}`);
+    router.push(`/album/${album?.id}`);
   }
 
   useEffect(() => {
