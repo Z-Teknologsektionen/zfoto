@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 
 import { publicProcedure, router } from "../trpc";
@@ -14,7 +15,9 @@ export const albumRouter = router({
   getOne: publicProcedure
     .input(
       z.object({
-        albumId: z.string().cuid(),
+        albumId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
       })
     )
     .query(({ input: { albumId }, ctx }) => {
@@ -32,7 +35,9 @@ export const albumRouter = router({
   getImageIds: publicProcedure
     .input(
       z.object({
-        albumId: z.string().cuid(),
+        albumId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
       })
     )
     .query(({ input: { albumId }, ctx }) => {

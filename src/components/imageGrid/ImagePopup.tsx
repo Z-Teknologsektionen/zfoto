@@ -83,7 +83,7 @@ const ImagePopup: FC<{
             <Image
               className="h-full object-contain object-center"
               src={image?.filename ? `/images/${image.filename}` : "/"}
-              alt={`Bild från ${album?.tilte}, ${album?.description}`}
+              alt={`Bild från ${album?.title}, ${album?.description}`}
               fill
             />
           </div>
