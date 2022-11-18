@@ -31,7 +31,7 @@ export const ImagePage: FC<{ imageId: string; albumId: string }> = ({
     return album.images[index + 1]?.id === imageId;
   })[0]?.id;
   const { filename, photographer } = image || {};
-  const { tilte, description } = album || {};
+  const { title, description } = album || {};
   return (
     <section className="mx-auto max-w-7xl items-center justify-center">
       {isLoading ? (
@@ -53,7 +53,7 @@ export const ImagePage: FC<{ imageId: string; albumId: string }> = ({
               <Image
                 className="h-full object-contain object-center"
                 src={filename ? `/images/${filename}` : "/"}
-                alt={`Bild från ${tilte}, ${description}`}
+                alt={`Bild från ${title}, ${description}`}
                 fill
               />
             </div>

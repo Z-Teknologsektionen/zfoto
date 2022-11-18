@@ -35,7 +35,7 @@ export const AlbumGrid: FC<{ albumId: string }> = ({ albumId }) => {
                       before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
                   `}
                   src={filename ? `/images/${filename}` : ""}
-                  alt={`${album.tilte}, ${album.description}`}
+                  alt={`${album.title}, ${album.description}`}
                   fill
                 />
               </Link>

@@ -6,19 +6,19 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Example {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Album {
-  id          String   @id @default(cuid())
-  tilte       String   @unique
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
   description String   @default("")
   images      Image[]
   createdAt   DateTime @default(now())
@@ -27,7 +27,7 @@ model Album {
 }
 
 model Image {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   filename     String   @unique
   album        Album    @relation(fields: [albumId], references: [id])
   albumId      String
