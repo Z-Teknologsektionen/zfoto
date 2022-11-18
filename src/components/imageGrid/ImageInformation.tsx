@@ -10,8 +10,7 @@ export const ImageInformation: FC<{
   let origin = "";
   try {
     origin = window.location.origin;
-  } finally {
-  }
+  } catch {}
 
   return (
     <div className="mt-8 flex flex-col justify-center gap-4 rounded-md bg-[#333333] py-4 px-8 text-[#a7a7a7] md:flex-row">
