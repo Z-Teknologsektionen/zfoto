@@ -1,7 +1,8 @@
 import type { Album, Image } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type { GetStaticPropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/imageGrid/ImagePopup";
 
@@ -11,35 +12,23 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   const router = useRouter();
   const { albumId = "", imageId = "" } = router.query;
 
-  if (typeof albumId === "undefined") {
-    return <div>loading...</div>;
-  }
+  const [nextImageId, prevImageId, image] = useMemo(() => {
+    return [
+      album?.images.filter((_, index) => {
+        return album.images[index - 1]?.id === imageId;
+      })[0]?.id,
+      album?.images.filter((_, index) => {
+        return album.images[index + 1]?.id === imageId;
+      })[0]?.id,
+      album?.images.find((image) => {
+        return image.id === imageId;
+      }),
+    ];
+  }, [imageId, album.images]);
 
-  if (typeof imageId === "undefined") {
-    return <div>loading...</div>;
-  }
-
-  let prevImageId: string | undefined,
-    nextImageId: string | undefined,
-    image: Image | undefined;
-
-  if (imageId) {
-    nextImageId = album?.images.filter((_, index) => {
-      return album.images[index - 1]?.id === imageId;
-    })[0]?.id;
-    prevImageId = album?.images.filter((_, index) => {
-      return album.images[index + 1]?.id === imageId;
-    })[0]?.id;
-    image = album?.images.find((image) => {
-      return image.id === imageId;
-    });
-    if (typeof document !== "undefined") {
-      document.body.classList.add("overflow-hidden");
-    }
-  }
   return (
     <>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-1 py-5 px-10 sm:grid-cols-2 md:grid-cols-3 md:py-10 lg:grid-cols-4 xl:grid-cols-5">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-1 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
         {!albumId || !album || !album.images
           ? "Error..."
           : album?.images.map(({ id, filename }) => {
@@ -55,12 +44,32 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
 export default AlbumPage;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const {
-    query: { albumId },
-  } = context;
-  const prisma = new PrismaClient();
-  const album = await prisma.album.findUnique({
+const prisma = new PrismaClient();
+
+export async function getStaticPaths() {
+  const albums = await prisma.album.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  const paths = albums.map((album) => {
+    return {
+      params: {
+        albumId: album.id,
+      },
+    };
+  });
+
+  return {
+    paths: paths,
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const albumId = context.params?.albumId;
+  const album = await prisma.album.findUniqueOrThrow({
     where: {
       id: albumId?.toString(),
     },
@@ -80,7 +89,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
   return {
     props: {
-      album: JSON.parse(JSON.stringify(album)),
+      album: JSON.parse(JSON.stringify(album)) as typeof album,
+      revalidate: 120,
     },
   };
 }

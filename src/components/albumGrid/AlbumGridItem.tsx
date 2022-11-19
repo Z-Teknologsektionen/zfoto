@@ -21,6 +21,9 @@ export const AlbumGridItem: FC<{
         src={filename ? `/images/${filename}` : ""}
         alt={title}
         fill
+        sizes="(min-width: 768px) 50vw,
+              (min-width: 1024px) 33vw,
+              100vh"
       />
       <div className="z-10 grid h-full w-full place-items-center text-white hover:bg-black/50 [&:hover>p]:block">
         <p className="hidden truncate text-xl">{title}</p>

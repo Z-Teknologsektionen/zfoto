@@ -78,13 +78,14 @@ const ImagePopup: FC<{
         >
           {"<"}
         </button>
-        <div className="flex h-full flex-grow flex-col">
-          <div className="relative h-full max-h-screen min-h-[300px] flex-grow">
+        <div className="flex h-full flex-grow flex-col justify-center lg:justify-start">
+          <div className="relative aspect-[5/4] max-h-screen w-full lg:min-h-[400px] lg:flex-grow">
             <Image
               className="h-full object-contain object-center"
               src={image?.filename ? `/images/${image.filename}` : "/"}
               alt={`Bild från ${album?.title}, ${album?.description}`}
               fill
+              priority
             />
           </div>
           <ImageInformation {...{ image, album, nextImageId }} />

@@ -26,6 +26,9 @@ export const ImageGridItem: FC<{
         src={filename ? `/images/${filename}` : ""}
         alt={`${album.title}, ${album.description}`}
         fill
+        sizes="(min-width: 768px) 40vw,
+              (min-width: 1024px) 20vw,
+              75vw"
       />
     </div>
   );
