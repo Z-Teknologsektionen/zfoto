@@ -28,7 +28,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
   return (
     <>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-1 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
         {!albumId || !album || !album.images
           ? "Error..."
           : album?.images.map(({ id, filename }) => {

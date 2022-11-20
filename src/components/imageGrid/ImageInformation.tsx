@@ -1,7 +1,6 @@
 import type { Album, Image as ImageType } from "@prisma/client";
 import Link from "next/link";
 import type { FC } from "react";
-import { copyToClipboard } from "../../utils/copyToClipboard";
 
 export const ImageInformation: FC<{
   image: ImageType;
@@ -21,20 +20,6 @@ export const ImageInformation: FC<{
       >
         Permanent länk till bilden
       </Link>
-      <p
-        className="cursor-copy"
-        onClick={() => {
-          copyToClipboard("image-id");
-        }}
-      >
-        Filename: {image?.filename}
-      </p>
-      <textarea
-        id="image-id"
-        className="hidden"
-        readOnly
-        value={image?.id}
-      ></textarea>
     </div>
   );
 };

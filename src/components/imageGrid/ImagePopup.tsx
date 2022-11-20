@@ -70,18 +70,18 @@ const ImagePopup: FC<{
       >
         {"x"}
       </div>
-      <div className="mx-auto flex h-3/4 w-full max-w-7xl flex-row items-center justify-between gap-5">
+      <div className="mx-auto flex h-3/4 w-full max-w-7xl flex-row items-center justify-between gap-2">
         <button
-          className="ml-5 text-5xl"
+          className="ml-2 text-5xl"
           disabled={!hasPrevImage}
           onClick={() => prevImage()}
         >
           {"<"}
         </button>
         <div className="flex h-full flex-grow flex-col justify-center lg:justify-start">
-          <div className="relative aspect-[5/4] max-h-screen w-full lg:min-h-[400px] lg:flex-grow">
+          <div className="relative h-96 max-h-screen w-full lg:min-h-[400px] lg:flex-grow">
             <Image
-              className="h-full object-contain object-center"
+              className="h-full object-contain object-bottom"
               src={image?.filename ? `/images/${image.filename}` : "/"}
               alt={`Bild från ${album?.title}, ${album?.description}`}
               fill
@@ -91,7 +91,7 @@ const ImagePopup: FC<{
           <ImageInformation {...{ image, album, nextImageId }} />
         </div>
         <button
-          className="mr-5 text-5xl"
+          className="mr-2 text-5xl"
           disabled={!hasNextImage}
           onClick={() => nextImage()}
         >

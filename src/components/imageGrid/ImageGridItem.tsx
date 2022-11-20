@@ -11,7 +11,7 @@ export const ImageGridItem: FC<{
   const router = useRouter();
   return (
     <div
-      className="relative aspect-[5/4] h-full w-full max-w-xs overflow-hidden p-2"
+      className="relative h-[250px] w-full max-w-xs p-2"
       key={id}
       onClick={() => {
         router.push(`/album/${album.id}?imageId=${id}`);
@@ -20,7 +20,7 @@ export const ImageGridItem: FC<{
     >
       <Image
         className={`
-          rounded-xl object-contain object-center
+          object-contain object-center
           before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
         `}
         src={filename ? `/images/${filename}` : ""}
