@@ -14,8 +14,8 @@ type ImageType = {
 
 const ImagePage: NextPage<{ image: ImageType }> = ({ image }) => {
   return (
-    <section className="mx-auto flex h-full max-w-7xl flex-row">
-      <div className="flex-grod relative h-[500px] flex-grow">
+    <section className="mx-auto -mt-4 flex h-full max-w-7xl flex-col gap-2 px-5 sm:mt-0 sm:flex-row sm:gap-8">
+      <div className="flex-grod relative h-[500px] min-w-[250px] flex-grow sm:min-w-[300px]">
         <Image
           src={image.filename ? `/images/${image.filename}` : "/"}
           alt={`${image.album.title}, ${image.album.description}`}
@@ -24,13 +24,13 @@ const ImagePage: NextPage<{ image: ImageType }> = ({ image }) => {
           sizes="600px"
         />
       </div>
-      <div className="flex flex-col items-start justify-center gap-4 lg:min-w-[400px]">
+      <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px] sm:gap-4">
         <Link href={`/album/${image.album.id}`} className="font-medium">
           Till albummet
         </Link>
         <p>Fotograf: {image.photographer}</p>
         <p>Filename: {image.filename}</p>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1 sm:gap-2">
           <h2>Album information:</h2>
           <p>Titel: {image.album.title}</p>
           <p>Beskrivning: {image.album.description}</p>

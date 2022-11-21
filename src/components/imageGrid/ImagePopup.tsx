@@ -46,12 +46,12 @@ const ImagePopup: FC<{
 
   return (
     <section
-      className={`absolute inset-0 place-items-center bg-white/90  ${
+      className={`fixed inset-0 place-items-center bg-white/90  ${
         showPopup ? "grid" : "hidden"
       }`}
     >
       <div
-        className="absolute top-10 right-20 cursor-pointer text-3xl font-semibold"
+        className="fixed top-10 right-10 cursor-pointer text-3xl font-semibold md:right-20"
         onClick={() => {
           closePopup();
         }}

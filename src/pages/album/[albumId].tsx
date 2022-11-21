@@ -78,6 +78,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
         }}
         closePopup={() => {
           setShowImagePopup(false);
+          document.body.classList.remove("overflow-hidden");
         }}
       />
     </>
