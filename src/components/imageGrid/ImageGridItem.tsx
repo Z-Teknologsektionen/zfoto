@@ -1,6 +1,5 @@
 import type { Album, Image as ImageType } from "@prisma/client";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import type { FC } from "react";
 
 export const ImageGridItem: FC<{
@@ -9,7 +8,6 @@ export const ImageGridItem: FC<{
   album: Album & { images: ImageType[] };
   onClick: () => void;
 }> = ({ id, filename, album, onClick }) => {
-  const router = useRouter();
   return (
     <div
       className="relative h-[250px] w-full max-w-xs p-2"
