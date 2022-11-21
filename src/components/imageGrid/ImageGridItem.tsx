@@ -7,15 +7,15 @@ export const ImageGridItem: FC<{
   id: string;
   filename: string;
   album: Album & { images: ImageType[] };
-}> = ({ id, filename, album }) => {
+  onClick: () => void;
+}> = ({ id, filename, album, onClick }) => {
   const router = useRouter();
   return (
     <div
       className="relative h-[250px] w-full max-w-xs p-2"
       key={id}
       onClick={() => {
-        router.push(`/album/${album.id}?imageId=${id}`);
-        document.body.classList.add("overflow-hidden");
+        onClick();
       }}
     >
       <Image

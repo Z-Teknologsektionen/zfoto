@@ -23,7 +23,7 @@ type AlbumType = {
 const Home: NextPage<{ albums: AlbumType[] }> = ({ albums }) => {
   return (
     <>
-      <h1>Välkommen till zFoto</h1>
+      <h1 className="ml-4">Välkommen till zFoto</h1>
       <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3">
         {albums.length == 0
           ? "Hittade inga album"
