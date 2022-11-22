@@ -74,6 +74,8 @@ const ImagePopup: FC<{
               alt={`Bild från ${album?.title}, ${album?.description}`}
               fill
               priority
+              sizes="500px"
+              quality={95}
             />
           </div>
           <ImageInformation {...{ image, album, nextImageId }} />

@@ -1,10 +1,10 @@
 import type { Album, Image } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
 import type { GetStaticPropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/imageGrid/ImagePopup";
+import { getAlbum } from "../../utils/fetchDataFromPrisma";
 
 type AlbumType = Album & { images: Image[] };
 
@@ -26,6 +26,12 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       }),
     ];
   }, [imageId, album.images]);
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
   return (
     <>
@@ -87,8 +93,6 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
 export default AlbumPage;
 
-const prisma = new PrismaClient();
-
 export async function getStaticPaths() {
   return {
     paths: [],
@@ -98,27 +102,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const albumId = context.params?.albumId || "";
-  const album = await prisma.album.findUniqueOrThrow({
-    where: {
-      id: typeof albumId === "string" ? albumId : albumId[0],
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      images: {
-        where: {
-          id: {
-            not: undefined,
-          },
-        },
-      },
-      date: true,
-    },
-  });
+  const album = await getAlbum(albumId.toString());
   return {
     props: {
-      album: JSON.parse(JSON.stringify(album)) as typeof album,
+      album: JSON.parse(JSON.stringify(album)),
       revalidate: 120,
     },
   };

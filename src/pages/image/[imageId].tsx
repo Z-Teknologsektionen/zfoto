@@ -21,7 +21,8 @@ const ImagePage: NextPage<{ image: ImageType }> = ({ image }) => {
           alt={`${image.album.title}, ${image.album.description}`}
           fill
           className="object-contain object-center"
-          sizes="600px"
+          sizes="750px"
+          quality={90}
         />
       </div>
       <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px] sm:gap-4">

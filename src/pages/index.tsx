@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import type { GetStaticPropsContext } from "next";
 import { type NextPage } from "next";
 import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
+import { getAlbums } from "../utils/fetchDataFromPrisma";
 
 type AlbumType = {
   id: string;
@@ -39,31 +39,9 @@ const Home: NextPage<{ albums: AlbumType[] }> = ({ albums }) => {
 export default Home;
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const prisma = new PrismaClient();
-  const albums = await prisma.album.findMany({
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      images: {
-        select: {
-          albumId: true,
-          date: true,
-          filename: true,
-          photographer: true,
-          id: true,
-        },
-      },
-      date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
-    },
-  });
+  const albums = await getAlbums();
   return {
-    props: { albums: JSON.parse(JSON.stringify(albums)) as typeof albums },
+    props: { albums: JSON.parse(JSON.stringify(albums)) },
     revalidate: 120,
   };
 }
