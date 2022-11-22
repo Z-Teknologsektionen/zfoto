@@ -32,27 +32,38 @@ export const albumRouter = router({
 
       return album;
     }),
-  getImageIds: publicProcedure
+  createOne: publicProcedure
     .input(
       z.object({
-        albumId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
+        title: z.string().min(1),
+        description: z.string().min(1),
+        date: z.date().optional(),
+        images: z
+          .array(
+            z.object({
+              filename: z.string().min(1),
+              photographer: z.string().min(1),
+              date: z.date().optional(),
+            })
+          )
+          .min(1),
       })
     )
-    .query(({ input: { albumId }, ctx }) => {
-      const album = ctx.prisma.album.findUnique({
-        where: {
-          id: albumId,
-        },
-        select: {
+    .mutation(async ({ input, ctx }) => {
+      const createdAlbum = await ctx.prisma.album.create({
+        data: {
+          title: input.title,
+          description: input.description,
           images: {
-            select: {
-              id: true,
+            createMany: {
+              data: input.images,
             },
           },
         },
+        include: {
+          images: true,
+        },
       });
-      return album;
+      return createdAlbum;
     }),
 });

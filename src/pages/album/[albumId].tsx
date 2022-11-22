@@ -37,11 +37,11 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
     <>
       <button
         onClick={() => {
-          router.back();
+          router.push("/");
         }}
         className="ml-10"
       >
-        {"<"}Gå tillbaka
+        {"<"}Tillbaka till album
       </button>
       <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
         {!album.id || !album || !album.images
