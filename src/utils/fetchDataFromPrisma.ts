@@ -10,10 +10,7 @@ export const getAlbums = async () => {
 };
 
 export const getAlbum = async (albumId: string) => {
-  const album = await prisma.album.findUniqueOrThrow({
-    where: {
-      id: albumId,
-    },
+  const album = await prisma.album.findFirstOrThrow({
     select: albumSelector,
   });
   return album;
@@ -29,6 +26,9 @@ const albumSelector = {
     where: {
       id: {
         not: undefined,
+      },
+      visible: {
+        equals: true,
       },
     },
     select: {

@@ -17,7 +17,11 @@ const ImagePage: NextPage<{ image: ImageType }> = ({ image }) => {
     <section className="mx-auto -mt-4 flex h-full max-w-7xl flex-col gap-2 px-5 sm:mt-0 sm:flex-row sm:gap-8">
       <div className="flex-grod relative h-[500px] min-w-[250px] flex-grow sm:min-w-[300px]">
         <Image
-          src={image.filename ? `/images/${image.filename}` : "/"}
+          src={
+            image.filename
+              ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+              : ""
+          }
           alt={`${image.album.title}, ${image.album.description}`}
           fill
           className="object-contain object-center"

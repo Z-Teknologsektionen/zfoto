@@ -18,7 +18,9 @@ export const AlbumGridItem: FC<{
           before:absolute before:inset-0 before:z-0 before:bg-black/10 before:content-[''] 
           after:absolute after:top-1/2 after:left-1/2 after:z-10 after:block after:-translate-y-1/2 after:-translate-x-1/2 after:truncate after:object-contain after:text-xl after:text-white after:content-[attr(alt)]
         `}
-        src={filename ? `/images/${filename}` : ""}
+        src={
+          filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
+        }
         alt={title}
         fill
         sizes="400px"

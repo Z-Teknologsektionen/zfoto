@@ -70,7 +70,11 @@ const ImagePopup: FC<{
           <div className="relative h-96 max-h-screen w-full lg:min-h-[400px] lg:flex-grow">
             <Image
               className="h-full object-contain object-bottom"
-              src={image?.filename ? `/images/${image.filename}` : "/"}
+              src={
+                image.filename
+                  ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+                  : ""
+              }
               alt={`Bild från ${album?.title}, ${album?.description}`}
               fill
               priority

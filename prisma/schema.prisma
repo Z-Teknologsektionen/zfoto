@@ -20,7 +20,7 @@ model Album {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String   @unique
   description String   @default("")
-  images      Image[]  
+  images      Image[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   date        DateTime @default(now())
@@ -31,7 +31,8 @@ model Image {
   filename     String   @unique
   album        Album    @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   albumId      String   @db.ObjectId
-  photographer String   
+  photographer String
+  visible      Boolean  @default(true)
   date         DateTime @default(now())
   createdAt    DateTime @default(now())
 }

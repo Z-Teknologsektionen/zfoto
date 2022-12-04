@@ -21,7 +21,9 @@ export const ImageGridItem: FC<{
           object-contain object-center
           before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
         `}
-        src={filename ? `/images/${filename}` : ""}
+        src={
+          filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
+        }
         alt={`${album.title}, ${album.description}`}
         fill
         quality={90}

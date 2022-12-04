@@ -13,5 +13,15 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "holmstrom.ddns.net",
+        port: "8080",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 export default config;
