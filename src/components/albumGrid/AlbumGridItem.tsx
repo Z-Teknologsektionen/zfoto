@@ -24,7 +24,7 @@ export const AlbumGridItem: FC<{
         alt={title}
         fill
         sizes="400px"
-        quality={90}
+        quality={100}
       />
       <div className="z-10 w-full bg-[#333333]/95 py-3 px-4 text-[#a7a7a7]">
         <p className="truncate text-center font-semibold">{title}</p>

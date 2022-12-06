@@ -11,7 +11,20 @@ export const getAlbums = async () => {
 
 export const getAlbum = async (albumId: string) => {
   const album = await prisma.album.findFirstOrThrow({
+    where: {
+      id: albumId,
+    },
     select: albumSelector,
+  });
+  return album;
+};
+
+export const getAlbumAsAdmin = async (albumId: string) => {
+  const album = await prisma.album.findFirstOrThrow({
+    include: {
+      _count: true,
+      images: true,
+    },
   });
   return album;
 };

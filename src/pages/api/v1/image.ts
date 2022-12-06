@@ -4,7 +4,6 @@ import { prisma } from "../../../server/db/client";
 
 const image = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    console.log(req.body);
     try {
       const vaild = createImageSchema.safeParse(req.body).success;
       if (!vaild) {

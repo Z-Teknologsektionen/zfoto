@@ -7,27 +7,24 @@ export const ImageGridItem: FC<{
   filename: string;
   album: Album & { images: ImageType[] };
   onClick: () => void;
-}> = ({ id, filename, album, onClick }) => {
+}> = ({ filename, album, onClick }) => {
   return (
-    <div
-      className="relative h-[250px] w-full max-w-xs p-2"
-      key={id}
-      onClick={() => {
-        onClick();
-      }}
-    >
+    <div>
       <Image
         className={`
-          object-contain object-center
+          max-h-52 object-contain object-center
           before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
         `}
         src={
           filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
         }
         alt={`${album.title}, ${album.description}`}
-        fill
-        quality={90}
-        sizes="300px"
+        quality={100}
+        height={208}
+        width={300}
+        onClick={() => {
+          onClick();
+        }}
       />
     </div>
   );

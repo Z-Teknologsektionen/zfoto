@@ -3,7 +3,6 @@ import { z } from "zod";
 import { prisma } from "../../../server/db/client";
 
 const album = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.body);
   if (req.method === "GET") {
     try {
       const album = await prisma.album.findMany({ include: { images: true } });
@@ -12,7 +11,6 @@ const album = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   } else if (req.method === "POST") {
-    console.log(req.body);
     try {
       const vaild = createAlbumSchema.safeParse(req.body).success;
       if (!vaild) {

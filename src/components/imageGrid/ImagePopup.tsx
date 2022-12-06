@@ -5,30 +5,30 @@ import { useEffect } from "react";
 import { ImageInformation } from "./ImageInformation";
 
 const ImagePopup: FC<{
-  prevImageId: string | undefined;
-  nextImageId: string | undefined;
+  prevImage: ImageType | undefined;
+  nextImage: ImageType | undefined;
   album: (Album & { images: ImageType[] }) | undefined | null;
   image: ImageType | undefined | null;
   showPopup: boolean;
-  nextImage: () => void;
-  prevImage: () => void;
+  nextImageFunc: () => void;
+  prevImageFunc: () => void;
   closePopup: () => void;
 }> = ({
-  prevImageId,
-  nextImageId,
+  prevImage,
+  nextImage,
   album,
   image,
   showPopup,
-  nextImage,
-  prevImage,
+  nextImageFunc,
+  prevImageFunc,
   closePopup,
 }) => {
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent): void => {
       if (event.key === "ArrowRight") {
-        nextImage();
+        nextImageFunc();
       } else if (event.key === "ArrowLeft") {
-        prevImage();
+        prevImageFunc();
       } else if (event.key === "Escape") {
         closePopup();
       }
@@ -49,49 +49,85 @@ const ImagePopup: FC<{
       className={`fixed inset-0 place-items-center bg-white/90  ${
         showPopup ? "grid" : "hidden"
       }`}
+      onClick={() => closePopup()}
     >
       <div
-        className="fixed top-10 right-10 cursor-pointer text-3xl font-semibold md:right-20"
-        onClick={() => {
-          closePopup();
+        className="grid max-h-screen w-full place-items-center"
+        onClick={(e) => {
+          e.stopPropagation();
         }}
       >
-        {"x"}
-      </div>
-      <div className="mx-auto flex h-3/4 w-full max-w-7xl flex-row items-center justify-between gap-2">
-        <button
-          className="ml-2 cursor-pointer text-5xl"
-          disabled={!prevImageId}
-          onClick={() => prevImage()}
+        <div
+          className="fixed top-10 right-10 hidden cursor-pointer text-3xl font-semibold md:right-14 lg:block"
+          onClick={() => {
+            closePopup();
+          }}
         >
-          {"<"}
-        </button>
-        <div className="flex h-full flex-grow flex-col justify-center lg:justify-start">
-          <div className="relative h-96 max-h-screen w-full lg:min-h-[400px] lg:flex-grow">
-            <Image
-              className="h-full object-contain object-bottom"
-              src={
-                image.filename
-                  ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
-                  : ""
-              }
-              alt={`Bild från ${album?.title}, ${album?.description}`}
-              fill
-              priority
-              sizes="500px"
-              quality={95}
-            />
-          </div>
-          <ImageInformation {...{ image, album, nextImageId }} />
+          {"x"}
         </div>
-        <button
-          className="mr-2 cursor-pointer text-5xl"
-          disabled={!nextImageId}
-          onClick={() => nextImage()}
-        >
-          {">"}
-        </button>
+        <div className="mx-auto flex h-full w-full max-w-7xl flex-row items-center justify-between gap-2">
+          <button
+            className="h-full cursor-pointer pl-2 text-5xl"
+            disabled={!prevImage?.id}
+            onClick={() => prevImageFunc()}
+          >
+            {"<"}
+          </button>
+          <div className="flex h-full flex-grow flex-col justify-center md:flex-row md:gap-4">
+            <div className="relative max-h-screen min-h-[275px] w-full md:h-full md:w-1/2 lg:min-h-[400px] lg:w-2/3">
+              <Image
+                className="h-full object-contain object-bottom"
+                src={
+                  image.filename
+                    ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+                    : ""
+                }
+                alt={`Bild från ${album?.title}, ${album?.description}`}
+                fill
+                priority
+                sizes="1080px"
+                quality={75}
+                placeholder="empty"
+                blurDataURL={
+                  image.filename
+                    ? `http://holmstrom.ddns.net:8080/df/thumb/${image.filename}`
+                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII="
+                }
+              />
+            </div>
+            <ImageInformation {...{ image, album }} />
+          </div>
+          <button
+            className="h-full cursor-pointer pr-2 text-5xl"
+            disabled={!nextImage?.id}
+            onClick={() => nextImageFunc()}
+          >
+            {">"}
+          </button>
+        </div>
       </div>
+      <Image
+        className="hidden"
+        id="next-image"
+        alt=""
+        src={
+          nextImage?.filename
+            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+            : ""
+        }
+        fill
+      />
+      <Image
+        className="hidden"
+        id="prev-image"
+        alt=""
+        src={
+          prevImage?.filename
+            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+            : ""
+        }
+        fill
+      />
     </section>
   );
 };
