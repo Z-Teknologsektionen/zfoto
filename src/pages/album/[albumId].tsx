@@ -13,14 +13,14 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   const [imageId, setImageId] = useState<string>();
   const [showImagePopup, setShowImagePopup] = useState<boolean>(false);
 
-  const [nextImageId, prevImageId, image] = useMemo(() => {
+  const [nextImage, prevImage, image] = useMemo(() => {
     return [
-      album?.images.filter((_, index) => {
+      album?.images.find((_, index) => {
         return album.images[index - 1]?.id === imageId;
-      })[0]?.id,
-      album?.images.filter((_, index) => {
+      }),
+      album?.images.find((_, index) => {
         return album.images[index + 1]?.id === imageId;
-      })[0]?.id,
+      }),
       album?.images.find((image) => {
         return image.id === imageId;
       }),
@@ -43,7 +43,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       >
         {"<"}Tillbaka till album
       </button>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
+      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-y-4 gap-x-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
         {!album.id || !album || !album.images
           ? "Error..."
           : album?.images.map(({ id, filename }) => {
@@ -64,23 +64,23 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       <ImagePopup
         key={imageId}
         {...{
-          prevImageId,
-          nextImageId,
+          prevImage: prevImage,
+          nextImage: prevImage,
           album,
           image,
           showPopup: showImagePopup,
         }}
-        prevImage={() => {
-          if (!prevImageId) {
+        prevImageFunc={() => {
+          if (!prevImage?.id) {
             return;
           }
-          setImageId(prevImageId);
+          setImageId(prevImage.id);
         }}
-        nextImage={() => {
-          if (!nextImageId) {
+        nextImageFunc={() => {
+          if (!nextImage?.id) {
             return;
           }
-          setImageId(nextImageId);
+          setImageId(nextImage.id);
         }}
         closePopup={() => {
           setShowImagePopup(false);
