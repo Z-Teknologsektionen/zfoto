@@ -1,5 +1,5 @@
 import type { Album } from "@prisma/client";
-import type { GetStaticPropsContext, NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getImage } from "../../utils/fetchDataFromPrisma";
@@ -54,14 +54,7 @@ const ImagePage: NextPage<{ image: ImageType }> = ({ image }) => {
 
 export default ImagePage;
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const imageId = context.params?.imageId?.toString() || "";
     const image = await getImage({ imageId });

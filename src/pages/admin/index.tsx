@@ -55,16 +55,6 @@ const AdminPanelPage: NextPage<{
 
 export default AdminPanelPage;
 
-/* export async function getStaticProps(context: GetStaticPropsContext) {
-  const allAlbums = await getAlbums();
-  return {
-    props: {
-      albums: JSON.parse(JSON.stringify(allAlbums)),
-    },
-    revalidate: 300,
-  };
-} */
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const password = context.query?.password?.toString();
 

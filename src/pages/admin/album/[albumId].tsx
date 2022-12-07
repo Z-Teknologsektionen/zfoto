@@ -173,26 +173,6 @@ const EditAlbum: NextPage<{
 
 export default EditAlbum;
 
-/* export async function getStaticProps(context: GetStaticPropsContext) {
-  const albumId = context.params?.albumId || "";
-
-  const album = await getAlbumAsAdmin(albumId.toString());
-
-  return {
-    props: {
-      album: JSON.parse(JSON.stringify(album)),
-    },
-    revalidate: 300,
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-} */
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const password = context.query?.password?.toString();
 

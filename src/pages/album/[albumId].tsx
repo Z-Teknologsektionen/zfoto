@@ -1,5 +1,5 @@
 import type { Album, Image } from "@prisma/client";
-import type { GetStaticPropsContext, NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
@@ -93,14 +93,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
 export default AlbumPage;
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const albumId = context.params?.albumId || "";
     const album = await getAlbum(albumId.toString());
