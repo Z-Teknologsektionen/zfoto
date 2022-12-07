@@ -65,7 +65,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
         key={imageId}
         {...{
           prevImage: prevImage,
-          nextImage: prevImage,
+          nextImage: nextImage,
           album,
           image,
           showPopup: showImagePopup,

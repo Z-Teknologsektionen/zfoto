@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 export const getAlbums = async () => {
   const albums = await prisma.album.findMany({
     select: albumSelector,
+    orderBy: {
+      date: "desc",
+    },
   });
   return albums;
 };

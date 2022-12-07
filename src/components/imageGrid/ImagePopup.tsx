@@ -23,6 +23,7 @@ const ImagePopup: FC<{
   prevImageFunc,
   closePopup,
 }) => {
+  console.log(nextImage, !nextImage?.id);
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent): void => {
       if (event.key === "ArrowRight") {
@@ -67,7 +68,7 @@ const ImagePopup: FC<{
         </div>
         <div className="mx-auto flex h-full w-full max-w-7xl flex-row items-center justify-between gap-2">
           <button
-            className="h-full cursor-pointer pl-2 text-5xl"
+            className="h-full cursor-pointer pl-2 text-5xl disabled:opacity-50"
             disabled={!prevImage?.id}
             onClick={() => prevImageFunc()}
           >
@@ -98,7 +99,7 @@ const ImagePopup: FC<{
             <ImageInformation {...{ image, album }} />
           </div>
           <button
-            className="h-full cursor-pointer pr-2 text-5xl"
+            className="h-full cursor-pointer pr-2 text-5xl disabled:opacity-50"
             disabled={!nextImage?.id}
             onClick={() => nextImageFunc()}
           >
