@@ -4,10 +4,10 @@ import pathlib
 import shutil
 import requests
 
-title = 'ZMART mässan' #str(input('What is the album title? \n'))
-description = 'Bilder från ZMART mässan 2022' #str(input('What is the album sub title? \n'))
+title = 'Vintermötet 2022' #str(input('What is the album title? \n'))
+description = 'Bilder från vintermötet 2022' #str(input('What is the album sub title? \n'))
 photographer = 'Dennis Holmström'
-albumURL = r'C:\Users\daeho\Pictures\zFoto\20221124_ZMART\exports\lowres' #str(input('What is the album URL? \n'))
+albumURL = r'C:\Users\daeho\Pictures\zFoto\20221207-Vintermötet\exports\thumb' #str(input('What is the album URL? \n'))
 imageArray = []
 
 def unix2date(unix):
