@@ -1,5 +1,6 @@
-import type { GetStaticPropsContext, NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { getAlbumAsAdmin } from "../../../utils/fetchDataFromPrisma";
@@ -94,9 +95,15 @@ const EditAlbum: NextPage<{
           />
           <p>Number of images: {album._count.images}</p>
         </div>
-        <div>
-          <button onClick={() => router.back()}>Back</button>
+        <div className="flex h-fit flex-row gap-2">
           <button
+            className="rounded border-2 border-black/40 bg-yellow-400 px-6 py-2"
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
+          <button
+            className="rounded border-2 border-black/60 bg-green-600 px-6 py-2"
             onClick={() => {
               handleAlbumInfoUpdate({
                 albumId: album.id,
@@ -135,8 +142,16 @@ const EditAlbum: NextPage<{
                   <p>{visible ? "Synlig" : "Dold"}</p>
                 </div>
                 <div className="flex flex-row gap-2">
-                  <button>Edit</button>
+                  <button className="rounded border-2 border-black/60 bg-green-600 px-4 py-2">
+                    <Link target="_blank" href={`/image/${imageId}`}>
+                      Länk till bild
+                    </Link>
+                  </button>
+                  <button className="rounded border-2 border-gray-700/60 bg-yellow-400 px-4 py-2">
+                    Edit
+                  </button>
                   <button
+                    className="rounded border-2 border-black/60 bg-red-500 px-4 py-2"
                     onClick={() => {
                       handleChangeVisibility({
                         imageId: imageId,
@@ -158,7 +173,7 @@ const EditAlbum: NextPage<{
 
 export default EditAlbum;
 
-export async function getStaticProps(context: GetStaticPropsContext) {
+/* export async function getStaticProps(context: GetStaticPropsContext) {
   const albumId = context.params?.albumId || "";
 
   const album = await getAlbumAsAdmin(albumId.toString());
@@ -176,4 +191,29 @@ export async function getStaticPaths() {
     paths: [],
     fallback: "blocking",
   };
+} */
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const password = context.query?.password?.toString();
+
+  if (!(password && password === "brabilder")) {
+    return {
+      notFound: true,
+    };
+  }
+
+  try {
+    const albumId = context.params?.albumId || "";
+    const album = await getAlbumAsAdmin(albumId.toString());
+
+    return {
+      props: {
+        album: JSON.parse(JSON.stringify(album)),
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }

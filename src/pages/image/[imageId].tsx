@@ -1,8 +1,8 @@
 import type { Album } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
 import type { GetStaticPropsContext, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { getImage } from "../../utils/fetchDataFromPrisma";
 
 type ImageType = {
   id: string;
@@ -62,24 +62,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const imageId = context.params?.imageId || "";
-  const prisma = new PrismaClient();
-  const image = await prisma.image.findUniqueOrThrow({
-    where: {
-      id: typeof imageId === "string" ? imageId : imageId[0],
-    },
-    select: {
-      id: true,
-      album: true,
-      filename: true,
-      photographer: true,
-      date: true,
-    },
-  });
-  return {
-    props: {
-      image: JSON.parse(JSON.stringify(image)) as typeof image,
-      revalidate: 120,
-    },
-  };
+  try {
+    const imageId = context.params?.imageId?.toString() || "";
+    const image = await getImage({ imageId });
+    return {
+      props: {
+        image: JSON.parse(JSON.stringify(image)) as typeof image,
+        revalidate: 120,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }

@@ -21,6 +21,9 @@ export const getAlbum = async (albumId: string) => {
 
 export const getAlbumAsAdmin = async (albumId: string) => {
   const album = await prisma.album.findFirstOrThrow({
+    where: {
+      id: albumId,
+    },
     include: {
       _count: true,
       images: true,
@@ -29,6 +32,21 @@ export const getAlbumAsAdmin = async (albumId: string) => {
   return album;
 };
 
+export const getImage = async ({ imageId }: { imageId: string }) => {
+  const image = await prisma.image.findUniqueOrThrow({
+    where: {
+      id: imageId,
+    },
+    select: {
+      id: true,
+      album: true,
+      filename: true,
+      photographer: true,
+      date: true,
+    },
+  });
+  return image;
+};
 export type Album = typeof getAlbum;
 
 const albumSelector = {

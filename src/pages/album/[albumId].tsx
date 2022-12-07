@@ -101,12 +101,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const albumId = context.params?.albumId || "";
-  const album = await getAlbum(albumId.toString());
-  return {
-    props: {
-      album: JSON.parse(JSON.stringify(album)),
-      revalidate: 120,
-    },
-  };
+  try {
+    const albumId = context.params?.albumId || "";
+    const album = await getAlbum(albumId.toString());
+    return {
+      props: {
+        album: JSON.parse(JSON.stringify(album)),
+        revalidate: 120,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }
