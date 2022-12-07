@@ -100,7 +100,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       props: {
         album: JSON.parse(JSON.stringify(album)),
-        revalidate: 120,
       },
     };
   } catch (error) {

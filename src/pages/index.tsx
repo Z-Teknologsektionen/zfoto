@@ -42,6 +42,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const albums = await getAlbums();
   return {
     props: { albums: JSON.parse(JSON.stringify(albums)) },
-    revalidate: 120,
   };
 }

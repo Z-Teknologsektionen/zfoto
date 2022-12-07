@@ -61,7 +61,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       props: {
         image: JSON.parse(JSON.stringify(image)) as typeof image,
-        revalidate: 120,
       },
     };
   } catch (error) {
