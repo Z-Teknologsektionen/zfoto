@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import type { GetServerSidePropsContext } from "next";
+import type { GetStaticPropsContext } from "next";
 import { type NextPage } from "next";
-
 import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
+import { getAlbums } from "../utils/fetchDataFromPrisma";
 
 type AlbumType = {
   id: string;
@@ -24,8 +23,8 @@ type AlbumType = {
 const Home: NextPage<{ albums: AlbumType[] }> = ({ albums }) => {
   return (
     <>
-      <h1>Välkommen till zFoto</h1>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 sm:grid-cols-2 md:grid-cols-3 md:py-10 lg:grid-cols-4 xl:grid-cols-5">
+      <h1 className="ml-4">Välkommen till zFoto</h1>
+      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3">
         {albums.length == 0
           ? "Hittade inga album"
           : albums.map(({ id, title, images }) => {
@@ -39,31 +38,10 @@ const Home: NextPage<{ albums: AlbumType[] }> = ({ albums }) => {
 
 export default Home;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const prisma = new PrismaClient();
-  const albums = await prisma.album.findMany({
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      images: {
-        select: {
-          albumId: true,
-          date: true,
-          filename: true,
-          photographer: true,
-          id: true,
-        },
-      },
-      date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
-    },
-  });
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const albums = await getAlbums();
   return {
     props: { albums: JSON.parse(JSON.stringify(albums)) },
+    revalidate: 120,
   };
 }

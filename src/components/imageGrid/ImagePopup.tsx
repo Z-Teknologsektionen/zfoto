@@ -1,48 +1,36 @@
 import type { Album, Image as ImageType } from "@prisma/client";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useEffect } from "react";
 import { ImageInformation } from "./ImageInformation";
 
 const ImagePopup: FC<{
-  prevImageId: string | undefined;
-  nextImageId: string | undefined;
+  prevImage: ImageType | undefined;
+  nextImage: ImageType | undefined;
   album: (Album & { images: ImageType[] }) | undefined | null;
   image: ImageType | undefined | null;
-}> = ({ prevImageId, nextImageId, album, image }) => {
-  const hasActiveImage =
-    image?.id !== "undefined" && typeof image?.id !== "undefined";
-  const hasPrevImage = typeof prevImageId !== "undefined";
-  const hasNextImage = typeof nextImageId !== "undefined";
-
-  const router = useRouter();
-
-  const nextImage = () => {
-    if (!hasNextImage) {
-      return;
-    }
-    router.push(`/album/${album?.id}?imageId=${nextImageId}`);
-  };
-  const prevImage = () => {
-    if (!hasPrevImage) {
-      return;
-    }
-    router.push(`/album/${album?.id}?imageId=${prevImageId}`);
-  };
-  function closeNav() {
-    document.body.classList.remove("overflow-hidden");
-    router.push(`/album/${album?.id}`);
-  }
-
+  showPopup: boolean;
+  nextImageFunc: () => void;
+  prevImageFunc: () => void;
+  closePopup: () => void;
+}> = ({
+  prevImage,
+  nextImage,
+  album,
+  image,
+  showPopup,
+  nextImageFunc,
+  prevImageFunc,
+  closePopup,
+}) => {
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent): void => {
       if (event.key === "ArrowRight") {
-        nextImage();
+        nextImageFunc();
       } else if (event.key === "ArrowLeft") {
-        prevImage();
+        prevImageFunc();
       } else if (event.key === "Escape") {
-        closeNav();
+        closePopup();
       }
     };
     window.addEventListener("keydown", keydownListener);
@@ -58,45 +46,88 @@ const ImagePopup: FC<{
 
   return (
     <section
-      className={`absolute inset-0 place-items-center bg-white/75  ${
-        hasActiveImage ? "grid" : "hidden"
+      className={`fixed inset-0 place-items-center bg-white/90  ${
+        showPopup ? "grid" : "hidden"
       }`}
+      onClick={() => closePopup()}
     >
       <div
-        className="absolute top-5 right-5 text-3xl"
-        onClick={() => {
-          closeNav();
+        className="grid max-h-screen w-full place-items-center"
+        onClick={(e) => {
+          e.stopPropagation();
         }}
       >
-        {"x"}
-      </div>
-      <div className="mx-auto flex h-3/4 w-full max-w-7xl flex-row items-center justify-between gap-5">
-        <button
-          className="ml-5 text-5xl"
-          disabled={!hasPrevImage}
-          onClick={() => prevImage()}
+        <div
+          className="fixed top-10 right-10 hidden cursor-pointer text-3xl font-semibold md:right-14 lg:block"
+          onClick={() => {
+            closePopup();
+          }}
         >
-          {"<"}
-        </button>
-        <div className="flex h-full flex-grow flex-col">
-          <div className="relative h-full max-h-screen min-h-[300px] flex-grow">
-            <Image
-              className="h-full object-contain object-center"
-              src={image?.filename ? `/images/${image.filename}` : "/"}
-              alt={`Bild från ${album?.title}, ${album?.description}`}
-              fill
-            />
-          </div>
-          <ImageInformation {...{ image, album, nextImageId }} />
+          {"x"}
         </div>
-        <button
-          className="mr-5 text-5xl"
-          disabled={!hasNextImage}
-          onClick={() => nextImage()}
-        >
-          {">"}
-        </button>
+        <div className="mx-auto flex h-full w-full max-w-7xl flex-row items-center justify-between gap-2">
+          <button
+            className="h-full cursor-pointer pl-2 text-5xl"
+            disabled={!prevImage?.id}
+            onClick={() => prevImageFunc()}
+          >
+            {"<"}
+          </button>
+          <div className="flex h-full flex-grow flex-col justify-center md:flex-row md:gap-4">
+            <div className="relative max-h-screen min-h-[275px] w-full md:h-full md:w-1/2 lg:min-h-[400px] lg:w-2/3">
+              <Image
+                className="h-full object-contain object-bottom"
+                src={
+                  image.filename
+                    ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+                    : ""
+                }
+                alt={`Bild från ${album?.title}, ${album?.description}`}
+                fill
+                priority
+                sizes="1080px"
+                quality={75}
+                placeholder="empty"
+                blurDataURL={
+                  image.filename
+                    ? `http://holmstrom.ddns.net:8080/df/thumb/${image.filename}`
+                    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII="
+                }
+              />
+            </div>
+            <ImageInformation {...{ image, album }} />
+          </div>
+          <button
+            className="h-full cursor-pointer pr-2 text-5xl"
+            disabled={!nextImage?.id}
+            onClick={() => nextImageFunc()}
+          >
+            {">"}
+          </button>
+        </div>
       </div>
+      <Image
+        className="hidden"
+        id="next-image"
+        alt=""
+        src={
+          nextImage?.filename
+            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+            : ""
+        }
+        fill
+      />
+      <Image
+        className="hidden"
+        id="prev-image"
+        alt=""
+        src={
+          prevImage?.filename
+            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
+            : ""
+        }
+        fill
+      />
     </section>
   );
 };

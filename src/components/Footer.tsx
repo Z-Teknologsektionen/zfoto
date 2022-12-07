@@ -17,7 +17,11 @@ export const Footer: FC = () => {
           </h2>
           <ul className="flex flex-row items-center justify-center gap-3 sm:flex-col">
             <li>
-              <Link href={`https://www.instagram.com/zfotochalmers/`}>
+              <Link
+                className="hover:text-[#a7a7a7]/80"
+                target="_blank"
+                href={`https://www.instagram.com/zfotochalmers/`}
+              >
                 Instagram
               </Link>
             </li>

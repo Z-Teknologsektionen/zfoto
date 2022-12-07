@@ -1,86 +1,118 @@
 import type { Album, Image } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type { GetStaticPropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/imageGrid/ImagePopup";
+import { getAlbum } from "../../utils/fetchDataFromPrisma";
 
 type AlbumType = Album & { images: Image[] };
 
 const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   const router = useRouter();
-  const { albumId = "", imageId = "" } = router.query;
+  const [imageId, setImageId] = useState<string>();
+  const [showImagePopup, setShowImagePopup] = useState<boolean>(false);
 
-  if (typeof albumId === "undefined") {
-    return <div>loading...</div>;
-  }
+  const [nextImage, prevImage, image] = useMemo(() => {
+    return [
+      album?.images.find((_, index) => {
+        return album.images[index - 1]?.id === imageId;
+      }),
+      album?.images.find((_, index) => {
+        return album.images[index + 1]?.id === imageId;
+      }),
+      album?.images.find((image) => {
+        return image.id === imageId;
+      }),
+    ];
+  }, [imageId, album.images]);
 
-  if (typeof imageId === "undefined") {
-    return <div>loading...</div>;
-  }
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
-  let prevImageId: string | undefined,
-    nextImageId: string | undefined,
-    image: Image | undefined;
-
-  if (imageId) {
-    nextImageId = album?.images.filter((_, index) => {
-      return album.images[index - 1]?.id === imageId;
-    })[0]?.id;
-    prevImageId = album?.images.filter((_, index) => {
-      return album.images[index + 1]?.id === imageId;
-    })[0]?.id;
-    image = album?.images.find((image) => {
-      return image.id === imageId;
-    });
-    if (typeof document !== "undefined") {
-      document.body.classList.add("overflow-hidden");
-    }
-  }
   return (
     <>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-1 py-5 px-10 sm:grid-cols-2 md:grid-cols-3 md:py-10 lg:grid-cols-4 xl:grid-cols-5">
-        {!albumId || !album || !album.images
+      <button
+        onClick={() => {
+          router.push("/");
+        }}
+        className="ml-10"
+      >
+        {"<"}Tillbaka till album
+      </button>
+      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-y-4 gap-x-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
+        {!album.id || !album || !album.images
           ? "Error..."
           : album?.images.map(({ id, filename }) => {
               return (
-                <ImageGridItem key={id} {...{ id, albumId, filename, album }} />
+                <ImageGridItem
+                  key={id}
+                  {...{ id, albumId: album.id, filename, album }}
+                  onClick={() => {
+                    setImageId(id);
+                    setShowImagePopup(true);
+
+                    document.body.classList.add("overflow-hidden");
+                  }}
+                />
               );
             })}
       </section>
-      <ImagePopup {...{ prevImageId, nextImageId, album, image }} />
+      <ImagePopup
+        key={imageId}
+        {...{
+          prevImage: prevImage,
+          nextImage: prevImage,
+          album,
+          image,
+          showPopup: showImagePopup,
+        }}
+        prevImageFunc={() => {
+          if (!prevImage?.id) {
+            return;
+          }
+          setImageId(prevImage.id);
+        }}
+        nextImageFunc={() => {
+          if (!nextImage?.id) {
+            return;
+          }
+          setImageId(nextImage.id);
+        }}
+        closePopup={() => {
+          setShowImagePopup(false);
+          document.body.classList.remove("overflow-hidden");
+        }}
+      />
     </>
   );
 };
 
 export default AlbumPage;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const {
-    query: { albumId },
-  } = context;
-  const prisma = new PrismaClient();
-  const album = await prisma.album.findUnique({
-    where: {
-      id: albumId?.toString(),
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      images: {
-        where: {
-          id: {
-            not: undefined,
-          },
-        },
-      },
-      date: true,
-    },
-  });
+export async function getStaticPaths() {
   return {
-    props: {
-      album: JSON.parse(JSON.stringify(album)),
-    },
+    paths: [],
+    fallback: "blocking",
   };
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  try {
+    const albumId = context.params?.albumId || "";
+    const album = await getAlbum(albumId.toString());
+    return {
+      props: {
+        album: JSON.parse(JSON.stringify(album)),
+        revalidate: 120,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 }

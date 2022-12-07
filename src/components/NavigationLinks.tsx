@@ -4,13 +4,13 @@ import type { FC } from "react";
 export const NavigationLinks: FC = () => {
   return (
     <>
-      <li>
+      <li className="hover:text-[#a7a7a7]/80">
         <Link href={"/"}>Hem</Link>
       </li>
-      <li>
+      <li className="hover:text-[#a7a7a7]/80">
         <Link href={"/about"}>Om</Link>
       </li>
-      <li>
+      <li className="hover:text-[#a7a7a7]/80">
         <Link href={"/contact"}>Kontakt</Link>
       </li>
     </>
