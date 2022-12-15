@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import zFotoLogo from "../../public/zfoto.png";
 import { NavigationLinks } from "./NavigationLinks";
 
 export const Header: FC = () => {
@@ -10,7 +9,7 @@ export const Header: FC = () => {
       <div className="flex w-full max-w-7xl flex-row items-center justify-between">
         <Link href={"/"} className="flex flex-row items-center justify-center">
           <Image
-            src={zFotoLogo}
+            src={"/zFoto.png"}
             alt={"zFotos logotyp"}
             height="40"
             width="40"
