@@ -5,7 +5,9 @@ import { Header } from "../components/Header";
 import "../styles/globals.css";
 import { trpc } from "../utils/trpc";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+//TODO: Lägg till länk tillbaka till ztek.se
+
+const MyApp: AppType = ({ pageProps, Component }) => {
   return (
     <>
       <Head>

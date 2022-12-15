@@ -23,7 +23,6 @@ const ImagePopup: FC<{
   prevImageFunc,
   closePopup,
 }) => {
-  console.log(nextImage, !nextImage?.id);
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent): void => {
       if (event.key === "ArrowRight") {
@@ -94,6 +93,7 @@ const ImagePopup: FC<{
                     ? `http://holmstrom.ddns.net:8080/df/thumb/${image.filename}`
                     : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII="
                 }
+                unoptimized
               />
             </div>
             <ImageInformation {...{ image, album }} />
@@ -107,28 +107,6 @@ const ImagePopup: FC<{
           </button>
         </div>
       </div>
-      <Image
-        className="hidden"
-        id="next-image"
-        alt=""
-        src={
-          nextImage?.filename
-            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
-            : ""
-        }
-        fill
-      />
-      <Image
-        className="hidden"
-        id="prev-image"
-        alt=""
-        src={
-          prevImage?.filename
-            ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
-            : ""
-        }
-        fill
-      />
     </section>
   );
 };

@@ -28,6 +28,7 @@ const AdminPanelPage: NextPage<{
                 height={128}
                 width={128}
                 quality={100}
+                unoptimized
               />
             </div>
             <div className="flex flex-grow flex-row items-center justify-start gap-8">
