@@ -3,11 +3,12 @@ import Link from "next/link";
 import type { FC } from "react";
 
 export const AlbumGridItem: FC<{
+  date: Date;
   filename: string;
   id: string;
   priorityLoadning?: boolean;
   title: string;
-}> = ({ id, title, filename, priorityLoadning = false }) => {
+}> = ({ id, title, filename, priorityLoadning = false, date }) => {
   return (
     <Link
       className="relative grid h-[250px] w-full max-w-xs items-end overflow-hidden"
@@ -27,10 +28,13 @@ export const AlbumGridItem: FC<{
           filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
         }
         fill
-        unoptimized
+        /* unoptimized */
       />
       <div className="z-10 w-full bg-[#333333]/95 py-3 px-4 text-[#a7a7a7]">
         <p className="truncate text-center font-semibold">{title}</p>
+        <p className="text-center text-sm font-medium">
+          {new Date(date).toLocaleDateString()}
+        </p>
       </div>
     </Link>
   );

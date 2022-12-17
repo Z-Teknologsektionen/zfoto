@@ -57,6 +57,7 @@ const EditAlbum: NextPage<{
   }): void => {
     imageVisibility.mutate({ imageId, visibility: value });
   };
+
   return (
     <div className="mx-auto max-w-7xl">
       <div className="flex flex-row justify-between">
@@ -140,7 +141,7 @@ const EditAlbum: NextPage<{
                       : ""
                   }
                   width={128}
-                  unoptimized
+                  /* unoptimized */
                 />
                 <div className="flex flex-grow flex-row gap-2">
                   <p>{filename}</p>

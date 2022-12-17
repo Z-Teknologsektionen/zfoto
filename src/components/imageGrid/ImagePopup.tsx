@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FC } from "react";
+import { useEffect } from "react";
 import type { AlbumType } from "../../utils/types";
 import { ImageInformation } from "./ImageInformation";
 
@@ -28,34 +29,39 @@ const ImagePopup: FC<{
   prevImageFunc,
   closePopup,
 }) => {
+  useEffect(() => {
+    const keydownListener = (event: KeyboardEvent): void => {
+      if (event.key === "ArrowRight") {
+        nextImageFunc();
+      } else if (event.key === "ArrowLeft") {
+        prevImageFunc();
+      } else if (event.key === "Escape") {
+        closePopup();
+      }
+    };
+    window.addEventListener("keydown", keydownListener);
+    return () => {
+      window.removeEventListener("keydown", keydownListener);
+    };
+  });
+
   if (!image) {
     return null;
   }
+
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
     <section
       className={`fixed inset-0 place-items-center bg-white/90  ${
         showPopup ? "grid" : "hidden"
       }`}
       onClick={() => closePopup()}
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          closePopup();
-        }
-      }}
     >
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
       <div
         className="grid max-h-screen w-full place-items-center"
         onClick={(e) => {
           e.stopPropagation();
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowLeft") {
-            prevImageFunc();
-          } else if (e.key === "ArrowRight") {
-            nextImageFunc();
-          }
         }}
       >
         <button
@@ -91,7 +97,7 @@ const ImagePopup: FC<{
                 }
                 fill
                 priority
-                unoptimized
+                /* unoptimized */
               />
             </div>
             <ImageInformation id={image.id} photographer={image.photographer} />

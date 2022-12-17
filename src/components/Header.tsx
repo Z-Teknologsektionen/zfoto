@@ -5,7 +5,7 @@ import { NavigationLinks } from "./NavigationLinks";
 
 export const Header: FC = () => {
   return (
-    <header className="flex h-16 place-items-center bg-[#333333] py-3 px-4 text-[#a7a7a7] shadow-xl sm:px-14">
+    <header className="flex h-16 justify-center bg-[#333333] py-3 px-4 text-[#a7a7a7] shadow-xl sm:px-14">
       <div className="flex w-full max-w-7xl flex-row items-center justify-between">
         <Link className="flex flex-row items-center justify-center" href="/">
           <Image

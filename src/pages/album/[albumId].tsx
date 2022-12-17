@@ -1,8 +1,10 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import AlbumInfo from "../../components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/imageGrid/ImagePopup";
+import MainWrapper from "../../components/Wrapper";
 import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
 
@@ -31,36 +33,45 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
     };
   }, []);
 
+  const photographers = [
+    ...new Set(album.images.map((item) => item.photographer)),
+  ];
   return (
     <>
-      <button
-        className="ml-10"
-        onClick={() => {
-          router.push("/");
-        }}
-        type="button"
-      >
-        {"<"}
-        Tillbaka till album
-      </button>
-      <section className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-y-4 gap-x-2 py-5 px-10 md:grid-cols-2 md:py-10 lg:grid-cols-3 xl:grid-cols-4">
-        {!album.id || !album || !album.images
-          ? "Error..."
-          : album?.images.map(({ id, filename }) => {
-              return (
-                <ImageGridItem
-                  key={id}
-                  {...{ id, albumId: album.id, filename, album }}
-                  onClick={() => {
-                    setImageId(id);
-                    setShowImagePopup(true);
+      <MainWrapper>
+        <div className="mx-auto flex max-w-7xl flex-col gap-4">
+          <button
+            className="-ml-4 w-fit md:-ml-2.5"
+            onClick={() => {
+              router.push("/");
+            }}
+            type="button"
+          >
+            {"<"}
+            Tillbaka till album
+          </button>
+          <AlbumInfo album={album} photographers={photographers} />
+          <div className="grid grid-cols-1 place-items-center gap-y-4 gap-x-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {!album.id || !album || !album.images
+              ? "Error..."
+              : album?.images.map(({ id, filename }) => {
+                  return (
+                    <ImageGridItem
+                      key={id}
+                      {...{ id, albumId: album.id, filename, album }}
+                      onClick={() => {
+                        setImageId(id);
+                        setShowImagePopup(true);
 
-                    document.body.classList.add("overflow-hidden");
-                  }}
-                />
-              );
-            })}
-      </section>
+                        document.body.classList.add("overflow-hidden");
+                      }}
+                    />
+                  );
+                })}
+          </div>
+        </div>
+      </MainWrapper>
+
       {imageId && activeImage && (
         <ImagePopup
           key={imageId}
