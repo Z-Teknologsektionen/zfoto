@@ -4,8 +4,10 @@ import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import MainWrapper from "../components/Wrapper";
 import { getAlbums } from "../utils/fetchDataFromPrisma";
 
+type AlbumsType = Awaited<ReturnType<typeof getAlbums>>;
+
 const Home: NextPage<{
-  albums: Awaited<ReturnType<typeof getAlbums>>;
+  albums: AlbumsType;
 }> = ({ albums }) => {
   return (
     <MainWrapper>
@@ -30,9 +32,13 @@ const Home: NextPage<{
 
 export default Home;
 
-export async function getServerSideProps(_context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  _context: GetServerSidePropsContext
+): Promise<{
+  props: { albums: AlbumsType };
+}> {
   const albums = await getAlbums();
   return {
-    props: { albums: JSON.parse(JSON.stringify(albums)) },
+    props: { albums: JSON.parse(JSON.stringify(albums)) as typeof albums },
   };
 }

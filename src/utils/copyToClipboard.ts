@@ -5,6 +5,8 @@ export async function copyToClipboard(inputId: string): Promise<void> {
     | undefined;
   copyText?.select();
   copyText?.setSelectionRange(0, 99999); // For mobile devices
-
-  await navigator.clipboard?.writeText(`${copyText?.value}` || "");
+  if (!copyText?.value) {
+    return;
+  }
+  await navigator.clipboard?.writeText(`${copyText.value}`);
 }
