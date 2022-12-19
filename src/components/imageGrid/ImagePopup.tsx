@@ -97,7 +97,7 @@ const ImagePopup: FC<{
                 }
                 fill
                 priority
-                unoptimized
+                /* unoptimized */
               />
             </div>
             <ImageInformation id={image.id} photographer={image.photographer} />
