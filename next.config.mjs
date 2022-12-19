@@ -1,9 +1,11 @@
-// @ts-check
+// @ts-nocheck
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
+
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -30,6 +32,26 @@ const config = {
         ],
       },
     ];
+  },
+  api: {
+    bodyParser: false,
+    customDomain: true,
+    onProxyReq: function (proxyReq, req, res) {
+      proxyReq.setHeader("Origin", process.env.SITE_URL);
+    },
+    onProxyRes: function (proxyRes, req, res) {
+      proxyRes.headers["access-control-allow-origin"] = "*";
+      delete proxyRes.headers["x-frame-options"];
+    },
+    middlewares: [
+      createProxyMiddleware({
+        target: "http://holmstrom.ddns.net:8080/",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/df": "/df",
+        },
+      }),
+    ],
   },
   reactStrictMode: true,
   swcMinify: true,
