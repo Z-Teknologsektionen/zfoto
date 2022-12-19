@@ -9,6 +9,12 @@ import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
 
 const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
+  /*   fetch(
+    "http://holmstrom.ddns.net:8080/df/lowres/20221107-zenitAzp-IMG_0147.jpg"
+  ).then((res) => {
+    console.log(res.status);
+  }); */
+
   const router = useRouter();
   const [imageId, setImageId] = useState<string>();
   const [showImagePopup, setShowImagePopup] = useState<boolean>(false);
@@ -112,6 +118,7 @@ export async function getServerSideProps(
   try {
     const albumId = context.params?.albumId || "";
     const album = await getAlbum(albumId.toString());
+
     return {
       props: {
         album: JSON.parse(JSON.stringify(album)) as typeof album,

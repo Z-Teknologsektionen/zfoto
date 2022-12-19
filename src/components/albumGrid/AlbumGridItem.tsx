@@ -23,7 +23,6 @@ export const AlbumGridItem: FC<{
         `}
         priority={priorityLoadning}
         quality={100}
-        referrerPolicy="no-referrer"
         sizes="400px"
         src={
           filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
