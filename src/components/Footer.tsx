@@ -37,8 +37,8 @@ export const Footer: FC = () => {
         </div>
       </footer>
       <img
-        alt="http://holmstrom.ddns.net:8080/df/lowres/20221107-zenitAzp-IMG_0147.jpg"
-        src=""
+        alt=""
+        src="http://holmstrom.ddns.net:8080/df/lowres/20221107-zenitAzp-IMG_0147.jpg"
       />
     </div>
   );
