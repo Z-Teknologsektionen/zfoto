@@ -24,7 +24,7 @@ const ImagePage: NextPage<{
                 : ""
             }
             fill
-            /* unoptimized */
+            unoptimized
           />
         </div>
         <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">

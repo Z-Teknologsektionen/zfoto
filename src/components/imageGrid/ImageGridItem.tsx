@@ -24,7 +24,7 @@ export const ImageGridItem: FC<{
           filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
         }
         width={300}
-        /* unoptimized */
+        unoptimized
       />
     </div>
   );
