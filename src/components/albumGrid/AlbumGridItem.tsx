@@ -28,7 +28,7 @@ export const AlbumGridItem: FC<{
           filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
         }
         fill
-        /* unoptimized */
+        unoptimized
       />
       <div className="z-10 w-full bg-[#333333]/95 py-3 px-4 text-[#a7a7a7]">
         <p className="truncate text-center font-semibold">{title}</p>

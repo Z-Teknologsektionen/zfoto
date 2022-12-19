@@ -141,7 +141,7 @@ const EditAlbum: NextPage<{
                       : ""
                   }
                   width={128}
-                  /* unoptimized */
+                  unoptimized
                 />
                 <div className="flex flex-grow flex-row gap-2">
                   <p>{filename}</p>
