@@ -36,6 +36,10 @@ export const Footer: FC = () => {
           </ul>
         </div>
       </footer>
+      <img
+        alt="dont show me"
+        src="http://holmstrom.ddns.net:8080/df/thumb/20221213-Jubileumssittning-IMG_0072.jpg"
+      />
     </div>
   );
 };
