@@ -1,15 +1,16 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getAlbums } from "../../utils/fetchDataFromPrisma";
+import { env } from "../../env/server.mjs";
+import { getAlbumsAsAdmin } from "../../utils/fetchDataFromPrisma";
 
-type AlbumsType = Awaited<ReturnType<typeof getAlbums>>;
+type AlbumsType = Awaited<ReturnType<typeof getAlbumsAsAdmin>>;
 
 const AdminPanelPage: NextPage<{
   albums: AlbumsType;
 }> = ({ albums }) => {
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto flex max-w-7xl flex-col gap-2">
       {albums.map(({ id, title, description, images, _count }) => {
         const { filename } = images[0] || { filename: "" };
         return (
@@ -61,13 +62,16 @@ export async function getServerSideProps(
 ): Promise<{ notFound: boolean } | { props: { albums: AlbumsType } }> {
   const password = context.query?.password?.toString();
 
-  if (!(password && password === "brabilder")) {
+  if (
+    !(password && password === "brabilder") &&
+    env.NODE_ENV !== "development"
+  ) {
     return {
       notFound: true,
     };
   }
 
-  const allAlbums = await getAlbums();
+  const allAlbums = await getAlbumsAsAdmin();
   return {
     props: {
       albums: JSON.parse(JSON.stringify(allAlbums)) as typeof allAlbums,

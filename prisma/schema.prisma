@@ -20,7 +20,6 @@ model Album {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   title        String   @unique
   description  String   @default("")
-  coverImageId String?
   images       Image[]
   visible      Boolean  @default(true)
   createdAt    DateTime @default(now())
@@ -31,6 +30,7 @@ model Album {
 model Image {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   filename     String   @unique
+  coverImage Boolean @default(false)
   album        Album    @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   albumId      String   @db.ObjectId
   photographer String

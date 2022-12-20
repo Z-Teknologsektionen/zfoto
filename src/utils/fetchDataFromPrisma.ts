@@ -4,38 +4,44 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const albumSelector = {
-  id: true,
-  title: true,
-  description: true,
-  images: {
+export const getAlbums = async () => {
+  const albums = await prisma.album.findMany({
     where: {
-      id: {
-        not: undefined,
-      },
       visible: {
         equals: true,
       },
     },
     select: {
-      albumId: true,
-      date: true,
-      filename: true,
-      photographer: true,
       id: true,
+      title: true,
+      description: true,
+      images: {
+        where: {
+          id: {
+            not: undefined,
+          },
+          coverImage: {
+            equals: true,
+          },
+          visible: {
+            equals: true,
+          },
+        },
+        select: {
+          albumId: true,
+          date: true,
+          filename: true,
+          photographer: true,
+          id: true,
+        },
+      },
+      date: true,
+      _count: {
+        select: {
+          images: true,
+        },
+      },
     },
-  },
-  date: true,
-  _count: {
-    select: {
-      images: true,
-    },
-  },
-};
-
-export const getAlbums = async () => {
-  const albums = await prisma.album.findMany({
-    select: albumSelector,
     orderBy: {
       date: "desc",
     },
@@ -48,9 +54,49 @@ export const getAlbum = async (albumId: string) => {
     where: {
       id: albumId,
     },
-    select: albumSelector,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      images: {
+        where: {
+          id: {
+            not: undefined,
+          },
+          visible: {
+            equals: true,
+          },
+        },
+        select: {
+          albumId: true,
+          date: true,
+          filename: true,
+          photographer: true,
+          id: true,
+        },
+      },
+      date: true,
+      _count: {
+        select: {
+          images: true,
+        },
+      },
+    },
   });
   return album;
+};
+
+export const getAlbumsAsAdmin = async () => {
+  const albums = await prisma.album.findMany({
+    include: {
+      _count: true,
+      images: true,
+    },
+    orderBy: {
+      date: "desc",
+    },
+  });
+  return albums;
 };
 
 export const getAlbumAsAdmin = async (albumId: string) => {

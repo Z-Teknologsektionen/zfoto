@@ -42,4 +42,24 @@ export const imageRouter = router({
       });
       return album;
     }),
+  setCoverImage: publicProcedure
+    .input(
+      z.object({
+        imageId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
+        coverImage: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const album = await ctx.prisma.image.update({
+        data: {
+          coverImage: input.coverImage,
+        },
+        where: {
+          id: input.imageId,
+        },
+      });
+      return album;
+    }),
 });
