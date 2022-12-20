@@ -1,6 +1,37 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+const albumSelector = {
+  id: true,
+  title: true,
+  description: true,
+  images: {
+    where: {
+      id: {
+        not: undefined,
+      },
+      visible: {
+        equals: true,
+      },
+    },
+    select: {
+      albumId: true,
+      date: true,
+      filename: true,
+      photographer: true,
+      id: true,
+    },
+  },
+  date: true,
+  _count: {
+    select: {
+      images: true,
+    },
+  },
+};
 
 export const getAlbums = async () => {
   const albums = await prisma.album.findMany({
@@ -49,34 +80,4 @@ export const getImage = async ({ imageId }: { imageId: string }) => {
     },
   });
   return image;
-};
-export type Album = typeof getAlbum;
-
-const albumSelector = {
-  id: true,
-  title: true,
-  description: true,
-  images: {
-    where: {
-      id: {
-        not: undefined,
-      },
-      visible: {
-        equals: true,
-      },
-    },
-    select: {
-      albumId: true,
-      date: true,
-      filename: true,
-      photographer: true,
-      id: true,
-    },
-  },
-  date: true,
-  _count: {
-    select: {
-      images: true,
-    },
-  },
 };

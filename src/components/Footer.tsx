@@ -19,8 +19,8 @@ export const Footer: FC = () => {
             <li>
               <Link
                 className="hover:text-[#a7a7a7]/80"
+                href="https://www.instagram.com/zfotochalmers/"
                 target="_blank"
-                href={`https://www.instagram.com/zfotochalmers/`}
               >
                 Instagram
               </Link>

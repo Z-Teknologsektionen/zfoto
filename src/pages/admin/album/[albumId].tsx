@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { getAlbumAsAdmin } from "../../../utils/fetchDataFromPrisma";
 import { trpc } from "../../../utils/trpc";
+import type { AdminAlbumType } from "../../../utils/types";
 
 const EditAlbum: NextPage<{
-  album: Awaited<ReturnType<typeof getAlbumAsAdmin>>;
+  album: AdminAlbumType;
 }> = ({ album }) => {
   const albumInfoDefaultValue = {
     title: album.title,
@@ -34,16 +35,16 @@ const EditAlbum: NextPage<{
 
   const handleAlbumInfoUpdate = ({
     albumId,
-    albumInfo,
+    albumInfo: albumBody,
   }: {
     albumId: string;
     albumInfo: typeof albumInfoDefaultValue;
-  }) => {
+  }): void => {
     albumInfoMutation.mutate({
-      albumId: albumId,
-      date: new Date(albumInfo.date),
-      description: albumInfo.description,
-      title: albumInfo.title,
+      albumId,
+      date: new Date(albumBody.date),
+      description: albumBody.description,
+      title: albumBody.title,
     });
   };
 
@@ -53,9 +54,10 @@ const EditAlbum: NextPage<{
   }: {
     imageId: string;
     value: boolean;
-  }) => {
+  }): void => {
     imageVisibility.mutate({ imageId, visibility: value });
   };
+
   return (
     <div className="mx-auto max-w-7xl">
       <div className="flex flex-row justify-between">
@@ -63,26 +65,25 @@ const EditAlbum: NextPage<{
           <p>{album.id}</p>
           <input
             className="w-full"
-            type="text"
-            value={albumInfo.title}
             onChange={(e) => {
               setAlbumInfo((prev) => {
                 return { ...prev, title: e.target.value };
               });
             }}
+            type="text"
+            value={albumInfo.title}
           />
           <input
             className="w-full"
-            type="text"
-            value={albumInfo.description}
             onChange={(e) => {
               setAlbumInfo((prev) => {
                 return { ...prev, description: e.target.value };
               });
             }}
+            type="text"
+            value={albumInfo.description}
           />
           <input
-            type="datetime-local"
             defaultValue={new Date(album.date).toLocaleString()}
             onChange={(e) => {
               setAlbumInfo((prev) => {
@@ -92,13 +93,18 @@ const EditAlbum: NextPage<{
                 };
               });
             }}
+            type="datetime-local"
           />
-          <p>Number of images: {album._count.images}</p>
+          <p>
+            Number of images:
+            {album._count.images}
+          </p>
         </div>
         <div className="flex h-fit flex-row gap-2">
           <button
             className="rounded border-2 border-black/40 bg-yellow-400 px-6 py-2"
             onClick={() => router.back()}
+            type="button"
           >
             Back
           </button>
@@ -107,9 +113,10 @@ const EditAlbum: NextPage<{
             onClick={() => {
               handleAlbumInfoUpdate({
                 albumId: album.id,
-                albumInfo: albumInfo,
+                albumInfo,
               });
             }}
+            type="submit"
           >
             Save
           </button>
@@ -125,15 +132,12 @@ const EditAlbum: NextPage<{
                 className="flex flex-row items-center justify-start gap-8"
               >
                 <Image
-                  src={
-                    filename
-                      ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}`
-                      : ""
-                  }
                   alt=""
-                  width={128}
                   height={128}
                   quality={100}
+                  src={filename ? `images/thumb/${filename}` : ""}
+                  width={128}
+                  unoptimized
                 />
                 <div className="flex flex-grow flex-row gap-2">
                   <p>{filename}</p>
@@ -142,24 +146,32 @@ const EditAlbum: NextPage<{
                   <p>{visible ? "Synlig" : "Dold"}</p>
                 </div>
                 <div className="flex flex-row gap-2">
-                  <button className="rounded border-2 border-black/60 bg-green-600 px-4 py-2">
-                    <Link target="_blank" href={`/image/${imageId}`}>
+                  <button
+                    className="rounded border-2 border-black/60 bg-green-600 px-4 py-2"
+                    type="button"
+                  >
+                    <Link href={`/image/${imageId}`} target="_blank">
                       Länk till bild
                     </Link>
                   </button>
-                  <button className="rounded border-2 border-gray-700/60 bg-yellow-400 px-4 py-2">
+                  <button
+                    className="rounded border-2 border-gray-700/60 bg-yellow-400 px-4 py-2"
+                    type="button"
+                  >
                     Edit
                   </button>
                   <button
                     className="rounded border-2 border-black/60 bg-red-500 px-4 py-2"
                     onClick={() => {
                       handleChangeVisibility({
-                        imageId: imageId,
+                        imageId,
                         value: !visible,
                       });
                     }}
+                    type="button"
                   >
-                    Gör {!visible ? "synlig" : "dold"}
+                    Gör
+                    {!visible ? "synlig" : "dold"}
                   </button>
                 </div>
               </div>
@@ -173,27 +185,9 @@ const EditAlbum: NextPage<{
 
 export default EditAlbum;
 
-/* export async function getStaticProps(context: GetStaticPropsContext) {
-  const albumId = context.params?.albumId || "";
-
-  const album = await getAlbumAsAdmin(albumId.toString());
-
-  return {
-    props: {
-      album: JSON.parse(JSON.stringify(album)),
-    },
-    revalidate: 300,
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-} */
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<{ notFound: true } | { props: { album: AdminAlbumType } }> {
   const password = context.query?.password?.toString();
 
   if (!(password && password === "brabilder")) {
@@ -208,7 +202,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        album: JSON.parse(JSON.stringify(album)),
+        album: JSON.parse(JSON.stringify(album)) as AdminAlbumType,
       },
     };
   } catch (error) {

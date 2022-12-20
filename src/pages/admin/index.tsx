@@ -19,15 +19,12 @@ const AdminPanelPage: NextPage<{
           >
             <div>
               <Image
-                src={
-                  filename
-                    ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}`
-                    : ""
-                }
                 alt={`${title} ${description}`}
                 height={128}
-                width={128}
                 quality={100}
+                src={filename ? `/images/thumb/${filename}` : ""}
+                width={128}
+                unoptimized
               />
             </div>
             <div className="flex flex-grow flex-row items-center justify-start gap-8">
@@ -37,11 +34,15 @@ const AdminPanelPage: NextPage<{
               </div>
               <div>
                 <p>
-                  Images: <span>{_count.images}</span>
+                  Images:
+                  <span>{_count.images}</span>
                 </p>
               </div>
             </div>
-            <button className="rounded border-2 border-black/60 bg-yellow-400 px-4 py-2">
+            <button
+              className="rounded border-2 border-black/60 bg-yellow-400 px-4 py-2"
+              type="button"
+            >
               <Link href={`admin/album/${id}?password=brabilder`}>
                 Redigera
               </Link>
@@ -55,17 +56,9 @@ const AdminPanelPage: NextPage<{
 
 export default AdminPanelPage;
 
-/* export async function getStaticProps(context: GetStaticPropsContext) {
-  const allAlbums = await getAlbums();
-  return {
-    props: {
-      albums: JSON.parse(JSON.stringify(allAlbums)),
-    },
-    revalidate: 300,
-  };
-} */
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<{ notFound: boolean } | { props: { albums: AlbumsType } }> {
   const password = context.query?.password?.toString();
 
   if (!(password && password === "brabilder")) {
@@ -77,7 +70,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const allAlbums = await getAlbums();
   return {
     props: {
-      albums: JSON.parse(JSON.stringify(allAlbums)),
+      albums: JSON.parse(JSON.stringify(allAlbums)) as typeof allAlbums,
     },
   };
 }

@@ -12,11 +12,11 @@ export const imageRouter = router({
     )
     .query(({ input: { imageId }, ctx }) => {
       const album = ctx.prisma.image.findUnique({
-        where: {
-          id: imageId,
-        },
         include: {
           album: true,
+        },
+        where: {
+          id: imageId,
         },
       });
 
@@ -33,11 +33,11 @@ export const imageRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const album = await ctx.prisma.image.update({
-        where: {
-          id: input.imageId,
-        },
         data: {
           visible: input.visibility,
+        },
+        where: {
+          id: input.imageId,
         },
       });
       return album;

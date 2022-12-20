@@ -4,8 +4,8 @@ import { exampleRouter } from "./example";
 import { imageRouter } from "./images";
 
 export const appRouter = router({
-  example: exampleRouter,
   album: albumRouter,
+  example: exampleRouter,
   image: imageRouter,
 });
 

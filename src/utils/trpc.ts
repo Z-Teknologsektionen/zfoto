@@ -5,7 +5,7 @@ import superjson from "superjson";
 
 import { type AppRouter } from "../server/trpc/router/_app";
 
-const getBaseUrl = () => {
+const getBaseUrl = (): string => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
@@ -14,7 +14,6 @@ const getBaseUrl = () => {
 export const trpc = createTRPCNext<AppRouter>({
   config() {
     return {
-      transformer: superjson,
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -25,18 +24,19 @@ export const trpc = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
+      transformer: superjson,
     };
   },
   ssr: false,
 });
 
-/**
+/*
  * Inference helper for inputs
  * @example type HelloInput = RouterInputs['example']['hello']
- **/
+ */
 export type RouterInputs = inferRouterInputs<AppRouter>;
-/**
+/*
  * Inference helper for outputs
  * @example type HelloOutput = RouterOutputs['example']['hello']
- **/
+ */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
