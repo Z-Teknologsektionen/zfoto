@@ -5,8 +5,6 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
 
-import { createProxyMiddleware } from "http-proxy-middleware";
-
 /** @type {import("next").NextConfig} */
 const config = {
   async headers() {
@@ -33,26 +31,15 @@ const config = {
       },
     ];
   },
-  api: {
-    bodyParser: false,
-    customDomain: true,
-    onProxyReq: function (proxyReq, req, res) {
-      proxyReq.setHeader("Origin", process.env.SITE_URL);
-    },
-    onProxyRes: function (proxyRes, req, res) {
-      proxyRes.headers["access-control-allow-origin"] = "*";
-      delete proxyRes.headers["x-frame-options"];
-    },
-    middlewares: [
-      createProxyMiddleware({
-        target: "http://holmstrom.ddns.net:8080/",
-        changeOrigin: true,
-        pathRewrite: {
-          "^/df": "/df",
-        },
-      }),
-    ],
+  async rewrites() {
+    return [
+      {
+        source: "/images/:path*",
+        destination: "http://holmstrom.ddns.net:8080/df/:path*",
+      },
+    ];
   },
+
   reactStrictMode: true,
   swcMinify: true,
   i18n: {

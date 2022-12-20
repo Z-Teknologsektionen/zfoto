@@ -24,7 +24,7 @@ export const AlbumGridItem: FC<{
         priority={priorityLoadning}
         quality={100}
         sizes="400px"
-        src={filename ? `/df/thumb/${filename}` : ""}
+        src={filename ? `/images/thumb/${filename}` : ""}
         fill
         unoptimized
       />
