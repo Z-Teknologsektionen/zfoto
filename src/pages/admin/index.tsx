@@ -22,11 +22,7 @@ const AdminPanelPage: NextPage<{
                 alt={`${title} ${description}`}
                 height={128}
                 quality={100}
-                src={
-                  filename
-                    ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}`
-                    : ""
-                }
+                src={filename ? `/images/thumb/${filename}` : ""}
                 width={128}
                 unoptimized
               />

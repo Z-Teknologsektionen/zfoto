@@ -20,9 +20,7 @@ export const ImageGridItem: FC<{
           onClick();
         }}
         quality={100}
-        src={
-          filename ? `http://holmstrom.ddns.net:8080/df/thumb/${filename}` : ""
-        }
+        src={filename ? `/images/thumb/${filename}` : ""}
         width={300}
         unoptimized
       />

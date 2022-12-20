@@ -90,11 +90,7 @@ const ImagePopup: FC<{
                 placeholder="empty"
                 quality={75}
                 sizes="1080px"
-                src={
-                  image?.filename
-                    ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
-                    : ""
-                }
+                src={image?.filename ? `/images/lowres/${image.filename}` : ""}
                 fill
                 priority
                 unoptimized

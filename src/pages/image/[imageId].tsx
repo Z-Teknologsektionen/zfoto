@@ -18,11 +18,7 @@ const ImagePage: NextPage<{
             className="object-contain object-center"
             quality={90}
             sizes="750px"
-            src={
-              image.filename
-                ? `http://holmstrom.ddns.net:8080/df/lowres/${image.filename}`
-                : ""
-            }
+            src={image.filename ? `/images/lowres/${image.filename}` : ""}
             fill
             unoptimized
           />
