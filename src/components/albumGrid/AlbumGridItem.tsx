@@ -15,11 +15,11 @@ export const AlbumGridItem: FC<{
       href={`/album/${id}`}
     >
       <Image
-        alt={title}
+        alt=""
         className={`
-          object-cover object-center
-          before:absolute before:inset-0 before:z-0 before:bg-black/10 before:content-[''] 
-          after:absolute after:top-1/2 after:left-1/2 after:z-10 after:block after:-translate-y-1/2 after:-translate-x-1/2 after:truncate after:object-contain after:text-xl after:text-white after:content-[attr(alt)]
+          object-cover
+          object-center before:absolute before:inset-0 before:z-0 before:bg-black/10 
+          before:content-[''] after:absolute after:top-1/2 after:left-1/2 after:z-10 after:block after:w-5/6 after:-translate-y-1/2 after:-translate-x-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_sakanas']
         `}
         priority={priorityLoadning}
         quality={100}

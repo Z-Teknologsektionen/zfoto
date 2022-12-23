@@ -3,9 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { env } from "../../../env/server.mjs";
 import { getAlbumAsAdmin } from "../../../utils/fetchDataFromPrisma";
 import { trpc } from "../../../utils/trpc";
 import type { AdminAlbumType } from "../../../utils/types";
+
+// TODO: refactor this page
 
 const EditAlbum: NextPage<{
   album: AdminAlbumType;
@@ -33,30 +36,11 @@ const EditAlbum: NextPage<{
     },
   });
 
-  const handleAlbumInfoUpdate = ({
-    albumId,
-    albumInfo: albumBody,
-  }: {
-    albumId: string;
-    albumInfo: typeof albumInfoDefaultValue;
-  }): void => {
-    albumInfoMutation.mutate({
-      albumId,
-      date: new Date(albumBody.date),
-      description: albumBody.description,
-      title: albumBody.title,
-    });
-  };
-
-  const handleChangeVisibility = ({
-    imageId,
-    value,
-  }: {
-    imageId: string;
-    value: boolean;
-  }): void => {
-    imageVisibility.mutate({ imageId, visibility: value });
-  };
+  const imageCoverImage = trpc.image.setCoverImage.useMutation({
+    onSuccess: () => {
+      router.reload();
+    },
+  });
 
   return (
     <div className="mx-auto max-w-7xl">
@@ -97,7 +81,7 @@ const EditAlbum: NextPage<{
           />
           <p>
             Number of images:
-            {album._count.images}
+            {` ${album._count.images}`}
           </p>
         </div>
         <div className="flex h-fit flex-row gap-2">
@@ -111,9 +95,11 @@ const EditAlbum: NextPage<{
           <button
             className="rounded border-2 border-black/60 bg-green-600 px-6 py-2"
             onClick={() => {
-              handleAlbumInfoUpdate({
+              albumInfoMutation.mutate({
                 albumId: album.id,
-                albumInfo,
+                date: new Date(albumInfo.date),
+                description: albumInfo.description,
+                title: albumInfo.title,
               });
             }}
             type="submit"
@@ -125,7 +111,14 @@ const EditAlbum: NextPage<{
 
       <div className="mt-8 flex flex-col gap-2">
         {album.images.map(
-          ({ id: imageId, filename, date, photographer, visible }) => {
+          ({
+            id: imageId,
+            filename,
+            date,
+            photographer,
+            visible,
+            coverImage,
+          }) => {
             return (
               <div
                 key={imageId}
@@ -135,7 +128,7 @@ const EditAlbum: NextPage<{
                   alt=""
                   height={128}
                   quality={100}
-                  src={filename ? `images/thumb/${filename}` : ""}
+                  src={filename ? `/images/thumb/${filename}` : ""}
                   width={128}
                   unoptimized
                 />
@@ -163,15 +156,24 @@ const EditAlbum: NextPage<{
                   <button
                     className="rounded border-2 border-black/60 bg-red-500 px-4 py-2"
                     onClick={() => {
-                      handleChangeVisibility({
-                        imageId,
-                        value: !visible,
-                      });
+                      imageVisibility.mutate({ imageId, visibility: visible });
                     }}
                     type="button"
                   >
                     Gör
-                    {!visible ? "synlig" : "dold"}
+                    {!visible ? " synlig" : " dold"}
+                  </button>
+                  <button
+                    className="rounded border-2 border-black/60 bg-green-600 px-4 py-2"
+                    onClick={() => {
+                      imageCoverImage.mutate({
+                        imageId,
+                        coverImage: !coverImage,
+                      });
+                    }}
+                    type="button"
+                  >
+                    {`${coverImage ? "Dölj" : "Sätt till"} omslag`}
                   </button>
                 </div>
               </div>
@@ -190,7 +192,10 @@ export async function getServerSideProps(
 ): Promise<{ notFound: true } | { props: { album: AdminAlbumType } }> {
   const password = context.query?.password?.toString();
 
-  if (!(password && password === "brabilder")) {
+  if (
+    !(password && password === "brabilder") &&
+    env.NODE_ENV !== "development"
+  ) {
     return {
       notFound: true,
     };
