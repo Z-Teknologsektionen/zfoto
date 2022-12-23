@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AlbumInfo from "../../components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
-import ImagePopup from "../../components/imageGrid/ImagePopup";
+import ImagePopup from "../../components/ImagePopup";
 import MainWrapper from "../../components/Wrapper";
 import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
@@ -22,6 +22,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   const photographers = [
     ...new Set(album.images.map((item) => item.photographer)),
   ];
+
   return (
     <>
       <MainWrapper>
@@ -38,22 +39,20 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
           </button>
           <AlbumInfo album={album} photographers={photographers} />
           <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
-            {!album.id || !album || !album.images
-              ? "Error..."
-              : album?.images.map(({ id, filename }) => {
-                  return (
-                    <ImageGridItem
-                      key={id}
-                      {...{ id, albumId: album.id, filename, album }}
-                      onClick={() => {
-                        setImageId(id);
-                        setShowPopup(true);
+            {album?.images.map(({ id, filename }) => {
+              return (
+                <ImageGridItem
+                  key={id}
+                  {...{ id, albumId: album.id, filename, album }}
+                  onClick={() => {
+                    setImageId(id);
+                    setShowPopup(true);
 
-                        document.body.classList.add("overflow-hidden");
-                      }}
-                    />
-                  );
-                })}
+                    document.body.classList.add("overflow-hidden");
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
       </MainWrapper>
