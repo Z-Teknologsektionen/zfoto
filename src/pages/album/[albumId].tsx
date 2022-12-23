@@ -37,7 +37,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
             Tillbaka till album
           </button>
           <AlbumInfo album={album} photographers={photographers} />
-          <div className="grid grid-cols-1 place-items-center gap-y-4 gap-x-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
             {!album.id || !album || !album.images
               ? "Error..."
               : album?.images.map(({ id, filename }) => {

@@ -67,11 +67,11 @@ const ImagePopup: FC<{
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
       <div
         className=""
-        onClick={(e) => {
+        /* onClick={(e) => {
           e.stopPropagation();
-        }}
+        }} */
       >
-        <div className="absolute left-0 top-0 z-10 flex w-full justify-end bg-white/95 p-2 md:p-6">
+        <div className="absolute left-0 top-0 z-10 flex w-full justify-end py-2 px-4 md:p-6">
           <button
             className="cursor-pointer text-4xl font-semibold leading-none md:right-14"
             onClick={() => {
@@ -83,48 +83,64 @@ const ImagePopup: FC<{
           </button>
         </div>
 
-        <div className="absolute bottom-0 left-0 z-10 flex w-full flex-row justify-center gap-2 p-1 text-lg font-medium md:p-4">
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+        <div
+          className="absolute bottom-0 left-0 z-10 mb-1 flex w-full flex-col justify-center gap-x-4 gap-y-1 p-1 text-center text-xl font-medium md:flex-row md:p-2"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <Link className="" href={`/image/${activeImage.id}`}>
             Permanent länk
           </Link>
-          <p>
+          <p className="hidden sm:block">
             Fotograf:
             {` ${activeImage.photographer}`}
           </p>
         </div>
 
-        <div className="absolute top-0 left-0 flex h-screen w-fit flex-col justify-center p-1 md:p-4">
+        <div className="absolute top-0 left-0 flex h-screen w-fit flex-col justify-center md:p-4">
           <button
-            className="h-full cursor-pointer pr-2 text-5xl disabled:opacity-50"
+            className="h-full cursor-pointer text-5xl disabled:opacity-25"
             disabled={!prevImageId}
-            onClick={() => viewPrevImage()}
+            onClick={(e) => {
+              e.stopPropagation();
+              viewPrevImage();
+            }}
             type="button"
           >
             {"<"}
           </button>
         </div>
 
-        <div className="absolute inset-0 m-12 flex items-center justify-center md:m-20">
+        <div className="absolute inset-0 m-8 flex items-center justify-center md:my-12 md:mx-20">
           <div className="">
             <Image
               alt=""
               className="object-contain object-center"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
               src={
                 activeImage.filename
                   ? `/images/lowres/${activeImage.filename}`
                   : ""
               }
               fill
+              priority
               unoptimized
             />
           </div>
         </div>
 
-        <div className="absolute top-0 right-0 flex h-screen w-fit flex-col justify-center p-1 md:p-4">
+        <div className="absolute top-0 right-0  flex h-screen w-fit flex-col justify-center text-left md:p-4">
           <button
-            className="h-full cursor-pointer pr-2 text-5xl disabled:opacity-50"
+            className="h-full cursor-pointer text-right text-5xl disabled:opacity-25"
             disabled={!nextImageId}
-            onClick={() => viewNextImage()}
+            onClick={(e) => {
+              e.stopPropagation();
+              viewNextImage();
+            }}
             type="button"
           >
             {">"}
