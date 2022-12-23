@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AlbumInfo from "../../components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/imageGrid/ImagePopup";
@@ -9,29 +9,9 @@ import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
 
 const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
-  /*   fetch(
-    "http://holmstrom.ddns.net:8080/df/lowres/20221107-zenitAzp-IMG_0147.jpg"
-  ).then((res) => {
-    console.log(res.status);
-  }); */
-
   const router = useRouter();
   const [imageId, setImageId] = useState<string>();
-  const [showImagePopup, setShowImagePopup] = useState<boolean>(false);
-
-  const [nextImage, prevImage, activeImage] = useMemo(() => {
-    return [
-      album?.images.find((_, index) => {
-        return album.images[index - 1]?.id === imageId;
-      }),
-      album?.images.find((_, index) => {
-        return album.images[index + 1]?.id === imageId;
-      }),
-      album?.images.find((image) => {
-        return image.id === imageId;
-      }),
-    ];
-  }, [imageId, album.images]);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -67,7 +47,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
                       {...{ id, albumId: album.id, filename, album }}
                       onClick={() => {
                         setImageId(id);
-                        setShowImagePopup(true);
+                        setShowPopup(true);
 
                         document.body.classList.add("overflow-hidden");
                       }}
@@ -78,31 +58,13 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
         </div>
       </MainWrapper>
 
-      {imageId && activeImage && (
+      {imageId && (
         <ImagePopup
           key={imageId}
-          {...{
-            prevImage,
-            nextImage,
-            album,
-            image: activeImage,
-            showPopup: showImagePopup,
-          }}
+          {...{ album, imageId, setImageId, showPopup }}
           closePopup={() => {
-            setShowImagePopup(false);
+            setShowPopup(false);
             document.body.classList.remove("overflow-hidden");
-          }}
-          nextImageFunc={() => {
-            if (!nextImage?.id) {
-              return;
-            }
-            setImageId(nextImage.id);
-          }}
-          prevImageFunc={() => {
-            if (!prevImage?.id) {
-              return;
-            }
-            setImageId(prevImage.id);
           }}
         />
       )}
