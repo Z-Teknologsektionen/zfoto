@@ -27,6 +27,7 @@ export const getAlbums = async () => {
             equals: true,
           },
         },
+        orderBy: { filename: "asc" },
         select: {
           albumId: true,
           date: true,
@@ -67,6 +68,7 @@ export const getAlbum = async (albumId: string) => {
             equals: true,
           },
         },
+        orderBy: { filename: "asc" },
         select: {
           albumId: true,
           date: true,
@@ -90,7 +92,9 @@ export const getAlbumsAsAdmin = async () => {
   const albums = await prisma.album.findMany({
     include: {
       _count: true,
-      images: true,
+      images: {
+        orderBy: { filename: "asc" },
+      },
     },
     orderBy: {
       date: "desc",
@@ -106,7 +110,12 @@ export const getAlbumAsAdmin = async (albumId: string) => {
     },
     include: {
       _count: true,
-      images: true,
+      images: {
+        orderBy: { filename: "asc" },
+      },
+    },
+    orderBy: {
+      date: "desc",
     },
   });
   return album;
