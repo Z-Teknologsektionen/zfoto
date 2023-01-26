@@ -30,24 +30,12 @@ const ImagePage: NextPage<{
           >
             Till albummet
           </Link>
-          <p>
-            Fotograf:
-            <span>{image.photographer}</span>
-          </p>
-          <p>
-            Filename:
-            <span>{image.filename}</span>
-          </p>
+          <p>Fotograf: {image.photographer}</p>
+          <p>Filename: {image.filename}</p>
           <h2>Album information:</h2>
           <div className="flex flex-col gap-1 pl-4">
-            <p>
-              Titel:
-              <span>{image.album.title}</span>
-            </p>
-            <p>
-              Beskrivning:
-              <span>{image.album.description}</span>
-            </p>
+            <p>Titel: {image.album.title}</p>
+            <p>Beskrivning: {image.album.description}</p>
           </div>
           <p className="pt-4">
             Kontakta oss
