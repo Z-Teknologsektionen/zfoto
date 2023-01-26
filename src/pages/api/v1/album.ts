@@ -38,8 +38,21 @@ const albumRouter = async (
       }
       const body = req.body as PostBodyType;
 
-      const createdAlbum = await prisma.album.create({
-        data: {
+      const createdAlbum = await prisma.album.upsert({
+        where: {
+          title_description: {
+            title: body.title,
+            description: body.description,
+          },
+        },
+        update: {
+          images: {
+            createMany: {
+              data: body.images,
+            },
+          },
+        },
+        create: {
           title: body.title,
           description: body.description,
           date: body.date,

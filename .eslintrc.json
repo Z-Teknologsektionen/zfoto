@@ -113,6 +113,7 @@
     "react/no-unused-prop-types": "error",
     "react/no-unused-state": "error",
     "react/require-default-props": "off",
+    "react/jsx-one-expression-per-line": "off",
     "react/require-optimization": "error",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [

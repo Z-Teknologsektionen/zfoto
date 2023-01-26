@@ -1,14 +1,13 @@
+import Image from "next/image";
+import Link from "next/link";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import type { AlbumType } from "../../utils/types";
-import { CloseImagePopup } from "./CloseImagePopup";
-import { ImagePopupInformation } from "./ImagePopupInformation";
-import { PopupImageMain } from "./PopupImageMain";
 
 const ImagePopup: FC<{
   album: AlbumType;
   closePopup: () => void;
-  imageId: string;
+  imageId: string | undefined;
   setImageId: (arg0: string) => void;
   showPopup: boolean;
 }> = ({ album, closePopup, imageId, setImageId, showPopup }) => {
@@ -55,10 +54,92 @@ const ImagePopup: FC<{
     };
   });
 
-  if (!activeImage) {
+  /*   if (!activeImage || !imageId) {
     return null;
-  }
+  } */
+
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+    <section
+      className={`fixed inset-0 flex h-screen w-full flex-col items-center justify-between bg-white ${
+        activeImage && showPopup
+          ? "opacity-100"
+          : "pointer-events-none opacity-0"
+      } transition-all duration-1000`}
+      onClick={() => closePopup()}
+    >
+      <div className="w-full">
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+        <p
+          className="p-4 text-right text-5xl"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          &#10005;
+        </p>
+      </div>
+      <div className="flex h-full w-full flex-row items-center justify-between">
+        <button
+          className="flex h-full items-center justify-start px-4 text-left text-8xl lg:pl-8"
+          disabled={!prevImageId}
+          onClick={(e) => {
+            e.stopPropagation();
+            viewPrevImage();
+          }}
+          type="button"
+        >
+          &#8249;
+        </button>
+        <div className="relative h-full w-full">
+          <Image
+            alt=""
+            className="object-contain"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            src={
+              activeImage?.filename
+                ? `/images/lowres/${activeImage.filename}`
+                : ""
+            }
+            fill
+            priority
+            unoptimized
+          />
+        </div>
+        <button
+          className="flex h-full items-center justify-end px-4 text-right text-8xl lg:pr-8"
+          disabled={!nextImageId}
+          onClick={(e) => {
+            e.stopPropagation();
+            viewNextImage();
+          }}
+          type="button"
+        >
+          &#8250;
+        </button>
+      </div>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+      <div
+        className="flex flex-row gap-4 p-4 text-lg font-medium"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <p>Fotograf: {activeImage?.photographer}</p>
+        <p>Filnamn: {activeImage?.filename}</p>
+        <Link
+          className="cursor-pointer underline"
+          href={activeImage ? `/image/${activeImage?.id}` : ""}
+        >
+          Permanent länk
+        </Link>
+      </div>
+    </section>
+  );
+
+  /* return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
     <section
       className={`fixed inset-0 bg-white/90 ${showPopup ? "block" : "hidden"}`}
@@ -103,8 +184,8 @@ const ImagePopup: FC<{
           </button>
         </div>
       </div>
-    </section>
-  );
+    </section n>
+  ); */
 };
 
 export default ImagePopup;
