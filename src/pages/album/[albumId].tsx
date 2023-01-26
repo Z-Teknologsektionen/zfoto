@@ -57,16 +57,14 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
         </div>
       </MainWrapper>
 
-      {imageId && (
-        <ImagePopup
-          key={imageId}
-          {...{ album, imageId, setImageId, showPopup }}
-          closePopup={() => {
-            setShowPopup(false);
-            document.body.classList.remove("overflow-hidden");
-          }}
-        />
-      )}
+      <ImagePopup
+        key={imageId}
+        {...{ album, imageId, setImageId, showPopup }}
+        closePopup={() => {
+          setShowPopup(false);
+          document.body.classList.remove("overflow-hidden");
+        }}
+      />
     </>
   );
 };
