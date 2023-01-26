@@ -69,7 +69,15 @@ const ImagePopup: FC<{
       onClick={() => closePopup()}
     >
       <div className="w-full">
-        <p className="p-4 text-right text-5xl">&#10005;</p>
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+        <p
+          className="p-4 text-right text-5xl"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          &#10005;
+        </p>
       </div>
       <div className="flex h-full w-full flex-row items-center justify-between">
         <button
@@ -112,7 +120,13 @@ const ImagePopup: FC<{
           &#8250;
         </button>
       </div>
-      <div className="flex flex-row gap-4 p-4 text-lg font-medium">
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+      <div
+        className="flex flex-row gap-4 p-4 text-lg font-medium"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <p>Fotograf: {activeImage?.photographer}</p>
         <p>Filnamn: {activeImage?.filename}</p>
         <Link
