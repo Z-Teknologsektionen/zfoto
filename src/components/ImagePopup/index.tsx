@@ -54,13 +54,9 @@ const ImagePopup: FC<{
     };
   });
 
-  /*   if (!activeImage || !imageId) {
-    return null;
-  } */
-
   return (
     <section
-      className={`fixed inset-0 flex h-screen w-full flex-col items-center justify-between bg-white ${
+      className={`fixed inset-0 flex h-full w-full flex-col items-center justify-between bg-white ${
         activeImage && showPopup
           ? "opacity-100"
           : "pointer-events-none opacity-0"
@@ -68,7 +64,7 @@ const ImagePopup: FC<{
     >
       <div className="flex w-full justify-end">
         <button
-          className="p-4 text-right text-3xl md:text-5xl"
+          className="pt-2 pr-2 text-right text-3xl md:p-4 md:text-5xl"
           onClick={() => {
             closePopup();
           }}
@@ -77,7 +73,7 @@ const ImagePopup: FC<{
           &#10005;
         </button>
       </div>
-      <div className="flex h-full w-full flex-row items-center justify-between">
+      <div className="flex h-full w-full flex-grow flex-row items-center justify-between">
         <button
           className="flex h-full items-center justify-start px-4 text-left text-5xl md:text-8xl lg:pl-8"
           disabled={!prevImageId}
@@ -88,7 +84,7 @@ const ImagePopup: FC<{
         >
           &#8249;
         </button>
-        <div className="relative h-full w-full">
+        <div className="relative h-full flex-grow">
           <Image
             alt=""
             className="object-contain"
