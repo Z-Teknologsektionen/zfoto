@@ -109,7 +109,7 @@ const ImagePopup: FC<{
           &#8250;
         </button>
       </div>
-      <div className="flex flex-col gap-x-4 gap-y-1 p-4 text-center text-xs font-medium md:flex-row md:text-lg">
+      <div className="flex flex-col gap-x-4 gap-y-1 p-4 text-center text-xs font-medium md:flex-row lg:text-lg">
         <p>Fotograf: {activeImage?.photographer}</p>
         <p>Filnamn: {activeImage?.filename}</p>
         <Link
