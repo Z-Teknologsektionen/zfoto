@@ -59,32 +59,29 @@ const ImagePopup: FC<{
   } */
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
     <section
       className={`fixed inset-0 flex h-screen w-full flex-col items-center justify-between bg-white ${
         activeImage && showPopup
           ? "opacity-100"
           : "pointer-events-none opacity-0"
-      } transition-all duration-1000`}
-      onClick={() => closePopup()}
+      } transition-opacity duration-1000`}
     >
-      <div className="w-full">
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-        <p
-          className="p-4 text-right text-5xl"
-          onClick={(e) => {
-            e.stopPropagation();
+      <div className="flex w-full justify-end">
+        <button
+          className="p-4 text-right text-3xl md:text-5xl"
+          onClick={() => {
+            closePopup();
           }}
+          type="button"
         >
           &#10005;
-        </p>
+        </button>
       </div>
       <div className="flex h-full w-full flex-row items-center justify-between">
         <button
-          className="flex h-full items-center justify-start px-4 text-left text-8xl lg:pl-8"
+          className="flex h-full items-center justify-start px-4 text-left text-5xl md:text-8xl lg:pl-8"
           disabled={!prevImageId}
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={() => {
             viewPrevImage();
           }}
           type="button"
@@ -95,9 +92,6 @@ const ImagePopup: FC<{
           <Image
             alt=""
             className="object-contain"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
             src={
               activeImage?.filename
                 ? `/images/lowres/${activeImage.filename}`
@@ -109,10 +103,9 @@ const ImagePopup: FC<{
           />
         </div>
         <button
-          className="flex h-full items-center justify-end px-4 text-right text-8xl lg:pr-8"
+          className="flex h-full items-center justify-end px-4 text-right text-5xl md:text-8xl lg:pr-8"
           disabled={!nextImageId}
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={() => {
             viewNextImage();
           }}
           type="button"
@@ -120,13 +113,7 @@ const ImagePopup: FC<{
           &#8250;
         </button>
       </div>
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-      <div
-        className="flex flex-row gap-4 p-4 text-lg font-medium"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
+      <div className="flex flex-col gap-x-4 gap-y-1 p-4 text-center text-xs font-medium md:flex-row md:text-lg">
         <p>Fotograf: {activeImage?.photographer}</p>
         <p>Filnamn: {activeImage?.filename}</p>
         <Link
@@ -138,54 +125,5 @@ const ImagePopup: FC<{
       </div>
     </section>
   );
-
-  /* return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-    <section
-      className={`fixed inset-0 bg-white/90 ${showPopup ? "block" : "hidden"}`}
-      onClick={() => closePopup()}
-    >
-      <div className="">
-        <CloseImagePopup closePopup={closePopup} />
-
-        <ImagePopupInformation
-          key={activeImage.id}
-          id={activeImage.id}
-          photographer={activeImage.photographer}
-        />
-
-        <div className="absolute top-0 left-0 flex h-screen w-fit flex-col justify-center md:p-4">
-          <button
-            className="h-full cursor-pointer text-5xl disabled:opacity-25"
-            disabled={!prevImageId}
-            onClick={(e) => {
-              e.stopPropagation();
-              viewPrevImage();
-            }}
-            type="button"
-          >
-            {"<"}
-          </button>
-        </div>
-
-        <PopupImageMain filename={activeImage.filename} />
-
-        <div className="absolute top-0 right-0  flex h-screen w-fit flex-col justify-center text-left md:p-4">
-          <button
-            className="h-full cursor-pointer text-right text-5xl disabled:opacity-25"
-            disabled={!nextImageId}
-            onClick={(e) => {
-              e.stopPropagation();
-              viewNextImage();
-            }}
-            type="button"
-          >
-            {">"}
-          </button>
-        </div>
-      </div>
-    </section n>
-  ); */
 };
-
 export default ImagePopup;
