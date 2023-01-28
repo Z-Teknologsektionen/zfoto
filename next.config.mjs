@@ -19,8 +19,8 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
+    locales: ["sv"],
+    defaultLocale: "sv",
   },
   images: {
     remotePatterns: [
