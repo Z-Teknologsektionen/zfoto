@@ -1,4 +1,9 @@
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type {
+  GetStaticPathsResult,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  NextPage,
+} from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AlbumInfo from "../../components/imageGrid/AlbumInfo";
@@ -71,9 +76,16 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
 export default AlbumPage;
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<{ notFound: boolean } | { props: { album: AlbumType } }> {
+export function getStaticPaths(): GetStaticPathsResult {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps(
+  context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<{ album: AlbumType }>> {
   try {
     const albumId = context.params?.albumId || "";
     const album = await getAlbum(albumId.toString());
@@ -82,6 +94,7 @@ export async function getServerSideProps(
       props: {
         album: JSON.parse(JSON.stringify(album)) as typeof album,
       },
+      revalidate: 300,
     };
   } catch (error) {
     return {

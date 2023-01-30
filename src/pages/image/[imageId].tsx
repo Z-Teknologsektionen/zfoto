@@ -1,4 +1,9 @@
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type {
+  GetStaticPathsResult,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  NextPage,
+} from "next";
 import Image from "next/image";
 import Link from "next/link";
 import MainWrapper from "../../components/Wrapper";
@@ -42,7 +47,7 @@ const ImagePage: NextPage<{
             <Link className="underline underline-offset-2" href="/contact">
               {` här `}
             </Link>
-            med filnamnet eller bild id:t för att få bilden i högre upplösning
+            med filnamnet för att få bilden i högre upplösning
           </p>
         </div>
       </div>
@@ -52,16 +57,16 @@ const ImagePage: NextPage<{
 
 export default ImagePage;
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<
-  | {
-      props: {
-        image: ImageType;
-      };
-    }
-  | { notFound: boolean }
-> {
+export function getStaticPaths(): GetStaticPathsResult {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps(
+  context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<{ image: ImageType }>> {
   try {
     const imageId = context.params?.imageId?.toString() || "";
     const image = await getImage({ imageId });
@@ -69,6 +74,7 @@ export async function getServerSideProps(
       props: {
         image: JSON.parse(JSON.stringify(image)) as typeof image,
       },
+      revalidate: 300,
     };
   } catch (error) {
     return {

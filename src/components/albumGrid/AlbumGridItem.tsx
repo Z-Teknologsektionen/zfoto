@@ -28,6 +28,7 @@ export const AlbumGridItem: FC<{
         fill
         unoptimized
       />
+      <div className="absolute inset-0" />
       <div className="z-10 w-full bg-[#333333]/95 py-3 px-4 text-[#a7a7a7]">
         <p className="truncate text-center font-semibold">{title}</p>
         <p className="text-center text-sm font-medium">

@@ -35,6 +35,12 @@ export const Footer: FC = () => {
             <NavigationLinks />
           </ul>
         </div>
+        <Link
+          className="text-center underline underline-offset-2 sm:col-span-2"
+          href="/terms"
+        >
+          Läs vår bildpolicy
+        </Link>
       </footer>
     </div>
   );
