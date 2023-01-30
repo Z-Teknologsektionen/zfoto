@@ -12,7 +12,7 @@ export const Header: FC = () => {
             alt="zFotos logotyp"
             className="object-contain object-center"
             height="40"
-            src="/zFoto.png"
+            src="/zFoto.svg"
             width="40"
           />
           <h1 className="ml-4 mr-6 text-lg font-semibold">zFoto</h1>
