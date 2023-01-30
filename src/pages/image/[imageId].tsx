@@ -42,7 +42,7 @@ const ImagePage: NextPage<{
             <Link className="underline underline-offset-2" href="/contact">
               {` här `}
             </Link>
-            med filnamnet eller bild id:t för att få bilden i högre upplösning
+            med filnamnet för att få bilden i högre upplösning
           </p>
         </div>
       </div>
