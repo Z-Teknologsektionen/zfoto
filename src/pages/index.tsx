@@ -1,5 +1,8 @@
-import type { GetServerSidePropsContext } from "next";
-import { type NextPage } from "next";
+import type {
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  NextPage,
+} from "next";
 import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import MainWrapper from "../components/Wrapper";
 import { getAlbums } from "../utils/fetchDataFromPrisma";
@@ -32,13 +35,12 @@ const Home: NextPage<{
 
 export default Home;
 
-export async function getServerSideProps(
-  _context: GetServerSidePropsContext
-): Promise<{
-  props: { albums: AlbumsType };
-}> {
+export async function getStaticProps(
+  _context: GetStaticPropsContext
+): Promise<GetStaticPropsResult<{ albums: AlbumsType }>> {
   const albums = await getAlbums();
   return {
     props: { albums: JSON.parse(JSON.stringify(albums)) as typeof albums },
+    revalidate: 300,
   };
 }
