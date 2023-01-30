@@ -8,22 +8,24 @@ export const ImageGridItem: FC<{
   onClick: () => void;
 }> = ({ filename, album, onClick }) => {
   return (
-    <div>
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
+      className="relative aspect-square max-h-52 w-full"
+      onClick={() => {
+        onClick();
+      }}
+    >
       <Image
         alt={`${album.title}, ${album.description}`}
         className={`
-          max-h-52 object-contain object-center
+          object-contain object-center
           before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
         `}
-        height={208}
-        onClick={() => {
-          onClick();
-        }}
-        quality={100}
         src={filename ? `/images/thumb/${filename}` : ""}
-        width={300}
+        fill
         unoptimized
       />
+      <div className="absolute inset-0" />
     </div>
   );
 };
