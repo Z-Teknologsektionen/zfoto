@@ -11,7 +11,7 @@ const createAlbumSchema = z.object({
       z.object({
         filename: z.string().min(1),
         photographer: z.string().min(1),
-        date: z.date().optional(),
+        date: z.string().optional().default(new Date().toISOString()),
       })
     )
     .min(1),
@@ -22,7 +22,7 @@ type PostBodyType = z.infer<typeof createAlbumSchema>;
 const albumRouter = async (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<any> => {
+): Promise<void> => {
   if (req.method === "GET") {
     try {
       const album = await prisma.album.findMany({ include: { images: true } });
