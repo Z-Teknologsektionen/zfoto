@@ -27,7 +27,7 @@ export const getAlbums = async () => {
             equals: true,
           },
         },
-        orderBy: { filename: "asc" },
+        orderBy: { date: "asc" },
         select: {
           albumId: true,
           date: true,
@@ -68,7 +68,7 @@ export const getAlbum = async (albumId: string) => {
             equals: true,
           },
         },
-        orderBy: { filename: "asc" },
+        orderBy: { date: "asc" },
         select: {
           albumId: true,
           date: true,
@@ -93,7 +93,7 @@ export const getAlbumsAsAdmin = async () => {
     include: {
       _count: true,
       images: {
-        orderBy: { filename: "asc" },
+        orderBy: { date: "asc" },
       },
     },
     orderBy: {
@@ -111,7 +111,7 @@ export const getAlbumAsAdmin = async (albumId: string) => {
     include: {
       _count: true,
       images: {
-        orderBy: { filename: "asc" },
+        orderBy: { date: "asc" },
       },
     },
     orderBy: {
