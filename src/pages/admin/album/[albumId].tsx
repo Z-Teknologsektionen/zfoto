@@ -134,19 +134,21 @@ const EditAlbum: NextPage<{
                 />
                 <div className="flex flex-grow flex-row gap-2">
                   <p>{filename}</p>
-                  <p>{new Date(date).toISOString()}</p>
+                  <p>
+                    {`${new Date(date).toLocaleDateString()} ${new Date(
+                      date
+                    ).toLocaleTimeString()}`}
+                  </p>
                   <p>{photographer}</p>
-                  <p>{visible ? "Synlig" : "Dold"}</p>
+                  <Link
+                    className="underline underline-offset-2"
+                    href={`/image/${imageId}`}
+                    target="_blank"
+                  >
+                    Permanent länk
+                  </Link>
                 </div>
                 <div className="flex flex-row gap-2">
-                  <button
-                    className="rounded border-2 border-black/60 bg-green-600 px-4 py-2"
-                    type="button"
-                  >
-                    <Link href={`/image/${imageId}`} target="_blank">
-                      Länk till bild
-                    </Link>
-                  </button>
                   <button
                     className="rounded border-2 border-gray-700/60 bg-yellow-400 px-4 py-2"
                     type="button"
@@ -156,7 +158,7 @@ const EditAlbum: NextPage<{
                   <button
                     className="rounded border-2 border-black/60 bg-red-500 px-4 py-2"
                     onClick={() => {
-                      imageVisibility.mutate({ imageId, visibility: visible });
+                      imageVisibility.mutate({ imageId, visibility: !visible });
                     }}
                     type="button"
                   >
