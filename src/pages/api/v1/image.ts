@@ -14,7 +14,7 @@ type PostBodyType = z.infer<typeof createImageSchema>;
 const imageRouter = async (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<any> => {
+): Promise<void> => {
   if (req.method === "POST") {
     try {
       const vaild = createImageSchema.safeParse(req.body).success;

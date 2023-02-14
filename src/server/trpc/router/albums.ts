@@ -75,6 +75,7 @@ export const albumRouter = router({
         title: z.string().min(1),
         description: z.string().min(1),
         date: z.date(),
+        visible: z.boolean(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -84,6 +85,7 @@ export const albumRouter = router({
           title: input.title,
           description: input.description,
           date: input.date,
+          visible: input.visible,
         },
       });
       return album;

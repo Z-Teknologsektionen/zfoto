@@ -5,7 +5,7 @@ import { prisma } from "../../server/db/client";
 const examplesRputer = async (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<any> => {
+): Promise<void> => {
   const examples = await prisma.example.findMany();
   res.status(200).json(examples);
 };
