@@ -94,6 +94,11 @@ export const getAlbumsAsAdmin = async () => {
       _count: true,
       images: {
         orderBy: { date: "asc" },
+        take: 1,
+        where: {
+          coverImage: true,
+          visible: true,
+        },
       },
     },
     orderBy: {

@@ -1,6 +1,5 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { AlbumRowItem } from "../../components/admin/AlbumRowItem";
 import { env } from "../../env/server.mjs";
 import { getAlbumsAsAdmin } from "../../utils/fetchDataFromPrisma";
 
@@ -11,46 +10,23 @@ const AdminPanelPage: NextPage<{
 }> = ({ albums }) => {
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-2">
-      {albums.map(({ id, title, description, images, _count }) => {
-        const { filename } = images[0] || { filename: "" };
-        return (
-          <div
-            key={id}
-            className="flex flex-row items-center justify-start gap-12"
-          >
-            <div>
-              <Image
-                alt={`${title} ${description}`}
-                height={128}
-                quality={100}
-                src={filename ? `/images/thumb/${filename}` : ""}
-                width={128}
-                unoptimized
-              />
-            </div>
-            <div className="flex flex-grow flex-row items-center justify-start gap-8">
-              <div>
-                <p>{title}</p>
-                <p>{description}</p>
-              </div>
-              <div>
-                <p>
-                  Images:
-                  <span>{_count.images}</span>
-                </p>
-              </div>
-            </div>
-            <button
-              className="rounded border-2 border-black/60 bg-yellow-400 px-4 py-2"
-              type="button"
-            >
-              <Link href={`admin/album/${id}?password=brabilder`}>
-                Redigera
-              </Link>
-            </button>
-          </div>
-        );
-      })}
+      {albums.map(
+        ({ id, title, date, description, images, _count, visible }) => {
+          const { filename } = images[0] || { filename: "" };
+          return (
+            <AlbumRowItem
+              key={id}
+              date={new Date(date)}
+              description={description}
+              filename={filename}
+              id={id}
+              imageCount={_count.images}
+              title={title}
+              visible={visible}
+            />
+          );
+        }
+      )}
     </div>
   );
 };
