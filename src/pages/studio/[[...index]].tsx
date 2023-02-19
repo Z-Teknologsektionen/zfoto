@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import type { NextPage } from "next";
 import { NextStudio } from "next-sanity/studio";
 import { NextStudioHead } from "next-sanity/studio/head";
