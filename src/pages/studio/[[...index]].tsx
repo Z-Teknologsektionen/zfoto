@@ -11,7 +11,9 @@ const StudioPage = (): NextPage => {
       <Head>
         <NextStudioHead />
       </Head>
-      <NextStudio config={config} />
+      <div className="absolute inset-0">
+        <NextStudio config={config} />
+      </div>
     </>
   );
 };
