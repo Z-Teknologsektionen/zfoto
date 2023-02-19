@@ -5,7 +5,7 @@ import Head from "next/head";
 
 import config from "../../../sanity.config";
 
-const StudioPage = (): NextPage => {
+const StudioPage: NextPage = () => {
   return (
     <>
       <Head>
