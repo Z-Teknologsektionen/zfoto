@@ -1,8 +1,4 @@
-import type {
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
+import type { GetStaticProps, NextPage } from "next";
 import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import MainWrapper from "../components/Wrapper";
 import { getAlbums } from "../utils/fetchDataFromPrisma";
@@ -35,12 +31,14 @@ const Home: NextPage<{
 
 export default Home;
 
-export async function getStaticProps(
-  _context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<{ albums: AlbumsType }>> {
+export const getStaticProps: GetStaticProps<{
+  albums: AlbumsType;
+}> = async () => {
   const albums = await getAlbums();
   return {
-    props: { albums: JSON.parse(JSON.stringify(albums)) as typeof albums },
+    props: {
+      albums: JSON.parse(JSON.stringify(albums)) as typeof albums,
+    },
     revalidate: 300,
   };
-}
+};

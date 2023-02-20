@@ -7,7 +7,7 @@ import { getPageBySlug } from "../utils/fetchDataFromSanity";
 const TermsPage: NextPage<{ page: PagePayload }> = ({ page }) => {
   return (
     <MainWrapper>
-      <div className="prose prose-sm mx-auto max-w-3xl prose-h1:text-2xl prose-h1:font-semibold">
+      <div className="prose prose-sm mx-auto prose-h1:font-semibold">
         <PortableText value={page.content} />
       </div>
     </MainWrapper>
@@ -16,7 +16,9 @@ const TermsPage: NextPage<{ page: PagePayload }> = ({ page }) => {
 
 export default TermsPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<{
+  page: PagePayload;
+}> = async () => {
   const page = await getPageBySlug("policy");
 
   if (!page) {
@@ -27,7 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       page,
-      revalidate: 300,
     },
+    revalidate: 300,
   };
 };
