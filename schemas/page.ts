@@ -12,6 +12,9 @@ export default defineType({
       name: "title",
       title: "Title",
       validation: (rule) => rule.required(),
+      readOnly: ({ currentUser }) => {
+        return !currentUser?.roles.find(({ name }) => name === "administrator");
+      },
     }),
     defineField({
       type: "slug",
@@ -19,6 +22,9 @@ export default defineType({
       title: "Slug",
       options: {
         source: "title",
+      },
+      readOnly: ({ currentUser }) => {
+        return !currentUser?.roles.find(({ name }) => name === "administrator");
       },
     }),
     defineField({
