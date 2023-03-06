@@ -1,9 +1,4 @@
-import type {
-  GetStaticPathsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import MainWrapper from "../../components/Wrapper";
@@ -57,16 +52,16 @@ const ImagePage: NextPage<{
 
 export default ImagePage;
 
-export function getStaticPaths(): GetStaticPathsResult {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
     fallback: "blocking",
   };
-}
+};
 
-export async function getStaticProps(
-  context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<{ image: ImageType }>> {
+export const getStaticProps: GetStaticProps<{ image: ImageType }> = async (
+  context
+) => {
   try {
     const imageId = context.params?.imageId?.toString() || "";
     const image = await getImage({ imageId });
@@ -81,4 +76,4 @@ export async function getStaticProps(
       notFound: true,
     };
   }
-}
+};

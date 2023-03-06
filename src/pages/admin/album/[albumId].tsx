@@ -1,8 +1,4 @@
-import type {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextPage,
-} from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router.js";
 import { useState } from "react";
 import { ImageRowItem } from "../../../components/admin/ImageRowItem";
@@ -117,9 +113,9 @@ const EditAlbum: NextPage<{
 
 export default EditAlbum;
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ album: AdminAlbumType }>> {
+export const getServerSideProps: GetServerSideProps<{
+  album: AdminAlbumType;
+}> = async (context) => {
   const password = context.query?.password?.toString();
 
   if (
@@ -145,4 +141,4 @@ export async function getServerSideProps(
       notFound: true,
     };
   }
-}
+};
