@@ -1,8 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # Personal lokal files
-test.py
-createAlbum.py
+*.py
 TODO.md
 
 # dependencies
