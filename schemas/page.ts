@@ -6,6 +6,12 @@ export default defineType({
   title: "Page",
   type: "document",
   icon: DocumentIcon,
+  groups: [
+    {
+      name: "seo",
+      title: "SEO",
+    },
+  ],
   fields: [
     defineField({
       type: "string",
@@ -47,12 +53,30 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: "seoTitle",
+      title: "SEO title",
+      type: "string",
+      group: "seo",
+    }),
+    defineField({
+      name: "seoDescription",
+      title: "SEO Description",
+      type: "text",
+      group: "seo",
+    }),
+    defineField({
+      name: "seoImage",
+      title: "Image",
+      type: "image",
+      group: "seo",
+    }),
   ],
   preview: {
     select: {
       title: "title",
     },
-    prepare({ title }) {
+    prepare({ title }: { title: string }) {
       return {
         subtitle: "Page",
         title,

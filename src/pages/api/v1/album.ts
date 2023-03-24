@@ -5,13 +5,13 @@ import { prisma } from "../../../server/db/client";
 const createAlbumSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
-  date: z.date().optional(),
+  date: z.string().optional(),
   images: z
     .array(
       z.object({
         filename: z.string().min(1),
         photographer: z.string().min(1),
-        date: z.string().optional().default(new Date().toISOString()),
+        date: z.string().optional(),
       })
     )
     .min(1),

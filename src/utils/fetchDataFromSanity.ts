@@ -15,10 +15,17 @@ export type PagePayload = {
   title: string;
 };
 
-export async function getPageBySlug(
+export const getPageBySlug = (
   slug: string
-): Promise<PagePayload | undefined> {
+): Promise<PagePayload | undefined> => {
   return client.fetch(`*[_type == "page" && slug.current == "${slug}"]{
   title, slug, content
 }[0]`);
-}
+};
+
+export const getSettings = (): Promise<{
+  description: string;
+  title: string;
+}> => {
+  return client.fetch(`*[_type == 'siteSettings' && _id== 'siteSettings'][0]`);
+};
