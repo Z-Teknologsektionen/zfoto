@@ -13,14 +13,13 @@ datasource db {
 model Album {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  description String   @default("")
   images      Image[]
   visible     Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   date        DateTime @default(now())
 
-  @@unique([title, description])
+  @@unique([title, date])
 }
 
 model Image {

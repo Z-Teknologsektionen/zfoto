@@ -4,8 +4,7 @@ import { prisma } from "../../../server/db/client";
 
 const createAlbumSchema = z.object({
   title: z.string().min(1),
-  description: z.string().min(1),
-  date: z.string().optional(),
+  date: z.string(),
   images: z
     .array(
       z.object({
@@ -40,9 +39,9 @@ const albumRouter = async (
 
       const createdAlbum = await prisma.album.upsert({
         where: {
-          title_description: {
+          title_date: {
             title: body.title,
-            description: body.description,
+            date: body.date,
           },
         },
         update: {
@@ -54,7 +53,6 @@ const albumRouter = async (
         },
         create: {
           title: body.title,
-          description: body.description,
           date: body.date,
           images: {
             createMany: {

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
 export const AlbumRowItem = ({
-  description,
   id,
   title,
   filename,
@@ -13,7 +12,6 @@ export const AlbumRowItem = ({
   imageCount,
 }: {
   date: Date;
-  description: string;
   filename: string;
   id: string;
   imageCount: number;
@@ -33,7 +31,7 @@ export const AlbumRowItem = ({
     <div className="flex flex-row items-center justify-start gap-12">
       <div>
         <Image
-          alt={`${title} ${description}`}
+          alt={`Bild från "${title}"`}
           height={128}
           quality={100}
           src={filename ? `/images/thumb/${filename}` : ""}
@@ -42,13 +40,8 @@ export const AlbumRowItem = ({
         />
       </div>
       <div className="flex flex-grow flex-row items-center justify-start gap-8">
-        <div>
-          <p>{title}</p>
-          <p>{description}</p>
-        </div>
-        <div>
-          <p>{imageCount} images</p>
-        </div>
+        <p>{title}</p>
+        <p>{imageCount} images</p>
       </div>
       <div className="flex gap-4">
         <button
@@ -57,7 +50,6 @@ export const AlbumRowItem = ({
             albumInfoMutation.mutate({
               albumId: id,
               date,
-              description,
               title,
               visible: !albumVisibility,
             });

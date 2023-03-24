@@ -10,23 +10,20 @@ const AdminPanelPage: NextPage<{
 }> = ({ albums }) => {
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-2">
-      {albums.map(
-        ({ id, title, date, description, images, _count, visible }) => {
-          const { filename } = images[0] || { filename: "" };
-          return (
-            <AlbumRowItem
-              key={id}
-              date={new Date(date)}
-              description={description}
-              filename={filename}
-              id={id}
-              imageCount={_count.images}
-              title={title}
-              visible={visible}
-            />
-          );
-        }
-      )}
+      {albums.map(({ id, title, date, images, _count, visible }) => {
+        const { filename } = images[0] || { filename: "" };
+        return (
+          <AlbumRowItem
+            key={id}
+            date={new Date(date)}
+            filename={filename}
+            id={id}
+            imageCount={_count.images}
+            title={title}
+            visible={visible}
+          />
+        );
+      })}
     </div>
   );
 };

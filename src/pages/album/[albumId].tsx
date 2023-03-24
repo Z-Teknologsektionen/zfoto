@@ -26,7 +26,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   return (
     <>
       <MainWrapper>
-        <div className="mx-auto flex max-w-7xl flex-col gap-4">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2">
           <button
             className="-ml-4 w-fit md:-ml-2.5"
             onClick={() => {

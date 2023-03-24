@@ -36,7 +36,6 @@ export const albumRouter = router({
     .input(
       z.object({
         title: z.string().min(1),
-        description: z.string().min(1),
         date: z.date().optional(),
         images: z
           .array(
@@ -53,7 +52,6 @@ export const albumRouter = router({
       const createdAlbum = await ctx.prisma.album.create({
         data: {
           title: input.title,
-          description: input.description,
           images: {
             createMany: {
               data: input.images,
@@ -73,7 +71,6 @@ export const albumRouter = router({
           return isValidObjectId(val);
         }),
         title: z.string().min(1),
-        description: z.string().min(1),
         date: z.date(),
         visible: z.boolean(),
       })
@@ -83,7 +80,6 @@ export const albumRouter = router({
         where: { id: input.albumId },
         data: {
           title: input.title,
-          description: input.description,
           date: input.date,
           visible: input.visible,
         },

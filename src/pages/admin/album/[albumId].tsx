@@ -12,7 +12,6 @@ const EditAlbum: NextPage<{
 }> = ({ album }) => {
   const albumInfoDefaultValue = {
     title: album.title,
-    description: album.description,
     date: album.date.toLocaleString(),
   };
 
@@ -21,8 +20,8 @@ const EditAlbum: NextPage<{
 
   const albumInfoMutation = trpc.album.updateInfo.useMutation({
     onSuccess: (data) => {
-      const { title, description, date } = data;
-      setAlbumInfo({ title, description, date: date.toLocaleString() });
+      const { title, date } = data;
+      setAlbumInfo({ title, date: date.toLocaleString() });
       router.reload();
     },
   });
@@ -41,16 +40,6 @@ const EditAlbum: NextPage<{
             }}
             type="text"
             value={albumInfo.title}
-          />
-          <input
-            className="w-full"
-            onChange={(e) => {
-              setAlbumInfo((prev) => {
-                return { ...prev, description: e.target.value };
-              });
-            }}
-            type="text"
-            value={albumInfo.description}
           />
           <input
             defaultValue={new Date(album.date).toLocaleString()}
@@ -80,7 +69,6 @@ const EditAlbum: NextPage<{
               albumInfoMutation.mutate({
                 albumId: album.id,
                 date: new Date(albumInfo.date),
-                description: albumInfo.description,
                 title: albumInfo.title,
                 visible: album.visible,
               });
