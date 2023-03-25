@@ -55,10 +55,10 @@ export default defineType({
     select: {
       title: "title",
     },
-    prepare({ title }: { title: string }) {
+    prepare(selection) {
       return {
         subtitle: "Text Section",
-        title,
+        title: selection.title as string,
       };
     },
   },
