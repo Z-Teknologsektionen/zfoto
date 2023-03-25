@@ -1,9 +1,4 @@
-import type {
-  GetStaticPathsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AlbumInfo from "../../components/imageGrid/AlbumInfo";
@@ -31,9 +26,9 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
   return (
     <>
       <MainWrapper>
-        <div className="mx-auto flex max-w-7xl flex-col gap-4">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2">
           <button
-            className="-ml-4 w-fit md:-ml-2.5"
+            className="-ml-4 w-fit underline-offset-2 hover:underline md:-ml-2.5"
             onClick={() => {
               router.push("/");
             }}
@@ -76,16 +71,16 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
 
 export default AlbumPage;
 
-export function getStaticPaths(): GetStaticPathsResult {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
     fallback: "blocking",
   };
-}
+};
 
-export async function getStaticProps(
-  context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<{ album: AlbumType }>> {
+export const getStaticProps: GetStaticProps<{ album: AlbumType }> = async (
+  context
+) => {
   try {
     const albumId = context.params?.albumId || "";
     const album = await getAlbum(albumId.toString());
@@ -101,4 +96,4 @@ export async function getStaticProps(
       notFound: true,
     };
   }
-}
+};

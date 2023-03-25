@@ -10,31 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Album {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  title        String   
-  description  String   @default("")
-  images       Image[]
-  visible      Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  date         DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  images      Image[]
+  visible     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  date        DateTime @default(now())
 
-  @@unique([title, description])
+  @@unique([title, date])
 }
-
-
 
 model Image {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   filename     String   @unique
-  coverImage Boolean @default(false)
+  coverImage   Boolean  @default(false)
   album        Album    @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   albumId      String   @db.ObjectId
   photographer String

@@ -14,7 +14,6 @@ export const getAlbums = async () => {
     select: {
       id: true,
       title: true,
-      description: true,
       images: {
         where: {
           id: {
@@ -58,7 +57,6 @@ export const getAlbum = async (albumId: string) => {
     select: {
       id: true,
       title: true,
-      description: true,
       images: {
         where: {
           id: {

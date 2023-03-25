@@ -1,10 +1,4 @@
-import type {
-  GetStaticPathsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
-import Image from "next/image";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import MainWrapper from "../../components/Wrapper";
 import { getImage } from "../../utils/fetchDataFromPrisma";
@@ -16,39 +10,34 @@ const ImagePage: NextPage<{
 }> = ({ image }) => {
   return (
     <MainWrapper>
-      <div className="mx-auto flex max-w-7xl flex-col gap-2 sm:flex-row">
-        <div className="relative h-[500px] min-w-[250px] flex-grow sm:min-w-[300px]">
-          <Image
-            alt={`${image.album.title}, ${image.album.description}`}
-            className="object-contain object-center"
-            quality={90}
-            sizes="750px"
-            src={image.filename ? `/images/lowres/${image.filename}` : ""}
-            fill
-            unoptimized
-          />
-        </div>
-        <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">
-          <Link
-            className="text-lg font-medium"
-            href={`/album/${image.album.id}`}
-          >
-            Till albummet
-          </Link>
-          <p>Fotograf: {image.photographer}</p>
-          <p>Filename: {image.filename}</p>
-          <h2>Album information:</h2>
-          <div className="flex flex-col gap-1 pl-4">
-            <p>Titel: {image.album.title}</p>
-            <p>Beskrivning: {image.album.description}</p>
+      <div className="mx-auto max-w-7xl">
+        <Link
+          className="underline-offset-2 hover:underline"
+          href={`/album/${image.album.id}`}
+        >
+          {"<"}
+          Tillbaka till albumet
+        </Link>
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+          <div className="relative flex-grow sm:min-w-[300px]">
+            <img
+              alt={`Bild från "${image.album.title}"`}
+              className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
+              sizes="750px"
+              src={image.filename ? `/images/lowres/${image.filename}` : ""}
+            />
           </div>
-          <p className="pt-4">
-            Kontakta oss
-            <Link className="underline underline-offset-2" href="/contact">
-              {` här `}
-            </Link>
-            med filnamnet för att få bilden i högre upplösning
-          </p>
+          <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">
+            <h1 className="text-xl font-bold">{image.album.title}</h1>
+            <p className="font-medium">Fotograf: {image.photographer}</p>
+            <p className="">Filenamn: {image.filename}</p>
+            <p className="">
+              <Link className="underline underline-offset-2" href="/contact">
+                Kontakta oss
+              </Link>{" "}
+              med filnamnet för att få bilden i högre upplösning
+            </p>
+          </div>
         </div>
       </div>
     </MainWrapper>
@@ -57,16 +46,16 @@ const ImagePage: NextPage<{
 
 export default ImagePage;
 
-export function getStaticPaths(): GetStaticPathsResult {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
     fallback: "blocking",
   };
-}
+};
 
-export async function getStaticProps(
-  context: GetStaticPropsContext
-): Promise<GetStaticPropsResult<{ image: ImageType }>> {
+export const getStaticProps: GetStaticProps<{ image: ImageType }> = async (
+  context
+) => {
   try {
     const imageId = context.params?.imageId?.toString() || "";
     const image = await getImage({ imageId });
@@ -81,4 +70,4 @@ export async function getStaticProps(
       notFound: true,
     };
   }
-}
+};

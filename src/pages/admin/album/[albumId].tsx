@@ -1,8 +1,4 @@
-import type {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextPage,
-} from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router.js";
 import { useState } from "react";
 import { ImageRowItem } from "../../../components/admin/ImageRowItem";
@@ -16,7 +12,6 @@ const EditAlbum: NextPage<{
 }> = ({ album }) => {
   const albumInfoDefaultValue = {
     title: album.title,
-    description: album.description,
     date: album.date.toLocaleString(),
   };
 
@@ -25,8 +20,8 @@ const EditAlbum: NextPage<{
 
   const albumInfoMutation = trpc.album.updateInfo.useMutation({
     onSuccess: (data) => {
-      const { title, description, date } = data;
-      setAlbumInfo({ title, description, date: date.toLocaleString() });
+      const { title, date } = data;
+      setAlbumInfo({ title, date: date.toLocaleString() });
       router.reload();
     },
   });
@@ -45,16 +40,6 @@ const EditAlbum: NextPage<{
             }}
             type="text"
             value={albumInfo.title}
-          />
-          <input
-            className="w-full"
-            onChange={(e) => {
-              setAlbumInfo((prev) => {
-                return { ...prev, description: e.target.value };
-              });
-            }}
-            type="text"
-            value={albumInfo.description}
           />
           <input
             defaultValue={new Date(album.date).toLocaleString()}
@@ -84,7 +69,6 @@ const EditAlbum: NextPage<{
               albumInfoMutation.mutate({
                 albumId: album.id,
                 date: new Date(albumInfo.date),
-                description: albumInfo.description,
                 title: albumInfo.title,
                 visible: album.visible,
               });
@@ -117,9 +101,9 @@ const EditAlbum: NextPage<{
 
 export default EditAlbum;
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ album: AdminAlbumType }>> {
+export const getServerSideProps: GetServerSideProps<{
+  album: AdminAlbumType;
+}> = async (context) => {
   const password = context.query?.password?.toString();
 
   if (
@@ -145,4 +129,4 @@ export async function getServerSideProps(
       notFound: true,
     };
   }
-}
+};
