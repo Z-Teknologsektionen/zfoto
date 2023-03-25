@@ -11,7 +11,10 @@ const ImagePage: NextPage<{
   return (
     <MainWrapper>
       <div className="mx-auto max-w-7xl">
-        <Link className="" href={`/album/${image.album.id}`}>
+        <Link
+          className="underline-offset-2 hover:underline"
+          href={`/album/${image.album.id}`}
+        >
           {"<"}
           Tillbaka till albumet
         </Link>

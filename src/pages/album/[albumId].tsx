@@ -28,7 +28,7 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       <MainWrapper>
         <div className="mx-auto flex max-w-7xl flex-col gap-2">
           <button
-            className="-ml-4 w-fit md:-ml-2.5"
+            className="-ml-4 w-fit underline-offset-2 hover:underline md:-ml-2.5"
             onClick={() => {
               router.push("/");
             }}
