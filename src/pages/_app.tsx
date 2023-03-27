@@ -1,19 +1,17 @@
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import Head from "next/head";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import "../styles/globals.css";
-import { getSettings } from "../utils/fetchDataFromSanity";
 import { trpc } from "../utils/trpc";
 
-// TODO: Lägg till länk tillbaka till ztek.se
-
-const MyApp: AppType<{ description: string; title: string }> = ({
-  pageProps,
-  Component,
-}) => {
+const MyApp: AppType<{
+  session: Session;
+}> = ({ pageProps, Component }) => {
   return (
-    <>
+    <SessionProvider session={pageProps.session}>
       <Head>
         <title>zFoto</title>
         <link href="/zFoto.svg" rel="icon" />
@@ -27,13 +25,8 @@ const MyApp: AppType<{ description: string; title: string }> = ({
         </main>
         <Footer />
       </div>
-    </>
+    </SessionProvider>
   );
 };
 
 export default trpc.withTRPC(MyApp);
-
-MyApp.getInitialProps = async () => {
-  const res = await getSettings();
-  return { ...res }; // this will be passed to the page component as props
-};

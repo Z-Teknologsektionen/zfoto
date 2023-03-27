@@ -7,7 +7,20 @@ export const albumRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     const albums = ctx.prisma.album.findMany({
       include: {
-        images: true,
+        images: {
+          where: {
+            coverImage: true,
+          },
+          take: 1,
+        },
+        _count: {
+          select: {
+            images: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
       },
     });
     return albums;
@@ -15,9 +28,12 @@ export const albumRouter = router({
   getOne: publicProcedure
     .input(
       z.object({
-        albumId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
+        albumId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
       })
     )
     .query(({ input: { albumId }, ctx }) => {
@@ -85,5 +101,31 @@ export const albumRouter = router({
         },
       });
       return album;
+    }),
+  updateOne: publicProcedure
+    .input(
+      z.object({
+        albumId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
+        title: z.string().min(1),
+        date: z.date(),
+        visible: z.boolean(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const updatedAlbum = await ctx.prisma.album.update({
+          where: { id: input.albumId },
+          data: {
+            title: input.title,
+            date: input.date,
+            visible: input.visible,
+          },
+        });
+        return updatedAlbum;
+      } catch (error) {
+        return error;
+      }
     }),
 });

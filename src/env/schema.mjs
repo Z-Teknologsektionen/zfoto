@@ -11,6 +11,10 @@ export const serverSchema = z.object({
   AUTH_USER: z.string().min(1).email(),
   AUTH_PASS: z.string().min(1),
   ADMIN_PASS: z.string().min(1),
+  GOOGLE_CLIENT_ID: z.string().min(1),
+  GOOGLE_CLIENT_SECRET: z.string().min(1),
+  NEXTAUTH_URL: z.string().url(),
+  NEXTAUTH_SECRET: z.string().min(16),
 });
 
 /**

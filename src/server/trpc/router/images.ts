@@ -84,4 +84,30 @@ export const imageRouter = router({
       });
       return image;
     }),
+  updateOne: publicProcedure
+    .input(
+      z.object({
+        imageId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
+        visible: z.boolean(),
+        coverImage: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const updatedImage = await ctx.prisma.image.update({
+          where: {
+            id: input.imageId,
+          },
+          data: {
+            visible: input.visible,
+            coverImage: input.coverImage,
+          },
+        });
+        return updatedImage;
+      } catch (error) {
+        return error;
+      }
+    }),
 });
