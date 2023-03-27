@@ -15,6 +15,7 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url(),
   NEXTAUTH_SECRET: z.string().min(16),
+  ADMIN_MAIL_ENDSWITH: z.string().email(),
 });
 
 /**
