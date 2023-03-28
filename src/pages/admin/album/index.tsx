@@ -14,7 +14,7 @@ const AdminAlbumsPage: NextPage = () => {
     status,
     error,
     isFetching,
-  } = trpc.album.getAll.useQuery(undefined, {
+  } = trpc.album.getAllAsAdmin.useQuery(undefined, {
     refetchOnWindowFocus: false,
     retry() {
       return false;
@@ -84,7 +84,7 @@ const AdminAlbumsPage: NextPage = () => {
                   </div>
                 </Link>
                 <div className="col-span-2">
-                  <p>{album.date.toUTCString()}</p>
+                  <p>{album.date.toLocaleString("sv-SE", {})}</p>
                 </div>
                 <div className="col-span-1">
                   <p>{`Images: ${album._count.images}`}</p>

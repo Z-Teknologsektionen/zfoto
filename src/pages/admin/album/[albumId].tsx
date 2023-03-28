@@ -22,7 +22,7 @@ const AdminSingleAlbumPage: NextPage = () => {
     error,
     status,
     refetch: refetchAlbum,
-  } = trpc.album.getOne.useQuery(
+  } = trpc.album.getOneAsAdmin.useQuery(
     {
       albumId: albumId?.toString(),
     },
@@ -100,7 +100,7 @@ const AdminSingleAlbumPage: NextPage = () => {
                 value={albumTitle}
               />
               <input
-                lang="sv"
+                lang="sv-SE"
                 onChange={(e) => setAlbumDate(e.target.value)}
                 type="datetime-local"
                 value={albumDate}

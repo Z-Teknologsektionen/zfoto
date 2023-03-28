@@ -1,9 +1,9 @@
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 
-import { publicProcedure, router } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-export const imageRouter = router({
+export const imageRouter = createTRPCRouter({
   getOne: publicProcedure
     .input(
       z.object({
@@ -22,69 +22,7 @@ export const imageRouter = router({
 
       return album;
     }),
-  setVisibility: publicProcedure
-    .input(
-      z.object({
-        imageId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
-        visibility: z.boolean(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const album = await ctx.prisma.image.update({
-        data: {
-          visible: input.visibility,
-        },
-        where: {
-          id: input.imageId,
-        },
-      });
-      return album;
-    }),
-  setCoverImage: publicProcedure
-    .input(
-      z.object({
-        imageId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
-        coverImage: z.boolean(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const album = await ctx.prisma.image.update({
-        data: {
-          coverImage: input.coverImage,
-        },
-        where: {
-          id: input.imageId,
-        },
-      });
-      return album;
-    }),
-  setImageProps: publicProcedure
-    .input(
-      z.object({
-        imageId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
-        coverImage: z.boolean(),
-        visibility: z.boolean(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const image = await ctx.prisma.image.update({
-        data: {
-          coverImage: input.coverImage,
-          visible: input.visibility,
-        },
-        where: {
-          id: input.imageId,
-        },
-      });
-      return image;
-    }),
-  updateOne: publicProcedure
+  updateOne: protectedProcedure
     .input(
       z.object({
         imageId: z.string().refine((val) => {

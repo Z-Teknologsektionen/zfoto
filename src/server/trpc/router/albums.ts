@@ -1,9 +1,9 @@
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 
-import { publicProcedure, router } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-export const albumRouter = router({
+export const albumRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     const albums = ctx.prisma.album.findMany({
       include: {
@@ -16,6 +16,25 @@ export const albumRouter = router({
         _count: {
           select: {
             images: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+    return albums;
+  }),
+  getAllAsAdmin: protectedProcedure.query(({ ctx }) => {
+    const albums = ctx.prisma.album.findMany({
+      include: {
+        _count: true,
+        images: {
+          orderBy: { date: "asc" },
+          take: 1,
+          where: {
+            coverImage: true,
+            visible: true,
           },
         },
       },
@@ -48,39 +67,35 @@ export const albumRouter = router({
 
       return album;
     }),
-  createOne: publicProcedure
+  getOneAsAdmin: protectedProcedure
     .input(
       z.object({
-        title: z.string().min(1),
-        date: z.date().optional(),
-        images: z
-          .array(
-            z.object({
-              filename: z.string().min(1),
-              photographer: z.string().min(1),
-              date: z.date().optional(),
-            })
-          )
-          .min(1),
+        albumId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
       })
     )
-    .mutation(async ({ input, ctx }) => {
-      const createdAlbum = await ctx.prisma.album.create({
-        data: {
-          title: input.title,
-          images: {
-            createMany: {
-              data: input.images,
-            },
-          },
+    .query(async ({ input: { albumId }, ctx }) => {
+      const album = await ctx.prisma.album.findFirstOrThrow({
+        where: {
+          id: albumId,
         },
         include: {
-          images: true,
+          _count: true,
+          images: {
+            orderBy: { date: "asc" },
+          },
+        },
+        orderBy: {
+          date: "desc",
         },
       });
-      return createdAlbum;
+      return album;
     }),
-  updateInfo: publicProcedure
+  updateInfo: protectedProcedure
     .input(
       z.object({
         albumId: z.string().refine((val) => {
@@ -102,7 +117,7 @@ export const albumRouter = router({
       });
       return album;
     }),
-  updateOne: publicProcedure
+  updateOne: protectedProcedure
     .input(
       z.object({
         albumId: z.string().refine((val) => {

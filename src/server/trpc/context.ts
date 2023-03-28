@@ -1,14 +1,17 @@
 /* eslint-disable */
 
 import { type inferAsyncReturnType } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { Session } from "next-auth";
 
 import { prisma } from "../db/client";
+import { createTRPCContext } from "./trpc";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
  */
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  session: Session | null;
+};
 
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
@@ -17,6 +20,7 @@ type CreateContextOptions = Record<string, never>;
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
+    session: opts.session,
     prisma,
   };
 };
@@ -25,8 +29,5 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
  **/
-export const createContext = async (opts: CreateNextContextOptions) => {
-  return await createContextInner({});
-};
 
-export type Context = inferAsyncReturnType<typeof createContext>;
+export type Context = inferAsyncReturnType<typeof createTRPCContext>;
