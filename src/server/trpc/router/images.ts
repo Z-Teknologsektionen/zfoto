@@ -28,8 +28,9 @@ export const imageRouter = createTRPCRouter({
         imageId: z.string().refine((val) => {
           return isValidObjectId(val);
         }),
-        visible: z.boolean(),
-        coverImage: z.boolean(),
+        visible: z.boolean().optional(),
+        coverImage: z.boolean().optional(),
+        photographer: z.string().min(1).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -41,6 +42,7 @@ export const imageRouter = createTRPCRouter({
           data: {
             visible: input.visible,
             coverImage: input.coverImage,
+            photographer: input.photographer,
           },
         });
         return updatedImage;

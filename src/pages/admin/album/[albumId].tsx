@@ -171,7 +171,19 @@ const AdminSingleAlbumPage: NextPage = () => {
                     <p>{image.date.toLocaleString("sv-SE")}</p>
                   </div>
                   <div className="col-span-2">
-                    <p>Foto: {image.photographer}</p>
+                    <p>
+                      Foto:{" "}
+                      <input
+                        defaultValue={image.photographer}
+                        onBlur={(e) => {
+                          singleImageMutation.mutate({
+                            imageId: image.id,
+                            photographer: e.target.value.trim(),
+                          });
+                        }}
+                        type="text"
+                      />
+                    </p>
                     <Link
                       className="underline-offset-2 hover:underline"
                       href={`/image/${image.id}`}
@@ -188,7 +200,6 @@ const AdminSingleAlbumPage: NextPage = () => {
                         singleImageMutation.mutate({
                           imageId: image.id,
                           visible: !image.visible,
-                          coverImage: image.coverImage,
                         });
                       }}
                       type="button"
@@ -203,7 +214,6 @@ const AdminSingleAlbumPage: NextPage = () => {
                         singleImageMutation.mutate({
                           imageId: image.id,
                           visible: image.visible,
-                          coverImage: !image.coverImage,
                         });
                       }}
                       type="button"
