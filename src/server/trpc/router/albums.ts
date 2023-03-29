@@ -123,9 +123,9 @@ export const albumRouter = createTRPCRouter({
         albumId: z.string().refine((val) => {
           return isValidObjectId(val);
         }),
-        title: z.string().min(1),
-        date: z.date(),
-        visible: z.boolean(),
+        title: z.string().min(1).optional(),
+        date: z.date().optional(),
+        visible: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

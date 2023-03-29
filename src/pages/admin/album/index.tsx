@@ -105,8 +105,6 @@ const AdminAlbumsPage: NextPage = () => {
                       singleAlbumMutation.mutate({
                         albumId: album.id,
                         visible: !album.visible,
-                        date: album.date,
-                        title: album.title,
                       });
                     }}
                     type="button"

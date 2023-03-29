@@ -33,9 +33,6 @@ const AdminSingleAlbumPage: NextPage = () => {
   useSession({ required: true });
 
   const [mutatuionError, setMutatuionError] = useState(false);
-  const [albumTitle, setAlbumTitle] = useState<string>("");
-  const [albumDate, setAlbumDate] = useState<string>("");
-  const [albumVisibility, setAlbumVisibility] = useState<boolean>(false);
 
   const router = useRouter();
   const { albumId } = router.query;
@@ -60,14 +57,11 @@ const AdminSingleAlbumPage: NextPage = () => {
           return;
         }
 
-        const { date, title, visible } = successData;
+        // Turn UTC time into local time
+        const { date } = successData;
         const getHours = date.getHours();
         const getUTCOffset = date.getTimezoneOffset() / -60;
         date.setHours(getHours + getUTCOffset);
-
-        setAlbumTitle(title);
-        setAlbumDate(date.toISOString().slice(0, -8));
-        setAlbumVisibility(visible);
       },
     }
   );
@@ -114,43 +108,40 @@ const AdminSingleAlbumPage: NextPage = () => {
             <div className="flex max-w-lg flex-col gap-1">
               <input
                 className="text-xl font-semibold"
-                onChange={(e) => setAlbumTitle(e.target.value)}
+                defaultValue={album.title}
+                onBlur={(e) => {
+                  singleAlbumMutation.mutate({
+                    albumId: album.id,
+                    title: e.target.value.trim(),
+                  });
+                }}
                 type="text"
-                value={albumTitle}
               />
               <input
+                defaultValue={album.date.toISOString().slice(0, -8)}
                 lang="sv-SE"
-                onChange={(e) => setAlbumDate(e.target.value)}
+                onChange={(e) => {
+                  singleAlbumMutation.mutate({
+                    albumId: album.id,
+                    date: new Date(e.target.value),
+                  });
+                }}
                 type="datetime-local"
-                value={albumDate}
               />
               <div className="flex flex-row gap-2">
                 <label htmlFor="visible">Visa album</label>
                 <input
-                  checked={albumVisibility}
+                  defaultChecked={album.visible}
                   id="visible"
                   onClick={() => {
-                    setAlbumVisibility((prev) => !prev);
+                    singleAlbumMutation.mutate({
+                      albumId: album.id,
+                      visible: !album.visible,
+                    });
                   }}
                   type="checkbox"
                 />
               </div>
-            </div>
-            <div>
-              <button
-                className="rounded border-2 bg-green-500 py-3 px-4"
-                onClick={() => {
-                  singleAlbumMutation.mutate({
-                    albumId: albumId?.toString() ?? "",
-                    title: albumTitle ?? "",
-                    date: new Date(albumDate ?? ""),
-                    visible: albumVisibility ?? true,
-                  });
-                }}
-                type="button"
-              >
-                Spara
-              </button>
             </div>
           </div>
 
