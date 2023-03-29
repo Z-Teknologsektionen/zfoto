@@ -1,8 +1,28 @@
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import type { FC } from "react";
 import { useState } from "react";
 import { trpc } from "../../../utils/trpc";
+
+const AdminAlbumsHeader: FC<{ refetchAllAlbums: () => void }> = ({
+  refetchAllAlbums,
+}) => {
+  return (
+    <div className="flex flex-row justify-between">
+      <h1 className="mb-8 text-xl font-semibold">Admin sida</h1>
+      <button
+        className="rounded border-2 bg-yellow-500 py-3 px-4"
+        onClick={() => {
+          refetchAllAlbums();
+        }}
+        type="button"
+      >
+        Hämta igen
+      </button>
+    </div>
+  );
+};
 
 const AdminAlbumsPage: NextPage = () => {
   useSession({ required: true });
@@ -38,23 +58,11 @@ const AdminAlbumsPage: NextPage = () => {
 
   return (
     <div className="mx-auto my-4 max-w-7xl px-4 xl:px-0">
-      <div className="flex flex-row justify-between">
-        <h1 className="mb-8 text-xl font-semibold">Admin sida</h1>
-        <button
-          className="rounded border-2 bg-yellow-500 py-3 px-4"
-          onClick={() => {
-            refetchAllAlbums();
-          }}
-          type="button"
-        >
-          Hämta igen
-        </button>
-      </div>
+      <AdminAlbumsHeader refetchAllAlbums={refetchAllAlbums} />
 
       {loadingData && <p>Loading...</p>}
-
       {errorInData && <p>{`Error: ${error?.message ?? "Okänt fel"}`}</p>}
-
+      {/* Next line is to avoid jumpling when loading or has error */}
       {!loadingData && !errorInData && <p className="invisible">a</p>}
 
       {albums && (
@@ -65,7 +73,6 @@ const AdminAlbumsPage: NextPage = () => {
             if (!coverImage) {
               return null;
             }
-
             return (
               <div
                 key={album.id}
@@ -84,7 +91,7 @@ const AdminAlbumsPage: NextPage = () => {
                   </div>
                 </Link>
                 <div className="col-span-2">
-                  <p>{album.date.toLocaleString("sv-SE", {})}</p>
+                  <p>{album.date.toLocaleString("sv-SE")}</p>
                 </div>
                 <div className="col-span-1">
                   <p>{`Images: ${album._count.images}`}</p>

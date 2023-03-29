@@ -2,8 +2,32 @@ import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import type { FC } from "react";
 import { useState } from "react";
 import { trpc } from "../../../utils/trpc";
+
+const AdminAlbumHeader: FC<{ albumId: string; refetchAlbum: () => void }> = ({
+  albumId,
+  refetchAlbum,
+}) => {
+  return (
+    <div className="mb-4 flex flex-row justify-between">
+      <div>
+        <h1 className="text-xl font-semibold">Redigera album</h1>
+        <p>{albumId}</p>
+      </div>
+      <button
+        className="rounded border-2 bg-yellow-500 py-3 px-4"
+        onClick={() => {
+          refetchAlbum();
+        }}
+        type="button"
+      >
+        Hämta igen
+      </button>
+    </div>
+  );
+};
 
 const AdminSingleAlbumPage: NextPage = () => {
   useSession({ required: true });
@@ -17,7 +41,7 @@ const AdminSingleAlbumPage: NextPage = () => {
   const { albumId } = router.query;
 
   const {
-    data,
+    data: album,
     isFetching,
     error,
     status,
@@ -28,13 +52,22 @@ const AdminSingleAlbumPage: NextPage = () => {
     },
     {
       refetchOnWindowFocus: false,
+      retry() {
+        return false;
+      },
       onSuccess(successData) {
         if (!successData) {
           return;
         }
-        setAlbumTitle(successData.title);
-        setAlbumDate(successData?.date.toISOString().slice(0, -8));
-        setAlbumVisibility(successData.visible);
+
+        const { date, title, visible } = successData;
+        const getHours = date.getHours();
+        const getUTCOffset = date.getTimezoneOffset() / -60;
+        date.setHours(getHours + getUTCOffset);
+
+        setAlbumTitle(title);
+        setAlbumDate(date.toISOString().slice(0, -8));
+        setAlbumVisibility(visible);
       },
     }
   );
@@ -68,28 +101,14 @@ const AdminSingleAlbumPage: NextPage = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 xl:px-0">
-      <div className="mb-4 flex flex-row justify-between">
-        <div>
-          <h1 className="text-xl font-semibold">Redigera album</h1>
-          <p>{data?.id}</p>
-        </div>
-        <button
-          className="rounded border-2 bg-yellow-500 py-3 px-4"
-          onClick={() => {
-            refetchAlbum();
-          }}
-          type="button"
-        >
-          Hämta igen
-        </button>
-      </div>
+      <AdminAlbumHeader albumId={album?.id ?? ""} refetchAlbum={refetchAlbum} />
+
       {loadingData && <p>Loading...</p>}
-
       {errorInData && <p>{`Error: ${error?.message ?? "Okänt fel"}`}</p>}
-
+      {/* Next line is to avoid jumpling when loading or has error */}
       {!loadingData && !errorInData && <p className="invisible">a</p>}
 
-      {data && (
+      {album && (
         <>
           <div className="mt-4 flex flex-row items-center justify-between">
             <div className="flex max-w-lg flex-col gap-1">
@@ -136,7 +155,7 @@ const AdminSingleAlbumPage: NextPage = () => {
           </div>
 
           <div className="mt-8 flex flex-col">
-            {data.images.map((image) => {
+            {album.images.map((image) => {
               return (
                 <div
                   key={image.id}
@@ -149,7 +168,7 @@ const AdminSingleAlbumPage: NextPage = () => {
                   />
                   <div className="col-span-3">
                     <p>{image.filename}</p>
-                    <p>{image.date.toUTCString()}</p>
+                    <p>{image.date.toLocaleString("sv-SE")}</p>
                   </div>
                   <div className="col-span-2">
                     <p>Foto: {image.photographer}</p>
@@ -163,7 +182,7 @@ const AdminSingleAlbumPage: NextPage = () => {
                   <div className="col-span-2 flex gap-2">
                     <button
                       className={`rounded border-2 py-3 px-4 ${
-                        image.visible ? "bg-red-500" : "bg-green-500"
+                        image.visible ? "bg-red-500" : "bg-yellow-500"
                       }`}
                       onClick={() => {
                         singleImageMutation.mutate({
