@@ -36,10 +36,13 @@ export const Footer: FC = () => {
           </ul>
         </div>
         <Link
-          className="text-center underline underline-offset-2 sm:col-span-2"
+          className="text-center underline-offset-2 hover:underline sm:col-span-2"
           href="/terms"
         >
           Läs vår bildpolicy
+        </Link>
+        <Link className="mt-4 text-center text-sm sm:col-span-2" href="/admin">
+          Admin login
         </Link>
       </footer>
     </div>
