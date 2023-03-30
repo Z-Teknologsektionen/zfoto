@@ -11,19 +11,23 @@ const ImagePopup: FC<{
   setImageId: (arg0: string) => void;
   showPopup: boolean;
 }> = ({ album, closePopup, imageId, setImageId, showPopup }) => {
-  const [nextImageId, prevImageId, activeImage] = useMemo(() => {
-    return [
-      album?.images.find((_, index) => {
-        return album.images[index - 1]?.id === imageId;
-      })?.id,
-      album?.images.find((_, index) => {
-        return album.images[index + 1]?.id === imageId;
-      })?.id,
-      album?.images.find((image) => {
-        return image.id === imageId;
-      }),
-    ];
-  }, [imageId, album.images]);
+  const [nextImageId, prevImageId] = useMemo(() => {
+    let nextImageIdReturn = null;
+    let prevImageIdReturn = null;
+    if (album && album.images && imageId) {
+      const index = album.images.findIndex((image) => image.id === imageId);
+      nextImageIdReturn = album.images[index + 1]?.id || null;
+      prevImageIdReturn = album.images[index - 1]?.id || null;
+    }
+    return [nextImageIdReturn, prevImageIdReturn];
+  }, [album, imageId]);
+
+  const activeImage = useMemo(() => {
+    if (album && album.images && imageId) {
+      return album.images.find((image) => image.id === imageId) || null;
+    }
+    return null;
+  }, [album, imageId]);
 
   const viewPrevImage = (): void => {
     if (!prevImageId) {
@@ -85,18 +89,24 @@ const ImagePopup: FC<{
           &#8249;
         </button>
         <div className="relative h-full flex-grow">
-          <Image
-            alt=""
-            className="object-contain"
-            src={
-              activeImage?.filename
-                ? `/images/lowres/${activeImage.filename}`
-                : ""
-            }
-            fill
-            priority
-            unoptimized
-          />
+          {activeImage?.filename && (
+            <>
+              <Image
+                alt=""
+                className="object-contain"
+                src={`/images/thumb/${activeImage.filename}`}
+                fill
+                unoptimized
+              />
+              <Image
+                alt=""
+                className="object-contain"
+                src={`/images/lowres/${activeImage.filename}`}
+                fill
+                unoptimized
+              />
+            </>
+          )}
         </div>
         <button
           className="flex h-full items-center justify-end px-4 text-right text-5xl md:text-8xl lg:pr-8"
