@@ -1,10 +1,11 @@
-import { CogIcon } from "@sanity/icons";
+import type { ComponentType } from "react";
 import { deskTool } from "sanity/desk";
 
-const singleTons = [
-  { id: "siteSettings", title: "Settings", icon: CogIcon },
-  /* { id: "page", title: "page" }, */
-];
+const singleTons: {
+  Icon: ComponentType;
+  id: string;
+  title: string;
+}[] = [];
 
 const excudedIds = [...singleTons.map((s) => s.id)];
 
@@ -20,7 +21,7 @@ export const deskToolStructure = deskTool({
         ...singleTons.map((s) =>
           S.listItem()
             .title(s.title)
-            .icon(s.icon)
+            .icon(s.Icon)
             .child(S.document().schemaType(s.id).documentId(s.id))
         ),
       ]),
