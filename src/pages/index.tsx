@@ -10,7 +10,9 @@ const Home: NextPage<{
 }> = ({ albums }) => {
   return (
     <MainWrapper>
-      <h1 className="py-8 text-center text-2xl">Välkommen till zFoto</h1>
+      <h1 className="py-8 text-center text-2xl font-medium">
+        Välkommen till zFoto
+      </h1>
       <div className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
         {albums.length === 0
           ? "Hittade inga album"

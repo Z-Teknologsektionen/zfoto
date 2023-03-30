@@ -21,7 +21,7 @@ export const ImageGridItem: FC<{
           object-contain object-center
           before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
         `}
-        src={filename ? `/images/thumb/${filename}` : ""}
+        src={`/images/thumb/${filename}`}
         fill
         unoptimized
       />
