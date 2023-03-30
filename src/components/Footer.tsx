@@ -1,8 +1,10 @@
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import type { FC } from "react";
 import { NavigationLinks } from "./NavigationLinks";
 
 export const Footer: FC = () => {
+  const { status } = useSession();
   return (
     <div className="bg-[#333333] text-[#a7a7a7] shadow-xl">
       <footer className="mx-auto mt-5 mb-16 grid max-w-lg grid-cols-1 items-start justify-center gap-5 sm:grid-cols-2">
@@ -25,6 +27,15 @@ export const Footer: FC = () => {
                 Instagram
               </Link>
             </li>
+            <li>
+              <Link
+                className="hover:text-[#a7a7a7]/80"
+                href="https://www.facebook.com/ztekfoto"
+                target="_blank"
+              >
+                Facebook
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="flex flex-col gap-4">
@@ -41,9 +52,27 @@ export const Footer: FC = () => {
         >
           Läs vår bildpolicy
         </Link>
-        <Link className="mt-4 text-center text-sm sm:col-span-2" href="/admin">
-          Admin login
-        </Link>
+        {status === "authenticated" ? (
+          <Link
+            className="mt-4 text-center text-sm sm:col-span-2"
+            href="/admin"
+          >
+            Admin sida
+          </Link>
+        ) : (
+          <button
+            className="mt-4 text-center text-sm sm:col-span-2"
+            onClick={() => {
+              signIn("google", {
+                redirect: true,
+                callbackUrl: `${window.location.origin}/admin`,
+              });
+            }}
+            type="button"
+          >
+            Admin login
+          </button>
+        )}
       </footer>
     </div>
   );
