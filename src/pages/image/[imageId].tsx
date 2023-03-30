@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
+import BackButton from "../../components/BackButton";
 import MainWrapper from "../../components/Wrapper";
 import { getImage } from "../../utils/fetchDataFromPrisma";
 
@@ -11,13 +12,7 @@ const ImagePage: NextPage<{
   return (
     <MainWrapper>
       <div className="mx-auto max-w-7xl">
-        <Link
-          className="underline-offset-2 hover:underline"
-          href={`/album/${image.album.id}`}
-        >
-          {"<"}
-          Tillbaka till albumet
-        </Link>
+        <BackButton />
         <div className="mt-4 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-grow sm:min-w-[300px]">
             <img

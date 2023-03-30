@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import BackButton from "../../components/BackButton";
 import AlbumInfo from "../../components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/ImagePopup";
@@ -9,7 +9,6 @@ import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
 
 const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
-  const router = useRouter();
   const [imageId, setImageId] = useState<string>();
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -27,17 +26,14 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
     <>
       <MainWrapper>
         <div className="mx-auto flex max-w-7xl flex-col gap-2">
-          <button
-            className="-ml-4 w-fit underline-offset-2 hover:underline md:-ml-2.5"
-            onClick={() => {
-              router.push("/");
-            }}
-            type="button"
-          >
-            {"<"}
-            Tillbaka till album
-          </button>
-          <AlbumInfo album={album} photographers={photographers} />
+          <BackButton />
+
+          <AlbumInfo
+            date={album.date}
+            photographers={photographers}
+            title={album.title}
+          />
+
           <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
             {album?.images.map(({ id, filename }) => {
               return (
