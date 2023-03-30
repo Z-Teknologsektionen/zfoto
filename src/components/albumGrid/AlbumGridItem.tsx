@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import { formatDateString } from "../../utils/formatDateAndTimeStrings";
 
 export const AlbumGridItem: FC<{
   date: Date;
@@ -32,7 +33,7 @@ export const AlbumGridItem: FC<{
       <div className="z-10 w-full bg-[#333333]/95 py-3 px-4 text-[#a7a7a7]">
         <p className="truncate text-center font-semibold">{title}</p>
         <p className="text-center text-sm font-medium">
-          {new Date(date).toLocaleDateString()}
+          {formatDateString(date)}
         </p>
       </div>
     </Link>
