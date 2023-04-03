@@ -5,6 +5,17 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getAlbums = async () => {
+  type PublicAlbums = {
+    coverImage: {
+      date: Date;
+      filename: string;
+      id: string;
+    };
+    date: Date;
+    id: string;
+    title: string;
+  };
+
   const albums = await prisma.album.findMany({
     where: {
       visible: {
@@ -15,38 +26,45 @@ export const getAlbums = async () => {
       id: true,
       title: true,
       images: {
-        where: {
-          id: {
-            not: undefined,
-          },
-          coverImage: {
-            equals: true,
-          },
-          visible: {
-            equals: true,
-          },
-        },
         orderBy: { date: "asc" },
+        take: 1,
         select: {
-          albumId: true,
-          date: true,
           filename: true,
-          photographer: true,
           id: true,
+          date: true,
+        },
+        where: {
+          coverImage: true,
+          visible: true,
         },
       },
       date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
     },
     orderBy: {
       date: "desc",
     },
   });
-  return albums;
+
+  const newAlbums: PublicAlbums[] = albums
+    .map((album) => {
+      const coverImage = album.images[0];
+      if (!coverImage) {
+        return null;
+      }
+      return {
+        id: album.id,
+        title: album.title,
+        coverImage: {
+          filename: coverImage.filename,
+          id: coverImage.id,
+          date: coverImage.date.toISOString(),
+        },
+        date: album.date.toISOString(),
+      };
+    })
+    .filter((album) => album !== null) as unknown[] as PublicAlbums[];
+
+  return newAlbums;
 };
 
 export const getAlbum = async (albumId: string) => {
@@ -59,9 +77,6 @@ export const getAlbum = async (albumId: string) => {
       title: true,
       images: {
         where: {
-          id: {
-            not: undefined,
-          },
           visible: {
             equals: true,
           },
@@ -76,11 +91,7 @@ export const getAlbum = async (albumId: string) => {
         },
       },
       date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
+      _count: true,
     },
   });
   return album;
