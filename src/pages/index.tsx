@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
-import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import MainWrapper from "../components/Wrapper";
+import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import { getAlbums } from "../utils/fetchDataFromPrisma";
 
 type AlbumsType = Awaited<ReturnType<typeof getAlbums>>;
@@ -16,8 +16,7 @@ const Home: NextPage<{
       <div className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
         {albums.length === 0
           ? "Hittade inga album"
-          : albums.map(({ id, title, images, date }, idx) => {
-              const { filename } = images[0] || { filename: "" };
+          : albums.map(({ id, title, date, coverImage: { filename } }, idx) => {
               const priorityLoadning = idx < 5;
               return (
                 <AlbumGridItem
