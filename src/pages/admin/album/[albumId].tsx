@@ -211,7 +211,7 @@ const AdminSingleAlbumPage: NextPage = () => {
                       onClick={() => {
                         singleImageMutation.mutate({
                           imageId: image.id,
-                          visible: image.visible,
+                          coverImage: !image.coverImage,
                         });
                       }}
                       type="button"

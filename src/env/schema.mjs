@@ -10,12 +10,25 @@ export const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   AUTH_USER: z.string().min(1).email(),
   AUTH_PASS: z.string().min(1),
-  ADMIN_PASS: z.string().min(1),
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url(),
   NEXTAUTH_SECRET: z.string().min(16),
-  ADMIN_MAIL_ENDSWITH: z.string().email(),
+  ADMIN_MAILS_ENDSWITH: z.string().refine((val) => {
+    if (!val.trim()) {
+      return false;
+    }
+    const emails = val.split(", ");
+    const emailSchema = z.string().email();
+    for (const email of emails) {
+      try {
+        emailSchema.parse(email);
+      } catch (error) {
+        return false;
+      }
+    }
+    return true;
+  }, "Invalid email list"),
 });
 
 /**

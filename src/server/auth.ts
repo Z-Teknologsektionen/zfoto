@@ -50,7 +50,15 @@ const authOptions: NextAuthOptions = {
       return session;
     },
     signIn(params) {
-      return params.user.email?.endsWith(env.ADMIN_MAIL_ENDSWITH) ?? false;
+      const adminEmails = env.ADMIN_MAILS_ENDSWITH.split(", ");
+
+      for (const email of adminEmails) {
+        if (params.user.email?.endsWith(email.trim())) {
+          return true;
+        }
+      }
+
+      return false;
     },
   },
   secret: env.NEXTAUTH_SECRET,
