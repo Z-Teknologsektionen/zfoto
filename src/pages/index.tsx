@@ -1,13 +1,23 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import MainWrapper from "../components/Wrapper";
 import { AlbumGridItem } from "../components/albumGrid/AlbumGridItem";
 import { getAlbums } from "../utils/fetchDataFromPrisma";
 
-type AlbumsType = Awaited<ReturnType<typeof getAlbums>>;
+export const getStaticProps: GetStaticProps<{
+  albums: Awaited<ReturnType<typeof getAlbums>>;
+}> = async () => {
+  const albums = await getAlbums();
+  return {
+    props: {
+      albums: JSON.parse(JSON.stringify(albums)) as typeof albums,
+    },
+    revalidate: 300,
+  };
+};
 
-const Home: NextPage<{
-  albums: AlbumsType;
-}> = ({ albums }) => {
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  albums,
+}) => {
   return (
     <MainWrapper>
       <h1 className="py-8 text-center text-2xl font-medium">
@@ -31,15 +41,3 @@ const Home: NextPage<{
 };
 
 export default Home;
-
-export const getStaticProps: GetStaticProps<{
-  albums: AlbumsType;
-}> = async () => {
-  const albums = await getAlbums();
-  return {
-    props: {
-      albums: JSON.parse(JSON.stringify(albums)) as typeof albums,
-    },
-    revalidate: 300,
-  };
-};

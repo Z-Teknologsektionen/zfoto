@@ -1,15 +1,15 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
-import AlbumInfo from "../../components/imageGrid/AlbumInfo";
-import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import ImagePopup from "../../components/ImagePopup";
 import MainWrapper from "../../components/Wrapper";
+import AlbumInfo from "../../components/imageGrid/AlbumInfo";
+import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
 import { getAlbum } from "../../utils/fetchDataFromPrisma";
 import type { AlbumType } from "../../utils/types";
 
 const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
-  const [imageId, setImageId] = useState<string>();
+  const [imageIndex, setImageIndex] = useState<number>(0);
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
@@ -35,14 +35,20 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
           />
 
           <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
-            {album?.images.map(({ id, filename }) => {
+            {album?.images.map(({ id, filename }, idx) => {
               return (
                 <ImageGridItem
                   key={id}
-                  {...{ id, albumId: album.id, filename, album }}
+                  {...{
+                    id,
+                    albumId: album.id,
+                    filename,
+                    album,
+                    priority: idx <= 5,
+                  }}
                   onClick={() => {
-                    setImageId(id);
                     setShowPopup(true);
+                    setImageIndex(idx);
 
                     document.body.classList.add("overflow-hidden");
                   }}
@@ -54,8 +60,12 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       </MainWrapper>
 
       <ImagePopup
-        key={imageId}
-        {...{ album, imageId, setImageId, showPopup }}
+        {...{
+          album,
+          showPopup,
+          imageIndex,
+          setImageIndex,
+        }}
         closePopup={() => {
           setShowPopup(false);
           document.body.classList.remove("overflow-hidden");

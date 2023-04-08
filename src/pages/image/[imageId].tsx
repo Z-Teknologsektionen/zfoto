@@ -1,14 +1,43 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+  NextPage,
+} from "next";
 import Link from "next/link";
 import BackButton from "../../components/BackButton";
 import MainWrapper from "../../components/Wrapper";
 import { getImage } from "../../utils/fetchDataFromPrisma";
 
-type ImageType = Awaited<ReturnType<typeof getImage>>;
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
 
-const ImagePage: NextPage<{
-  image: ImageType;
-}> = ({ image }) => {
+export const getStaticProps: GetStaticProps<{
+  image: Awaited<ReturnType<typeof getImage>>;
+}> = async (context) => {
+  try {
+    const imageId = context.params?.imageId?.toString() || "";
+    const image = await getImage(imageId);
+    return {
+      props: {
+        image: JSON.parse(JSON.stringify(image)) as typeof image,
+      },
+      revalidate: 300,
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+const ImagePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  image,
+}) => {
   return (
     <MainWrapper>
       <div className="mx-auto max-w-7xl">
@@ -40,29 +69,3 @@ const ImagePage: NextPage<{
 };
 
 export default ImagePage;
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps: GetStaticProps<{ image: ImageType }> = async (
-  context
-) => {
-  try {
-    const imageId = context.params?.imageId?.toString() || "";
-    const image = await getImage({ imageId });
-    return {
-      props: {
-        image: JSON.parse(JSON.stringify(image)) as typeof image,
-      },
-      revalidate: 300,
-    };
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-};
