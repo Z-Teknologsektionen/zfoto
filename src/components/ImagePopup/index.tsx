@@ -1,46 +1,55 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { FC } from "react";
-import { useEffect, useMemo } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { AlbumType } from "../../utils/types";
 
 const ImagePopup: FC<{
   album: AlbumType;
   closePopup: () => void;
-  imageId: string | undefined;
-  setImageId: (arg0: string) => void;
+  imageIndex: number;
+  setImageIndex: Dispatch<SetStateAction<number>>;
   showPopup: boolean;
-}> = ({ album, closePopup, imageId, setImageId, showPopup }) => {
+}> = ({ album, closePopup, showPopup, imageIndex, setImageIndex }) => {
   const activeImage = useMemo(() => {
-    const { images } = album || {};
-    return images?.find((image) => image.id === imageId) || null;
-  }, [album, imageId]);
+    return album.images.at(imageIndex);
+  }, [album.images, imageIndex]);
 
-  const [nextImageId, prevImageId] = useMemo(() => {
-    const { images } = album || {};
-    const index = images?.findIndex((image) => image.id === imageId) ?? -1;
-    const nextImages = images?.slice(index + 1);
-    const prevImages = images?.slice(0, index).reverse();
-    const nextImageIdReturn = nextImages?.[0]?.id || null;
-    const prevImageIdReturn = prevImages?.[0]?.id || null;
-    return [nextImageIdReturn, prevImageIdReturn];
-  }, [album, imageId]);
+  const nextImage = useMemo(() => {
+    return album.images.at(imageIndex + 1);
+  }, [album.images, imageIndex]);
+
+  const hasPrevImage = useMemo(() => {
+    return imageIndex > 0;
+  }, [imageIndex]);
+
+  const hasNextImage = useMemo(() => {
+    return imageIndex < album.images.length - 1;
+  }, [imageIndex, album.images.length]);
+
+  const lastCallTime = useRef(0);
+  const minDelay = 1000 / 4;
+
+  const canCallUpdate = (): boolean => {
+    if (Date.now() - lastCallTime.current >= minDelay) {
+      lastCallTime.current = Date.now();
+      return true;
+    }
+    return false;
+  };
 
   const viewPrevImage = (): void => {
-    if (!prevImageId) {
+    if (!hasPrevImage || !canCallUpdate()) {
       return;
     }
-    setTimeout(() => {
-      setImageId(prevImageId);
-    }, 150);
+    setImageIndex((prev) => prev - 1);
   };
+
   const viewNextImage = (): void => {
-    if (!nextImageId) {
+    if (!hasNextImage || !canCallUpdate()) {
       return;
     }
-    setTimeout(() => {
-      setImageId(nextImageId);
-    }, 150);
+    setImageIndex((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -53,7 +62,9 @@ const ImagePopup: FC<{
         closePopup();
       }
     };
+
     window.addEventListener("keydown", keydownListener);
+
     return () => {
       window.removeEventListener("keydown", keydownListener);
     };
@@ -69,9 +80,9 @@ const ImagePopup: FC<{
         showPopup ? "opacity-100" : "pointer-events-none opacity-0"
       } transition-opacity duration-1000`}
     >
-      <div className="flex w-full justify-end gap-4 pt-2 pr-2 text-right">
+      <div className="flex w-full justify-end gap-4 pt-2 pr-2 text-right md:pr-4">
         <a
-          className="h-8 w-8"
+          className="h-8 w-8 lg:h-12 lg:w-12"
           href={`/images/lowres/${activeImage.filename}`}
           type="button"
           download
@@ -81,13 +92,9 @@ const ImagePopup: FC<{
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g
-              id="SVGRepo_tracerCarrier"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <g id="SVGRepo_iconCarrier">
+            <g strokeWidth="0" />
+            <g strokeLinecap="round" strokeLinejoin="round" />
+            <g>
               <path
                 d="M12 3a1 1 0 0 1 1 1v9.586l2.293-2.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L11 13.586V4a1 1 0 0 1 1-1Z"
                 fill="#000000"
@@ -100,7 +107,7 @@ const ImagePopup: FC<{
           </svg>
         </a>
         <button
-          className="text-right text-3xl font-black leading-none md:p-4 md:text-5xl"
+          className="text-right text-3xl font-black leading-none lg:text-5xl"
           onClick={() => {
             closePopup();
           }}
@@ -112,7 +119,7 @@ const ImagePopup: FC<{
       <div className="flex h-full w-full flex-grow flex-row items-center justify-between">
         <button
           className="flex h-full items-center justify-start px-4 text-left text-5xl md:text-8xl lg:pl-8"
-          disabled={!prevImageId}
+          disabled={!hasPrevImage}
           onClick={() => {
             viewPrevImage();
           }}
@@ -123,16 +130,17 @@ const ImagePopup: FC<{
         <div className="relative h-full flex-grow">
           <>
             <Image
-              alt=""
+              alt="Full size image of "
               className="object-contain"
-              src={`/images/thumb/${activeImage.filename}`}
+              src={`/images/lowres/${activeImage.filename}`}
               fill
+              priority
               unoptimized
             />
             <Image
-              alt=""
-              className="object-contain"
-              src={`/images/lowres/${activeImage.filename}`}
+              alt="Used for preloading next images"
+              className="invisible"
+              src={nextImage ? `/images/lowres/${nextImage.filename}` : ""}
               fill
               priority
               unoptimized
@@ -141,7 +149,7 @@ const ImagePopup: FC<{
         </div>
         <button
           className="flex h-full items-center justify-end px-4 text-right text-5xl md:text-8xl lg:pr-8"
-          disabled={!nextImageId}
+          disabled={!hasNextImage}
           onClick={() => {
             viewNextImage();
           }}

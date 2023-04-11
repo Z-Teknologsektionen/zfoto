@@ -7,11 +7,13 @@ export const imageRouter = createTRPCRouter({
   getOne: publicProcedure
     .input(
       z.object({
-        imageId: z.string().cuid(),
+        imageId: z.string().refine((val) => {
+          return isValidObjectId(val);
+        }),
       })
     )
     .query(({ input: { imageId }, ctx }) => {
-      const album = ctx.prisma.image.findUnique({
+      const album = ctx.prisma.image.findUniqueOrThrow({
         include: {
           album: true,
         },

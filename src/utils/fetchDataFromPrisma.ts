@@ -67,7 +67,7 @@ export const getAlbums = async () => {
   return newAlbums;
 };
 
-export const getAlbum = async (albumId: string) => {
+export const getAlbum = async (albumId?: string) => {
   const album = await prisma.album.findFirstOrThrow({
     where: {
       id: albumId,
@@ -117,7 +117,7 @@ export const getAlbumsAsAdmin = async () => {
   return albums;
 };
 
-export const getAlbumAsAdmin = async (albumId: string) => {
+export const getAlbumAsAdmin = async (albumId?: string) => {
   const album = await prisma.album.findFirstOrThrow({
     where: {
       id: albumId,
@@ -135,7 +135,7 @@ export const getAlbumAsAdmin = async (albumId: string) => {
   return album;
 };
 
-export const getImage = async ({ imageId }: { imageId: string }) => {
+export const getImage = async (imageId?: string) => {
   const image = await prisma.image.findUniqueOrThrow({
     where: {
       id: imageId,

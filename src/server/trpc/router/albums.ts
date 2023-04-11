@@ -1,47 +1,21 @@
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 
+import {
+  getAlbum,
+  getAlbumAsAdmin,
+  getAlbums,
+  getAlbumsAsAdmin,
+} from "../../../utils/fetchDataFromPrisma";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const albumRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    const albums = ctx.prisma.album.findMany({
-      include: {
-        images: {
-          where: {
-            coverImage: true,
-          },
-          take: 1,
-        },
-        _count: {
-          select: {
-            images: true,
-          },
-        },
-      },
-      orderBy: {
-        date: "desc",
-      },
-    });
+  getAll: publicProcedure.query(() => {
+    const albums = getAlbums();
     return albums;
   }),
-  getAllAsAdmin: protectedProcedure.query(({ ctx }) => {
-    const albums = ctx.prisma.album.findMany({
-      include: {
-        _count: true,
-        images: {
-          orderBy: { date: "asc" },
-          take: 1,
-          where: {
-            coverImage: true,
-            visible: true,
-          },
-        },
-      },
-      orderBy: {
-        date: "desc",
-      },
-    });
+  getAllAsAdmin: protectedProcedure.query(() => {
+    const albums = getAlbumsAsAdmin();
     return albums;
   }),
   getOne: publicProcedure
@@ -55,16 +29,8 @@ export const albumRouter = createTRPCRouter({
           }),
       })
     )
-    .query(({ input: { albumId }, ctx }) => {
-      const album = ctx.prisma.album.findUnique({
-        where: {
-          id: albumId,
-        },
-        include: {
-          images: true,
-        },
-      });
-
+    .query(({ input: { albumId } }) => {
+      const album = getAlbum(albumId);
       return album;
     }),
   getOneAsAdmin: protectedProcedure
@@ -78,21 +44,8 @@ export const albumRouter = createTRPCRouter({
           }),
       })
     )
-    .query(async ({ input: { albumId }, ctx }) => {
-      const album = await ctx.prisma.album.findFirstOrThrow({
-        where: {
-          id: albumId,
-        },
-        include: {
-          _count: true,
-          images: {
-            orderBy: { date: "asc" },
-          },
-        },
-        orderBy: {
-          date: "desc",
-        },
-      });
+    .query(async ({ input: { albumId } }) => {
+      const album = await getAlbumAsAdmin(albumId);
       return album;
     }),
   updateInfo: protectedProcedure

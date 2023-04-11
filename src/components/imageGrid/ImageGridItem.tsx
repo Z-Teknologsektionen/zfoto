@@ -6,7 +6,8 @@ export const ImageGridItem: FC<{
   album: AlbumType;
   filename: string;
   onClick: () => void;
-}> = ({ filename, album, onClick }) => {
+  priority?: boolean;
+}> = ({ filename, album, onClick, priority }) => {
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
@@ -15,16 +16,16 @@ export const ImageGridItem: FC<{
         onClick();
       }}
     >
-      <Image
-        alt={`Bild från "${album.title}"`}
-        className={`
-          object-contain object-center
-          before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
-        `}
-        src={`/images/thumb/${filename}`}
-        fill
-        unoptimized
-      />
+      <>
+        <Image
+          alt={`Bild från "${album.title}"`}
+          className="object-contain object-center"
+          priority={priority}
+          src={`/images/thumb/${filename}`}
+          fill
+          unoptimized
+        />
+      </>
       <div className="absolute inset-0" />
     </div>
   );
