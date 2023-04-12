@@ -1,14 +1,17 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import BackButton from "../../components/BackButton";
-import ImagePopup from "../../components/ImagePopup";
-import MainWrapper from "../../components/Wrapper";
-import AlbumInfo from "../../components/imageGrid/AlbumInfo";
-import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
-import { getAlbum } from "../../utils/fetchDataFromPrisma";
-import type { AlbumType } from "../../utils/types";
+import { toast } from "react-hot-toast";
+import BackButton from "~/components/BackButton";
+import ImagePopup from "~/components/ImagePopup";
+import MainWrapper from "~/components/Wrapper";
+import AlbumInfo from "~/components/imageGrid/AlbumInfo";
+import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
+import { LoadingScreen } from "~/components/layout/Loader";
+import { ssg } from "~/server/helpers/SSGHelper";
+import { trpc } from "~/utils/trpc";
 
-const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
+const AlbumPage: NextPage = () => {
   const [imageIndex, setImageIndex] = useState<number>(0);
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -18,8 +21,20 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
     };
   }, []);
 
+  const router = useRouter();
+
+  const { data: album, isLoading } = trpc.album.getOne.useQuery(
+    { albumId: router.query.albumId as string },
+    {
+      refetchOnWindowFocus: false,
+      onError(err) {
+        toast.error(err.data?.code ?? "Okänt fel, försök igen senare");
+      },
+    }
+  );
+
   const photographers = [
-    ...new Set(album.images.map((item) => item.photographer)),
+    ...new Set(album?.images.map((item) => item.photographer)),
   ];
 
   return (
@@ -27,79 +42,82 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
       <MainWrapper>
         <div className="mx-auto flex max-w-7xl flex-col gap-2">
           <BackButton />
+          {isLoading && <LoadingScreen />}
+          {album && (
+            <>
+              <AlbumInfo
+                date={album.date}
+                photographers={photographers}
+                title={album.title}
+              />
+              <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
+                {album?.images.map(({ id, filename }, idx) => {
+                  return (
+                    <ImageGridItem
+                      key={id}
+                      {...{
+                        id,
+                        albumId: album.id,
+                        filename,
+                        album,
+                        priority: idx <= 5,
+                      }}
+                      onClick={() => {
+                        setShowPopup(true);
+                        setImageIndex(idx);
 
-          <AlbumInfo
-            date={album.date}
-            photographers={photographers}
-            title={album.title}
-          />
-
-          <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
-            {album?.images.map(({ id, filename }, idx) => {
-              return (
-                <ImageGridItem
-                  key={id}
-                  {...{
-                    id,
-                    albumId: album.id,
-                    filename,
-                    album,
-                    priority: idx <= 5,
-                  }}
-                  onClick={() => {
-                    setShowPopup(true);
-                    setImageIndex(idx);
-
-                    document.body.classList.add("overflow-hidden");
-                  }}
-                />
-              );
-            })}
-          </div>
+                        document.body.classList.add("overflow-hidden");
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </MainWrapper>
 
-      <ImagePopup
-        {...{
-          album,
-          showPopup,
-          imageIndex,
-          setImageIndex,
-        }}
-        closePopup={() => {
-          setShowPopup(false);
-          document.body.classList.remove("overflow-hidden");
-        }}
-      />
+      {album && (
+        <ImagePopup
+          {...{
+            album,
+            showPopup,
+            imageIndex,
+            setImageIndex,
+          }}
+          closePopup={() => {
+            setShowPopup(false);
+            document.body.classList.remove("overflow-hidden");
+          }}
+        />
+      )}
     </>
   );
 };
 
 export default AlbumPage;
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps: GetStaticProps<{ album: AlbumType }> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps<
+  { albumId: string },
+  { albumId: string }
+> = async ({ params }) => {
   try {
-    const albumId = context.params?.albumId || "";
-    const album = await getAlbum(albumId.toString());
-
+    const albumId = params?.albumId as string;
+    await ssg.album.getOne.fetch({ albumId });
     return {
       props: {
-        album: JSON.parse(JSON.stringify(album)) as typeof album,
+        trpcState: ssg.dehydrate(),
+        albumId,
       },
-      revalidate: 300,
+      revalidate: 1,
     };
   } catch (error) {
     return {
       notFound: true,
     };
   }
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return { fallback: "blocking", paths: [] };
 };

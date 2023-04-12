@@ -1,68 +1,52 @@
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-  NextPage,
-} from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
-import BackButton from "../../components/BackButton";
-import MainWrapper from "../../components/Wrapper";
-import { getImage } from "../../utils/fetchDataFromPrisma";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
+import BackButton from "~/components/BackButton";
+import MainWrapper from "~/components/Wrapper";
+import { LoadingScreen } from "~/components/layout/Loader";
+import { trpc } from "~/utils/trpc";
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps: GetStaticProps<{
-  image: Awaited<ReturnType<typeof getImage>>;
-}> = async (context) => {
-  try {
-    const imageId = context.params?.imageId?.toString() || "";
-    const image = await getImage(imageId);
-    return {
-      props: {
-        image: JSON.parse(JSON.stringify(image)) as typeof image,
+const ImagePage: NextPage = () => {
+  const router = useRouter();
+  const { data: image, isLoading } = trpc.image.getOne.useQuery(
+    { imageId: router.query.imageId as string },
+    {
+      refetchOnWindowFocus: false,
+      onError(err) {
+        toast.error(err.data?.code ?? "Okänt fel, försök igen senare");
       },
-      revalidate: 300,
-    };
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-};
+    }
+  );
 
-const ImagePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  image,
-}) => {
   return (
     <MainWrapper>
       <div className="mx-auto max-w-7xl">
         <BackButton />
-        <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-          <div className="relative flex-grow sm:min-w-[300px]">
-            <img
-              alt={`Bild från "${image.album.title}"`}
-              className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
-              sizes="750px"
-              src={image.filename ? `/images/lowres/${image.filename}` : ""}
-            />
+        {isLoading && <LoadingScreen />}
+        {image && (
+          <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+            <div className="relative flex-grow sm:min-w-[300px]">
+              <img
+                alt={`Bild från "${image.album.title}"`}
+                className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
+                sizes="750px"
+                src={image.filename ? `/images/lowres/${image.filename}` : ""}
+              />
+            </div>
+            <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">
+              <h1 className="text-xl font-bold">{image.album.title}</h1>
+              <p className="font-medium">Fotograf: {image.photographer}</p>
+              <p className="">Filenamn: {image.filename}</p>
+              <p className="">
+                <Link className="underline underline-offset-2" href="/contact">
+                  Kontakta oss
+                </Link>{" "}
+                med filnamnet för att få bilden i högre upplösning
+              </p>
+            </div>
           </div>
-          <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">
-            <h1 className="text-xl font-bold">{image.album.title}</h1>
-            <p className="font-medium">Fotograf: {image.photographer}</p>
-            <p className="">Filenamn: {image.filename}</p>
-            <p className="">
-              <Link className="underline underline-offset-2" href="/contact">
-                Kontakta oss
-              </Link>{" "}
-              med filnamnet för att få bilden i högre upplösning
-            </p>
-          </div>
-        </div>
+        )}
       </div>
     </MainWrapper>
   );

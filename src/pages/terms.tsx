@@ -1,8 +1,8 @@
 import { PortableText } from "@portabletext/react";
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import MainWrapper from "../components/Wrapper";
-import type { PagePayload } from "../utils/fetchDataFromSanity";
-import { getPageBySlug } from "../utils/fetchDataFromSanity";
+import MainWrapper from "~/components/Wrapper";
+import type { PagePayload } from "~/utils/fetchDataFromSanity";
+import { getPageBySlug } from "~/utils/fetchDataFromSanity";
 
 export const getStaticProps: GetStaticProps<{
   page: PagePayload;

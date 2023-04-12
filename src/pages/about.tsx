@@ -1,8 +1,22 @@
 import { PortableText } from "@portabletext/react";
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import MainWrapper from "../components/Wrapper";
-import type { PagePayload } from "../utils/fetchDataFromSanity";
-import { getPageBySlug } from "../utils/fetchDataFromSanity";
+import MainWrapper from "~/components/Wrapper";
+import type { PagePayload } from "~/utils/fetchDataFromSanity";
+import { getPageBySlug } from "~/utils/fetchDataFromSanity";
+
+const AboutPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  page,
+}) => {
+  return (
+    <MainWrapper>
+      <div className="prose prose-sm mx-auto prose-h1:font-semibold">
+        <PortableText value={page.content} />
+      </div>
+    </MainWrapper>
+  );
+};
+
+export default AboutPage;
 
 export const getStaticProps: GetStaticProps<{
   page: PagePayload;
@@ -21,17 +35,3 @@ export const getStaticProps: GetStaticProps<{
     revalidate: 300,
   };
 };
-
-const AboutPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  page,
-}) => {
-  return (
-    <MainWrapper>
-      <div className="prose prose-sm mx-auto prose-h1:font-semibold">
-        <PortableText value={page.content} />
-      </div>
-    </MainWrapper>
-  );
-};
-
-export default AboutPage;
