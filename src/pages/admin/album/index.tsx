@@ -4,6 +4,8 @@ import { toast } from "react-hot-toast";
 import { AdminAlbumsHeader } from "~/components/admin/AdminAlbumsHeader";
 import { AdminAlbumsTable } from "~/components/admin/AdminAlbumsTable";
 import { LoadingSection } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
 const AdminAlbumsPage: NextPage = () => {
@@ -24,16 +26,18 @@ const AdminAlbumsPage: NextPage = () => {
   });
 
   return (
-    <div className="mx-auto my-4 min-h-screen max-w-7xl px-4 xl:px-0">
-      <AdminAlbumsHeader refetchAllAlbums={() => refetchAlbums()} />
-      {isLoadingAlbums && <LoadingSection />}
-      {albums && (
-        <AdminAlbumsTable
-          albums={albums}
-          refetchAllAlbums={() => refetchAlbums()}
-        />
-      )}
-    </div>
+    <MainLayout>
+      <SectionWrapper className="mx-auto my-4 min-h-screen max-w-7xl px-4 xl:px-0">
+        <AdminAlbumsHeader refetchAllAlbums={() => refetchAlbums()} />
+        {isLoadingAlbums && <LoadingSection />}
+        {albums && (
+          <AdminAlbumsTable
+            albums={albums}
+            refetchAllAlbums={() => refetchAlbums()}
+          />
+        )}
+      </SectionWrapper>
+    </MainLayout>
   );
 };
 

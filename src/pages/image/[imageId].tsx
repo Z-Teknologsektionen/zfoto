@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import BackButton from "~/components/BackButton";
-import MainWrapper from "~/components/Wrapper";
 import { LoadingScreen } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
 const ImagePage: NextPage = () => {
@@ -20,8 +21,8 @@ const ImagePage: NextPage = () => {
   );
 
   return (
-    <MainWrapper>
-      <div className="mx-auto max-w-7xl">
+    <MainLayout>
+      <SectionWrapper className="mx-auto max-w-7xl">
         <BackButton />
         {isLoading && <LoadingScreen />}
         {image && (
@@ -47,8 +48,8 @@ const ImagePage: NextPage = () => {
             </div>
           </div>
         )}
-      </div>
-    </MainWrapper>
+      </SectionWrapper>
+    </MainLayout>
   );
 };
 

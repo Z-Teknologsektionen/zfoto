@@ -1,8 +1,9 @@
 import type { GetStaticProps, NextPage } from "next";
 import { toast } from "react-hot-toast";
-import MainWrapper from "~/components/Wrapper";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
 import { LoadingScreen } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
 import { ssg } from "~/server/helpers/SSGHelper";
 import { trpc } from "~/utils/trpc";
 
@@ -15,30 +16,32 @@ const Home: NextPage = () => {
   });
 
   return (
-    <MainWrapper>
-      <h1 className="py-8 text-center text-2xl font-medium">
-        Välkommen till zFoto
-      </h1>
-      {isLoading && <LoadingScreen />}
+    <MainLayout>
+      <SectionWrapper>
+        <h1 className="py-8 text-center text-2xl font-medium">
+          Välkommen till zFoto
+        </h1>
+        {isLoading && <LoadingScreen />}
 
-      {albums && (
-        <div className="mx-auto grid max-w-7xl grid-cols-1 place-items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {albums.length === 0
-            ? "Hittade inga album"
-            : albums.map(
-                ({ id, title, date, coverImage: { filename } }, idx) => {
-                  const priorityLoadning = idx < 5;
-                  return (
-                    <AlbumGridItem
-                      key={id}
-                      {...{ id, title, filename, priorityLoadning, date }}
-                    />
-                  );
-                }
-              )}
-        </div>
-      )}
-    </MainWrapper>
+        {albums && (
+          <div className="grid grid-cols-1 place-items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
+            {albums.length === 0
+              ? "Hittade inga album"
+              : albums.map(
+                  ({ id, title, date, coverImage: { filename } }, idx) => {
+                    const priorityLoadning = idx < 5;
+                    return (
+                      <AlbumGridItem
+                        key={id}
+                        {...{ id, title, filename, priorityLoadning, date }}
+                      />
+                    );
+                  }
+                )}
+          </div>
+        )}
+      </SectionWrapper>
+    </MainLayout>
   );
 };
 

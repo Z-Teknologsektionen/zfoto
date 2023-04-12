@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import BackButton from "~/components/BackButton";
 import ImagePopup from "~/components/ImagePopup";
-import MainWrapper from "~/components/Wrapper";
 import AlbumInfo from "~/components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
 import { LoadingScreen } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
 import { ssg } from "~/server/helpers/SSGHelper";
 import { trpc } from "~/utils/trpc";
 
@@ -39,8 +40,8 @@ const AlbumPage: NextPage = () => {
 
   return (
     <>
-      <MainWrapper>
-        <div className="mx-auto flex max-w-7xl flex-col gap-2">
+      <MainLayout>
+        <SectionWrapper className="flex flex-col gap-2">
           <BackButton />
           {isLoading && <LoadingScreen />}
           {album && (
@@ -74,8 +75,8 @@ const AlbumPage: NextPage = () => {
               </div>
             </>
           )}
-        </div>
-      </MainWrapper>
+        </SectionWrapper>
+      </MainLayout>
 
       {album && (
         <ImagePopup

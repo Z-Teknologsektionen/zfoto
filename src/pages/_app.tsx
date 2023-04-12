@@ -3,8 +3,6 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
-import { Footer } from "~/components/Footer";
-import { Header } from "~/components/Header";
 import "~/styles/globals.css";
 import { trpc } from "~/utils/trpc";
 
@@ -20,15 +18,7 @@ const MyApp: AppType<{
         <meta content="*" httpEquiv="Access-Control-Allow-Origin" />
       </Head>
       <Toaster position="top-center" reverseOrder={false} />
-      {/*  <Component {...pageProps} /> */}
-
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="my-8 flex-grow">
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </div>
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };

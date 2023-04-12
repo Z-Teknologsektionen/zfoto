@@ -6,6 +6,8 @@ import { AdminAlbumHeader } from "~/components/admin/AdminAlbumHeader";
 import { AdminAlbumTable } from "~/components/admin/AdminAlbumTable";
 import { AdminUpdateAlbumWizard } from "~/components/admin/AdminUpdateAlbumWizard";
 import { LoadingSection } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
 const AdminSingleAlbumPage: NextPage = () => {
@@ -36,22 +38,27 @@ const AdminSingleAlbumPage: NextPage = () => {
   );
 
   return (
-    <div className="mx-auto min-h-screen max-w-7xl px-4 xl:px-0">
-      <AdminAlbumHeader albumId={album?.id ?? ""} refetchAlbum={refetchAlbum} />
-      {isLoadingAlbum && <LoadingSection />}
-      {album && (
-        <>
-          <AdminUpdateAlbumWizard
-            album={album}
-            refetchAlbum={() => refetchAlbum()}
-          />
-          <AdminAlbumTable
-            images={album.images}
-            refetchAlbum={() => refetchAlbum()}
-          />
-        </>
-      )}
-    </div>
+    <MainLayout>
+      <SectionWrapper className="mx-auto min-h-screen max-w-7xl px-4 xl:px-0">
+        <AdminAlbumHeader
+          albumId={album?.id ?? ""}
+          refetchAlbum={refetchAlbum}
+        />
+        {isLoadingAlbum && <LoadingSection />}
+        {album && (
+          <>
+            <AdminUpdateAlbumWizard
+              album={album}
+              refetchAlbum={() => refetchAlbum()}
+            />
+            <AdminAlbumTable
+              images={album.images}
+              refetchAlbum={() => refetchAlbum()}
+            />
+          </>
+        )}
+      </SectionWrapper>
+    </MainLayout>
   );
 };
 

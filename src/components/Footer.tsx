@@ -7,7 +7,7 @@ export const Footer: FC = () => {
   const { status } = useSession();
   return (
     <div className="bg-[#333333] text-[#a7a7a7] shadow-xl">
-      <footer className="mx-auto mt-5 mb-16 grid max-w-lg grid-cols-1 items-start justify-center gap-5 sm:grid-cols-2">
+      <footer className="mx-auto grid max-w-lg grid-cols-1 items-start justify-center gap-5 pt-5 pb-16 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <h1 className="text-center text-2xl font-semibold underline underline-offset-8">
             zFoto
