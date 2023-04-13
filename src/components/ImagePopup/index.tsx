@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect, useMemo, useRef } from "react";
+import { toast } from "react-hot-toast";
 import type { RouterOutputs } from "~/utils/trpc";
 
 const ImagePopup: FC<{
@@ -84,6 +85,11 @@ const ImagePopup: FC<{
         <a
           className="h-8 w-8 lg:h-12 lg:w-12"
           href={`/images/lowres/${activeImage.filename}`}
+          onClick={() => {
+            toast.success("Laddar ner bild\nGlöm inte följa vår policy", {
+              duration: 2000,
+            });
+          }}
           type="button"
           download
         >
