@@ -25,21 +25,16 @@ export const AdminAlbumsTable: FC<{
   return (
     <div className="mt-4 flex flex-col border-b">
       {albums.map((album) => {
-        const coverImage = album.images.at(0);
-        if (!coverImage) {
-          return null;
-        }
-
         return (
           <div
             key={album.id}
             className="flex flex-col items-center gap-2 border-t py-2 lg:grid lg:grid-cols-8 lg:gap-4"
           >
             <Image
-              alt={`Cover image for album: "${album.title}", Foto: ${coverImage.photographer}`}
+              alt={`Cover image for album: "${album.title}"`}
               className="col-span-1 mx-auto max-w-xs object-contain object-center lg:max-h-[128px] lg:max-w-[128px]"
               height={1}
-              src={`/images/thumb/${coverImage.filename}`}
+              src={`/images/thumb/${album.coverImage.filename}`}
               style={{
                 width: "auto",
                 height: "auto",

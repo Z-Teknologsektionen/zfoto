@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect, useMemo, useRef } from "react";
-import type { AlbumType } from "../../utils/types";
+import type { RouterOutputs } from "~/utils/trpc";
 
 const ImagePopup: FC<{
-  album: AlbumType;
+  album: RouterOutputs["album"]["getOne"];
   closePopup: () => void;
   imageIndex: number;
   setImageIndex: Dispatch<SetStateAction<number>>;

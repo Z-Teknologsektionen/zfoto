@@ -1,21 +1,117 @@
+import type { Album, Image, Prisma } from "@prisma/client";
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
-import {
-  getAlbum,
-  getAlbumAsAdmin,
-  getAlbums,
-  getAlbumsAsAdmin,
-} from "../../../utils/fetchDataFromPrisma";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
+type FormatedAlbumsForGrid = {
+  coverImage: {
+    date: Date;
+    filename: string;
+    id: string;
+  };
+  date: Date;
+  id: string;
+  title: string;
+};
+
+type FormatedAlbumsForAdminTable = Album & {
+  _count: Prisma.AlbumCountOutputType;
+  coverImage: Image;
+};
+
 export const albumRouter = createTRPCRouter({
-  getAll: publicProcedure.query(() => {
-    const albums = getAlbums();
-    return albums;
+  getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
+    const albums = await prisma.album.findMany({
+      where: {
+        visible: {
+          equals: true,
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        images: {
+          orderBy: { date: "asc" },
+          take: 1,
+          select: {
+            filename: true,
+            id: true,
+            date: true,
+          },
+          where: {
+            coverImage: true,
+            visible: true,
+          },
+        },
+        date: true,
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    const formatedAlbums: FormatedAlbumsForGrid[] = albums
+      .map((album) => {
+        const coverImage = album.images[0];
+        if (!coverImage) {
+          return null;
+        }
+        return {
+          id: album.id,
+          title: album.title,
+          coverImage: {
+            filename: coverImage.filename,
+            id: coverImage.id,
+            date: coverImage.date.toISOString(),
+          },
+          date: album.date.toISOString(),
+        };
+      })
+      .filter(
+        (album) => album !== null
+      ) as unknown[] as FormatedAlbumsForGrid[];
+
+    return formatedAlbums;
   }),
-  getAllAsAdmin: protectedProcedure.query(() => {
-    const albums = getAlbumsAsAdmin();
-    return albums;
+  getAllAsAdmin: protectedProcedure.query(async ({ ctx: { prisma } }) => {
+    const albums = await prisma.album.findMany({
+      include: {
+        _count: true,
+        images: {
+          orderBy: { date: "asc" },
+          take: 1,
+          where: {
+            coverImage: true,
+            visible: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    const formatedAlbums: FormatedAlbumsForAdminTable[] = albums
+      .map((album) => {
+        const coverImage = album.images[0];
+        if (!coverImage) {
+          return null;
+        }
+        return {
+          ...album,
+          coverImage: {
+            filename: coverImage.filename,
+            id: coverImage.id,
+            date: coverImage.date.toISOString(),
+          },
+          date: album.date.toISOString(),
+        };
+      })
+      .filter(
+        (album) => album !== null
+      ) as unknown[] as FormatedAlbumsForAdminTable[];
+
+    return formatedAlbums;
   }),
   getOne: publicProcedure
     .input(
@@ -28,8 +124,32 @@ export const albumRouter = createTRPCRouter({
           }),
       })
     )
-    .query(({ input: { albumId } }) => {
-      const album = getAlbum(albumId);
+    .query(({ input: { albumId }, ctx: { prisma } }) => {
+      const album = prisma.album.findFirstOrThrow({
+        where: {
+          id: albumId,
+        },
+        select: {
+          id: true,
+          title: true,
+          images: {
+            where: {
+              visible: {
+                equals: true,
+              },
+            },
+            orderBy: { date: "asc" },
+            select: {
+              date: true,
+              filename: true,
+              photographer: true,
+              id: true,
+            },
+          },
+          date: true,
+          _count: true,
+        },
+      });
       return album;
     }),
   getOneAsAdmin: protectedProcedure
@@ -43,8 +163,21 @@ export const albumRouter = createTRPCRouter({
           }),
       })
     )
-    .query(async ({ input: { albumId } }) => {
-      const album = await getAlbumAsAdmin(albumId);
+    .query(async ({ input: { albumId }, ctx: { prisma } }) => {
+      const album = await prisma.album.findFirstOrThrow({
+        where: {
+          id: albumId,
+        },
+        include: {
+          _count: true,
+          images: {
+            orderBy: { date: "asc" },
+          },
+        },
+        orderBy: {
+          date: "desc",
+        },
+      });
       return album;
     }),
   updateInfo: protectedProcedure

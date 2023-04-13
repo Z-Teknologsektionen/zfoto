@@ -4,18 +4,18 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getAlbums = async () => {
-  type PublicAlbums = {
-    coverImage: {
-      date: Date;
-      filename: string;
-      id: string;
-    };
+type PublicAlbums = {
+  coverImage: {
     date: Date;
+    filename: string;
     id: string;
-    title: string;
   };
+  date: Date;
+  id: string;
+  title: string;
+};
 
+export const getAlbums = async () => {
   const albums = await prisma.album.findMany({
     where: {
       visible: {
