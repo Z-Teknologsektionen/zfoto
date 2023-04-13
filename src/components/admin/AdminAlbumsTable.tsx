@@ -14,8 +14,8 @@ export const AdminAlbumsTable: FC<{
     onSettled: () => {
       refetchAllAlbums();
     },
-    onError: (e) => {
-      toast.error(e.data?.code ?? "Unknown error, try again later!");
+    onError: () => {
+      toast.error("Okänt fel, försök igen senare");
     },
     onSuccess: () => {
       toast.success("Successfully updated album");
@@ -60,7 +60,7 @@ export const AdminAlbumsTable: FC<{
                   album.visible ? "bg-red-500" : "bg-green-500"
                 }`}
                 onClick={() => {
-                  toast.loading("Updating album", { duration: 1500 });
+                  toast.loading("Updating album");
                   mutateAlbum({
                     albumId: album.id,
                     visible: !album.visible,

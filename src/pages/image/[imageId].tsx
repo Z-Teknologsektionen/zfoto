@@ -17,7 +17,7 @@ const ImagePage: NextPage = () => {
       retry: () => false,
       onError(err) {
         if (err.data?.code === "BAD_REQUEST") {
-          toast.error("Finns inget album med det id:t!", { duration: 5000 });
+          toast.error("Finns ingen bild med det id:t!");
           router.push("/");
         } else {
           toast.error("Okänt fel, försök igen senare");

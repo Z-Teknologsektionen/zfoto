@@ -86,7 +86,7 @@ const ImagePopup: FC<{
           className="h-8 w-8 lg:h-12 lg:w-12"
           href={`/images/lowres/${activeImage.filename}`}
           onClick={() => {
-            toast.success("Laddar ner bild\nGlöm inte följa vår policy", {
+            toast.success("Laddar ner bild\nGlöm inte följa vår policy!", {
               duration: 2000,
             });
           }}

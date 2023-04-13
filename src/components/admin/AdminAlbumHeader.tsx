@@ -17,7 +17,7 @@ export const AdminAlbumHeader: FC<{
         <button
           className="rounded border-2 bg-yellow-500 py-3 px-4"
           onClick={() => {
-            toast.loading("Uppdaterar", { duration: 1000 });
+            toast.loading("Hämtar igen");
             refetchAlbum();
           }}
           type="button"

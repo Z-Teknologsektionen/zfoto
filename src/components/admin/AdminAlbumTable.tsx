@@ -13,11 +13,11 @@ export const AdminAlbumTable: FC<{
     onSettled: () => {
       refetchAlbum();
     },
-    onError: (e) => {
-      toast.error(e.data?.code ?? "Unknown error, try again later!");
+    onError: () => {
+      toast.error("Okänt fel, försök igen senare");
     },
     onSuccess: () => {
-      toast.success("Successfully updated image");
+      toast.success("Updaterat bild!");
     },
   });
   return (
@@ -44,9 +44,7 @@ export const AdminAlbumTable: FC<{
                   className="inline-block text-center lg:text-left"
                   defaultValue={image.photographer}
                   onBlur={(e) => {
-                    toast.loading("Updating image", {
-                      duration: 1500,
-                    });
+                    toast.loading("Updaterar bild...");
                     singleImageMutation.mutate({
                       imageId: image.id,
                       photographer: e.target.value.trim(),
@@ -68,9 +66,7 @@ export const AdminAlbumTable: FC<{
                   image.visible ? "bg-red-500" : "bg-yellow-500"
                 }`}
                 onClick={() => {
-                  toast.loading("Updating image", {
-                    duration: 1500,
-                  });
+                  toast.loading("Updaterar bild...");
                   singleImageMutation.mutate({
                     imageId: image.id,
                     visible: !image.visible,
@@ -85,9 +81,7 @@ export const AdminAlbumTable: FC<{
                   image.coverImage ? "bg-yellow-500" : "bg-green-500"
                 }`}
                 onClick={() => {
-                  toast.loading("Updating image", {
-                    duration: 1500,
-                  });
+                  toast.loading("Updaterar bild...");
                   singleImageMutation.mutate({
                     imageId: image.id,
                     coverImage: !image.coverImage,

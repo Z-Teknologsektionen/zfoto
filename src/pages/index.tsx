@@ -10,7 +10,7 @@ const Home: NextPage = () => {
     refetchOnWindowFocus: false,
     retry: () => false,
     onError: () => {
-      toast.error("Okänt fel, försök igen senare", { duration: 5000 });
+      toast.error("Okänt fel, försök igen senare");
     },
   });
 

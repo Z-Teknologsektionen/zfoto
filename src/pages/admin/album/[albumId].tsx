@@ -34,11 +34,11 @@ const AdminSingleAlbumPage: NextPage = () => {
       retry: () => false,
       onError(err) {
         if (err.data?.code === "BAD_REQUEST") {
-          toast.error("Finns inget album med det id:t!", { duration: 5000 });
-          router.push("/admin/album");
+          toast.error("Finns inget album med det id:t!");
         } else {
           toast.error("Okänt fel, försök igen senare");
         }
+        router.push("/admin/album");
       },
     }
   );

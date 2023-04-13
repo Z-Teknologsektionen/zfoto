@@ -11,8 +11,8 @@ export const AdminUpdateAlbumWizard: FC<{
     onSettled: () => {
       refetchAlbum();
     },
-    onError: (e) => {
-      toast.error(e.data?.code ?? "Unknown error, try again later!");
+    onError: () => {
+      toast.error("Okänt fel, försök igen senare");
     },
     onSuccess: () => {
       toast.success("Successfully updated album");
@@ -25,9 +25,7 @@ export const AdminUpdateAlbumWizard: FC<{
           className="text-xl font-semibold"
           defaultValue={album.title}
           onBlur={(e) => {
-            toast.loading("Updating album", {
-              duration: 1500,
-            });
+            toast.loading("Updaterar album...");
             singleAlbumMutation.mutate({
               albumId: album.id,
               title: e.target.value.trim(),
@@ -38,9 +36,7 @@ export const AdminUpdateAlbumWizard: FC<{
         <input
           lang="sv-SE"
           onChange={(e) => {
-            toast.loading("Updating album", {
-              duration: 1500,
-            });
+            toast.loading("Updaterar album...");
             singleAlbumMutation.mutate({
               albumId: album.id,
               date: new Date(e.target.value),
@@ -55,9 +51,7 @@ export const AdminUpdateAlbumWizard: FC<{
             defaultChecked={album.visible}
             id="visible"
             onClick={() => {
-              toast.loading("Updating album", {
-                duration: 1500,
-              });
+              toast.loading("Updaterar album...");
               singleAlbumMutation.mutate({
                 albumId: album.id,
                 visible: !album.visible,
