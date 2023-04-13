@@ -17,11 +17,9 @@ const AdminAlbumsPage: NextPage = () => {
     refetch: refetchAlbums,
   } = trpc.album.getAllAsAdmin.useQuery(undefined, {
     refetchOnWindowFocus: false,
-    retry() {
-      return false;
-    },
-    onError: (e) => {
-      toast.error(e.data?.code ?? "Unknown error, try again later!");
+    retry: () => false,
+    onError: () => {
+      toast.error("Okänt fel, försök igen senare", { duration: 5000 });
     },
   });
 

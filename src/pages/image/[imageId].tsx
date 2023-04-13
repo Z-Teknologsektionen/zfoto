@@ -14,8 +14,14 @@ const ImagePage: NextPage = () => {
     { imageId: router.query.imageId as string },
     {
       refetchOnWindowFocus: false,
+      retry: () => false,
       onError(err) {
-        toast.error(err.data?.code ?? "Okänt fel, försök igen senare");
+        if (err.data?.code === "BAD_REQUEST") {
+          toast.error("Finns inget album med det id:t!", { duration: 5000 });
+          router.push("/");
+        } else {
+          toast.error("Okänt fel, försök igen senare");
+        }
       },
     }
   );

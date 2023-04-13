@@ -31,15 +31,21 @@ const AdminSingleAlbumPage: NextPage = () => {
         const getUTCOffset = date.getTimezoneOffset() / -60;
         date.setHours(getHours + getUTCOffset);
       },
-      onError(e) {
-        toast.error(`Okänt fel, försök igen senare!\n${e.data?.code ?? ""}`);
+      retry: () => false,
+      onError(err) {
+        if (err.data?.code === "BAD_REQUEST") {
+          toast.error("Finns inget album med det id:t!", { duration: 5000 });
+          router.push("/admin/album");
+        } else {
+          toast.error("Okänt fel, försök igen senare");
+        }
       },
     }
   );
 
   return (
     <MainLayout>
-      <SectionWrapper className="mx-auto min-h-screen max-w-7xl px-4 xl:px-0">
+      <SectionWrapper>
         <AdminAlbumHeader
           albumId={album?.id ?? ""}
           refetchAlbum={refetchAlbum}

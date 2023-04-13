@@ -37,7 +37,7 @@ export const AdminAlbumsTable: FC<{
           >
             <Image
               alt={`Cover image for album: "${album.title}", Foto: ${coverImage.photographer}`}
-              className="col-span-1 max-w-xs object-contain object-center lg:max-h-[128px] lg:max-w-[128px]"
+              className="col-span-1 mx-auto max-w-xs object-contain object-center lg:max-h-[128px] lg:max-w-[128px]"
               height={1}
               src={`/images/thumb/${coverImage.filename}`}
               style={{
