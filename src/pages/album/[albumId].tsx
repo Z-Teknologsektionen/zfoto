@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import BackButton from "~/components/BackButton";
 import ImagePopup from "~/components/ImagePopup";
@@ -10,17 +10,10 @@ import { LoadingScreen } from "~/components/layout/Loader";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
+import { useCounter } from "~/utils/useCounter";
+import { useToggle } from "~/utils/useToggle";
 
 const AlbumPage: NextPage = () => {
-  const [imageIndex, setImageIndex] = useState<number>(0);
-  const [showPopup, setShowPopup] = useState<boolean>(false);
-
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, []);
-
   const router = useRouter();
 
   const { data: album, isLoading } = trpc.album.getOne.useQuery(
@@ -38,6 +31,20 @@ const AlbumPage: NextPage = () => {
       },
     }
   );
+
+  const {
+    value: imageIndex,
+    decrement: decrementImageIndex,
+    increment: incrementImageIndex,
+    setNumber: setImageIndex,
+  } = useCounter(0, 0, album?._count.images);
+  const [showPopup, togglePopup] = useToggle(false);
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
   const photographers = [
     ...new Set(album?.images.map((item) => item.photographer)),
@@ -68,7 +75,7 @@ const AlbumPage: NextPage = () => {
                       priority: idx < 10,
                     }}
                     onClick={() => {
-                      setShowPopup(true);
+                      togglePopup();
                       setImageIndex(idx);
 
                       document.body.classList.add("overflow-hidden");
@@ -87,10 +94,11 @@ const AlbumPage: NextPage = () => {
             album,
             showPopup,
             imageIndex,
-            setImageIndex,
+            decrementImageIndex,
+            incrementImageIndex,
           }}
           closePopup={() => {
-            setShowPopup(false);
+            togglePopup();
             document.body.classList.remove("overflow-hidden");
           }}
         />

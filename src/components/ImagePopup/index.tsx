@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Dispatch, FC, SetStateAction } from "react";
+import type { FC } from "react";
 import { useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
 import type { RouterOutputs } from "~/utils/trpc";
@@ -8,10 +8,18 @@ import type { RouterOutputs } from "~/utils/trpc";
 const ImagePopup: FC<{
   album: RouterOutputs["album"]["getOne"];
   closePopup: () => void;
+  decrementImageIndex: () => void;
   imageIndex: number;
-  setImageIndex: Dispatch<SetStateAction<number>>;
+  incrementImageIndex: () => void;
   showPopup: boolean;
-}> = ({ album, closePopup, showPopup, imageIndex, setImageIndex }) => {
+}> = ({
+  album,
+  closePopup,
+  showPopup,
+  imageIndex,
+  decrementImageIndex,
+  incrementImageIndex: increaseImageIndex,
+}) => {
   const activeImage = useMemo(() => {
     return album.images.at(imageIndex);
   }, [album.images, imageIndex]);
@@ -43,14 +51,14 @@ const ImagePopup: FC<{
     if (!hasPrevImage || !canCallUpdate()) {
       return;
     }
-    setImageIndex((prev) => prev - 1);
+    decrementImageIndex();
   };
 
   const viewNextImage = (): void => {
     if (!hasNextImage || !canCallUpdate()) {
       return;
     }
-    setImageIndex((prev) => prev + 1);
+    increaseImageIndex();
   };
 
   useEffect(() => {
