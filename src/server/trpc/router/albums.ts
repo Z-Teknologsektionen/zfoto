@@ -138,7 +138,7 @@ export const albumRouter = createTRPCRouter({
                 equals: true,
               },
             },
-            orderBy: { date: "asc" },
+            orderBy: [{ date: "asc" }, { filename: "desc" }],
             select: {
               date: true,
               filename: true,
