@@ -14,6 +14,20 @@ import { useCounter } from "~/utils/useCounter";
 import { useToggle } from "~/utils/useToggle";
 
 const AlbumPage: NextPage = () => {
+  const {
+    value: imageIndex,
+    decrement: decrementImageIndex,
+    increment: incrementImageIndex,
+    setNumber: setImageIndex,
+  } = useCounter();
+  const [showPopup, togglePopup] = useToggle(false);
+
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
   const router = useRouter();
 
   const { data: album, isLoading } = trpc.album.getOne.useQuery(
@@ -31,14 +45,6 @@ const AlbumPage: NextPage = () => {
       },
     }
   );
-
-  const {
-    value: imageIndex,
-    decrement: decrementImageIndex,
-    increment: incrementImageIndex,
-    setNumber: setImageIndex,
-  } = useCounter(0, 0, album?._count.images);
-  const [showPopup, togglePopup] = useToggle(false);
 
   useEffect(() => {
     return () => {
