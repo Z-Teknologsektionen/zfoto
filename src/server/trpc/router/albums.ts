@@ -91,11 +91,19 @@ export const albumRouter = createTRPCRouter({
       },
     });
 
-    const formatedAlbums: FormatedAlbumsForAdminTable[] = albums
-      .map((album) => {
+    const formatedAlbums: FormatedAlbumsForAdminTable[] = albums.map(
+      (album) => {
         const coverImage = album.images[0];
         if (!coverImage) {
-          return null;
+          return {
+            ...album,
+            coverImage: {
+              filename: "",
+              id: "",
+              date: "",
+            },
+            date: album.date.toISOString(),
+          };
         }
         return {
           ...album,
@@ -106,10 +114,8 @@ export const albumRouter = createTRPCRouter({
           },
           date: album.date.toISOString(),
         };
-      })
-      .filter(
-        (album) => album !== null
-      ) as unknown[] as FormatedAlbumsForAdminTable[];
+      }
+    ) as unknown[] as FormatedAlbumsForAdminTable[];
 
     return formatedAlbums;
   }),
