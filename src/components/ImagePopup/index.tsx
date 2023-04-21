@@ -1,24 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
+import { MdOutlineClose, MdOutlineFileDownload } from "react-icons/md";
 import type { RouterOutputs } from "~/utils/trpc";
 
-const ImagePopup: FC<{
+interface ImagePopupTypes {
   album: RouterOutputs["album"]["getOne"];
   closePopup: () => void;
   decrementImageIndex: () => void;
   imageIndex: number;
   incrementImageIndex: () => void;
   showPopup: boolean;
-}> = ({
+}
+
+const ImagePopup: FC<ImagePopupTypes> = ({
   album,
   closePopup,
   showPopup,
   imageIndex,
   decrementImageIndex,
-  incrementImageIndex: increaseImageIndex,
+  incrementImageIndex,
 }) => {
   const activeImage = useMemo(() => {
     return album.images.at(imageIndex);
@@ -39,27 +42,27 @@ const ImagePopup: FC<{
   const lastCallTime = useRef(0);
   const minDelay = 1000 / 4;
 
-  const canCallUpdate = (): boolean => {
+  const canCallUpdate = useCallback((): boolean => {
     if (Date.now() - lastCallTime.current >= minDelay) {
       lastCallTime.current = Date.now();
       return true;
     }
     return false;
-  };
+  }, [minDelay]);
 
-  const viewPrevImage = (): void => {
+  const viewPrevImage = useCallback((): void => {
     if (!hasPrevImage || !canCallUpdate()) {
       return;
     }
     decrementImageIndex();
-  };
+  }, [canCallUpdate, decrementImageIndex, hasPrevImage]);
 
-  const viewNextImage = (): void => {
+  const viewNextImage = useCallback((): void => {
     if (!hasNextImage || !canCallUpdate()) {
       return;
     }
-    increaseImageIndex();
-  };
+    incrementImageIndex();
+  }, [canCallUpdate, incrementImageIndex, hasNextImage]);
 
   useEffect(() => {
     const keydownListener = (event: KeyboardEvent): void => {
@@ -85,13 +88,13 @@ const ImagePopup: FC<{
 
   return (
     <section
-      className={`fixed inset-0 flex h-full w-full flex-col items-center justify-between bg-white ${
+      className={`fixed inset-0 z-20 flex h-full w-full flex-col items-center justify-between bg-white ${
         showPopup ? "opacity-100" : "pointer-events-none opacity-0"
       } transition-opacity duration-1000`}
     >
-      <div className="flex w-full justify-end gap-4 pt-2 pr-2 text-right md:pr-4">
+      <div className="flex w-full justify-end gap-4 pt-2 pr-2 text-right md:pr-4 md:pt-4">
         <a
-          className="h-8 w-8 lg:h-12 lg:w-12"
+          className=""
           href={`/images/lowres/${activeImage.filename}`}
           onClick={() => {
             toast.success("Laddar ner bild\nGlöm inte följa vår policy!", {
@@ -101,33 +104,16 @@ const ImagePopup: FC<{
           type="button"
           download
         >
-          <svg
-            fill="none"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g strokeWidth="0" />
-            <g strokeLinecap="round" strokeLinejoin="round" />
-            <g>
-              <path
-                d="M12 3a1 1 0 0 1 1 1v9.586l2.293-2.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L11 13.586V4a1 1 0 0 1 1-1Z"
-                fill="#000000"
-              />
-              <path
-                d="M6 17a1 1 0 1 0-2 0v.6C4 19.482 5.518 21 7.4 21h9.2c1.882 0 3.4-1.518 3.4-3.4V17a1 1 0 1 0-2 0v.6c0 .778-.622 1.4-1.4 1.4H7.4c-.778 0-1.4-.622-1.4-1.4V17Z"
-                fill="#000000"
-              />
-            </g>
-          </svg>
+          <MdOutlineFileDownload className="h-8 w-8 lg:h-10 lg:w-10" />
         </a>
         <button
-          className="text-right text-3xl font-black leading-none lg:text-5xl"
+          className="text-right font-black leading-none"
           onClick={() => {
             closePopup();
           }}
           type="button"
         >
-          &#10005;
+          <MdOutlineClose className="h-8 w-8 lg:h-10 lg:w-10" />
         </button>
       </div>
       <div className="flex h-full w-full flex-grow flex-row items-center justify-between">

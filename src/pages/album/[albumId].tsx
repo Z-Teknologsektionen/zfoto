@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import BackButton from "~/components/BackButton";
 import ImagePopup from "~/components/ImagePopup";
@@ -52,9 +52,10 @@ const AlbumPage: NextPage = () => {
     };
   }, []);
 
-  const photographers = [
-    ...new Set(album?.images.map((item) => item.photographer)),
-  ];
+  const photographers = useMemo(
+    () => [...new Set(album?.images.map((item) => item.photographer))],
+    [album?.images]
+  );
 
   return (
     <>
