@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { FC } from "react";
-import type { LinkType } from "./Header";
+import type { SafeLinkType } from "~/utils/links";
 
-export interface HeaderNavLinkProps extends Omit<LinkType, "order"> {
+export interface HeaderNavLinkProps extends Omit<SafeLinkType, "order"> {
   closeNav: () => void;
   pathname: string;
 }
