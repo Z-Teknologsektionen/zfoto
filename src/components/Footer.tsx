@@ -18,20 +18,23 @@ export const Footer: FC = () => {
     <div className="bg-[#333333] text-[#a7a7a7]">
       <SectionWrapper className="max-w-5xl py-16">
         <footer className="mx-auto flex flex-col items-center gap-8">
-          <div className="flex w-full flex-col items-start justify-center  gap-8 md:flex-row md:items-center md:gap-4">
-            <Image
-              alt="Bild på zFotos logga"
-              className="object-contain object-center"
-              height={110}
-              src="/zFoto.svg"
-              width={110}
-            />
+          <div className="flex w-full flex-row items-start justify-center gap-8 md:items-center md:gap-4">
+            <Link href="/">
+              <Image
+                alt="Bild på zFotos logga"
+                className="w-28 object-contain object-center"
+                height={112}
+                src="/zFoto.svg"
+                width={112}
+              />
+            </Link>
+
             <div className="flex-grow">
-              <ul className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
+              <ul className="flex w-full flex-col items-center justify-center gap-4 py-2 md:flex-row">
                 {orderdFooterLinks.map(({ href, label, newPage }) => (
                   <li key={href}>
                     <Link
-                      className="px-2 py-1 text-lg font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
+                      className="px-2 py-1 font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
                       href={href}
                       rel={newPage ? "noopener noreferrer" : undefined}
                       target={newPage ? "_blank" : "_self"}
@@ -43,14 +46,14 @@ export const Footer: FC = () => {
                 <li>
                   {status === "authenticated" ? (
                     <Link
-                      className="px-2 py-1 text-lg font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
+                      className="px-2 py-1 font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
                       href="/admin"
                     >
                       Admin sida
                     </Link>
                   ) : (
                     <button
-                      className="px-2 py-1 text-lg font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
+                      className="px-2 py-1 font-semibold hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80"
                       onClick={() => {
                         signIn("google", {
                           redirect: true,
@@ -66,7 +69,12 @@ export const Footer: FC = () => {
               </ul>
             </div>
 
-            <div className="flex flex-col justify-between gap-2">
+            <Link
+              className="flex w-28 flex-col justify-between gap-2"
+              href="https://ztek.se"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <span className="text-center text-base">En del av:</span>
               <Image
                 alt="Bild på Z-teknologsektionens logga"
@@ -76,7 +84,7 @@ export const Footer: FC = () => {
                 src="/ztek.png"
                 width={90}
               />
-            </div>
+            </Link>
           </div>
           <hr className="w-full" />
           <ul className="flex h-10 flex-row gap-4">
