@@ -21,14 +21,13 @@ const AlbumPage: NextPage = () => {
     setNumber: setImageIndex,
   } = useCounter();
   const [showPopup, togglePopup] = useToggle(false);
+  const router = useRouter();
 
   useEffect(() => {
     return () => {
       document.body.classList.remove("overflow-hidden");
     };
   }, []);
-
-  const router = useRouter();
 
   const { data: album, isLoading } = trpc.album.getOne.useQuery(
     { albumId: router.query.albumId as string },
@@ -45,12 +44,6 @@ const AlbumPage: NextPage = () => {
       },
     }
   );
-
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, []);
 
   const photographers = useMemo(
     () => [...new Set(album?.images.map((item) => item.photographer))],
