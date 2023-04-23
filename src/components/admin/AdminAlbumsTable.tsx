@@ -34,7 +34,7 @@ export const AdminAlbumsTable: FC<{
               alt={`Cover image for album: "${album.title}"`}
               className="col-span-1 mx-auto max-w-xs object-contain object-center lg:max-h-[128px] lg:max-w-[128px]"
               height={1}
-              src={`/images/thumb/${album.coverImage.filename}`}
+              src={`/images/thumb/${album.coverImageFilename}`}
               style={{
                 width: "auto",
                 height: "auto",
@@ -56,7 +56,7 @@ export const AdminAlbumsTable: FC<{
             </div>
             <div className="col-span-2 flex flex-row items-center justify-center gap-2 lg:flex-col">
               <button
-                className={`rounded border-2 py-3 px-4 ${
+                className={`rounded border-2 px-4 py-3 ${
                   album.visible ? "bg-red-500" : "bg-green-500"
                 }`}
                 onClick={() => {
@@ -71,7 +71,7 @@ export const AdminAlbumsTable: FC<{
                 {album.visible ? "Dölj album" : "Visa album"}
               </button>
               <Link
-                className="rounded border-2 bg-yellow-500 py-3 px-4"
+                className="rounded border-2 bg-yellow-500 px-4 py-3"
                 href={`/admin/album/${album.id}`}
                 type="button"
               >

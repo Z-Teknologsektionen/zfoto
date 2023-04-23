@@ -10,7 +10,7 @@ export const AdminAlbumsHeader: FC<{
       <div className="flex flex-row justify-between">
         <h1 className="text-xl font-semibold">Admin sida</h1>
         <button
-          className="rounded border-2 bg-yellow-500 py-3 px-4"
+          className="rounded border-2 bg-yellow-500 px-4 py-3"
           onClick={() => {
             refetchAllAlbums();
           }}

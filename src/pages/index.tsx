@@ -21,10 +21,16 @@ const Home: NextPage = () => {
           Välkommen till zFoto
         </h1>
         <div className="grid grid-cols-1 place-items-center gap-4 opacity-100 transition sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {albums?.map(({ id, title, date, coverImage: { filename } }, idx) => (
+          {albums?.map(({ id, title, date, coverImageFilename }, idx) => (
             <AlbumGridItem
               key={id}
-              {...{ id, title, filename, priorityLoadning: idx < 10, date }}
+              {...{
+                id,
+                title,
+                filename: coverImageFilename,
+                priorityLoadning: idx < 10,
+                date,
+              }}
             />
           ))}
         </div>

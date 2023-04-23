@@ -62,7 +62,7 @@ export const AdminAlbumTable: FC<{
             </div>
             <div className="col-span-2 flex gap-2">
               <button
-                className={`rounded border-2 py-3 px-4 ${
+                className={`rounded border-2 px-4 py-3 ${
                   image.visible ? "bg-red-500" : "bg-yellow-500"
                 }`}
                 onClick={() => {
@@ -77,7 +77,7 @@ export const AdminAlbumTable: FC<{
                 {image.visible ? "Dölj bild" : "Visa bild"}
               </button>
               <button
-                className={`rounded border-2 py-3 px-4 ${
+                className={`rounded border-2 px-4 py-3 ${
                   image.coverImage ? "bg-yellow-500" : "bg-green-500"
                 }`}
                 onClick={() => {

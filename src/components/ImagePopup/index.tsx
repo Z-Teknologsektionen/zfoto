@@ -1,4 +1,4 @@
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
@@ -29,6 +29,10 @@ const ImagePopup: FC<ImagePopupTypes> = ({
 
   const nextImage = useMemo(() => {
     return album.images.at(imageIndex + 1);
+  }, [album.images, imageIndex]);
+
+  const secondNextImage = useMemo(() => {
+    return album.images.at(imageIndex + 2);
   }, [album.images, imageIndex]);
 
   const hasPrevImage = useMemo(() => {
@@ -82,6 +86,20 @@ const ImagePopup: FC<ImagePopupTypes> = ({
     };
   });
 
+  useEffect(() => {
+    if (nextImage) {
+      // eslint-disable-next-line no-new
+      new Image().src = `/images/lowres/${nextImage.filename}`;
+    }
+  }, [nextImage]);
+
+  useEffect(() => {
+    if (secondNextImage) {
+      // eslint-disable-next-line no-new
+      new Image().src = `/images/lowres/${secondNextImage.filename}`;
+    }
+  }, [secondNextImage]);
+
   if (!activeImage) {
     return null;
   }
@@ -92,7 +110,7 @@ const ImagePopup: FC<ImagePopupTypes> = ({
         showPopup ? "opacity-100" : "pointer-events-none opacity-0"
       } transition-opacity duration-1000`}
     >
-      <div className="flex w-full justify-end gap-4 pt-2 pr-2 text-right md:pr-4 md:pt-4">
+      <div className="flex w-full justify-end gap-4 pr-2 pt-2 text-right md:pr-4 md:pt-4">
         <a
           className=""
           href={`/images/lowres/${activeImage.filename}`}
@@ -129,18 +147,10 @@ const ImagePopup: FC<ImagePopupTypes> = ({
         </button>
         <div className="relative h-full flex-grow">
           <>
-            <Image
+            <NextImage
               alt="Full size image of "
               className="object-contain"
               src={`/images/lowres/${activeImage.filename}`}
-              fill
-              priority
-              unoptimized
-            />
-            <Image
-              alt="Used for preloading next images"
-              className="invisible"
-              src={nextImage ? `/images/lowres/${nextImage.filename}` : ""}
               fill
               priority
               unoptimized

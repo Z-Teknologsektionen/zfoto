@@ -15,7 +15,7 @@ export const AdminAlbumHeader: FC<{
           <p>{albumId}</p>
         </div>
         <button
-          className="rounded border-2 bg-yellow-500 py-3 px-4"
+          className="rounded border-2 bg-yellow-500 px-4 py-3"
           onClick={() => {
             toast.loading("Hämtar igen");
             refetchAlbum();

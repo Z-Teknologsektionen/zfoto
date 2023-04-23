@@ -1,23 +1,6 @@
-import type { Album, Image, Prisma } from "@prisma/client";
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-
-type FormatedAlbumsForGrid = {
-  coverImage: {
-    date: Date;
-    filename: string;
-    id: string;
-  };
-  date: Date;
-  id: string;
-  title: string;
-};
-
-type FormatedAlbumsForAdminTable = Album & {
-  _count: Prisma.AlbumCountOutputType;
-  coverImage: Image;
-};
 
 export const albumRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
@@ -25,6 +8,12 @@ export const albumRouter = createTRPCRouter({
       where: {
         visible: {
           equals: true,
+        },
+        images: {
+          some: {
+            coverImage: true,
+            visible: true,
+          },
         },
       },
       select: {
@@ -35,12 +24,6 @@ export const albumRouter = createTRPCRouter({
           take: 1,
           select: {
             filename: true,
-            id: true,
-            date: true,
-          },
-          where: {
-            coverImage: true,
-            visible: true,
           },
         },
         date: true,
@@ -50,27 +33,13 @@ export const albumRouter = createTRPCRouter({
       },
     });
 
-    const formatedAlbums: FormatedAlbumsForGrid[] = albums
-      .map((album) => {
-        const coverImage = album.images[0];
-        if (!coverImage) {
-          return null;
-        }
-        return {
-          id: album.id,
-          title: album.title,
-          coverImage: {
-            filename: coverImage.filename,
-            id: coverImage.id,
-            date: coverImage.date.toISOString(),
-          },
-          date: album.date.toISOString(),
-        };
-      })
-      .filter(
-        (album) => album !== null
-      ) as unknown[] as FormatedAlbumsForGrid[];
-
+    const formatedAlbums = albums.map((album) => {
+      const { images, ...formatedAlbum } = album;
+      return {
+        ...formatedAlbum,
+        coverImageFilename: images.at(0)?.filename ?? "",
+      };
+    });
     return formatedAlbums;
   }),
   getAllAsAdmin: protectedProcedure.query(async ({ ctx: { prisma } }) => {
@@ -91,32 +60,13 @@ export const albumRouter = createTRPCRouter({
       },
     });
 
-    const formatedAlbums: FormatedAlbumsForAdminTable[] = albums.map(
-      (album) => {
-        const coverImage = album.images[0];
-        if (!coverImage) {
-          return {
-            ...album,
-            coverImage: {
-              filename: "",
-              id: "",
-              date: "",
-            },
-            date: album.date.toISOString(),
-          };
-        }
-        return {
-          ...album,
-          coverImage: {
-            filename: coverImage.filename,
-            id: coverImage.id,
-            date: coverImage.date.toISOString(),
-          },
-          date: album.date.toISOString(),
-        };
-      }
-    ) as unknown[] as FormatedAlbumsForAdminTable[];
-
+    const formatedAlbums = albums.map((album) => {
+      const { images, ...formatedAlbum } = album;
+      return {
+        ...formatedAlbum,
+        coverImageFilename: images.at(0)?.filename ?? "",
+      };
+    });
     return formatedAlbums;
   }),
   getOne: publicProcedure
@@ -182,28 +132,6 @@ export const albumRouter = createTRPCRouter({
         },
         orderBy: {
           date: "desc",
-        },
-      });
-      return album;
-    }),
-  updateInfo: protectedProcedure
-    .input(
-      z.object({
-        albumId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
-        title: z.string().min(1),
-        date: z.date(),
-        visible: z.boolean(),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      const album = await ctx.prisma.album.update({
-        where: { id: input.albumId },
-        data: {
-          title: input.title,
-          date: input.date,
-          visible: input.visible,
         },
       });
       return album;

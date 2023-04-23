@@ -20,6 +20,7 @@ export const ImageGridItem: FC<{
       <Image
         alt={`Bild från "${album.title}"`}
         className="object-contain object-center"
+        loading={priority ? "eager" : "lazy"}
         priority={priority}
         src={`/images/thumb/${filename}`}
         fill

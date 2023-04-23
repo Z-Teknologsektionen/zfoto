@@ -70,7 +70,7 @@ const AlbumPage: NextPage = () => {
                 photographers={photographers}
                 title={album.title}
               />
-              <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
+              <div className="grid grid-cols-2 place-items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
                 {album?.images.map(({ id, filename }, idx) => (
                   <ImageGridItem
                     key={id}

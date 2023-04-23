@@ -1,6 +1,11 @@
 import Link from "next/link";
 import type { FC } from "react";
-import type { HeaderNavLinkProps } from "./Header";
+import type { LinkType } from "./Header";
+
+export interface HeaderNavLinkProps extends Omit<LinkType, "order"> {
+  closeNav: () => void;
+  pathname: string;
+}
 
 export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
   closeNav,
@@ -12,7 +17,7 @@ export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
   return (
     <li>
       <Link
-        className={`border-b-2 py-1 px-2 hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80
+        className={`border-b-2 px-2 py-1 hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80
           ${
             pathname === href
               ? "border-transparent font-bold lg:border-[#a7a7a7]/80"
