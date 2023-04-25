@@ -25,6 +25,10 @@ export const albumRouter = createTRPCRouter({
           select: {
             filename: true,
           },
+          where: {
+            coverImage: true,
+            visible: true,
+          },
         },
         date: true,
       },
