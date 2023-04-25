@@ -1,31 +1,32 @@
 import Image from "next/image";
 import type { FC } from "react";
-import type { AlbumType } from "../../utils/types";
+import type { RouterOutputs } from "~/utils/trpc";
 
 export const ImageGridItem: FC<{
-  album: AlbumType;
+  album: RouterOutputs["album"]["getOne"];
   filename: string;
   onClick: () => void;
-}> = ({ filename, album, onClick }) => {
+  priority?: boolean;
+}> = ({ filename, album, onClick, priority }) => {
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
+    <button
       className="relative aspect-square h-full max-h-52 min-h-[150px] w-full"
       onClick={() => {
         onClick();
       }}
+      type="button"
     >
       <Image
         alt={`Bild från "${album.title}"`}
-        className={`
-          object-contain object-center
-          before:absolute before:inset-0 before:z-0 before:rounded-3xl before:bg-black/10 before:p-4 before:content-[''] 
-        `}
-        src={filename ? `/images/thumb/${filename}` : ""}
+        className="object-contain object-center"
+        loading={priority ? "eager" : "lazy"}
+        priority={priority}
+        src={`/images/thumb/${filename}`}
         fill
         unoptimized
       />
       <div className="absolute inset-0" />
-    </div>
+    </button>
   );
 };

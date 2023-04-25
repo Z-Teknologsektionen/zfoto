@@ -1,9 +1,10 @@
-import { router } from "../trpc";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { createTRPCRouter } from "../trpc";
 import { albumRouter } from "./albums";
 import { emailRouter } from "./email";
 import { imageRouter } from "./images";
 
-export const appRouter = router({
+export const appRouter = createTRPCRouter({
   album: albumRouter,
   email: emailRouter,
   image: imageRouter,

@@ -1,20 +1,21 @@
 import type { NextPage } from "next";
-import type { AlbumType } from "../../utils/types";
+import { formatDateString } from "../../utils/formatDateAndTimeStrings";
 
-const AlbumInfo: NextPage<{ album: AlbumType; photographers: string[] }> = ({
-  album,
-  photographers,
-}) => {
-  const { title, date } = album;
+const AlbumInfo: NextPage<{
+  date: Date;
+  photographers: string[];
+  title: string;
+}> = ({ date, title, photographers }) => {
+  const formatedDateString = formatDateString(date);
   return (
-    <div className="flex flex-col gap-1">
+    <div className="my-4 flex flex-col gap-1">
       <h1 className="hidden text-3xl font-bold md:block">
-        {`${title} | ${new Date(date).toLocaleDateString("se-sv", {})}`}
+        {`${title} | ${formatedDateString}`}
       </h1>
       <div className="text-xl font-bold md:hidden">
         <h1 className="text-3xl">{title}</h1>
 
-        <h1>{new Date(date).toLocaleDateString("se-sv", {})}</h1>
+        <h1>{formatedDateString}</h1>
       </div>
       <p>{`Fotografer: ${photographers.join(", ")}`}</p>
     </div>

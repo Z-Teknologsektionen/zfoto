@@ -12,9 +12,7 @@ const StudioPage: NextPage = () => {
       <Head>
         <NextStudioHead />
       </Head>
-      <div className="absolute inset-0">
-        <NextStudio config={config} />
-      </div>
+      <NextStudio config={config} />
     </>
   );
 };

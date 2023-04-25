@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "~/server/db/client";
 
-const prisma = new PrismaClient();
+type PublicAlbums = {
+  coverImage: {
+    date: Date;
+    filename: string;
+    id: string;
+  };
+  date: Date;
+  id: string;
+  title: string;
+};
 
 export const getAlbums = async () => {
   const albums = await prisma.album.findMany({
@@ -15,41 +24,48 @@ export const getAlbums = async () => {
       id: true,
       title: true,
       images: {
-        where: {
-          id: {
-            not: undefined,
-          },
-          coverImage: {
-            equals: true,
-          },
-          visible: {
-            equals: true,
-          },
-        },
         orderBy: { date: "asc" },
+        take: 1,
         select: {
-          albumId: true,
-          date: true,
           filename: true,
-          photographer: true,
           id: true,
+          date: true,
+        },
+        where: {
+          coverImage: true,
+          visible: true,
         },
       },
       date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
     },
     orderBy: {
       date: "desc",
     },
   });
-  return albums;
+
+  const newAlbums: PublicAlbums[] = albums
+    .map((album) => {
+      const coverImage = album.images[0];
+      if (!coverImage) {
+        return null;
+      }
+      return {
+        id: album.id,
+        title: album.title,
+        coverImage: {
+          filename: coverImage.filename,
+          id: coverImage.id,
+          date: coverImage.date.toISOString(),
+        },
+        date: album.date.toISOString(),
+      };
+    })
+    .filter((album) => album !== null) as unknown[] as PublicAlbums[];
+
+  return newAlbums;
 };
 
-export const getAlbum = async (albumId: string) => {
+export const getAlbum = async (albumId?: string) => {
   const album = await prisma.album.findFirstOrThrow({
     where: {
       id: albumId,
@@ -59,9 +75,6 @@ export const getAlbum = async (albumId: string) => {
       title: true,
       images: {
         where: {
-          id: {
-            not: undefined,
-          },
           visible: {
             equals: true,
           },
@@ -76,11 +89,7 @@ export const getAlbum = async (albumId: string) => {
         },
       },
       date: true,
-      _count: {
-        select: {
-          images: true,
-        },
-      },
+      _count: true,
     },
   });
   return album;
@@ -106,7 +115,7 @@ export const getAlbumsAsAdmin = async () => {
   return albums;
 };
 
-export const getAlbumAsAdmin = async (albumId: string) => {
+export const getAlbumAsAdmin = async (albumId?: string) => {
   const album = await prisma.album.findFirstOrThrow({
     where: {
       id: albumId,
@@ -124,7 +133,7 @@ export const getAlbumAsAdmin = async (albumId: string) => {
   return album;
 };
 
-export const getImage = async ({ imageId }: { imageId: string }) => {
+export const getImage = async (imageId?: string) => {
   const image = await prisma.image.findUniqueOrThrow({
     where: {
       id: imageId,

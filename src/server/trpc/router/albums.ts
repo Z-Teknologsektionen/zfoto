@@ -1,89 +1,165 @@
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
-import { publicProcedure, router } from "../trpc";
-
-export const albumRouter = router({
-  getAll: publicProcedure.query(({ ctx }) => {
-    const albums = ctx.prisma.album.findMany({
-      include: {
-        images: true,
+export const albumRouter = createTRPCRouter({
+  getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
+    const albums = await prisma.album.findMany({
+      where: {
+        visible: {
+          equals: true,
+        },
+        images: {
+          some: {
+            coverImage: true,
+            visible: true,
+          },
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        images: {
+          orderBy: { date: "asc" },
+          take: 1,
+          select: {
+            filename: true,
+          },
+        },
+        date: true,
+      },
+      orderBy: {
+        date: "desc",
       },
     });
-    return albums;
+
+    const formatedAlbums = albums.map((album) => {
+      const { images, ...formatedAlbum } = album;
+      return {
+        ...formatedAlbum,
+        coverImageFilename: images.at(0)?.filename ?? "",
+      };
+    });
+    return formatedAlbums;
+  }),
+  getAllAsAdmin: protectedProcedure.query(async ({ ctx: { prisma } }) => {
+    const albums = await prisma.album.findMany({
+      include: {
+        _count: true,
+        images: {
+          orderBy: { date: "asc" },
+          take: 1,
+          where: {
+            coverImage: true,
+            visible: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    const formatedAlbums = albums.map((album) => {
+      const { images, ...formatedAlbum } = album;
+      return {
+        ...formatedAlbum,
+        coverImageFilename: images.at(0)?.filename ?? "",
+      };
+    });
+    return formatedAlbums;
   }),
   getOne: publicProcedure
     .input(
       z.object({
-        albumId: z.string().refine((val) => {
-          return isValidObjectId(val);
-        }),
+        albumId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
       })
     )
-    .query(({ input: { albumId }, ctx }) => {
-      const album = ctx.prisma.album.findUnique({
+    .query(({ input: { albumId }, ctx: { prisma } }) => {
+      const album = prisma.album.findFirstOrThrow({
+        where: {
+          id: albumId,
+        },
+        select: {
+          id: true,
+          title: true,
+          images: {
+            where: {
+              visible: {
+                equals: true,
+              },
+            },
+            orderBy: [{ date: "asc" }, { filename: "desc" }],
+            select: {
+              date: true,
+              filename: true,
+              photographer: true,
+              id: true,
+            },
+          },
+          date: true,
+          _count: true,
+        },
+      });
+      return album;
+    }),
+  getOneAsAdmin: protectedProcedure
+    .input(
+      z.object({
+        albumId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
+      })
+    )
+    .query(async ({ input: { albumId }, ctx: { prisma } }) => {
+      const album = await prisma.album.findFirstOrThrow({
         where: {
           id: albumId,
         },
         include: {
-          images: true,
-        },
-      });
-
-      return album;
-    }),
-  createOne: publicProcedure
-    .input(
-      z.object({
-        title: z.string().min(1),
-        date: z.date().optional(),
-        images: z
-          .array(
-            z.object({
-              filename: z.string().min(1),
-              photographer: z.string().min(1),
-              date: z.date().optional(),
-            })
-          )
-          .min(1),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      const createdAlbum = await ctx.prisma.album.create({
-        data: {
-          title: input.title,
+          _count: true,
           images: {
-            createMany: {
-              data: input.images,
-            },
+            orderBy: { date: "asc" },
           },
         },
-        include: {
-          images: true,
+        orderBy: {
+          date: "desc",
         },
       });
-      return createdAlbum;
+      return album;
     }),
-  updateInfo: publicProcedure
+  updateOne: protectedProcedure
     .input(
       z.object({
         albumId: z.string().refine((val) => {
           return isValidObjectId(val);
         }),
-        title: z.string().min(1),
-        date: z.date(),
-        visible: z.boolean(),
+        title: z.string().min(1).optional(),
+        date: z.date().optional(),
+        visible: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const album = await ctx.prisma.album.update({
-        where: { id: input.albumId },
-        data: {
-          title: input.title,
-          date: input.date,
-          visible: input.visible,
-        },
-      });
-      return album;
+      try {
+        const updatedAlbum = await ctx.prisma.album.update({
+          where: { id: input.albumId },
+          data: {
+            title: input.title,
+            date: input.date,
+            visible: input.visible,
+          },
+        });
+        return updatedAlbum;
+      } catch (error) {
+        return error;
+      }
     }),
 });

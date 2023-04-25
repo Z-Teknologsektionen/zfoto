@@ -1,17 +1,27 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import AlbumInfo from "../../components/imageGrid/AlbumInfo";
-import { ImageGridItem } from "../../components/imageGrid/ImageGridItem";
-import ImagePopup from "../../components/ImagePopup";
-import MainWrapper from "../../components/Wrapper";
-import { getAlbum } from "../../utils/fetchDataFromPrisma";
-import type { AlbumType } from "../../utils/types";
+import { useEffect, useMemo } from "react";
+import { toast } from "react-hot-toast";
+import BackButton from "~/components/BackButton";
+import ImagePopup from "~/components/ImagePopup";
+import AlbumInfo from "~/components/imageGrid/AlbumInfo";
+import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
+import { LoadingScreen } from "~/components/layout/Loader";
+import MainLayout from "~/components/layout/MainLayout";
+import SectionWrapper from "~/components/layout/SectionWrapper";
+import { trpc } from "~/utils/trpc";
+import { useCounter } from "~/utils/useCounter";
+import { useToggle } from "~/utils/useToggle";
 
-const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
+const AlbumPage: NextPage = () => {
+  const {
+    value: imageIndex,
+    decrement: decrementImageIndex,
+    increment: incrementImageIndex,
+    setNumber: setImageIndex,
+  } = useCounter();
+  const [showPopup, togglePopup] = useToggle(false);
   const router = useRouter();
-  const [imageId, setImageId] = useState<string>();
-  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -19,81 +29,82 @@ const AlbumPage: NextPage<{ album: AlbumType }> = ({ album }) => {
     };
   }, []);
 
-  const photographers = [
-    ...new Set(album.images.map((item) => item.photographer)),
-  ];
+  const { data: album, isLoading } = trpc.album.getOne.useQuery(
+    { albumId: router.query.albumId as string },
+    {
+      refetchOnWindowFocus: false,
+      retry: () => false,
+      onError(err) {
+        if (err.data?.code === "BAD_REQUEST") {
+          toast.error("Finns inget album med det id:t!");
+        } else {
+          toast.error("Okänt fel, försök igen senare");
+        }
+        router.push("/");
+      },
+    }
+  );
+
+  const photographers = useMemo(
+    () => [...new Set(album?.images.map((item) => item.photographer))],
+    [album?.images]
+  );
 
   return (
     <>
-      <MainWrapper>
-        <div className="mx-auto flex max-w-7xl flex-col gap-2">
-          <button
-            className="-ml-4 w-fit underline-offset-2 hover:underline md:-ml-2.5"
-            onClick={() => {
-              router.push("/");
-            }}
-            type="button"
-          >
-            {"<"}
-            Tillbaka till album
-          </button>
-          <AlbumInfo album={album} photographers={photographers} />
-          <div className="grid grid-cols-2 place-items-center gap-y-4 gap-x-2 md:grid-cols-3 lg:grid-cols-5">
-            {album?.images.map(({ id, filename }) => {
-              return (
-                <ImageGridItem
-                  key={id}
-                  {...{ id, albumId: album.id, filename, album }}
-                  onClick={() => {
-                    setImageId(id);
-                    setShowPopup(true);
+      <MainLayout>
+        <SectionWrapper className="flex flex-col gap-2">
+          <BackButton />
+          {isLoading && <LoadingScreen />}
+          {album && (
+            <>
+              <AlbumInfo
+                date={album.date}
+                photographers={photographers}
+                title={album.title}
+              />
+              <div className="grid grid-cols-2 place-items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
+                {album?.images.map(({ id, filename }, idx) => (
+                  <ImageGridItem
+                    key={id}
+                    {...{
+                      id,
+                      albumId: album.id,
+                      filename,
+                      album,
+                      priority: idx < 10,
+                    }}
+                    onClick={() => {
+                      togglePopup();
+                      setImageIndex(idx);
 
-                    document.body.classList.add("overflow-hidden");
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </MainWrapper>
+                      document.body.classList.add("overflow-hidden");
+                    }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </SectionWrapper>
+      </MainLayout>
 
-      <ImagePopup
-        key={imageId}
-        {...{ album, imageId, setImageId, showPopup }}
-        closePopup={() => {
-          setShowPopup(false);
-          document.body.classList.remove("overflow-hidden");
-        }}
-      />
+      {album && (
+        <ImagePopup
+          {...{
+            album,
+            showPopup,
+            imageIndex,
+            decrementImageIndex,
+            incrementImageIndex,
+          }}
+          closePopup={() => {
+            togglePopup();
+            document.body.classList.remove("overflow-hidden");
+          }}
+        />
+      )}
     </>
   );
 };
 
 export default AlbumPage;
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps: GetStaticProps<{ album: AlbumType }> = async (
-  context
-) => {
-  try {
-    const albumId = context.params?.albumId || "";
-    const album = await getAlbum(albumId.toString());
-
-    return {
-      props: {
-        album: JSON.parse(JSON.stringify(album)) as typeof album,
-      },
-      revalidate: 300,
-    };
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-};

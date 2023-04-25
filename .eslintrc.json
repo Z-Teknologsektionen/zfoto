@@ -116,6 +116,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/require-optimization": "error",
     "unused-imports/no-unused-imports": "error",
+    "no-use-before-define": "off",
     "unused-imports/no-unused-vars": [
       "error",
       {
