@@ -89,7 +89,7 @@ export const useLinks = (): {
         href: "/album",
         order: 4,
         useInHeader: true,
-        useInFooter: false,
+        useInFooter: true,
       },
       {
         label: "ztek.se",
