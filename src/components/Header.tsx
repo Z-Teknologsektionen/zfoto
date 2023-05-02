@@ -63,7 +63,12 @@ export const Header: FC = () => {
           </ul>
         </nav>
         <div className="z-20 lg:hidden">
-          <button className="p-2 text-xl" onClick={toggleNav} type="button">
+          <button
+            aria-label="Visa/dölj navigation"
+            className="p-2 text-xl"
+            onClick={toggleNav}
+            type="button"
+          >
             {!viewNav ? (
               <FaBars className="h-6 w-6" />
             ) : (
