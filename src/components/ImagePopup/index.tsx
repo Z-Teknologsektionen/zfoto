@@ -112,7 +112,8 @@ const ImagePopup: FC<ImagePopupTypes> = ({
     >
       <div className="flex w-full justify-end gap-4 pr-2 pt-2 text-right md:pr-4 md:pt-4">
         <a
-          className=""
+          aria-label="Ladda ner bild"
+          className="p-1"
           href={`/images/lowres/${activeImage.filename}`}
           onClick={() => {
             toast.success("Laddar ner bild\nGlöm inte följa vår policy!", {
@@ -122,16 +123,17 @@ const ImagePopup: FC<ImagePopupTypes> = ({
           type="button"
           download
         >
-          <MdOutlineFileDownload className="h-8 w-8 lg:h-10 lg:w-10" />
+          <MdOutlineFileDownload size={36} />
         </a>
         <button
-          className="text-right font-black leading-none"
+          aria-label="Stäng popup"
+          className="p-1"
           onClick={() => {
             closePopup();
           }}
           type="button"
         >
-          <MdOutlineClose className="h-8 w-8 lg:h-10 lg:w-10" />
+          <MdOutlineClose size={36} />
         </button>
       </div>
       <div className="flex h-full w-full flex-grow flex-row items-center justify-between">

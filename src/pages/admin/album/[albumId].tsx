@@ -18,6 +18,7 @@ const AdminSingleAlbumPage: NextPage = () => {
     data: album,
     isLoading: isLoadingAlbum,
     refetch: refetchAlbum,
+    isFetching: isFetchingAlbum,
   } = trpc.album.getOneAsAdmin.useQuery(
     {
       albumId: router.query.albumId as string,
@@ -48,6 +49,7 @@ const AdminSingleAlbumPage: NextPage = () => {
       <SectionWrapper>
         <AdminAlbumHeader
           albumId={album?.id ?? ""}
+          fetching={isFetchingAlbum}
           refetchAlbum={refetchAlbum}
         />
         {isLoadingAlbum && <LoadingSection />}
