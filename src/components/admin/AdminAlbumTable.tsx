@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 import type { RouterOutputs } from "~/utils/trpc";
 import { trpc } from "~/utils/trpc";
+import Button from "../Button";
 
 export const AdminAlbumTable: FC<{
   images: RouterOutputs["album"]["getOneAsAdmin"]["images"];
@@ -60,11 +61,10 @@ export const AdminAlbumTable: FC<{
                 Permanent länk
               </Link>
             </div>
-            <div className="col-span-2 flex gap-2">
-              <button
-                className={`rounded border-2 px-4 py-3 ${
-                  image.visible ? "bg-red-500" : "bg-yellow-500"
-                }`}
+            <div className="col-span-2 ml-auto flex w-fit flex-col gap-2">
+              <Button
+                danger={image.visible}
+                label={image.visible ? "Dölj bild" : "Visa bild"}
                 onClick={() => {
                   toast.loading("Updaterar bild...");
                   singleImageMutation.mutate({
@@ -73,13 +73,13 @@ export const AdminAlbumTable: FC<{
                   });
                 }}
                 type="button"
+                warning={!image.visible}
+                fullWidth
               >
                 {image.visible ? "Dölj bild" : "Visa bild"}
-              </button>
-              <button
-                className={`rounded border-2 px-4 py-3 ${
-                  image.coverImage ? "bg-yellow-500" : "bg-green-500"
-                }`}
+              </Button>
+              <Button
+                label={image.coverImage ? "Ta bort omslag" : "Sätt till omslag"}
                 onClick={() => {
                   toast.loading("Updaterar bild...");
                   singleImageMutation.mutate({
@@ -87,10 +87,11 @@ export const AdminAlbumTable: FC<{
                     coverImage: !image.coverImage,
                   });
                 }}
+                submit={!image.coverImage}
                 type="button"
-              >
-                {image.coverImage ? "Ta bort omslag" : "Sätt till omslag"}
-              </button>
+                warning={image.coverImage}
+                fullWidth
+              />
             </div>
           </div>
         );

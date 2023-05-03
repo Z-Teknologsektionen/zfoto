@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { toast } from "react-hot-toast";
+import Button from "~/components/Button";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
@@ -45,13 +46,13 @@ const Home: NextPage = () => {
         </div>
         {hasNextPage && (
           <div className="grid place-items-center">
-            <button
-              className="mx-auto rounded border-2 px-5 py-2 shadow"
+            <Button
+              className="mx-auto"
+              label="Hämta fler"
               onClick={() => fetchNextPage()}
               type="button"
-            >
-              Hämta fler
-            </button>
+              outline
+            />
           </div>
         )}
       </SectionWrapper>

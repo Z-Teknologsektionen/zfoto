@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import type { FC } from "react";
 import { toast } from "react-hot-toast";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 import type { RouterOutputs } from "~/utils/trpc";
 import { trpc } from "~/utils/trpc";
+import Button from "../Button";
 
 export const AdminAlbumsTable: FC<{
   albums: RouterOutputs["album"]["getAllAsAdmin"];
   refetchAllAlbums: () => void;
 }> = ({ refetchAllAlbums, albums }) => {
+  const { push } = useRouter();
   const { mutate: mutateAlbum } = trpc.album.updateOne.useMutation({
     onSettled: () => {
       refetchAllAlbums();
@@ -54,11 +57,10 @@ export const AdminAlbumsTable: FC<{
             <div className="col-span-1">
               <p>{`Images: ${album._count.images}`}</p>
             </div>
-            <div className="col-span-2 flex flex-row items-center justify-center gap-2 lg:flex-col">
-              <button
-                className={`rounded border-2 px-4 py-3 ${
-                  album.visible ? "bg-red-500" : "bg-green-500"
-                }`}
+            <div className="col-span-2 ml-auto flex w-fit flex-row items-center justify-center gap-2 lg:flex-col">
+              <Button
+                danger={album.visible}
+                label={album.visible ? "Dölj album" : "Visa album"}
                 onClick={() => {
                   toast.loading("Updating album");
                   mutateAlbum({
@@ -66,17 +68,17 @@ export const AdminAlbumsTable: FC<{
                     visible: !album.visible,
                   });
                 }}
+                submit={!album.visible}
                 type="button"
-              >
-                {album.visible ? "Dölj album" : "Visa album"}
-              </button>
-              <Link
-                className="rounded border-2 bg-yellow-500 px-4 py-3"
-                href={`/admin/album/${album.id}`}
+                fullWidth
+              />
+              <Button
+                label="Redigera album"
+                onClick={() => push(`/admin/album/${album.id}`)}
                 type="button"
-              >
-                Redigera album
-              </Link>
+                fullWidth
+                warning
+              />
             </div>
           </div>
         );

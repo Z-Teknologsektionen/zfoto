@@ -27,13 +27,11 @@ const AdminHomePage: NextConfig = () => {
             </div>
             <button
               className="w-fit underline-offset-2 hover:underline"
-              onClick={
-                () =>
-                  signOut({
-                    redirect: true,
-                    callbackUrl: `${window.location.origin}`,
-                  })
-                // eslint-disable-next-line react/jsx-curly-newline
+              onClick={() =>
+                signOut({
+                  redirect: true,
+                  callbackUrl: `${window.location.origin}`,
+                })
               }
               type="button"
             >
