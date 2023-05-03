@@ -15,6 +15,7 @@ const AdminAlbumsPage: NextPage = () => {
     data: albums,
     isLoading: isLoadingAlbums,
     refetch: refetchAlbums,
+    isFetching: isFetchingAlbums,
   } = trpc.album.getAllAsAdmin.useQuery(undefined, {
     refetchOnWindowFocus: false,
     retry: () => false,
@@ -26,7 +27,10 @@ const AdminAlbumsPage: NextPage = () => {
   return (
     <MainLayout>
       <SectionWrapper className="mx-auto my-4 min-h-screen max-w-7xl px-4 xl:px-0">
-        <AdminAlbumsHeader refetchAllAlbums={() => refetchAlbums()} />
+        <AdminAlbumsHeader
+          fetching={isFetchingAlbums}
+          refetchAllAlbums={() => refetchAlbums()}
+        />
         {isLoadingAlbums && <LoadingSection />}
         {albums && (
           <AdminAlbumsTable

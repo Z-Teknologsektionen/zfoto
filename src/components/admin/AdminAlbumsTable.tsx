@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 import type { RouterOutputs } from "~/utils/trpc";
 import { trpc } from "~/utils/trpc";
+import Button from "../Button";
 
 export const AdminAlbumsTable: FC<{
   albums: RouterOutputs["album"]["getAllAsAdmin"];
@@ -55,10 +56,9 @@ export const AdminAlbumsTable: FC<{
               <p>{`Images: ${album._count.images}`}</p>
             </div>
             <div className="col-span-2 flex flex-row items-center justify-center gap-2 lg:flex-col">
-              <button
-                className={`rounded border-2 px-4 py-3 ${
-                  album.visible ? "bg-red-500" : "bg-green-500"
-                }`}
+              <Button
+                danger={album.visible}
+                label={album.visible ? "Dölj album" : "Visa album"}
                 onClick={() => {
                   toast.loading("Updating album");
                   mutateAlbum({
@@ -66,10 +66,9 @@ export const AdminAlbumsTable: FC<{
                     visible: !album.visible,
                   });
                 }}
+                submit={!album.visible}
                 type="button"
-              >
-                {album.visible ? "Dölj album" : "Visa album"}
-              </button>
+              />
               <Link
                 className="rounded border-2 bg-yellow-500 px-4 py-3"
                 href={`/admin/album/${album.id}`}

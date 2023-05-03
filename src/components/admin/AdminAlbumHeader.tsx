@@ -1,11 +1,14 @@
 import type { FC } from "react";
 import { toast } from "react-hot-toast";
+import { AiOutlineReload } from "react-icons/ai";
 import BackButton from "../BackButton";
+import Button from "../Button";
 
 export const AdminAlbumHeader: FC<{
   albumId: string;
+  fetching: boolean;
   refetchAlbum: () => void;
-}> = ({ albumId, refetchAlbum }) => {
+}> = ({ albumId, refetchAlbum, fetching }) => {
   return (
     <div className="my-4">
       <BackButton />
@@ -14,16 +17,17 @@ export const AdminAlbumHeader: FC<{
           <h1 className="text-xl font-semibold">Redigera album</h1>
           <p>{albumId}</p>
         </div>
-        <button
-          className="rounded border-2 bg-yellow-500 px-4 py-3"
+        <Button
+          disabled={fetching}
+          icon={AiOutlineReload}
+          label="Hämta igen"
           onClick={() => {
             toast.loading("Hämtar igen");
             refetchAlbum();
           }}
           type="button"
-        >
-          Hämta igen
-        </button>
+          warning
+        />
       </div>
     </div>
   );

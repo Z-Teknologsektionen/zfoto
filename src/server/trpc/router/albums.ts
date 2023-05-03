@@ -3,49 +3,124 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const albumRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
-    const albums = await prisma.album.findMany({
-      where: {
-        visible: {
-          equals: true,
-        },
-        images: {
-          some: {
-            coverImage: true,
-            visible: true,
+  getAll: publicProcedure
+    .input(
+      z.object({
+        year: z.number().min(2022).optional(),
+      })
+    )
+    .query(async ({ input, ctx: { prisma } }) => {
+      const { year } = input ?? {};
+      const albums = await prisma.album.findMany({
+        where: {
+          visible: {
+            equals: true,
+          },
+          images: {
+            some: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+          date: {
+            lte: new Date(year || new Date().getFullYear(), 12).toISOString(),
+            gte: new Date(year || 2022, 1).toISOString(),
           },
         },
-      },
-      select: {
-        id: true,
-        title: true,
-        images: {
-          orderBy: { date: "asc" },
-          take: 1,
-          select: {
-            filename: true,
+        select: {
+          id: true,
+          title: true,
+          images: {
+            orderBy: { date: "asc" },
+            take: 1,
+            select: {
+              filename: true,
+            },
+            where: {
+              coverImage: true,
+              visible: true,
+            },
           },
-          where: {
-            coverImage: true,
-            visible: true,
-          },
+          date: true,
         },
-        date: true,
-      },
-      orderBy: {
-        date: "desc",
-      },
-    });
+        orderBy: {
+          date: "desc",
+        },
+      });
 
-    const formatedAlbums = albums.map((album) => {
-      const { images, ...formatedAlbum } = album;
+      const formatedAlbums = albums.map((album) => {
+        const { images, ...formatedAlbum } = album;
+        return {
+          ...formatedAlbum,
+          coverImageFilename: images.at(0)?.filename ?? "",
+        };
+      });
+      return formatedAlbums;
+    }),
+  infiniteAlbums: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50;
+      const { cursor } = input;
+      const albums = await ctx.prisma.album.findMany({
+        take: limit + 1, // get an extra item at the end which we'll use as next cursor
+        where: {
+          visible: {
+            equals: true,
+          },
+          images: {
+            some: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          images: {
+            orderBy: { date: "asc" },
+            take: 1,
+            select: {
+              filename: true,
+            },
+            where: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+          date: true,
+        },
+        orderBy: {
+          date: "desc",
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+      });
+      let nextCursor: typeof cursor | undefined;
+      if (albums.length > limit) {
+        const nextItem = albums.pop();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        nextCursor = nextItem!.id;
+      }
+
+      const formatedAlbums = albums.map((album) => {
+        const { images, ...formatedAlbum } = album;
+        return {
+          ...formatedAlbum,
+          coverImageFilename: images.at(0)?.filename ?? "",
+        };
+      });
+
       return {
-        ...formatedAlbum,
-        coverImageFilename: images.at(0)?.filename ?? "",
+        albums: formatedAlbums,
+        nextCursor,
       };
-    });
-    return formatedAlbums;
-  }),
+    }),
   getAllAsAdmin: protectedProcedure.query(async ({ ctx: { prisma } }) => {
     const albums = await prisma.album.findMany({
       include: {
