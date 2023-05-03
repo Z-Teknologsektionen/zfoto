@@ -61,7 +61,7 @@ export const AdminAlbumTable: FC<{
                 Permanent länk
               </Link>
             </div>
-            <div className="col-span-2 ml-auto flex w-fit flex-col gap-2">
+            <div className="col-span-2 flex w-fit flex-col gap-2 lg:ml-auto">
               <Button
                 danger={image.visible}
                 label={image.visible ? "Dölj bild" : "Visa bild"}
