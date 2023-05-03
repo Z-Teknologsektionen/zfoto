@@ -61,7 +61,7 @@ export const AdminAlbumTable: FC<{
                 Permanent länk
               </Link>
             </div>
-            <div className="col-span-2 flex gap-2">
+            <div className="col-span-2 ml-auto flex w-fit flex-col gap-2">
               <Button
                 danger={image.visible}
                 label={image.visible ? "Dölj bild" : "Visa bild"}
@@ -74,13 +74,11 @@ export const AdminAlbumTable: FC<{
                 }}
                 type="button"
                 warning={!image.visible}
+                fullWidth
               >
                 {image.visible ? "Dölj bild" : "Visa bild"}
               </Button>
               <Button
-                className={`rounded border-2 px-4 py-3 ${
-                  image.coverImage ? "bg-yellow-500" : "bg-green-500"
-                }`}
                 label={image.coverImage ? "Ta bort omslag" : "Sätt till omslag"}
                 onClick={() => {
                   toast.loading("Updaterar bild...");
@@ -92,6 +90,7 @@ export const AdminAlbumTable: FC<{
                 submit={!image.coverImage}
                 type="button"
                 warning={image.coverImage}
+                fullWidth
               />
             </div>
           </div>
