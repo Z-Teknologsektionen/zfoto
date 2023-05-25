@@ -1,9 +1,10 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import { toast } from "react-hot-toast";
 import Button from "~/components/Button";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
+import { ssg } from "~/server/helpers/SSGHelper";
 import { trpc } from "~/utils/trpc";
 
 const Home: NextPage = () => {
@@ -61,3 +62,14 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  await ssg.album.infiniteAlbums.prefetchInfinite({
+    limit: 12,
+  });
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+    },
+  };
+};

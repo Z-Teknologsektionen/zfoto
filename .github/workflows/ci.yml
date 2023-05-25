@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  DATABASE_URL: "https://fake.com"
+  GOOGLE_CLIENT_ID: "fake"
+  GOOGLE_CLIENT_SECRET: "fake"
+  NEXTAUTH_URL: "https://fake.com"
+  NEXTAUTH_SECRET: "fakefakefakefake"
+  NEXT_PUBLIC_SANITY_ID: "fake"
+  NEXT_PUBLIC_DATASET: "fake"
+  NEXT_PUBLIC_API_VERSION: "fake"
+  AUTH_USER: "fake@fake.com"
+  AUTH_PASS: "fake"
+  ADMIN_MAILS_ENDSWITH: "fake@fake.com"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
