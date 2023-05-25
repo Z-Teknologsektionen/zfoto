@@ -86,7 +86,7 @@ export const Footer: FC = () => {
               <li key={href}>
                 <Link
                   aria-label={ariaLabel}
-                  href="https://www.instagram.com/zfotochalmers/"
+                  href={href}
                   rel={newPage ? "noopener noreferrer" : undefined}
                   target={newPage ? "_blank" : "_self"}
                 >

@@ -1,5 +1,6 @@
 import NextImage from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
@@ -23,6 +24,7 @@ const ImagePopup: FC<ImagePopupTypes> = ({
   decrementImageIndex,
   incrementImageIndex,
 }) => {
+  const { back } = useRouter();
   const activeImage = useMemo(() => {
     return album.images.at(imageIndex);
   }, [album.images, imageIndex]);
@@ -75,7 +77,11 @@ const ImagePopup: FC<ImagePopupTypes> = ({
       } else if (event.key === "ArrowLeft") {
         viewPrevImage();
       } else if (event.key === "Escape") {
-        closePopup();
+        if (showPopup) {
+          closePopup();
+        } else {
+          back();
+        }
       }
     };
 

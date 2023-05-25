@@ -8,7 +8,7 @@ import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
 function generateYearsBetweenNowAnd2022(): number[] {
-  const endDate = new Date().getFullYear();
+  const endDate = 2024; // new Date().getFullYear();
   const years = [];
 
   for (let i = 2022; i <= endDate; i += 1) {
@@ -17,7 +17,9 @@ function generateYearsBetweenNowAnd2022(): number[] {
   return years;
 }
 
-const FilterAlbumsWizard: FC<{ year: number | undefined }> = ({ year }) => {
+const FilterAlbumsWizard: FC<{ selectedYear: number | undefined }> = ({
+  selectedYear,
+}) => {
   const { push } = useRouter();
 
   return (
@@ -41,14 +43,14 @@ const FilterAlbumsWizard: FC<{ year: number | undefined }> = ({ year }) => {
             undefined
           );
         }}
-        value={year || ""}
+        value={selectedYear || ""}
       >
         <option value="">Alla år</option>
         {generateYearsBetweenNowAnd2022()
           .reverse()
-          .map((y) => (
-            <option key={y} value={y}>
-              {y}
+          .map((year) => (
+            <option key={year} value={year}>
+              {year}
             </option>
           ))}
       </select>
@@ -59,15 +61,14 @@ const FilterAlbumsWizard: FC<{ year: number | undefined }> = ({ year }) => {
 const FilterByYearPage: NextPage = () => {
   const { query } = useRouter();
   const { year: yearString } = query;
-
   const year = yearString?.toString()
     ? parseInt(yearString?.toString(), 10)
     : undefined;
+
   const { data: albums, isLoading } = trpc.album.getAll.useQuery(
     { year },
     {
       refetchOnWindowFocus: false,
-      retryDelay: 1,
       retry: () => false,
       onError: () => {
         toast.error("Okänt fel, försök igen senare");
@@ -81,9 +82,9 @@ const FilterByYearPage: NextPage = () => {
         <h1 className="mt-8 text-center text-2xl font-medium">
           {year ? `Album från ${year}` : "Alla album"}
         </h1>
-        <FilterAlbumsWizard year={year} />
+        <FilterAlbumsWizard selectedYear={year} />
         <div className="grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {albums &&
+          {albums && albums?.length !== 0 ? (
             albums.map(({ id, title, date, coverImageFilename }, idx) => (
               <AlbumGridItem
                 key={id}
@@ -95,7 +96,18 @@ const FilterByYearPage: NextPage = () => {
                   date,
                 }}
               />
-            ))}
+            ))
+          ) : (
+            <div className="col-span-full text-center">
+              <h2
+                className="text-3xl font-medium
+              "
+              >
+                Finns inga album från {year}
+              </h2>
+              <p>Vänligen välj ett annat år</p>
+            </div>
+          )}
         </div>
       </SectionWrapper>
     </MainLayout>
