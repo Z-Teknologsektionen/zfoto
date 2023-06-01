@@ -224,6 +224,7 @@ export const albumRouter = createTRPCRouter({
         title: z.string().min(1).optional(),
         date: z.date().optional(),
         visible: z.boolean().optional(),
+        reception: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -234,6 +235,7 @@ export const albumRouter = createTRPCRouter({
             title: input.title,
             date: input.date,
             visible: input.visible,
+            isReception: input.reception,
           },
         });
         return updatedAlbum;
@@ -241,4 +243,24 @@ export const albumRouter = createTRPCRouter({
         return error;
       }
     }),
+  hideReceptionAlbums: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.album.updateMany({
+      where: {
+        isReception: true,
+      },
+      data: {
+        visible: false,
+      },
+    });
+  }),
+  showReceptionAlbums: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.album.updateMany({
+      where: {
+        isReception: true,
+      },
+      data: {
+        visible: true,
+      },
+    });
+  }),
 });

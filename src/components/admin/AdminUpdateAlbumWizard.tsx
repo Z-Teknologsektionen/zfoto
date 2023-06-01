@@ -60,6 +60,21 @@ export const AdminUpdateAlbumWizard: FC<{
             type="checkbox"
           />
         </div>
+        <div className="flex flex-row gap-2">
+          <label htmlFor="reception">Är mottagningsalbum</label>
+          <input
+            defaultChecked={album.isReception}
+            id="reception"
+            onClick={() => {
+              toast.loading("Updaterar album...");
+              singleAlbumMutation.mutate({
+                albumId: album.id,
+                reception: !album.isReception,
+              });
+            }}
+            type="checkbox"
+          />
+        </div>
         <p>{album._count.images} bilder</p>
       </div>
     </div>
