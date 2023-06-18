@@ -57,6 +57,65 @@ export const albumRouter = createTRPCRouter({
       });
       return formatedAlbums;
     }),
+  getRecommendedAlbums: publicProcedure
+    .input(
+      z.object({
+        count: z.number().min(1),
+        excludedId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
+      })
+    )
+    .query(async ({ input, ctx: { prisma } }) => {
+      const albums = await prisma.album.findMany({
+        take: input.count,
+        where: {
+          id: {
+            not: input.excludedId,
+          },
+          visible: {
+            equals: true,
+          },
+          images: {
+            some: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          images: {
+            orderBy: { date: "asc" },
+            take: 1,
+            select: {
+              filename: true,
+            },
+            where: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+          date: true,
+        },
+        orderBy: {
+          date: "desc",
+        },
+      });
+
+      const formatedAlbums = albums.map((album) => {
+        const { images, ...formatedAlbum } = album;
+        return {
+          ...formatedAlbum,
+          coverImageFilename: images.at(0)?.filename ?? "",
+        };
+      });
+      return formatedAlbums;
+    }),
   infiniteAlbums: publicProcedure
     .input(
       z.object({
