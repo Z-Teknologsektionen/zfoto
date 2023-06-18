@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 import type { FC } from "react";
 import { toast } from "react-hot-toast";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
+import AlbumGrid from "~/components/layout/AlbumGrid";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
 function generateYearsBetweenNowAnd2022(): number[] {
-  const endDate = 2024; // new Date().getFullYear();
+  const endDate = new Date().getFullYear();
   const years = [];
 
   for (let i = 2022; i <= endDate; i += 1) {
@@ -83,7 +84,7 @@ const FilterByYearPage: NextPage = () => {
           {year ? `Album från ${year}` : "Alla album"}
         </h1>
         <FilterAlbumsWizard selectedYear={year} />
-        <div className="grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <AlbumGrid>
           {albums && albums?.length !== 0 ? (
             albums.map(({ id, title, date, coverImageFilename }, idx) => (
               <AlbumGridItem
@@ -108,7 +109,7 @@ const FilterByYearPage: NextPage = () => {
               <p>Vänligen välj ett annat år</p>
             </div>
           )}
-        </div>
+        </AlbumGrid>
       </SectionWrapper>
     </MainLayout>
   );

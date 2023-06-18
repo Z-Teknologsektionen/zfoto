@@ -1,3 +1,5 @@
+import SectionWrapper from "./SectionWrapper";
+
 export const Loader = ({
   height = 15,
   width = 15,
@@ -35,7 +37,7 @@ export const LoadingScreen = (): JSX.Element => (
 );
 
 export const LoadingSection = (): JSX.Element => (
-  <section className="grid h-full w-full place-items-center">
+  <SectionWrapper className="grid h-full w-full place-items-center ">
     <Loader height={60} width={60} />
-  </section>
+  </SectionWrapper>
 );
