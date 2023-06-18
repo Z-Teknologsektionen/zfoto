@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import { formatDateString } from "~/utils/formatDateAndTimeStrings";
 import type { RouterOutputs } from "~/utils/trpc";
-import { formatDateString } from "../../utils/formatDateAndTimeStrings";
 
 type Album = RouterOutputs["album"]["infiniteAlbums"]["albums"][0];
 
@@ -19,7 +19,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
 }) => {
   return (
     <Link
-      className="relative grid h-[250px] w-full max-w-xs items-end overflow-hidden"
+      className="relative grid h-[250px] w-full max-w-xs items-end overflow-hidden rounded-lg border-2 shadow"
       href={`/album/${id}`}
     >
       <Image
@@ -27,7 +27,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
         className={`
           h-full object-cover object-center 
           before:absolute before:inset-0 before:z-0 before:bg-black/50 before:content-[''] 
-          after:absolute after:left-1/2 after:top-1/2 after:z-10 after:block after:w-5/6 after:-translate-x-1/2 after:-translate-y-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_sakanas']
+          after:absolute after:left-1/2 after:top-1/2 after:z-10 after:block after:w-5/6 after:-translate-x-1/2 after:-translate-y-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_saknas']
         `}
         priority={priorityLoadning}
         src={`/images/thumb/${coverImageFilename}`}

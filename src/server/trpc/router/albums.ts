@@ -57,6 +57,65 @@ export const albumRouter = createTRPCRouter({
       });
       return formatedAlbums;
     }),
+  getRecommendedAlbums: publicProcedure
+    .input(
+      z.object({
+        count: z.number().min(1),
+        excludedId: z
+          .string()
+          .optional()
+          .refine((val) => {
+            return isValidObjectId(val);
+          }),
+      })
+    )
+    .query(async ({ input, ctx: { prisma } }) => {
+      const albums = await prisma.album.findMany({
+        take: input.count,
+        where: {
+          id: {
+            not: input.excludedId,
+          },
+          visible: {
+            equals: true,
+          },
+          images: {
+            some: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          images: {
+            orderBy: { date: "asc" },
+            take: 1,
+            select: {
+              filename: true,
+            },
+            where: {
+              coverImage: true,
+              visible: true,
+            },
+          },
+          date: true,
+        },
+        orderBy: {
+          date: "desc",
+        },
+      });
+
+      const formatedAlbums = albums.map((album) => {
+        const { images, ...formatedAlbum } = album;
+        return {
+          ...formatedAlbum,
+          coverImageFilename: images.at(0)?.filename ?? "",
+        };
+      });
+      return formatedAlbums;
+    }),
   infiniteAlbums: publicProcedure
     .input(
       z.object({
@@ -224,6 +283,7 @@ export const albumRouter = createTRPCRouter({
         title: z.string().min(1).optional(),
         date: z.date().optional(),
         visible: z.boolean().optional(),
+        reception: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -234,6 +294,7 @@ export const albumRouter = createTRPCRouter({
             title: input.title,
             date: input.date,
             visible: input.visible,
+            isReception: input.reception,
           },
         });
         return updatedAlbum;
@@ -241,4 +302,24 @@ export const albumRouter = createTRPCRouter({
         return error;
       }
     }),
+  hideReceptionAlbums: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.album.updateMany({
+      where: {
+        isReception: true,
+      },
+      data: {
+        visible: false,
+      },
+    });
+  }),
+  showReceptionAlbums: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.album.updateMany({
+      where: {
+        isReception: true,
+      },
+      data: {
+        visible: true,
+      },
+    });
+  }),
 });

@@ -1,14 +1,18 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import BackButton from "~/components/BackButton";
 import ImagePopup from "~/components/ImagePopup";
+import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
 import AlbumInfo from "~/components/imageGrid/AlbumInfo";
 import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
+import AlbumGrid from "~/components/layout/AlbumGrid";
 import { LoadingScreen } from "~/components/layout/Loader";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
+import { ssg } from "~/server/helpers/SSGHelper";
 import { trpc } from "~/utils/trpc";
 import { useCounter } from "~/utils/useCounter";
 import { useToggle } from "~/utils/useToggle";
@@ -29,8 +33,10 @@ const AlbumPage: NextPage = () => {
     };
   }, []);
 
+  const albumId = router.query.albumId as string;
+
   const { data: album, isLoading } = trpc.album.getOne.useQuery(
-    { albumId: router.query.albumId as string },
+    { albumId },
     {
       refetchOnWindowFocus: false,
       retry: () => false,
@@ -44,6 +50,11 @@ const AlbumPage: NextPage = () => {
       },
     }
   );
+
+  const { data: recommendedAlbums } = trpc.album.getRecommendedAlbums.useQuery({
+    count: 3,
+    excludedId: albumId,
+  });
 
   const photographers = useMemo(
     () => [...new Set(album?.images.map((item) => item.photographer))],
@@ -86,6 +97,27 @@ const AlbumPage: NextPage = () => {
             </>
           )}
         </SectionWrapper>
+        <SectionWrapper className="space-y-8">
+          <h1 className="text-2xl font-medium">Kika även in dessa albumen</h1>
+          {recommendedAlbums ? (
+            <AlbumGrid>
+              {recommendedAlbums.map((recommendedAlbum) => (
+                <AlbumGridItem
+                  key={recommendedAlbum.id}
+                  {...recommendedAlbum}
+                />
+              ))}
+              <Link
+                className="relative grid h-full w-full max-w-xs flex-grow items-center justify-center overflow-hidden rounded-lg border-2 bg-[#333333]/95 px-4 py-3 text-[#a7a7a7] shadow"
+                href="/"
+              >
+                <h2 className="text-xl font-normal">Visa fler...</h2>
+              </Link>
+            </AlbumGrid>
+          ) : (
+            <div />
+          )}
+        </SectionWrapper>
       </MainLayout>
 
       {album && (
@@ -108,3 +140,33 @@ const AlbumPage: NextPage = () => {
 };
 
 export default AlbumPage;
+
+export const getStaticProps: GetStaticProps<
+  { albumId: string },
+  { albumId: string }
+> = async ({ params }) => {
+  try {
+    const { albumId } = params || { albumId: "" };
+    await ssg.album.getOne.fetch({
+      albumId,
+    });
+    return {
+      props: {
+        trpcState: ssg.dehydrate(),
+        albumId,
+      },
+      revalidate: 1,
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    fallback: "blocking",
+    paths: [],
+  };
+};

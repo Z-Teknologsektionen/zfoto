@@ -20,8 +20,7 @@ const MainLayout: FC<
       <div className="flex min-h-screen flex-col">
         {!hideHeader && <Header />}
         <main className="flex flex-grow flex-col">
-          {children}
-          {isLoading && <LoadingSection />}
+          {isLoading ? <LoadingSection /> : children}
         </main>
       </div>
       {!hideFooter && <Footer />}

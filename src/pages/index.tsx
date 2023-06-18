@@ -1,7 +1,9 @@
 import type { GetStaticProps, NextPage } from "next";
+import { useMemo } from "react";
 import { toast } from "react-hot-toast";
 import Button from "~/components/Button";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
+import AlbumGrid from "~/components/layout/AlbumGrid";
 import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { ssg } from "~/server/helpers/SSGHelper";
@@ -21,30 +23,31 @@ const Home: NextPage = () => {
       }
     );
 
+  const allAlbums = useMemo(
+    () => data?.pages.flatMap((page) => page.albums),
+    [data]
+  );
+
   return (
     <MainLayout isLoading={isLoading}>
       <SectionWrapper className="space-y-8">
         <h1 className="py-8 text-center text-2xl font-medium">
           Välkommen till zFoto
         </h1>
-        <div className="grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data?.pages.map((page) => {
-            return page.albums.map(
-              ({ id, title, date, coverImageFilename }, idx) => (
-                <AlbumGridItem
-                  key={id}
-                  {...{
-                    id,
-                    title,
-                    coverImageFilename,
-                    priorityLoadning: idx < 10,
-                    date,
-                  }}
-                />
-              )
-            );
-          })}
-        </div>
+        <AlbumGrid>
+          {allAlbums?.map(({ id, title, date, coverImageFilename }, idx) => (
+            <AlbumGridItem
+              key={id}
+              {...{
+                id,
+                title,
+                coverImageFilename,
+                priorityLoadning: idx < 10,
+                date,
+              }}
+            />
+          ))}
+        </AlbumGrid>
         {hasNextPage && (
           <div className="grid place-items-center">
             <Button
@@ -71,5 +74,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       trpcState: ssg.dehydrate(),
     },
+    revalidate: 1,
   };
 };
