@@ -6,7 +6,7 @@ export const albumRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
-        year: z.number().min(2022).optional(),
+        year: z.number().min(1970).optional(),
       })
     )
     .query(async ({ input, ctx: { prisma } }) => {

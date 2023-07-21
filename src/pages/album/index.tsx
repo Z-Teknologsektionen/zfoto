@@ -8,11 +8,11 @@ import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { trpc } from "~/utils/trpc";
 
-function generateYearsBetweenNowAnd2022(): number[] {
+function generateYearsBetweenNowAnd2016(): number[] {
   const endDate = new Date().getFullYear();
   const years = [];
 
-  for (let i = 2022; i <= endDate; i += 1) {
+  for (let i = 2016; i <= endDate; i += 1) {
     years.push(i);
   }
   return years;
@@ -47,7 +47,7 @@ const FilterAlbumsWizard: FC<{ selectedYear: number | undefined }> = ({
         value={selectedYear || ""}
       >
         <option value="">Alla år</option>
-        {generateYearsBetweenNowAnd2022()
+        {generateYearsBetweenNowAnd2016()
           .reverse()
           .map((year) => (
             <option key={year} value={year}>
