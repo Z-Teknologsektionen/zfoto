@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createTRPCRouter } from "../trpc";
 import { albumRouter } from "./albums";
 import { emailRouter } from "./email";

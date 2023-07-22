@@ -5,7 +5,6 @@ import { createTRPCContext } from "../../../server/trpc/trpc";
 
 // export API handler
 export default createNextApiHandler({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   router: appRouter,
   createContext: createTRPCContext,
   onError:

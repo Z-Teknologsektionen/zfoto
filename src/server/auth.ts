@@ -13,6 +13,7 @@ import { env } from "../env/server.mjs";
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module "next-auth" {
+  // eslint-disable-next-line no-unused-vars
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       email: string;
@@ -64,7 +65,6 @@ const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
 export const getServerAuthSession = (ctx: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];

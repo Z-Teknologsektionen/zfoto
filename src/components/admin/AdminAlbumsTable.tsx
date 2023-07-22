@@ -48,7 +48,7 @@ export const AdminAlbumsTable: FC<{
             <Link className="col-span-2 w-full" href={`/album/${album.id}`}>
               <div className="text-center lg:text-left">
                 <h2 className="text-xl font-semibold">{album.title}</h2>
-                <p className="underline-offset-2 hover:underline">{`${album.id}`}</p>
+                <p className="underline-offset-2 hover:underline">{album.id}</p>
               </div>
             </Link>
             <div className="col-span-2">

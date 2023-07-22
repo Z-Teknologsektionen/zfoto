@@ -1,7 +1,6 @@
 import { Head, Html, Main, NextScript } from "next/document";
 
-// eslint-disable-next-line react/function-component-definition
-export default function Document(): JSX.Element {
+export default function Document() {
   return (
     <Html>
       <Head />
