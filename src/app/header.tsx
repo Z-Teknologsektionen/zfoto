@@ -35,9 +35,9 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
         <div className="flex flex-row items-center justify-center gap-4">
           <nav
             className={`absolute inset-0 z-10 mt-16 bg-[#333333]/75 py-8 text-inherit
-          ${viewNav ? "pointer-cursor" : "pointer-events-none hidden"} 
+          ${viewNav ? "pointer-cursor block" : "pointer-events-none hidden"} 
           transition duration-1000
-          lg:pointer-events-auto lg:relative lg:inset-auto lg:mt-0 lg:translate-y-0 lg:cursor-pointer lg:bg-inherit lg:opacity-100
+          lg:pointer-events-auto lg:relative lg:inset-auto lg:mt-0 lg:block lg:translate-y-0 lg:cursor-pointer lg:bg-inherit lg:opacity-100
         `}
           >
             <ul className="flex flex-col items-center gap-4 text-lg lg:flex-row lg:text-base">

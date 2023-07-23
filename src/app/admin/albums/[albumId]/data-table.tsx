@@ -1,6 +1,10 @@
 "use client";
 
-import type { ColumnDef, ColumnFiltersState, SortingState } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -29,12 +33,12 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export const DataTable: FC<DataTableProps<Image,typeof columns>> = ({
+export const DataTable: FC<DataTableProps<Image, typeof columns>> = ({
   columns,
   data,
 }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
@@ -59,7 +63,9 @@ export const DataTable: FC<DataTableProps<Image,typeof columns>> = ({
             table.getColumn("filename")?.setFilterValue(event.target.value)
           }
           placeholder="Filtrera efter filnamn..."
-          value={(table.getColumn("filename")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("filename")?.getFilterValue() as string) ?? ""
+          }
         />
       </div>
       <div className="rounded-md border">
@@ -105,14 +111,14 @@ export const DataTable: FC<DataTableProps<Image,typeof columns>> = ({
                   className="h-24 text-center"
                   colSpan={columns.length}
                 >
-                  Inga album
+                  Inga bilder
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-       <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
