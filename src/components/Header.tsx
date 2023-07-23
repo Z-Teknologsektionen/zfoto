@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -11,6 +12,8 @@ import { useLinks } from "~/utils/links";
 import { HeaderNavLink } from "./HeaderNavLink";
 
 export const Header: FC = () => {
+  const { status } = useSession();
+
   const [viewNav, setViewNav] = useState(false);
   const { pathname } = useRouter();
 
@@ -22,7 +25,7 @@ export const Header: FC = () => {
     setViewNav(false);
   }, [setViewNav]);
 
-  const { orderdHeaderLinks } = useLinks();
+  const { orderdHeaderLinks } = useLinks(status === "authenticated");
 
   return (
     <header className="relative z-20 flex h-16 justify-center bg-[#333333] px-4 py-3 text-[#a7a7a7] shadow">
