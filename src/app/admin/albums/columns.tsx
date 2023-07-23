@@ -47,7 +47,7 @@ export const columns: ColumnDef<Album>[] = [
           Titel
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
   },
   {
@@ -61,19 +61,15 @@ export const columns: ColumnDef<Album>[] = [
           Datum
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      return (
-        <div>
-          {formatDateTimeString(row.original.date)}
-        </div>
-      );
+      return <div>{formatDateTimeString(row.original.date)}</div>;
     },
   },
   {
     accessorKey: "visible",
-     header: ({ column }) => {
+    header: ({ column }) => {
       return (
         <Button
           variant="ghost"
@@ -82,12 +78,10 @@ export const columns: ColumnDef<Album>[] = [
           Visas
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      return (
-        <div>{row.original.visible ? "Ja" : "Nej"}</div>
-      );
+      return <div>{row.original.visible ? "Ja" : "Nej"}</div>;
     },
   },
   {
@@ -101,14 +95,10 @@ export const columns: ColumnDef<Album>[] = [
           Mottagning
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      return (
-        <div>
-          {row.original.isReception ? "Ja" : "Nej"}
-        </div>
-      );
+      return <div>{row.original.isReception ? "Ja" : "Nej"}</div>;
     },
   },
   {
@@ -122,7 +112,7 @@ export const columns: ColumnDef<Album>[] = [
           Antal bilder
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
       return <div>{row.original.count}</div>;
@@ -148,14 +138,14 @@ export const columns: ColumnDef<Album>[] = [
               Alla
             </DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/album/${album.id}`}>Öppna album</Link>
+              <Link href={`/albums/${album.id}`}>Öppna album</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel className="underline underline-offset-2">
               Admin
             </DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/admin/album/${album.id}`}>Redigera album</Link>
+              <Link href={`/admin/albums/${album.id}`}>Redigera album</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
