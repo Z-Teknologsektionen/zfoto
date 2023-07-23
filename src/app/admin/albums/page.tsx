@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { prisma } from "~/server/db/client";
 import { columns } from "./columns";
@@ -36,16 +37,20 @@ export type Album = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 const page = async () => {
   const data = await getAllAlbumsAsAdmin();
   return (
-    <section className="mx-auto max-w-7xl space-y-4">
-      <div>
-        <Button variant="link">
-          <ChevronLeft className="h-4 w-4" />
-          <span>Tillbaka</span>
-          </Button>
+    <>
+      <div className="container">
+        <Button variant="link" className="-ml-8" asChild>
+          <Link href={"/admin"}>
+            <ChevronLeft className="h-4 w-4" />
+            <span>Tillbaka</span>
+          </Link>
+        </Button>
       </div>
-      <h1 className="font-semibold text-xl">Album</h1>
-      <DataTable columns={columns} data={data} />
-    </section>
+      <section className="container space-y-4">
+        <h1 className="text-xl font-semibold">Album</h1>
+        <DataTable columns={columns} data={data} />
+      </section>
+    </>
   );
 };
 
