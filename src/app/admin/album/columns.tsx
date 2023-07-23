@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,14 +38,34 @@ export const columns: ColumnDef<Album>[] = [
   },
   {
     accessorKey: "title",
-    header: "Titel",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Titel
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "date",
-    header: "Datum",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Datum
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       return (
-        <div className="text-right">
+        <div>
           {formatDateTimeString(row.original.date)}
         </div>
       );
@@ -53,19 +73,39 @@ export const columns: ColumnDef<Album>[] = [
   },
   {
     accessorKey: "visible",
-    header: "Visas",
+     header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Visas
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       return (
-        <div className="text-right">{row.original.visible ? "Ja" : "Nej"}</div>
+        <div>{row.original.visible ? "Ja" : "Nej"}</div>
       );
     },
   },
   {
     accessorKey: "isReception",
-    header: "Mottagning",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mottagning
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       return (
-        <div className="text-right">
+        <div>
           {row.original.isReception ? "Ja" : "Nej"}
         </div>
       );
@@ -73,9 +113,19 @@ export const columns: ColumnDef<Album>[] = [
   },
   {
     accessorKey: "count",
-    header: "Antal bilder",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Antal bilder
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
-      return <div className="text-right">{row.original.count}</div>;
+      return <div>{row.original.count}</div>;
     },
   },
   {
@@ -109,8 +159,8 @@ export const columns: ColumnDef<Album>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
-                const res = await fetch(`/api/album/${album.id}`, {
-                  method: "POST",
+                const res = await fetch(`/api/albums/${album.id}`, {
+                  method: "PATCH",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ visible: !album.visible }),
                 });

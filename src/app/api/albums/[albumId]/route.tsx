@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "~/server/db/client";
 
-const updateAlbumSchema = z.object({
+const patchAlbumSchema = z.object({
   title: z.string().min(1).optional(),
   visible: z.boolean().optional(),
   isReception: z.boolean().optional(),
@@ -22,11 +22,11 @@ export async function GET(
   return NextResponse.json(album, { status: 200 });
 }
 
-export async function POST(
+export async function PATCH(
   req: Request,
   { params }: { params: { albumId: string } }
 ): Promise<NextResponse<unknown>> {
-  const result = updateAlbumSchema.safeParse(await req.json());
+  const result = patchAlbumSchema.safeParse(await req.json());
 
   const { albumId } = params;
 
