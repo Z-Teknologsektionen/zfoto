@@ -20,9 +20,11 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
       <body className="overflow-x-hidden">
         <Toaster position="top-center" reverseOrder={false} />
         <>
-          <div className="flex min-h-screen flex-grow flex-col">
+          <div className="flex min-h-screen flex-col">
             <Header key={JSON.stringify(session)} session={session} />
-            {children}
+            <main className="my-8 flex flex-grow flex-col gap-y-8">
+              {children}
+            </main>
           </div>
           <Footer key={JSON.stringify(session)} session={session} />
         </>

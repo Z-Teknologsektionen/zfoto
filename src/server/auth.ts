@@ -1,10 +1,37 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
-import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "~/server/db/client";
 import { env } from "../env/server.mjs";
+
+/* eslint-disable no-unused-vars */
+import { Roles } from "@prisma/client";
+import { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultJWT } from "next-auth/jwt";
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: DefaultSession["user"] & {
+      email: string;
+      id: string;
+      name: string;
+      picture: string;
+      role: Roles;
+    };
+  }
+
+  interface User extends DefaultUser {
+    role: Roles;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT extends DefaultJWT {
+    role: Roles;
+  }
+}
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -12,24 +39,6 @@ import { env } from "../env/server.mjs";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-declare module "next-auth" {
-  // eslint-disable-next-line no-unused-vars
-  interface Session extends DefaultSession {
-    user: DefaultSession["user"] & {
-      email: string;
-      id: string;
-      name: string;
-      picture: string;
-    };
-  }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
-}
-
-const prisma = new PrismaClient();
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -41,25 +50,18 @@ const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60 * 2,
+  },
   callbacks: {
-    session({ session, user }) {
-      if (session.user && user.email) {
-        // eslint-disable-next-line no-param-reassign
-        session.user.email = user.email;
-        // session.user.role = user.role; <-- put other properties on the session here
-      }
-      return session;
+    async jwt({ token, user }) {
+      if (user) token.role = user.role;
+      return token;
     },
-    signIn(params) {
-      const adminEmails = env.ADMIN_MAILS_ENDSWITH.split(", ");
-
-      for (const email of adminEmails) {
-        if (params.user.email?.endsWith(email.trim())) {
-          return true;
-        }
-      }
-
-      return false;
+    async session({ session, token }) {
+      if (session?.user) session.user.role = token.role;
+      return session;
     },
   },
   secret: env.NEXTAUTH_SECRET,
