@@ -14,6 +14,9 @@ const Sidebar = () => {
         <Button asChild variant="link" size="lg">
           <Link href="/admin/albums">Album</Link>
         </Button>
+        <Button asChild variant="link" size="lg">
+          <Link href="/admin/users">Användare</Link>
+        </Button>
         <Button
           asChild
           variant="link"

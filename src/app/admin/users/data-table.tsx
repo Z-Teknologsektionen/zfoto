@@ -1,5 +1,6 @@
 "use client";
 
+import { Roles } from "@prisma/client";
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -18,6 +19,13 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -26,16 +34,17 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { columns } from "./columns";
-import { CountsPerPhotographerType } from "./page";
+import { User } from "./page";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export const DataTable: FC<
-  DataTableProps<CountsPerPhotographerType, typeof columns>
-> = ({ columns, data }) => {
+export const DataTable: FC<DataTableProps<User, typeof columns>> = ({
+  columns,
+  data,
+}) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -55,7 +64,7 @@ export const DataTable: FC<
 
   return (
     <>
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
         <Input
           className="max-w-sm"
           onChange={(event) =>
@@ -64,6 +73,31 @@ export const DataTable: FC<
           placeholder="Filtrera efter namn..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         />
+        <div className="flex flex-row items-center gap-2">
+          <span className="hidden md:block">Användartyp</span>
+          <Select
+            onValueChange={(value) => {
+              table.getColumn("role")?.setFilterValue(value);
+            }}
+            defaultValue={""}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Välj år" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Alla</SelectItem>
+              {(Object.keys(Roles) as Array<keyof typeof Roles>).map((key) => (
+                <SelectItem
+                  className="pointer-events-auto"
+                  key={key}
+                  value={key}
+                >
+                  {key.toUpperCase().at(0) + key.toLowerCase().slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -108,7 +142,7 @@ export const DataTable: FC<
                   className="h-24 text-center"
                   colSpan={columns.length}
                 >
-                  Inga fotografer
+                  Inga album
                 </TableCell>
               </TableRow>
             )}

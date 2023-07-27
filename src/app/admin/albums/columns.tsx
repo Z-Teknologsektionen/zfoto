@@ -156,7 +156,7 @@ export const columns: ColumnDef<Album>[] = [
                 });
                 if (!res.ok) {
                   return toast.error(
-                    "Kunde inte uppdatera, försök igen senare.."
+                    "Kunde inte uppdatera, försök igen senare..",
                   );
                 }
                 router.refresh();
