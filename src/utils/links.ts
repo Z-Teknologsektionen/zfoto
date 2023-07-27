@@ -29,7 +29,7 @@ type SocialIconLinkType = {
 };
 
 export const useLinks = (
-  isAuth: boolean
+  isAuth: boolean,
 ): {
   orderdFooterLinks: SafeLinkType[];
   orderdHeaderLinks: SafeLinkType[];
@@ -86,7 +86,7 @@ export const useLinks = (
       },
       {
         label: "Arkiv",
-        href: "/album",
+        href: "/albums",
         order: 4,
         useInHeader: true,
         useInFooter: true,
