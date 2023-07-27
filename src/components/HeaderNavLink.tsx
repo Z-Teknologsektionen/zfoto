@@ -4,7 +4,7 @@ import type { SafeLinkType } from "~/utils/links";
 
 export interface HeaderNavLinkProps extends Omit<SafeLinkType, "order"> {
   closeNav: () => void;
-  pathname: string;
+  pathname: string | null;
 }
 
 export const HeaderNavLink: FC<HeaderNavLinkProps> = ({

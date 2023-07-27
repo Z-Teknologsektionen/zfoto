@@ -163,7 +163,6 @@ export const albumRouter = createTRPCRouter({
       let nextCursor: typeof cursor | undefined;
       if (albums.length > limit) {
         const nextItem = albums.pop();
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         nextCursor = nextItem!.id;
       }
 

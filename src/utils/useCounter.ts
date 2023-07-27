@@ -7,6 +7,7 @@ export const useCounter = (
 ): {
   decrement: () => void;
   increment: () => void;
+  // eslint-disable-next-line no-unused-vars
   setNumber: (arg0: number) => void;
   value: number;
 } => {

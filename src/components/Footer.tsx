@@ -2,13 +2,14 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-
 import { useLinks } from "~/utils/links";
 import SectionWrapper from "./layout/SectionWrapper";
 
 export const Footer: FC = () => {
   const { status } = useSession();
-  const { orderdFooterLinks, socialIconLinks } = useLinks();
+  const { orderdFooterLinks, socialIconLinks } = useLinks(
+    status === "authenticated"
+  );
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">

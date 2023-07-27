@@ -45,7 +45,6 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
@@ -77,7 +76,6 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-// eslint-disable-next-line  @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
