@@ -1,14 +1,11 @@
-import type { NextPage } from "next";
 import Link from "next/link";
-import MainLayout from "~/components/layout/MainLayout";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 
-const ContactPage: NextPage = () => {
+const ContactPage = () => {
   return (
-    <MainLayout>
-      <SectionWrapper className="p-5">
-        <h1>Contact page</h1>
-        <p>Kommer snart...</p>
+    <>
+      <SectionWrapper>
+        <h1>Kommer snart...</h1>
         <p>
           Sålänge kan du skicka ett mail till oss
           <Link
@@ -19,7 +16,7 @@ const ContactPage: NextPage = () => {
           </Link>
         </p>
       </SectionWrapper>
-    </MainLayout>
+    </>
   );
 };
 
