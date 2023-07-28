@@ -20,7 +20,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
   return (
     <Link
       className="relative grid h-[250px] w-full max-w-xs items-end overflow-hidden rounded-lg border-2 shadow"
-      href={`/album/${id}`}
+      href={`/albums/${id}`}
     >
       <Image
         alt=""
