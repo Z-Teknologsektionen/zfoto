@@ -1,3 +1,4 @@
+import React from "react";
 import SectionWrapper from "./SectionWrapper";
 
 export const Loader = ({
@@ -6,7 +7,7 @@ export const Loader = ({
 }: {
   height?: number;
   width?: number;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <div role="status">
     <svg
       aria-hidden="true"
@@ -30,13 +31,13 @@ export const Loader = ({
   </div>
 );
 
-export const LoadingScreen = (): JSX.Element => (
+export const LoadingScreen = (): React.JSX.Element => (
   <div className="grid h-screen w-full place-items-center">
     <Loader height={60} width={60} />
   </div>
 );
 
-export const LoadingSection = (): JSX.Element => (
+export const LoadingSection = (): React.JSX.Element => (
   <SectionWrapper className="grid h-full w-full place-items-center ">
     <Loader height={60} width={60} />
   </SectionWrapper>

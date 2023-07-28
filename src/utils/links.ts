@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import {
   AiOutlineFacebook,
@@ -29,7 +28,9 @@ type SocialIconLinkType = {
   newPage?: boolean;
 };
 
-export const useLinks = (): {
+export const useLinks = (
+  isAuth: boolean,
+): {
   orderdFooterLinks: SafeLinkType[];
   orderdHeaderLinks: SafeLinkType[];
   socialIconLinks: SocialIconLinkType[];
@@ -54,7 +55,6 @@ export const useLinks = (): {
     },
   ];
 
-  const { status } = useSession();
   const links: LinkType[] = useMemo(() => {
     let tempLinks: LinkType[] = [
       {
@@ -86,7 +86,7 @@ export const useLinks = (): {
       },
       {
         label: "Arkiv",
-        href: "/album",
+        href: "/albums",
         order: 4,
         useInHeader: true,
         useInFooter: true,
@@ -100,7 +100,7 @@ export const useLinks = (): {
       },
     ];
 
-    if (status === "authenticated") {
+    if (isAuth) {
       tempLinks = [
         ...tempLinks,
         {
@@ -113,7 +113,7 @@ export const useLinks = (): {
     }
 
     return tempLinks;
-  }, [status]);
+  }, [isAuth]);
 
   const orderdLinks = links.sort((a, b) => (a.order >= b.order ? 1 : -1));
   const orderdHeaderLinks = orderdLinks.filter((a) => a.useInHeader);

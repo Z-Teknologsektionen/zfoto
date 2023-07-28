@@ -11,7 +11,7 @@ const TermsPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <MainLayout>
       <SectionWrapper>
-        <div className="prose prose-sm mx-auto prose-h1:font-semibold">
+        <div className="prose prose-sm prose-h1:font-semibold mx-auto">
           <PortableText value={page.content} />
         </div>
       </SectionWrapper>

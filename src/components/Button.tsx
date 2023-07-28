@@ -3,6 +3,7 @@ import type {
   DetailedHTMLProps,
   MouseEventHandler,
 } from "react";
+import React from "react";
 import type { IconType } from "react-icons";
 
 interface IButton
