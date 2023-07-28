@@ -1,7 +1,7 @@
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 
 const updateAlbumSchema = z.object({
   filename: z.string().min(1).optional(),
@@ -13,7 +13,7 @@ const updateAlbumSchema = z.object({
 
 export async function POST(
   req: Request,
-  { params }: { params: { imageId: string } }
+  { params }: { params: { imageId: string } },
 ): Promise<NextResponse<unknown>> {
   const result = updateAlbumSchema.safeParse(await req.json());
 

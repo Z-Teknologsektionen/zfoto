@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 
 const patchUserSchema = z.object({
   visible: z.boolean().optional(),

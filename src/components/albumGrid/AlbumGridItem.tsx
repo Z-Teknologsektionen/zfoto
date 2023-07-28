@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import { PublicAlbums } from "~/utils/fetchAlbumData";
 import { formatDateString } from "~/utils/formatDateAndTimeStrings";
-import type { RouterOutputs } from "~/utils/trpc";
 
-type Album = RouterOutputs["album"]["infiniteAlbums"]["albums"][0];
+type Album = PublicAlbums[0];
 
 interface IAlbumGridItem extends Album {
   priorityLoadning?: boolean;

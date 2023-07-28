@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 

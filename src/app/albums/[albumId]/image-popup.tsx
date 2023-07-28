@@ -5,10 +5,10 @@ import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { MdOutlineClose, MdOutlineFileDownload } from "react-icons/md";
-import type { RouterOutputs } from "~/utils/trpc";
+import { PublicAlbum } from "~/utils/fetchAlbumData";
 
 interface ImagePopupTypes {
-  album: RouterOutputs["album"]["getOne"];
+  album: PublicAlbum;
   closePopup: () => void;
   decrementImageIndex: () => void;
   imageIndex: number;

@@ -1,7 +1,7 @@
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 
 const patchAlbumSchema = z.object({
   title: z.string().min(1).optional(),
@@ -12,7 +12,7 @@ const patchAlbumSchema = z.object({
 
 export async function GET(
   req: Request,
-  { params }: { params: { albumId: string } }
+  { params }: { params: { albumId: string } },
 ): Promise<NextResponse<unknown>> {
   const album = await prisma.album.findUniqueOrThrow({
     where: {
@@ -24,7 +24,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { albumId: string } }
+  { params }: { params: { albumId: string } },
 ): Promise<NextResponse<unknown>> {
   const result = patchAlbumSchema.safeParse(await req.json());
 

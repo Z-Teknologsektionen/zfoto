@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import BackButton from "~/components/back-button";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 

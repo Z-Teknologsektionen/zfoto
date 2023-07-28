@@ -1,9 +1,9 @@
 import Image from "next/image";
 import type { FC } from "react";
-import type { RouterOutputs } from "~/utils/trpc";
+import { PublicAlbum } from "~/utils/fetchAlbumData";
 
 export const ImageGridItem: FC<{
-  album: RouterOutputs["album"]["getOne"];
+  album: PublicAlbum;
   filename: string;
   onClick: () => void;
   priority?: boolean;

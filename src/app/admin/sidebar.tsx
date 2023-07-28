@@ -60,7 +60,7 @@ const Sidebar = () => {
             if (!res.ok) {
               return toast.error("Okänt fel, försök igen senare...");
             }
-            toast.success("Mottaningsalbum dolda!");
+            toast.success("Mottaningsalbum visas!");
           }}
         >
           Visa mottagningsalbum

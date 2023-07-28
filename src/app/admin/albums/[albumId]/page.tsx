@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "~/components/ui/button";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import EditAlbumForm from "./edit-form";

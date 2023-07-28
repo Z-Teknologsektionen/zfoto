@@ -2,7 +2,7 @@ import { Roles } from "@prisma/client";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "~/server/db/client";
+import { prisma } from "~/utils/db";
 
 const patchUserSchema = z.object({
   role: z.nativeEnum(Roles),
