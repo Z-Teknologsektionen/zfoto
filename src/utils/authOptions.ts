@@ -1,15 +1,14 @@
+/* eslint-disable no-unused-vars */
+
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { Roles } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
 import type { NextAuthOptions } from "next-auth";
-import { getServerSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "~/server/db/client";
-import { env } from "../env/server.mjs";
-
-/* eslint-disable no-unused-vars */
-import { Roles } from "@prisma/client";
-import { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "~/utils/db";
+import { env } from "../env/server.mjs";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -42,13 +41,11 @@ declare module "next-auth/jwt" {
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  // Configure one or more authentication providers
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    // ...add more providers here
   ],
   session: {
     strategy: "jwt",

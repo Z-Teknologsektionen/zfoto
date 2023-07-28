@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
-import authOptions from "~/server/auth";
+import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
 import { Footer } from "./footer";
 import Header from "./header";
 
 export const metadata: Metadata = {
   title: { absolute: "zFoto", template: "%s | zFoto" },
+  description:
+    "Vill du se de senaste bilderna från Z-teknologsektionens arrangemang? Då är du på rätt ställe, här finns mängder av bilder att tillgå!",
   icons: "/zFoto.svg",
 };
 
