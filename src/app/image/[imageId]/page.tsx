@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BackButton from "~/components/BackButton";
+import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
 
