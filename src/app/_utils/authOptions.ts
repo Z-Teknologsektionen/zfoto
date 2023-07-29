@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 
+import { env } from "@/env/server.mjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Roles } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
@@ -8,7 +9,6 @@ import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "~/utils/db";
-import { env } from "../../env/server.mjs";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

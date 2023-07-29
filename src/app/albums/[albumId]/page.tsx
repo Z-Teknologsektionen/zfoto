@@ -1,15 +1,9 @@
-import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
 import AlbumInfo from "./components/album-info";
 import Client from "./components/client";
-
-export type Album = Prisma.PromiseReturnType<typeof getAlbumById>;
-export type RecommendedAlbum = Prisma.PromiseReturnType<
-  typeof getLatestAlbums
->[0];
 
 const AlbumPage = async ({ params }: { params: { albumId: string } }) => {
   const albumId = params.albumId;

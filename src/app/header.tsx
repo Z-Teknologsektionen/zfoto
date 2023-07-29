@@ -1,15 +1,15 @@
 "use client";
 
+import { HeaderNavLink } from "@/app/header-nav-link";
 import { Menu, X } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, useState } from "react";
-import { HeaderNavLink } from "~/components/HeaderNavLink";
 import { Button } from "~/components/ui/button";
 import { useLinks } from "~/utils/links";
-import AvatarWithDropdown from "./avatarWithDropdown";
+import AvatarWithDropdown from "./avatar-with-dropdown";
 
 const Header: FC<{ session: Session | null }> = ({ session }) => {
   const pathname = usePathname();
