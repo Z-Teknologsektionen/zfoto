@@ -7,8 +7,8 @@ import type { NextAuthOptions } from "next-auth";
 import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "~/utils/db";
-import { env } from "../env/server.mjs";
+import { prisma } from "~/_utils/db";
+import { env } from "../../env/server.mjs";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

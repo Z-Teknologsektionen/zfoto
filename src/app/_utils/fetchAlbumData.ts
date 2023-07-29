@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { prisma } from "~/utils/db";
+import { prisma } from "~/_utils/db";
 
 export const getLatestAlbums = async ({
   count,

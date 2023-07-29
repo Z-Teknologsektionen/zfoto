@@ -1,6 +1,6 @@
 import { createClient } from "next-sanity";
 import type { PortableTextBlock } from "sanity";
-import { env } from "../env/client.mjs";
+import { env } from "../../env/client.mjs";
 
 const client = createClient({
   projectId: env.NEXT_PUBLIC_SANITY_ID,
@@ -16,7 +16,7 @@ export type PagePayload = {
 };
 
 export const getPageBySlug = (
-  slug: string
+  slug: string,
 ): Promise<PagePayload | undefined> => {
   return client.fetch(`*[_type == "page" && slug.current == "${slug}"]{
   title, slug, content
