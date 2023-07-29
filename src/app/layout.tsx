@@ -19,7 +19,7 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <html lang="sv">
-      <body className="overflow-x-hidden">
+      <body className="">
         <Toaster position="top-center" reverseOrder={false} />
         <>
           <div className="flex min-h-screen flex-col">

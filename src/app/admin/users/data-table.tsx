@@ -81,7 +81,7 @@ export const DataTable: FC<DataTableProps<User, typeof columns>> = ({
             }}
             defaultValue={""}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[100px]">
               <SelectValue placeholder="Välj år" />
             </SelectTrigger>
             <SelectContent>
