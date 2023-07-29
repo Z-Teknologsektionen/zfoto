@@ -150,7 +150,7 @@ export const columns: ColumnDef<ImageType>[] = [
                 });
                 if (!res.ok) {
                   return toast.error(
-                    "Kunde inte uppdatera, försök igen senare.."
+                    "Kunde inte uppdatera, försök igen senare..",
                   );
                 }
                 router.refresh();
@@ -168,7 +168,7 @@ export const columns: ColumnDef<ImageType>[] = [
                 });
                 if (!res.ok) {
                   return toast.error(
-                    "Kunde inte uppdatera, försök igen senare.."
+                    "Kunde inte uppdatera, försök igen senare..",
                   );
                 }
                 router.refresh();

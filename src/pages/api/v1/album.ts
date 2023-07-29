@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "../../../utils/db";
-import { getLatestAlbums } from "../../../utils/fetchAlbumData";
+import { prisma } from "~/utils/db";
+import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 const createAlbumSchema = z.object({
   title: z.string().min(1),

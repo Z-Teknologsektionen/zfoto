@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import AlbumGrid from "~/components/albumGrid";
-import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
+import AlbumGrid from "~/components/albums/album-grid";
+import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 import FilterAlbumsWizard from "./filter-albums-wizard";

@@ -80,7 +80,7 @@ export const DataTable: FC<DataTableProps<Image, typeof columns>> = ({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -99,7 +99,7 @@ export const DataTable: FC<DataTableProps<Image, typeof columns>> = ({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

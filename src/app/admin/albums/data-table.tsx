@@ -1,6 +1,10 @@
 "use client";
 
-import type { ColumnDef, ColumnFiltersState, SortingState } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -29,12 +33,12 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export const DataTable: FC<DataTableProps<Album,typeof columns>> = ({
+export const DataTable: FC<DataTableProps<Album, typeof columns>> = ({
   columns,
   data,
 }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
@@ -74,7 +78,7 @@ export const DataTable: FC<DataTableProps<Album,typeof columns>> = ({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -93,7 +97,7 @@ export const DataTable: FC<DataTableProps<Album,typeof columns>> = ({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -112,7 +116,7 @@ export const DataTable: FC<DataTableProps<Album,typeof columns>> = ({
           </TableBody>
         </Table>
       </div>
-       <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"

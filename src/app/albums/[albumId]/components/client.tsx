@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { FC, useEffect } from "react";
-import AlbumGrid from "~/components/albumGrid";
-import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
-import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
+import AlbumGrid from "~/components/albums/album-grid";
+import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { useCounter } from "~/utils/useCounter";
 import { useToggle } from "~/utils/useToggle";
+import { Album, RecommendedAlbum } from "../page";
+import { ImageGridItem } from "./image-grid-item";
 import ImagePopup from "./image-popup";
-import { Album, RecommendedAlbum } from "./page";
 
 const Client: FC<{ album: Album; recommendedAlbums: RecommendedAlbum[] }> = ({
   album,
@@ -64,19 +64,21 @@ const Client: FC<{ album: Album; recommendedAlbums: RecommendedAlbum[] }> = ({
           </Link>
         </AlbumGrid>
       </SectionWrapper>
-      <ImagePopup
-        {...{
-          album,
-          showPopup,
-          imageIndex,
-          decrementImageIndex,
-          incrementImageIndex,
-        }}
-        closePopup={() => {
-          togglePopup();
-          document.body.classList.remove("overflow-hidden");
-        }}
-      />
+      {showPopup && (
+        <ImagePopup
+          {...{
+            album,
+            showPopup,
+            imageIndex,
+            decrementImageIndex,
+            incrementImageIndex,
+          }}
+          closePopup={() => {
+            togglePopup();
+            document.body.classList.remove("overflow-hidden");
+          }}
+        />
+      )}
     </>
   );
 };

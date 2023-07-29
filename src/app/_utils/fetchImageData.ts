@@ -1,4 +1,4 @@
-import { prisma } from "~/_utils/db";
+import { prisma } from "~/utils/db";
 
 export const getImagebyId = (id: string) => {
   return prisma.image.findUniqueOrThrow({

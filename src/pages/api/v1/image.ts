@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "../../../utils/db";
+import { prisma } from "~/utils/db";
 
 const createImageSchema = z.object({
   filename: z.string().min(1),

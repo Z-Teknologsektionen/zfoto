@@ -1,11 +1,12 @@
-import { Download, X } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { toast } from "react-hot-toast";
+import { Button } from "~/components/ui/button";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
+import ImagePopupFooter from "./image-popup-footer";
+import ImagePopupHeader from "./image-popup-header";
 
 interface ImagePopupTypes {
   album: PublicAlbum;
@@ -111,81 +112,52 @@ const ImagePopup: FC<ImagePopupTypes> = ({
   }
 
   return (
-    <section
-      className={`fixed inset-0 z-20 flex h-full w-full flex-col items-center justify-between bg-white ${
-        showPopup ? "opacity-100" : "pointer-events-none opacity-0"
-      } transition-opacity duration-1000`}
-    >
-      <div className="flex w-full justify-end gap-4 pr-2 pt-2 text-right md:pr-4 md:pt-4">
-        <a
-          aria-label="Ladda ner bild"
-          className="p-1"
-          href={`/images/lowres/${activeImage.filename}`}
-          onClick={() => {
-            toast.success("Laddar ner bild\nGlöm inte följa vår policy!", {
-              duration: 2000,
-            });
-          }}
-          type="button"
-          download
-        >
-          <Download size={36} />
-        </a>
-        <button
-          aria-label="Stäng popup"
-          className="p-1"
-          onClick={() => {
-            closePopup();
-          }}
-          type="button"
-        >
-          <X size={36} />
-        </button>
-      </div>
-      <div className="flex h-full w-full flex-grow flex-row items-center justify-between">
-        <button
-          className="flex h-full items-center justify-start px-4 text-left text-5xl md:text-8xl lg:pl-8"
-          disabled={!hasPrevImage}
-          onClick={() => {
-            viewPrevImage();
-          }}
-          type="button"
-        >
-          &#8249;
-        </button>
-        <div className="relative h-full flex-grow">
-          <>
-            <NextImage
-              alt="Full size image of "
-              className="object-contain"
-              src={`/images/lowres/${activeImage.filename}`}
-              fill
-              priority
-              unoptimized
-            />
-          </>
+    <section className="fixed inset-0 z-20 flex flex-col gap-4 bg-white/75">
+      <ImagePopupHeader
+        filename={activeImage.filename}
+        closePopup={closePopup}
+      />
+      <main className="flex flex-grow flex-row gap-4 px-4">
+        <div className="flex place-items-center">
+          <Button
+            className="group p-2"
+            disabled={!hasPrevImage}
+            onClick={() => {
+              viewPrevImage();
+            }}
+            size="icon"
+            variant="ghost"
+          >
+            <ArrowLeft className="group-disabled:opacity-50" size={24} />
+          </Button>
         </div>
-        <button
-          className="flex h-full items-center justify-end px-4 text-right text-5xl md:text-8xl lg:pr-8"
-          disabled={!hasNextImage}
-          onClick={() => {
-            viewNextImage();
-          }}
-          type="button"
-        >
-          &#8250;
-        </button>
-      </div>
-      <div className="flex flex-col gap-x-4 gap-y-1 p-4 text-center text-xs font-medium md:flex-row lg:text-lg">
-        <p>Fotograf: {activeImage.photographer}</p>
-        <p>Filnamn: {activeImage.filename}</p>
-        <Link
-          className="cursor-pointer underline"
-          href={`/image/${activeImage.id}`}
-        >
-          Permanent länk
-        </Link>
-      </div>
+        <div className="relative flex-grow">
+          <NextImage
+            alt={`Bild från ${album.title}, Foto: ${activeImage.photographer}`}
+            blurDataURL={`/images/thumb/${activeImage.filename}`}
+            placeholder="blur"
+            src={`/images/lowres/${activeImage.filename}`}
+            style={{ objectFit: "contain", objectPosition: "center" }}
+            fill
+            priority
+            unoptimized
+          />
+        </div>
+        <div className="flex place-items-center">
+          <Button
+            className="group p-2"
+            disabled={!hasNextImage}
+            onClick={() => {
+              viewNextImage();
+            }}
+            size="icon"
+            variant="ghost"
+          >
+            <ArrowRight className="group-disabled:opacity-50" size={24} />
+          </Button>
+        </div>
+      </main>
+      <ImagePopupFooter {...activeImage} />
     </section>
   );
 };

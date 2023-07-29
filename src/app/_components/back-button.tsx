@@ -3,7 +3,7 @@
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
-import { Button } from "~/_components/ui/button";
+import { Button } from "~/components/ui/button";
 
 const BackButton: FC = () => {
   const router = useRouter();

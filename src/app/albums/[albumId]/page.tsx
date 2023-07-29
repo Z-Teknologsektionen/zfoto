@@ -1,10 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 import BackButton from "~/components/back-button";
-import AlbumInfo from "~/components/imageGrid/AlbumInfo";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
-import Client from "./client";
+import AlbumInfo from "./components/album-info";
+import Client from "./components/client";
 
 export type Album = Prisma.PromiseReturnType<typeof getAlbumById>;
 export type RecommendedAlbum = Prisma.PromiseReturnType<
