@@ -41,10 +41,10 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
             className={`fixed inset-0 z-20 bg-[#333333]/95 pb-8 pt-24 text-inherit
           ${viewNav ? "pointer-cursor block" : "pointer-events-none hidden"} 
           transition duration-1000
-          lg:pointer-events-auto lg:relative lg:inset-auto lg:mt-0 lg:block lg:translate-y-0 lg:cursor-pointer lg:bg-inherit lg:opacity-100
+          lg:pointer-events-auto lg:relative lg:inset-auto lg:block lg:translate-y-0 lg:cursor-pointer lg:bg-inherit lg:py-0 lg:opacity-100
         `}
           >
-            <ul className="flex flex-col items-center gap-4 text-lg lg:flex-row lg:text-base">
+            <ul className="flex flex-col items-center justify-center gap-4 text-lg lg:flex-row lg:text-base">
               {orderdHeaderLinks.map(({ href, label, newPage }) => (
                 <HeaderNavLink
                   key={href}
