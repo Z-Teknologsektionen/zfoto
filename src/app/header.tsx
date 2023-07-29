@@ -14,7 +14,7 @@ import AvatarWithDropdown from "./avatarWithDropdown";
 const Header: FC<{ session: Session | null }> = ({ session }) => {
   const pathname = usePathname();
   const [viewNav, setViewNav] = useState(false);
-  const { orderdHeaderLinks } = useLinks(!!session?.user);
+  const { orderdHeaderLinks } = useLinks();
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
@@ -58,7 +58,10 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
             </ul>
           </nav>
           {session?.user && (
-            <AvatarWithDropdown filename={session?.user.image || ""} />
+            <AvatarWithDropdown
+              role={session.user.role}
+              filename={session?.user.image || ""}
+            />
           )}
           <Button
             variant="ghost"

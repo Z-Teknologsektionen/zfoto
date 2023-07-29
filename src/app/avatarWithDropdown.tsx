@@ -1,7 +1,9 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { Roles } from "@prisma/client";
+import { Lock, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
@@ -11,7 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-const AvatarWithDropdown: FC<{ filename: string }> = ({ filename }) => {
+const AvatarWithDropdown: FC<{ filename: string; role: Roles }> = ({
+  filename,
+  role,
+}) => {
+  const isAdmin = role === Roles.ADMIN;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,6 +27,14 @@ const AvatarWithDropdown: FC<{ filename: string }> = ({ filename }) => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mt-2">
+        {isAdmin && (
+          <DropdownMenuItem asChild>
+            <Link href={"/admin"}>
+              <Lock className="mr-2 h-4 w-4" />
+              <span>Admin panel</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>

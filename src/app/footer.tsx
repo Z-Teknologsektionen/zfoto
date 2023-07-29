@@ -1,6 +1,5 @@
 "use client";
 
-import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +7,8 @@ import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import { useLinks } from "~/utils/links";
 
-export const Footer: FC<{ session: Session | null }> = ({ session }) => {
-  const { orderdFooterLinks, socialIconLinks } = useLinks(!!session?.user);
+export const Footer: FC = () => {
+  const { orderdFooterLinks, socialIconLinks } = useLinks();
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
@@ -41,24 +40,15 @@ export const Footer: FC<{ session: Session | null }> = ({ session }) => {
                 </li>
               ))}
               <li>
-                {session?.user ? (
-                  <Button asChild variant="link" className="text-[#a7a7a7]">
-                    <Link href="/admin">Admin</Link>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="link"
-                    className="text-[#a7a7a7]"
-                    onClick={() => {
-                      signIn("google", {
-                        redirect: true,
-                        callbackUrl: `${window.location.origin}/admin`,
-                      });
-                    }}
-                  >
-                    Admin
-                  </Button>
-                )}
+                <Button
+                  variant="link"
+                  className="text-[#a7a7a7]"
+                  onClick={() => {
+                    signIn("google");
+                  }}
+                >
+                  Login
+                </Button>
               </li>
             </ul>
             <Link

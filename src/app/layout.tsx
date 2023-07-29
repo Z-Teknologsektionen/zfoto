@@ -28,7 +28,7 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
               {children}
             </main>
           </div>
-          <Footer key={JSON.stringify(session)} session={session} />
+          <Footer key={JSON.stringify(session)} />
         </>
       </body>
     </html>

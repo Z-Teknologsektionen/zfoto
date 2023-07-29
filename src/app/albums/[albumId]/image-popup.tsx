@@ -1,10 +1,10 @@
+import { Download, X } from "lucide-react";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { MdOutlineClose, MdOutlineFileDownload } from "react-icons/md";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
 
 interface ImagePopupTypes {
@@ -129,7 +129,7 @@ const ImagePopup: FC<ImagePopupTypes> = ({
           type="button"
           download
         >
-          <MdOutlineFileDownload size={36} />
+          <Download size={36} />
         </a>
         <button
           aria-label="Stäng popup"
@@ -139,7 +139,7 @@ const ImagePopup: FC<ImagePopupTypes> = ({
           }}
           type="button"
         >
-          <MdOutlineClose size={36} />
+          <X size={36} />
         </button>
       </div>
       <div className="flex h-full w-full flex-grow flex-row items-center justify-between">
