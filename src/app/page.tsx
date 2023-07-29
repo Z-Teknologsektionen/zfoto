@@ -1,6 +1,6 @@
 import Link from "next/link";
+import AlbumGrid from "~/components/albumGrid";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
-import AlbumGrid from "~/components/layout/AlbumGrid";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { Button } from "~/components/ui/button";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";

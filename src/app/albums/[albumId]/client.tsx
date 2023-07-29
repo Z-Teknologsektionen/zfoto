@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { FC, useEffect } from "react";
+import AlbumGrid from "~/components/albumGrid";
 import { AlbumGridItem } from "~/components/albumGrid/AlbumGridItem";
 import { ImageGridItem } from "~/components/imageGrid/ImageGridItem";
-import AlbumGrid from "~/components/layout/AlbumGrid";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { useCounter } from "~/utils/useCounter";
 import { useToggle } from "~/utils/useToggle";
