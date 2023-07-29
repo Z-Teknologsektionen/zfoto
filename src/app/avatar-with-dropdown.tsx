@@ -21,7 +21,7 @@ const AvatarWithDropdown: FC<{ filename: string; role: Roles }> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="h-10 w-10">
+        <Avatar className="z-20 h-10 w-10">
           <AvatarImage src={filename} />
           <AvatarFallback>zFoto</AvatarFallback>
         </Avatar>

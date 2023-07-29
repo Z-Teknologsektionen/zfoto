@@ -3,7 +3,7 @@ import type { FC } from "react";
 import type { SafeLinkType } from "~/utils/links";
 
 export interface HeaderNavLinkProps extends Omit<SafeLinkType, "order"> {
-  closeNav: () => void;
+  closeNav?: () => void;
   pathname: string | null;
 }
 
