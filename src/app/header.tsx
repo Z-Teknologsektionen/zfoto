@@ -18,9 +18,13 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
-      <header className="container flex h-16 flex-row items-center justify-between gap-8">
+      <header
+        className={`container flex h-16 flex-row items-center justify-between gap-8 ${
+          viewNav && "fixed left-0 top-0 z-20"
+        }`}
+      >
         <Link
-          className="z-20 flex flex-row items-center justify-center"
+          className="z-50 flex flex-row items-center justify-center"
           href="/"
         >
           <Image
@@ -34,7 +38,7 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
         </Link>
         <div className="flex flex-row items-center justify-center gap-4">
           <nav
-            className={`absolute inset-0 z-10 mt-16 bg-[#333333]/75 py-8 text-inherit
+            className={`fixed inset-0 z-20 bg-[#333333]/95 pb-8 pt-24 text-inherit
           ${viewNav ? "pointer-cursor block" : "pointer-events-none hidden"} 
           transition duration-1000
           lg:pointer-events-auto lg:relative lg:inset-auto lg:mt-0 lg:block lg:translate-y-0 lg:cursor-pointer lg:bg-inherit lg:opacity-100
@@ -67,7 +71,7 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
             variant="ghost"
             size="icon"
             aria-label="Visa/dölj navigation"
-            className="lg:hidden"
+            className="z-30 lg:hidden"
             onClick={() => setViewNav((prev) => !prev)}
             type="button"
           >
