@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import type { ReactNode } from "react";
@@ -30,6 +31,7 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
           </div>
           <Footer key={JSON.stringify(session)} session={session} />
         </>
+        <Analytics />
       </body>
     </html>
   );
