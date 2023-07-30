@@ -29,15 +29,12 @@ const getCountsPerPhotographer = async () => {
       images: {
         select: {
           photographer: true,
-          date: true,
         },
-        orderBy: [{ date: "desc" }],
       },
     },
-    orderBy: [{ date: "desc" }],
   });
 
-  const result = images.map((image) => {
+  return images.map((image) => {
     const samePhotographer = (i: { photographer: string }) =>
       i.photographer === image.photographer;
     return {
@@ -50,55 +47,25 @@ const getCountsPerPhotographer = async () => {
       latestImage: imagesDates.findLast(samePhotographer)?.date,
     };
   });
-
-  return result;
 };
 
-const getImageCountFromActive = async () => {
-  const currentDate = new Date();
-  let activeYear = currentDate.getFullYear();
-  if (currentDate.getMonth() < 10) {
-    activeYear -= 1;
-  }
-
+const getImageCountFromYear = async (startYear: number) => {
   return prisma.image.count({
     where: {
       date: {
-        gt: new Date(activeYear, 10, 1),
-        lt: new Date(activeYear + 1, 9, 31),
-      },
-    },
-  });
-};
-const getImageCountFromLastActive = async () => {
-  const currentDate = new Date();
-  let activeYear = currentDate.getFullYear();
-  if (currentDate.getMonth() < 10) {
-    activeYear -= 1;
-  }
-
-  return prisma.image.count({
-    where: {
-      date: {
-        gt: new Date(activeYear - 1, 10, 1),
-        lt: new Date(activeYear - 1 + 1, 9, 31),
+        gt: new Date(startYear, 10, 1),
+        lt: new Date(startYear + 1, 9, 31),
       },
     },
   });
 };
 
-const getAlbumCountFromActive = async () => {
-  const currentDate = new Date();
-  let activeYear = currentDate.getFullYear();
-  if (currentDate.getMonth() < 10) {
-    activeYear -= 1;
-  }
-
+const getAlbumCountFromYear = async (startYear: number) => {
   return prisma.album.count({
     where: {
       date: {
-        gt: new Date(activeYear, 10, 1),
-        lt: new Date(activeYear + 1, 9, 31),
+        gt: new Date(startYear, 10, 1),
+        lt: new Date(startYear + 1, 9, 31),
       },
     },
   });
@@ -116,10 +83,16 @@ export type CountsPerPhotographerType = Prisma.PromiseReturnType<
 >[0];
 
 const page = async () => {
+  const currentDate = new Date();
+  let activeYear = currentDate.getFullYear();
+  if (currentDate.getMonth() < 10) {
+    activeYear -= 1;
+  }
+
   const result = await getCountsPerPhotographer();
-  const imagesThisYear = await getImageCountFromActive();
-  const imagesPrevYear = await getImageCountFromLastActive();
-  const albumsThisYear = await getAlbumCountFromActive();
+  const imagesThisYear = await getImageCountFromYear(activeYear);
+  const imagesPrevYear = await getImageCountFromYear(activeYear - 1);
+  const albumsThisYear = await getAlbumCountFromYear(activeYear);
   const totalImages = await getTotalImageCount();
   const totalAlbums = await getTotalAlbumCount();
   const numberOfPhotographers = result.length;
