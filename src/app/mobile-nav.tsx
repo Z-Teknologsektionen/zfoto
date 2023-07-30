@@ -11,13 +11,16 @@ const MobileNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="dark leading-none md:hidden">
+    <nav className="leading-none md:hidden">
       <Sheet open={open} defaultOpen={false} onOpenChange={setOpen}>
         <SheetTrigger>
           <Menu className="h-6 w-6" />
         </SheetTrigger>
-        <SheetContent className="bg-[#333333] text-[#a7a7a7]">
-          <ul className="mt-8 flex flex-col items-center justify-center gap-4">
+        <SheetContent
+          side={"right"}
+          className="bg-[#333333] text-lg text-[#a7a7a7]"
+        >
+          <ul className="mt-8 flex flex-col items-center justify-center gap-8">
             {orderdHeaderLinks.map(({ href, label, newPage }) => (
               <HeaderNavLink
                 key={href}
@@ -25,6 +28,7 @@ const MobileNav = () => {
                 label={label}
                 newPage={newPage}
                 pathname={pathname}
+                closeNav={() => setOpen(false)}
               />
             ))}
           </ul>
