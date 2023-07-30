@@ -31,7 +31,7 @@ const AvatarWithDropdown: FC<{ filename: string; role: Roles }> = ({
           <DropdownMenuItem asChild>
             <Link href={"/admin"}>
               <Lock className="mr-2 h-4 w-4" />
-              <span>Admin panel</span>
+              <span>Adminpanel</span>
             </Link>
           </DropdownMenuItem>
         )}

@@ -131,13 +131,11 @@ const page = async () => {
   return (
     <>
       <div className="flex flex-col gap-4 lg:flex-row">
-        <h1 className="text-center text-3xl font-bold lg:hidden">
-          Admin panel
-        </h1>
+        <h1 className="text-center text-3xl font-bold lg:hidden">Adminpanel</h1>
         <Sidebar />
         <div className="space-y-8">
           <h1 className="container hidden text-3xl font-bold lg:block">
-            Admin panel
+            Adminpanel
           </h1>
           <section className="container grid gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
             <h2 className="col-span-full text-xl font-semibold">Statistik</h2>

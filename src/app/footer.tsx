@@ -73,7 +73,7 @@ export const Footer: FC<{ session: Session | null }> = ({ session }) => {
                       }),
                     )}
                   >
-                    Admin panel
+                    Adminpanel
                   </Link>
                 </li>
               )}
