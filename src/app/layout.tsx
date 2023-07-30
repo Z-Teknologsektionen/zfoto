@@ -9,10 +9,14 @@ import { Footer } from "./footer";
 import Header from "./header";
 
 export const metadata: Metadata = {
-  title: { absolute: "zFoto", template: "%s | zFoto" },
+  title: { default: "zFoto", template: "%s | zFoto" },
   description:
     "Vill du se de senaste bilderna från Z-teknologsektionens arrangemang? Då är du på rätt ställe, här finns mängder av bilder att tillgå!",
-  icons: "/zFoto.svg",
+  icons: {
+    icon: "/zFoto.ico",
+    shortcut: "/zFoto96x96.png",
+    apple: "/zFoto180x180.png",
+  },
 };
 
 const BaseLayout = async ({ children }: { children: ReactNode }) => {
