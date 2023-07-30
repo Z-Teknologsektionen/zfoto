@@ -13,9 +13,32 @@ export const metadata: Metadata = {
   description:
     "Vill du se de senaste bilderna från Z-teknologsektionens arrangemang? Då är du på rätt ställe, här finns mängder av bilder att tillgå!",
   icons: {
-    icon: "/zFoto.ico",
-    shortcut: "/zFoto96x96.png",
-    apple: "/zFoto180x180.png",
+    icon: [
+      {
+        url: "/zFoto-32x32.ico",
+        sizes: "32x32",
+      },
+      {
+        url: "/zFoto-32x32.png",
+        type: "image/png",
+        sizes: "32x32",
+      },
+
+      {
+        url: "/zFoto.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    shortcut: {
+      url: "/zFoto-96x96.png",
+      type: "image/png",
+      sizes: "96x96",
+    },
+    apple: {
+      url: "/zFoto-180x180.png",
+      type: "image/png",
+      sizes: "96x96",
+    },
   },
 };
 
