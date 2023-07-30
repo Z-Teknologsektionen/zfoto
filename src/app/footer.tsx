@@ -1,14 +1,20 @@
 "use client";
 
+import { Roles } from "@prisma/client";
+import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { useLinks } from "~/utils/links";
+import { cn } from "~/utils/utils";
 
-export const Footer: FC = () => {
+export const Footer: FC<{ session: Session | null }> = ({ session }) => {
   const { orderdFooterLinks, socialIconLinks } = useLinks();
+
+  const isAuthenticated = !!session?.user;
+  const isAdmin = isAuthenticated && session.user.role === Roles.ADMIN;
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
@@ -28,28 +34,49 @@ export const Footer: FC = () => {
             <ul className="flex w-24 flex-col items-center justify-center gap-2 py-2 text-center text-sm md:w-full md:flex-row md:gap-4">
               {orderdFooterLinks.map(({ href, label, newPage }) => (
                 <li key={href}>
-                  <Button asChild variant="link" className="text-[#a7a7a7]">
-                    <Link
-                      href={href}
-                      rel={newPage ? "noopener noreferrer" : undefined}
-                      target={newPage ? "_blank" : "_self"}
-                    >
-                      {label}
-                    </Link>
-                  </Button>
+                  <Link
+                    href={href}
+                    rel={newPage ? "noopener noreferrer" : undefined}
+                    target={newPage ? "_blank" : "_self"}
+                    className={cn(
+                      buttonVariants({
+                        variant: "link",
+                        className: "text-[#a7a7a7]",
+                      }),
+                    )}
+                  >
+                    {label}
+                  </Link>
                 </li>
               ))}
-              <li>
-                <Button
-                  variant="link"
-                  className="text-[#a7a7a7]"
-                  onClick={() => {
-                    signIn("google");
-                  }}
-                >
-                  Login
-                </Button>
-              </li>
+              {!isAuthenticated && (
+                <li>
+                  <Button
+                    variant="link"
+                    className="text-[#a7a7a7]"
+                    onClick={() => {
+                      signIn("google");
+                    }}
+                  >
+                    Login
+                  </Button>
+                </li>
+              )}
+              {isAdmin && (
+                <li>
+                  <Link
+                    href={"/admin"}
+                    className={cn(
+                      buttonVariants({
+                        variant: "link",
+                        className: "text-[#a7a7a7]",
+                      }),
+                    )}
+                  >
+                    Admin panel
+                  </Link>
+                </li>
+              )}
             </ul>
             <Link
               className="flex w-28 flex-col justify-between gap-2"
