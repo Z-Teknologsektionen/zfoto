@@ -82,7 +82,7 @@ export type CountsPerPhotographerType = Prisma.PromiseReturnType<
   typeof getCountsPerPhotographer
 >[0];
 
-const page = async () => {
+const AdminDashbord = async () => {
   const currentDate = new Date();
   let activeYear = currentDate.getFullYear();
   if (currentDate.getMonth() < 10) {
@@ -147,4 +147,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default AdminDashbord;
