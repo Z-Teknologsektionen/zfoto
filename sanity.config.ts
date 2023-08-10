@@ -1,8 +1,8 @@
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
+import { deskToolStructure } from "~/utils/deskToolStructure";
 import { schemaTypes } from "./schemas";
 import { env } from "./src/env/client.mjs";
-import { deskToolStructure } from "./src/utils/deskToolStructure";
 
 export default defineConfig({
   basePath: "/studio",

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "../../../server/db/client";
+import { prisma } from "~/utils/db";
 
 const createImageSchema = z.object({
   filename: z.string().min(1),
@@ -13,7 +13,7 @@ type PostBodyType = z.infer<typeof createImageSchema>;
 
 const imageRouter = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ): Promise<void> => {
   if (req.method === "POST") {
     try {

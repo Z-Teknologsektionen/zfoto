@@ -14,21 +14,6 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url(),
   NEXTAUTH_SECRET: z.string().min(16),
-  ADMIN_MAILS_ENDSWITH: z.string().refine((val) => {
-    if (!val.trim()) {
-      return false;
-    }
-    const emails = val.split(", ");
-    const emailSchema = z.string().email();
-    for (const email of emails) {
-      try {
-        emailSchema.parse(email);
-      } catch (error) {
-        return false;
-      }
-    }
-    return true;
-  }, "Invalid email list"),
 });
 
 /**

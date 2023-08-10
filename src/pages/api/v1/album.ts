@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "../../../server/db/client";
-import { getAlbums } from "../../../utils/fetchDataFromPrisma";
+import { prisma } from "~/utils/db";
+import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 const createAlbumSchema = z.object({
   title: z.string().min(1),
@@ -12,7 +12,7 @@ const createAlbumSchema = z.object({
         filename: z.string().min(1),
         photographer: z.string().min(1),
         date: z.string().optional(),
-      })
+      }),
     )
     .min(1),
 });
@@ -21,11 +21,11 @@ type PostBodyType = z.infer<typeof createAlbumSchema>;
 
 const albumRouter = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const album = await getAlbums();
+      const album = await getLatestAlbums({});
       return res.status(200).json(album);
     } catch (error) {
       return res.status(500).json({ error: "Internal Server Error" });

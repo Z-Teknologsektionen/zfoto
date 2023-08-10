@@ -17,10 +17,6 @@ const config = {
   },
   reactStrictMode: true,
   swcMinify: true,
-  i18n: {
-    locales: ["sv"],
-    defaultLocale: "sv",
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
