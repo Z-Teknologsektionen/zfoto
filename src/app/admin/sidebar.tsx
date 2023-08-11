@@ -17,12 +17,8 @@ const Sidebar = () => {
         <Button asChild variant="link">
           <Link href="/admin/users">Användare</Link>
         </Button>
-        <Button
-          asChild
-          variant="link"
-          onClick={() => toast.error("Kommer snart...")}
-        >
-          <Link href="/admin">Bilder</Link>
+        <Button asChild variant="link">
+          <Link href="/admin/images">Bilder</Link>
         </Button>
       </div>
       <div className="flex flex-col gap-2">
