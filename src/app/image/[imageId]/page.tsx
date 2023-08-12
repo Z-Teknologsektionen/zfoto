@@ -4,6 +4,8 @@ import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
 
+export const revalidate = 300;
+
 const ImagePage = async ({ params }: { params: { imageId: string } }) => {
   const image = await getImagebyId(params.imageId).catch(() => notFound());
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 
+export const dynamic = "force-static";
+
 const ContactPage = () => {
   return (
     <>

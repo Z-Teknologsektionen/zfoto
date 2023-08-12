@@ -1,9 +1,11 @@
 import Link from "next/link";
+import AlbumGrid from "~/components/albums/album-grid";
+import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { Button } from "~/components/ui/button";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
-import AlbumGrid from "./_components/albums/album-grid";
-import { AlbumGridItem } from "./_components/albums/album-grid-item";
+
+export const revalidate = 300;
 
 const HomePage = async () => {
   const albums = await getLatestAlbums({ count: 12 });
