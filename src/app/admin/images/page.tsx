@@ -37,7 +37,7 @@ const getAllImagesAsAdmin = async () => {
 
 export type ImageType = Prisma.PromiseReturnType<typeof getAllImagesAsAdmin>[0];
 
-const page = async () => {
+const ImagesAdminPage = async () => {
   const data = await getAllImagesAsAdmin();
   return (
     <>
@@ -57,4 +57,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default ImagesAdminPage;

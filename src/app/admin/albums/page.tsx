@@ -34,7 +34,7 @@ const getAllAlbumsAsAdmin = async () => {
 
 export type Album = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
-const page = async () => {
+const AlbumsAdminPage = async () => {
   const data = await getAllAlbumsAsAdmin();
   return (
     <>
@@ -54,4 +54,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default AlbumsAdminPage;

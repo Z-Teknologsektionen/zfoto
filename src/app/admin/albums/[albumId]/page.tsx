@@ -8,7 +8,7 @@ import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import EditAlbumForm from "./edit-form";
 
-const getAllAlbumAsAdmin = async (id: string) => {
+const getAlbumAsAdmin = async (id: string) => {
   const {
     images,
     _count: { images: numberOfImages },
@@ -45,13 +45,11 @@ const getAllAlbumAsAdmin = async (id: string) => {
 };
 
 export type Image = Prisma.PromiseReturnType<
-  typeof getAllAlbumAsAdmin
+  typeof getAlbumAsAdmin
 >["images"][0];
 
-const page = async ({ params }: { params: { albumId: string } }) => {
-  const album = await getAllAlbumAsAdmin(params.albumId).catch(() =>
-    notFound(),
-  );
+const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
+  const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());
   return (
     <>
       <div className="container">
@@ -79,4 +77,4 @@ const page = async ({ params }: { params: { albumId: string } }) => {
   );
 };
 
-export default page;
+export default AlbumAdminPage;

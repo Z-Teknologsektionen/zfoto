@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button";
 
 export const dynamic = "force-static";
 
-const abc = () => {
+const unauthorizedPage = () => {
   return (
     <div className="grid flex-grow place-items-center">
       <section className="flex flex-col items-center gap-12">
@@ -22,4 +22,4 @@ const abc = () => {
   );
 };
 
-export default abc;
+export default unauthorizedPage;

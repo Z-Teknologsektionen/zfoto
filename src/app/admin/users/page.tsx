@@ -19,7 +19,7 @@ const getUsers = () => {
 
 export type User = Prisma.PromiseReturnType<typeof getUsers>[0];
 
-const page = async () => {
+const UsersAdminPage = async () => {
   const data = await getUsers();
   return (
     <>
@@ -34,4 +34,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default UsersAdminPage;
