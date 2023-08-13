@@ -5,6 +5,8 @@ import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
 import AlbumInfo from "./components/album-info";
 import Client from "./components/client";
 
+export const revalidate = 300;
+
 const AlbumPage = async ({ params }: { params: { albumId: string } }) => {
   const albumId = params.albumId;
 

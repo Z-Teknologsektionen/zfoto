@@ -1,9 +1,8 @@
 import { usePathname } from "next/navigation";
-import { useLinks } from "~/utils/links";
+import { orderdHeaderLinks } from "~/utils/links";
 import { HeaderNavLink } from "./header-nav-link";
 
 const MainNav = () => {
-  const { orderdHeaderLinks } = useLinks();
   const pathname = usePathname();
 
   return (

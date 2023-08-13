@@ -14,6 +14,13 @@ import { useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import { Input } from "~/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -40,17 +47,42 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
     },
   });
 
+  const photographers = [...new Set(data.map((a) => a.photographer))];
+
   return (
     <>
-      <div className="flex items-center py-4">
+      <div className="flex items-center gap-2 py-4">
         <Input
           className="max-w-sm"
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("filename")?.setFilterValue(event.target.value)
           }
-          placeholder="Filtrera efter titel..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder="Filtrera efter filnamn..."
+          value={
+            (table.getColumn("filename")?.getFilterValue() as string) ?? ""
+          }
         />
+        <Select
+          onValueChange={(value) => {
+            table.getColumn("photographer")?.setFilterValue(value);
+          }}
+          defaultValue={""}
+        >
+          <SelectTrigger className="w-[250px]">
+            <SelectValue placeholder="Välj år" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">Alla</SelectItem>
+            {photographers.map((phototograher) => (
+              <SelectItem
+                key={phototograher.toLowerCase()}
+                value={phototograher}
+              >
+                {phototograher}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -92,10 +124,10 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
             ) : (
               <TableRow>
                 <TableCell
-                  className="h-24 text-center"
                   colSpan={columns.length}
+                  className="h-24 text-center"
                 >
-                  Inga album
+                  No results.
                 </TableCell>
               </TableRow>
             )}

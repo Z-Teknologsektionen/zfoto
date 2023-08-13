@@ -16,10 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { AdminAlbumImageType } from "~/utils/fetchAdminData";
+import { AdminTableImageType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 
-export const columns: ColumnDef<AdminAlbumImageType>[] = [
+export const columns: ColumnDef<AdminTableImageType>[] = [
   {
     accessorKey: "image",
     cell: ({ row }) => {
@@ -70,6 +70,12 @@ export const columns: ColumnDef<AdminAlbumImageType>[] = [
     cell: ({ row }) => (row.original.coverImage ? "Ja" : "Nej"),
   },
   {
+    accessorKey: "albumTitle",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Album" />
+    ),
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const image = row.original;
@@ -91,10 +97,21 @@ export const columns: ColumnDef<AdminAlbumImageType>[] = [
             <DropdownMenuItem>
               <Link href={`/image/${image.id}`}>Öppna bild</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/albums/${image.id}`}>Öppna album</Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel className="underline underline-offset-2">
               Admin
             </DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={`/admin/albums/${image.albumId}`}>
+                Redigera album
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/admin/images/${image.id}`}>Redigera bild</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
                 const res = await fetch(`/api/images/${image.id}`, {
@@ -112,24 +129,6 @@ export const columns: ColumnDef<AdminAlbumImageType>[] = [
               }}
             >
               {`${image.visible ? "Dölj" : "Visa"} bild`}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={async () => {
-                const res = await fetch(`/api/images/${image.id}`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ coverImage: !image.coverImage }),
-                });
-                if (!res.ok) {
-                  return toast.error(
-                    "Kunde inte uppdatera, försök igen senare..",
-                  );
-                }
-                router.refresh();
-                toast.success("Uppdaterat!");
-              }}
-            >
-              {`${image.coverImage ? "Dölj" : "Sätt"} omslag`}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

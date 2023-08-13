@@ -2,10 +2,11 @@
 
 import { Roles } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -14,12 +15,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import type { User } from "./page";
+import { AdminUser } from "~/utils/fetchAdminData";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<AdminUser>[] = [
   {
     accessorKey: "image",
-    header: "",
     cell: ({ row }) => {
       return (
         <div className="relative h-16 w-16">
@@ -36,51 +36,24 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Namn
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Namn" />
+    ),
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Epost
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Epost" />
+    ),
   },
   {
     accessorKey: "role",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Roll
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Roll" />
+    ),
     cell: ({ row }) => {
-      return (
-        <div className="capitalize">
-          {row.original.role.toLocaleLowerCase()}
-        </div>
-      );
+      const role = row.original.role;
+      return role.slice(0, 1).toUpperCase() + role.slice(1).toLowerCase();
     },
   },
   {

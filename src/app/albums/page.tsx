@@ -5,6 +5,8 @@ import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 import FilterAlbumsWizard from "./filter-albums-wizard";
 
+export const revalidate = 300;
+
 interface IAlbumId {
   searchParams: { year: string | undefined };
 }
