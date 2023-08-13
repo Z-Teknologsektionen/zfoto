@@ -1,10 +1,7 @@
 "use client";
 
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-} from "@tanstack/react-table";
+import { DataTableFC } from "@/types/data-table";
+import type { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -13,7 +10,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { FC } from "react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -25,17 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { columns } from "./columns";
-import { CountsPerPhotographerType } from "./page";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export const DataTable: FC<
-  DataTableProps<CountsPerPhotographerType, typeof columns>
-> = ({ columns, data }) => {
+export const DataTable: DataTableFC = ({ columns, data }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
