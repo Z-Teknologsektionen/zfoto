@@ -1,8 +1,6 @@
-import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "~/components/ui/button";
+import BackButton from "~/components/back-button";
 import { getImageAsAdmin } from "~/utils/fetchAdminData";
 import EditAlbumForm from "./edit-form";
 
@@ -11,12 +9,7 @@ const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
   return (
     <>
       <div className="container">
-        <Button variant="link" className="-ml-8" asChild>
-          <Link href={"/admin/images"}>
-            <ChevronLeft className="h-4 w-4" />
-            <span>Tillbaka</span>
-          </Link>
-        </Button>
+        <BackButton />
       </div>
       <section className="container space-y-4">
         <div>

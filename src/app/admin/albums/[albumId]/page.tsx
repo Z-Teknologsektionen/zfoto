@@ -1,7 +1,5 @@
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "~/components/ui/button";
+import BackButton from "~/components/back-button";
 import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -12,12 +10,7 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
   return (
     <>
       <div className="container">
-        <Button variant="link" className="-ml-8" asChild>
-          <Link href={"/admin/albums"}>
-            <ChevronLeft className="h-4 w-4" />
-            <span>Tillbaka</span>
-          </Link>
-        </Button>
+        <BackButton />
       </div>
       <section className="container space-y-4">
         <div>
