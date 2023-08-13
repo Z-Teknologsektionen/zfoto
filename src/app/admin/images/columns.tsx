@@ -1,11 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -21,7 +22,6 @@ import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 export const columns: ColumnDef<AdminTableImageType>[] = [
   {
     accessorKey: "image",
-    header: "",
     cell: ({ row }) => {
       return (
         <div className="relative h-24 w-36">
@@ -38,96 +38,48 @@ export const columns: ColumnDef<AdminTableImageType>[] = [
   },
   {
     accessorKey: "filename",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Filnamn
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Filnamn" />
+    ),
   },
   {
     accessorKey: "date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Datum
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Datum" />
+    ),
     cell: ({ row }) => {
       return <div>{formatDateTimeString(row.original.date)}</div>;
     },
   },
   {
     accessorKey: "photographer",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Fotograf
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Fotograf" />
+    ),
   },
   {
     accessorKey: "visible",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Visas
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Visas" />
+    ),
     cell: ({ row }) => {
       return <div>{row.original.visible ? "Ja" : "Nej"}</div>;
     },
   },
   {
     accessorKey: "coverImage",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Omslagsbild
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Omslagsbild" />
+    ),
     cell: ({ row }) => {
       return <div>{row.original.coverImage ? "Ja" : "Nej"}</div>;
     },
   },
   {
     accessorKey: "albumTitle",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Album
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Album" />
+    ),
   },
   {
     id: "actions",
