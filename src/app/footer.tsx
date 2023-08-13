@@ -7,12 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { useLinks } from "~/utils/links";
+import { orderdFooterLinks, socialIconLinks } from "~/utils/links";
 import { cn } from "~/utils/utils";
 
 export const Footer: FC<{ session: Session | null }> = ({ session }) => {
-  const { orderdFooterLinks, socialIconLinks } = useLinks();
-
   const isAuthenticated = !!session?.user;
   const isAdmin = isAuthenticated && session.user.role === Roles.ADMIN;
 
