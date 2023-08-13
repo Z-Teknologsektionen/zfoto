@@ -11,6 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import { Input } from "~/components/ui/input";
 import {
   Select,
@@ -27,7 +28,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { DataTablePagination } from "./data-table-pagination";
 
 export const DataTable: DataTableFC = ({ columns, data }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

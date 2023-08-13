@@ -18,7 +18,7 @@ const ImagesAdminPage = async () => {
         </Button>
       </div>
       <section className="container space-y-4">
-        <h1 className="text-xl font-semibold">Album</h1>
+        <h1 className="text-xl font-semibold">Bilder</h1>
         <DataTable columns={columns} data={data} />
       </section>
     </>

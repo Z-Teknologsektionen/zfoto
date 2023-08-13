@@ -65,7 +65,7 @@ const AdminDashbord = async () => {
               info={`${imagesPrevVSThisYear} mot förra sittande`}
             />
           </section>
-          <section className="container">
+          <section className="container space-y-4">
             <h2 className="text-xl font-semibold">Fotografer</h2>
             <DataTable columns={columns} data={photographerCounts} />
           </section>

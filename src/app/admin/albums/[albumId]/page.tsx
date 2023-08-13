@@ -28,7 +28,7 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
           <EditAlbumForm {...album} />
         </div>
       </section>
-      <section className="container">
+      <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Bilder</h1>
         <DataTable columns={columns} data={album.images} />
       </section>
