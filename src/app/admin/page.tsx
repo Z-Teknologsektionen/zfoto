@@ -1,86 +1,14 @@
-import { Prisma } from "@prisma/client";
-import { prisma } from "~/utils/db";
+import {
+  getAlbumCountFromYear,
+  getCountsPerPhotographer,
+  getImageCountFromYear,
+  getTotalAlbumCount,
+  getTotalImageCount,
+} from "~/utils/fetchAdminData";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import InfoCard from "./info-card";
 import Sidebar from "./sidebar";
-
-const getCountsPerPhotographer = async () => {
-  const images = await prisma.image.groupBy({
-    by: ["photographer"],
-    _count: {
-      _all: true,
-      visible: true,
-      coverImage: true,
-    },
-    orderBy: [{ photographer: "asc" }],
-  });
-
-  const imagesDates = await prisma.image.findMany({
-    select: {
-      date: true,
-      photographer: true,
-    },
-    orderBy: [{ date: "asc" }],
-  });
-
-  const album = await prisma.album.findMany({
-    select: {
-      images: {
-        select: {
-          photographer: true,
-        },
-      },
-    },
-  });
-
-  return images.map((image) => {
-    const samePhotographer = (i: { photographer: string }) =>
-      i.photographer === image.photographer;
-    return {
-      name: image.photographer,
-      images: image._count._all,
-      visible: image._count.visible,
-      coverImage: image._count.coverImage,
-      album: album.filter((a) => a.images.some(samePhotographer)).length,
-      firstImage: imagesDates.find(samePhotographer)?.date,
-      latestImage: imagesDates.findLast(samePhotographer)?.date,
-    };
-  });
-};
-
-const getImageCountFromYear = async (startYear: number) => {
-  return prisma.image.count({
-    where: {
-      date: {
-        gt: new Date(startYear, 10, 1),
-        lt: new Date(startYear + 1, 9, 31),
-      },
-    },
-  });
-};
-
-const getAlbumCountFromYear = async (startYear: number) => {
-  return prisma.album.count({
-    where: {
-      date: {
-        gt: new Date(startYear, 10, 1),
-        lt: new Date(startYear + 1, 9, 31),
-      },
-    },
-  });
-};
-
-const getTotalImageCount = async () => {
-  return prisma.image.count();
-};
-const getTotalAlbumCount = async () => {
-  return prisma.album.count();
-};
-
-export type CountsPerPhotographerType = Prisma.PromiseReturnType<
-  typeof getCountsPerPhotographer
->[0];
 
 const AdminDashbord = async () => {
   const currentDate = new Date();
@@ -89,13 +17,13 @@ const AdminDashbord = async () => {
     activeYear -= 1;
   }
 
-  const result = await getCountsPerPhotographer();
+  const photographerCounts = await getCountsPerPhotographer();
   const imagesThisYear = await getImageCountFromYear(activeYear);
   const imagesPrevYear = await getImageCountFromYear(activeYear - 1);
   const albumsThisYear = await getAlbumCountFromYear(activeYear);
   const totalImages = await getTotalImageCount();
   const totalAlbums = await getTotalAlbumCount();
-  const numberOfPhotographers = result.length;
+  const numberOfPhotographers = photographerCounts.length;
 
   const imagesPrevVSThisYear = `${
     imagesThisYear - imagesPrevYear > 0 ? "+" : "-"
@@ -139,7 +67,7 @@ const AdminDashbord = async () => {
           </section>
           <section className="container">
             <h2 className="text-xl font-semibold">Fotografer</h2>
-            <DataTable columns={columns} data={result} />
+            <DataTable columns={columns} data={photographerCounts} />
           </section>
         </div>
       </div>

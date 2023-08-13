@@ -1,30 +1,10 @@
-import { Prisma } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "~/components/ui/button";
-import { prisma } from "~/utils/db";
+import { getImageAsAdmin } from "~/utils/fetchAdminData";
 import EditAlbumForm from "./edit-form";
-
-const getImageAsAdmin = async (id: string) => {
-  return prisma.image.findUniqueOrThrow({
-    where: {
-      id: id,
-    },
-    select: {
-      id: true,
-      filename: true,
-      coverImage: true,
-      visible: true,
-      photographer: true,
-      albumId: true,
-      date: true,
-    },
-  });
-};
-
-export type ImageAsAdmin = Prisma.PromiseReturnType<typeof getImageAsAdmin>;
 
 const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
   const image = await getImageAsAdmin(params.imageId).catch(() => notFound());

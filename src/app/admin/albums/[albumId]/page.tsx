@@ -1,52 +1,11 @@
-import type { Prisma } from "@prisma/client";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "~/components/ui/button";
-import { prisma } from "~/utils/db";
+import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import EditAlbumForm from "./edit-form";
-
-const getAlbumAsAdmin = async (id: string) => {
-  const {
-    images,
-    _count: { images: numberOfImages },
-    ...album
-  } = await prisma.album.findUniqueOrThrow({
-    where: {
-      id,
-    },
-    select: {
-      id: true,
-      title: true,
-      visible: true,
-      isReception: true,
-      date: true,
-      images: {
-        orderBy: { date: "asc" },
-        select: {
-          id: true,
-          photographer: true,
-          filename: true,
-          visible: true,
-          coverImage: true,
-          date: true,
-        },
-      },
-      _count: {
-        select: {
-          images: true,
-        },
-      },
-    },
-  });
-  return { numberOfImages, images, ...album };
-};
-
-export type Image = Prisma.PromiseReturnType<
-  typeof getAlbumAsAdmin
->["images"][0];
 
 const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
   const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());

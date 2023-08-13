@@ -18,7 +18,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
-import { ImageAsAdmin } from "./page";
+import { AdminImage } from "~/utils/fetchAdminData";
 
 const dateTime = z.string().datetime();
 
@@ -40,7 +40,7 @@ const getLocalDateTime = (date: Date) => {
   return date;
 };
 
-const EditAlbumForm: FC<ImageAsAdmin> = ({
+const EditAlbumForm: FC<AdminImage> = ({
   coverImage,
   date,
   id,

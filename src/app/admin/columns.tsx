@@ -3,8 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { CountsPerPhotographerType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
-import { CountsPerPhotographerType } from "./page";
 
 export const columns: ColumnDef<CountsPerPhotographerType>[] = [
   {

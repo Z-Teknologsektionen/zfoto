@@ -15,10 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { AdminAlbumType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
-import type { Album } from "./page";
 
-export const columns: ColumnDef<Album>[] = [
+export const columns: ColumnDef<AdminAlbumType>[] = [
   {
     accessorKey: "coverImageFilename",
     header: "",

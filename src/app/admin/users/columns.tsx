@@ -14,9 +14,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import type { User } from "./page";
+import { AdminUser } from "~/utils/fetchAdminData";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<AdminUser>[] = [
   {
     accessorKey: "image",
     header: "",

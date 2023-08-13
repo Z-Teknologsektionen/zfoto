@@ -15,10 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { AdminAlbumImageType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
-import { Image as ImageType } from "./page";
 
-export const columns: ColumnDef<ImageType>[] = [
+export const columns: ColumnDef<AdminAlbumImageType>[] = [
   {
     accessorKey: "image",
     header: "",

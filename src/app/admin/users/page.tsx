@@ -1,26 +1,10 @@
-import { Prisma } from "@prisma/client";
 import BackButton from "~/components/back-button";
-import { prisma } from "~/utils/db";
+import { getAllUsersAsAdmin } from "~/utils/fetchAdminData";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-const getUsers = () => {
-  return prisma.user.findMany({
-    select: {
-      name: true,
-      email: true,
-      image: true,
-      role: true,
-      id: true,
-    },
-    orderBy: [{ name: "asc" }],
-  });
-};
-
-export type User = Prisma.PromiseReturnType<typeof getUsers>[0];
-
 const UsersAdminPage = async () => {
-  const data = await getUsers();
+  const data = await getAllUsersAsAdmin();
   return (
     <>
       <div className="container">
