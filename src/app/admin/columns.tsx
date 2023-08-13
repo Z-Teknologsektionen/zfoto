@@ -41,29 +41,19 @@ export const columns: ColumnDef<CountsPerPhotographerType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Första bild" />
     ),
-    cell: ({ row }) => {
-      return (
-        <div>
-          {row.original.firstImage
-            ? formatDateTimeString(row.original.firstImage)
-            : "Okänd"}
-        </div>
-      );
-    },
+    cell: ({ row }) =>
+      row.original.firstImage
+        ? formatDateTimeString(row.original.firstImage)
+        : "Okänd",
   },
   {
     accessorKey: "latestImage",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Senaste bild" />
     ),
-    cell: ({ row }) => {
-      return (
-        <div>
-          {row.original.latestImage
-            ? formatDateTimeString(row.original.latestImage)
-            : "Okänd"}
-        </div>
-      );
-    },
+    cell: ({ row }) =>
+      row.original.latestImage
+        ? formatDateTimeString(row.original.latestImage)
+        : "Okänd",
   },
 ];

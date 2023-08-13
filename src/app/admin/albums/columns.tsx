@@ -47,36 +47,27 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Datum" />
     ),
-    cell: ({ row }) => {
-      return <div>{formatDateTimeString(row.original.date)}</div>;
-    },
+    cell: ({ row }) => formatDateTimeString(row.original.date),
   },
   {
     accessorKey: "visible",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visas" />
     ),
-    cell: ({ row }) => {
-      return <div>{row.original.visible ? "Ja" : "Nej"}</div>;
-    },
+    cell: ({ row }) => (row.original.visible ? "Ja" : "Nej"),
   },
   {
     accessorKey: "isReception",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mottagning" />
     ),
-    cell: ({ row }) => {
-      return <div>{row.original.isReception ? "Ja" : "Nej"}</div>;
-    },
+    cell: ({ row }) => (row.original.isReception ? "Ja" : "Nej"),
   },
   {
     accessorKey: "count",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Antal bilder" />
     ),
-    cell: ({ row }) => {
-      return <div>{row.original.count}</div>;
-    },
   },
   {
     id: "actions",

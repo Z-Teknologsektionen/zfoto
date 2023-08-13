@@ -47,9 +47,7 @@ export const columns: ColumnDef<AdminTableImageType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Datum" />
     ),
-    cell: ({ row }) => {
-      return <div>{formatDateTimeString(row.original.date)}</div>;
-    },
+    cell: ({ row }) => formatDateTimeString(row.original.date),
   },
   {
     accessorKey: "photographer",
@@ -62,18 +60,14 @@ export const columns: ColumnDef<AdminTableImageType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visas" />
     ),
-    cell: ({ row }) => {
-      return <div>{row.original.visible ? "Ja" : "Nej"}</div>;
-    },
+    cell: ({ row }) => (row.original.visible ? "Ja" : "Nej"),
   },
   {
     accessorKey: "coverImage",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Omslagsbild" />
     ),
-    cell: ({ row }) => {
-      return <div>{row.original.coverImage ? "Ja" : "Nej"}</div>;
-    },
+    cell: ({ row }) => (row.original.coverImage ? "Ja" : "Nej"),
   },
   {
     accessorKey: "albumTitle",

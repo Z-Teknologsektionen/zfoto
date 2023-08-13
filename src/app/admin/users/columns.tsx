@@ -52,11 +52,8 @@ export const columns: ColumnDef<AdminUser>[] = [
       <DataTableColumnHeader column={column} title="Roll" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="capitalize">
-          {row.original.role.toLocaleLowerCase()}
-        </div>
-      );
+      const role = row.original.role;
+      return role.slice(0, 1).toUpperCase() + role.slice(1).toLowerCase();
     },
   },
   {
