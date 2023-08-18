@@ -16,7 +16,7 @@ const AlbumPage = async ({ params }: { params: { albumId: string } }) => {
 
   const recommendedAlbums = await getLatestAlbums({
     count: 3,
-    notIds: [],
+    notIds: [albumId],
   });
 
   const photographers = [
