@@ -15,7 +15,7 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
         className={`container flex h-16 flex-row items-center justify-between gap-8`}
       >
         <Link
-          className="z-50 flex flex-row items-center justify-center"
+          className="z-20 flex flex-row items-center justify-center"
           href="/"
         >
           <Image
