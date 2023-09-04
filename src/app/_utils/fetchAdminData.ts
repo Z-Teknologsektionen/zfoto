@@ -51,6 +51,7 @@ export const getAlbumAsAdmin = async (id: string) => {
           visible: true,
           coverImage: true,
           date: true,
+          albumId: true,
         },
       },
       _count: {

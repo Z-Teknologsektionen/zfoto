@@ -27,7 +27,12 @@ const BackButton: FC<{ href?: string }> = ({ href }) => {
   return (
     <Button
       variant={"link"}
-      onClick={() => router.back()}
+      onClick={() => {
+        if (window.history.length === 1) {
+          router.push("/");
+        }
+        router.back();
+      }}
       className="-ml-8 w-fit"
     >
       <ChevronLeft />
