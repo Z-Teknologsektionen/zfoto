@@ -35,6 +35,14 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
         </div>
       );
     },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Omslagsbild"
+        sortable={false}
+      />
+    ),
+    enableSorting: false,
   },
   {
     accessorKey: "title",

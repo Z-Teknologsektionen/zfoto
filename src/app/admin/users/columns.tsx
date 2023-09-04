@@ -33,6 +33,14 @@ export const columns: ColumnDef<AdminUser>[] = [
         </div>
       );
     },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Profilbild"
+        sortable={false}
+      />
+    ),
+    enableSorting: false,
   },
   {
     accessorKey: "name",
