@@ -114,6 +114,8 @@ const ImagePopup: FC<ImagePopupTypes> = ({
   return (
     <section className="fixed inset-0 z-50 flex flex-col gap-4 bg-white/75">
       <ImagePopupHeader
+        key={activeImage.filename}
+        photographer={activeImage.photographer}
         filename={activeImage.filename}
         closePopup={closePopup}
       />
