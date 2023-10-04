@@ -29,7 +29,7 @@ model Image {
   coverImage   Boolean  @default(false)
   album        Album    @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   albumId      String   @db.ObjectId
-  photographer String
+  photographer String   @default("zFoto")
   visible      Boolean  @default(true)
   date         DateTime @default(now())
   createdAt    DateTime @default(now())

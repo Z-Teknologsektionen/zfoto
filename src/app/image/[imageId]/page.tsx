@@ -3,12 +3,14 @@ import { notFound } from "next/navigation";
 import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
+import { createByline } from "~/utils/utils";
 
 export const revalidate = 300;
 
 const ImagePage = async ({ params }: { params: { imageId: string } }) => {
   const image = await getImagebyId(params.imageId).catch(() => notFound());
 
+  const byline = createByline(image.photographer);
   return (
     <>
       <SectionWrapper className="container">
@@ -21,7 +23,11 @@ const ImagePage = async ({ params }: { params: { imageId: string } }) => {
               sizes="750px"
               src={image.filename ? `/images/lowres/${image.filename}` : ""}
             />
+            <div className="mt-2">
+              <p className="text-center font-semibold">{byline}</p>
+            </div>
           </div>
+
           <div className="flex flex-grow-0 flex-col items-start justify-center gap-2 sm:min-w-[250px]">
             <h1 className="text-xl font-bold">{image.album.title}</h1>
             <p className="font-medium">Fotograf: {image.photographer}</p>

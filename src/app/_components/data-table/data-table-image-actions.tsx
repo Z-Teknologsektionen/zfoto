@@ -16,8 +16,9 @@ import {
 const ImageColumnActions: FC<{
   id: string;
   albumId: string;
+  coverImage: boolean;
   visible: boolean;
-}> = ({ id, albumId, visible }) => {
+}> = ({ id, albumId, visible, coverImage }) => {
   const router = useRouter();
 
   return (
@@ -63,6 +64,22 @@ const ImageColumnActions: FC<{
           }}
         >
           {`${visible ? "Dölj" : "Visa"} bild`}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async () => {
+            const res = await fetch(`/api/images/${id}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ coverImage: !coverImage }),
+            });
+            if (!res.ok) {
+              return toast.error("Kunde inte uppdatera, försök igen senare..");
+            }
+            router.refresh();
+            toast.success("Uppdaterat!");
+          }}
+        >
+          {`${coverImage ? "Dölj" : "Sätt"} omslag`}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
