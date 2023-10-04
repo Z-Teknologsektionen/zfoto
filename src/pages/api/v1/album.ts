@@ -46,7 +46,9 @@ const albumRouter = async (
     try {
       const parse = createAlbumSchema.safeParse(req.body);
       if (!parse.success) {
-        return res.status(400).json(parse.error.flatten().fieldErrors);
+        return res
+          .status(400)
+          .json({ error: parse.error.flatten().fieldErrors });
       }
       const body = req.body as PostBodyType;
 
