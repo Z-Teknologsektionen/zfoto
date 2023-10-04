@@ -5,7 +5,11 @@ import { prisma } from "~/utils/db";
 const createImageSchema = z.object({
   filename: z.string().min(1),
   photographer: z.string().min(1),
-  date: z.date().optional(),
+  date: z.string().datetime({
+    precision: 3,
+    offset: false,
+    message: "Invalid datetime format",
+  }), //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
   albumId: z.string().min(1),
 });
 

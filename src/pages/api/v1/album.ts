@@ -1,20 +1,32 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { prisma } from "~/utils/db";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 const createAlbumSchema = z.object({
-  title: z.string().min(1),
-  date: z.string(),
+  title: z.string().min(1, "There must be at least one character in the title"),
+  date: z.string().datetime({
+    precision: 3,
+    offset: false,
+    message: "Invalid datetime format",
+  }), //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
   images: z
     .array(
       z.object({
         filename: z.string().min(1),
-        photographer: z.string().min(1),
-        date: z.string().optional(),
+        photographer: z.string().min(1).optional(),
+        date: z
+          .string()
+          .datetime({
+            precision: 3,
+            offset: false,
+            message: "Invalid datetime format",
+          }) //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
+          .optional(),
       }),
     )
-    .min(1),
+    .min(1, "There needs to be at least 1 image in the album"),
 });
 
 type PostBodyType = z.infer<typeof createAlbumSchema>;
@@ -32,9 +44,9 @@ const albumRouter = async (
     }
   } else if (req.method === "POST") {
     try {
-      const vaild = createAlbumSchema.safeParse(req.body).success;
-      if (!vaild) {
-        return res.status(404).send("Invalid input");
+      const parse = createAlbumSchema.safeParse(req.body);
+      if (!parse.success) {
+        return res.status(400).json(parse.error.flatten().fieldErrors);
       }
       const body = req.body as PostBodyType;
 
@@ -61,10 +73,40 @@ const albumRouter = async (
             },
           },
         },
+        select: {
+          id: true,
+          title: true,
+          date: true,
+          visible: true,
+          isReception: true,
+          images: {
+            select: {
+              id: true,
+              filename: true,
+              photographer: true,
+              date: true,
+              visible: true,
+              coverImage: true,
+            },
+          },
+          _count: {
+            select: {
+              images: true,
+            },
+          },
+        },
       });
       return res.status(200).json(createdAlbum);
     } catch (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === "P2002") {
+          return res.status(400).json({
+            error:
+              "Image with filename already exists, please check filenames and try again. No album has been created",
+          });
+        }
+      }
+      return res.status(500).json({ error: err });
     }
   } else {
     return res.status(200).json({ message: "Unused method" });
