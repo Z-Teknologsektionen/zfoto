@@ -21,7 +21,7 @@ export const ImageGridItem: FC<{
         className="object-contain object-center"
         loading={priority ? "eager" : "lazy"}
         priority={priority}
-        src={`/images/thumb/${filename}`}
+        src={`/img/thumb/${filename}`}
         fill
         unoptimized
       />

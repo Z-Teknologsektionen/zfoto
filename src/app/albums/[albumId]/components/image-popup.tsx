@@ -96,14 +96,14 @@ const ImagePopup: FC<ImagePopupTypes> = ({
   useEffect(() => {
     if (nextImage) {
       // eslint-disable-next-line no-new
-      new Image().src = `/images/lowres/${nextImage.filename}`;
+      new Image().src = `/img/lowres/${nextImage.filename}`;
     }
   }, [nextImage]);
 
   useEffect(() => {
     if (secondNextImage) {
       // eslint-disable-next-line no-new
-      new Image().src = `/images/lowres/${secondNextImage.filename}`;
+      new Image().src = `/img/lowres/${secondNextImage.filename}`;
     }
   }, [secondNextImage]);
 
@@ -136,9 +136,9 @@ const ImagePopup: FC<ImagePopupTypes> = ({
         <div className="relative flex-grow">
           <NextImage
             alt={`Bild från ${album.title}, Foto: ${activeImage.photographer}`}
-            blurDataURL={`/images/thumb/${activeImage.filename}`}
+            blurDataURL={`/img/thumb/${activeImage.filename}`}
             placeholder="blur"
-            src={`/images/lowres/${activeImage.filename}`}
+            src={`/img/lowres/${activeImage.filename}`}
             style={{ objectFit: "contain", objectPosition: "center" }}
             fill
             priority

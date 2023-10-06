@@ -21,7 +21,7 @@ const ImagePage = async ({ params }: { params: { imageId: string } }) => {
               alt={`Bild från "${image.album.title}"`}
               className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
               sizes="750px"
-              src={image.filename ? `/images/lowres/${image.filename}` : ""}
+              src={image.filename ? `/img/lowres/${image.filename}` : ""}
             />
             <div className="mt-2">
               <p className="text-center font-semibold">{byline}</p>
