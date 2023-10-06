@@ -30,7 +30,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
           after:absolute after:left-1/2 after:top-1/2 after:z-10 after:block after:w-5/6 after:-translate-x-1/2 after:-translate-y-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_saknas']
         `}
         priority={priorityLoadning}
-        src={`/images/thumb/${coverImageFilename}`}
+        src={`/img/thumb/${coverImageFilename}`}
         fill
         unoptimized
       />

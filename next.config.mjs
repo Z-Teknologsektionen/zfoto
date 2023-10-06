@@ -10,8 +10,8 @@ const config = {
   async rewrites() {
     return [
       {
-        source: "/images/:path*",
-        destination: "http://holmstrom.ddns.net:8080/df/:path*",
+        source: "/img/:path*",
+        destination: "http://129.16.159.26/img/:path*",
       },
     ];
   },
@@ -22,16 +22,6 @@ const config = {
   },
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "holmstrom.ddns.net",
-        port: "8080",
-        pathname: "/**",
-      },
-    ],
   },
 };
 export default config;

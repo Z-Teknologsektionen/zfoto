@@ -28,7 +28,7 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
           <Image
             alt={`Omslagsbild till: ${row.original.title}`}
             className="object-contain object-center"
-            src={`/images/thumb/${row.original.coverImageFilename || ""}`}
+            src={`/img/thumb/${row.original.coverImageFilename || ""}`}
             fill
             unoptimized
           />

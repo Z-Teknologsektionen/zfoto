@@ -34,7 +34,7 @@ const ImagePopupHeader = ({
       <StandardTooltip
         Trigger={
           <a
-            href={`/images/lowres/${filename}`}
+            href={`/img/lowres/${filename}`}
             onClick={() => {
               toast.success("Laddar ner bild...\nGlöm inte följa vår policy!");
             }}

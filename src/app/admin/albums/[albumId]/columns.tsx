@@ -16,7 +16,7 @@ export const columns: ColumnDef<AdminAlbumImageType>[] = [
           <Image
             alt={`Bild: ${row.original.filename}, Foto: ${row.original.photographer}`}
             className="object-contain object-center"
-            src={`/images/thumb/${row.original.filename}`}
+            src={`/img/thumb/${row.original.filename}`}
             fill
             unoptimized
           />

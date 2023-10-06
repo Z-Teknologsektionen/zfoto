@@ -22,7 +22,7 @@ const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
         </div>
         <div className="">
           <Image
-            src={`/images/lowres/${image.filename}`}
+            src={`/img/lowres/${image.filename}`}
             alt={`Filnamn: ${image.filename}, Fotograf: ${image.photographer}`}
             height={400}
             width={400}
