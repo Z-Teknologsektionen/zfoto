@@ -7,6 +7,7 @@ import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
 import { Footer } from "./footer";
 import Header from "./header";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: { default: "zFoto", template: "%s | zFoto" },
@@ -48,17 +49,19 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <html lang="sv">
       <body className="">
-        <Toaster position="top-center" reverseOrder={false} />
-        <>
-          <div className="flex min-h-screen flex-col">
-            <Header key={JSON.stringify(session)} session={session} />
-            <main className="my-8 flex flex-grow flex-col gap-y-8">
-              {children}
-            </main>
-          </div>
-          <Footer key={JSON.stringify(session)} session={session} />
-        </>
-        <Analytics />
+        <Providers>
+          <Toaster position="top-center" reverseOrder={false} />
+          <>
+            <div className="flex min-h-screen flex-col">
+              <Header key={JSON.stringify(session)} session={session} />
+              <main className="my-8 flex flex-grow flex-col gap-y-8">
+                {children}
+              </main>
+            </div>
+            <Footer key={JSON.stringify(session)} session={session} />
+          </>
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );
