@@ -1,7 +1,7 @@
 "use client";
 
+import { updateImageSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -18,58 +18,42 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
+import { trpc } from "~/trpc/client";
 import { AdminImage } from "~/utils/fetchAdminData";
+import { getLocalDateTimeFromUTC } from "~/utils/utils";
 
-const dateTime = z.string().datetime();
-
-const formSchema = z.object({
-  photographer: z.string().min(1, {
-    message: "Fotografens namn måste vara minst 1 tecken lång",
-  }),
-  visible: z.boolean(),
-  coverImage: z.boolean(),
-  date: z.string().refine((val) => dateTime.parse(val + ":00.000Z"), {
-    message: "Otillåtet datum",
-  }),
-});
-
-const getLocalDateTime = (date: Date) => {
-  const getHours = date.getHours();
-  const getUTCOffset = date.getTimezoneOffset() / -60;
-  date.setHours(getHours + getUTCOffset);
-  return date;
-};
-
-const EditAlbumForm: FC<AdminImage> = ({
+const EditImageForm: FC<AdminImage> = ({
   coverImage,
   date,
   id,
   photographer,
   visible,
 }) => {
-  const router = useRouter();
+  const { mutate: updateImage, isLoading } =
+    trpc.image.updateImageById.useMutation({
+      onMutate: () => toast.loading("Uppdaterar album..."),
+      onSettled: (_, __, ___, context) => {
+        toast.dismiss(context);
+      },
+      onSuccess: () => toast.success("Bild uppdaterad!"),
+      onError: (error) => {
+        toast.error("Kunde inte uppdatera, försök igen senare...");
+        toast.error(error.message);
+      },
+    });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof updateImageSchema>>({
+    resolver: zodResolver(updateImageSchema),
     defaultValues: {
       photographer: photographer,
       coverImage: coverImage,
       visible: visible,
-      date: getLocalDateTime(date).toISOString().slice(0, -8),
+      date: getLocalDateTimeFromUTC(date).toISOString().slice(0, -8),
     },
   });
 
-  async function onSubmit({ date, ...values }: z.infer<typeof formSchema>) {
-    const res = await fetch(`/api/images/${id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...values, date: new Date(date) }),
-    });
-    if (!res.ok) {
-      return toast.error("Kunde inte uppdatera, försök igen senare..");
-    }
-    router.refresh();
-    toast.success("Uppdaterat!");
+  async function onSubmit(values: z.infer<typeof updateImageSchema>) {
+    updateImage({ ...values, imageId: id });
   }
 
   return (
@@ -155,14 +139,14 @@ const EditAlbumForm: FC<AdminImage> = ({
           />
           <div className="col-span-full flex flex-row justify-end gap-2">
             <Button
-              className=""
+              disabled={isLoading}
               type="button"
               variant="outline"
               onClick={() => form.reset()}
             >
               Återställ
             </Button>
-            <Button className="" type="submit">
+            <Button disabled={isLoading} type="submit">
               Spara
             </Button>
           </div>
@@ -172,4 +156,4 @@ const EditAlbumForm: FC<AdminImage> = ({
   );
 };
 
-export default EditAlbumForm;
+export default EditImageForm;
