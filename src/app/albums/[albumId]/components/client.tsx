@@ -5,9 +5,9 @@ import { FC, useEffect } from "react";
 import AlbumGrid from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import SectionWrapper from "~/components/layout/SectionWrapper";
+import { useCounter } from "~/hooks/useCounter";
+import { useToggle } from "~/hooks/useToggle";
 import { PublicAlbum, PublicAlbums } from "~/utils/fetchAlbumData";
-import { useCounter } from "~/utils/useCounter";
-import { useToggle } from "~/utils/useToggle";
 import { ImageGridItem } from "./image-grid-item";
 import ImagePopup from "./image-popup";
 
