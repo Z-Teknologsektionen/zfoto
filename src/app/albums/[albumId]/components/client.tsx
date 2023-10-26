@@ -31,8 +31,8 @@ const Client: FC<{ album: PublicAlbum; recommendedAlbums: PublicAlbums }> = ({
 
   return (
     <>
-      <SectionWrapper className="grid grid-cols-2 place-items-center gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-5">
-        {album?.images.map(({ id, filename }, idx) => (
+      <SectionWrapper className="grid grid-cols-2 place-items-center gap-x-2 gap-y-4 space-y-0 md:grid-cols-3 lg:grid-cols-5">
+        {album.images.map(({ id, filename }, idx) => (
           <ImageGridItem
             key={id}
             {...{
@@ -50,7 +50,7 @@ const Client: FC<{ album: PublicAlbum; recommendedAlbums: PublicAlbums }> = ({
           />
         ))}
       </SectionWrapper>
-      <SectionWrapper className="space-y-8">
+      <SectionWrapper>
         <h1 className="text-2xl font-medium">Kika även in dessa albumen</h1>
         <AlbumGrid>
           {recommendedAlbums.map((recommendedAlbum) => (

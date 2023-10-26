@@ -12,7 +12,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <SectionWrapper className="space-y-8">
+      <SectionWrapper>
         <h1 className="py-8 text-center text-2xl font-medium">
           Välkommen till zFoto
         </h1>
