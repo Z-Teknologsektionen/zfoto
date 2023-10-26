@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/react-query";
+import { SessionProvider } from "next-auth/react";
 import { FC, PropsWithChildren, useState } from "react";
 import superjson from "superjson";
 import { trpc } from "~/trpc/client";
@@ -30,9 +31,13 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
     }),
   );
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </trpc.Provider>
+    <SessionProvider>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </trpc.Provider>
+    </SessionProvider>
   );
 };
 
