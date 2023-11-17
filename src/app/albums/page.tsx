@@ -20,7 +20,7 @@ const FilterByYearPage: FC<IAlbumId> = async ({ searchParams }) => {
 
   return (
     <>
-      <SectionWrapper className="space-y-8">
+      <SectionWrapper>
         <div className="flex flex-col items-center gap-4">
           <h1 className="mt-8 text-center text-2xl font-medium">
             {year ? `Album från ${year}` : "Alla album"}

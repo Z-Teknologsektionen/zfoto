@@ -1,7 +1,7 @@
 "use client";
 
+import { updateAlbumSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -18,26 +18,8 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
-
-const dateTime = z.string().datetime();
-
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Rubriken måste vara minst 1 tecken lång",
-  }),
-  visible: z.boolean(),
-  isReception: z.boolean(),
-  date: z.string().refine((val) => dateTime.parse(val + ":00.000Z"), {
-    message: "Otillåtet datum",
-  }),
-});
-
-const getLocalDateTime = (date: Date) => {
-  const getHours = date.getHours();
-  const getUTCOffset = date.getTimezoneOffset() / -60;
-  date.setHours(getHours + getUTCOffset);
-  return date;
-};
+import { trpc } from "~/trpc/client";
+import { getLocalDateTimeFromUTC } from "~/utils/utils";
 
 const EditAlbumForm: FC<{
   title: string;
@@ -46,29 +28,31 @@ const EditAlbumForm: FC<{
   isReception: boolean;
   date: Date;
 }> = ({ title, id, isReception, visible, date }) => {
-  const router = useRouter();
+  const { mutate: updateAlbum, isLoading } =
+    trpc.album.updateAlbumById.useMutation({
+      onMutate: () => toast.loading("Uppdaterar album..."),
+      onSettled: (_, __, ___, context) => {
+        toast.dismiss(context);
+      },
+      onSuccess: () => toast.success("Bild uppdaterad!"),
+      onError: (error) => {
+        toast.error("Kunde inte uppdatera, försök igen senare...");
+        toast.error(error.message);
+      },
+    });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof updateAlbumSchema>>({
+    resolver: zodResolver(updateAlbumSchema),
     defaultValues: {
       title: title,
       isReception: isReception,
       visible: visible,
-      date: getLocalDateTime(date).toISOString().slice(0, -8),
+      date: getLocalDateTimeFromUTC(date).toISOString().slice(0, -8),
     },
   });
 
-  async function onSubmit({ date, ...values }: z.infer<typeof formSchema>) {
-    const res = await fetch(`/api/albums/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...values, date: new Date(date) }),
-    });
-    if (!res.ok) {
-      return toast.error("Kunde inte uppdatera, försök igen senare..");
-    }
-    router.refresh();
-    toast.success("Uppdaterat!");
+  async function onSubmit(values: z.infer<typeof updateAlbumSchema>) {
+    updateAlbum({ ...values, albumId: id });
   }
 
   return (
@@ -156,14 +140,14 @@ const EditAlbumForm: FC<{
           />
           <div className="col-span-full flex flex-row justify-end gap-2">
             <Button
-              className=""
+              disabled={isLoading}
               type="button"
               variant="outline"
               onClick={() => form.reset()}
             >
               Återställ
             </Button>
-            <Button className="" type="submit">
+            <Button disabled={isLoading} type="submit">
               Spara
             </Button>
           </div>

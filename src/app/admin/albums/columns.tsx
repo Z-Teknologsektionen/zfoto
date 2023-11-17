@@ -4,7 +4,6 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
@@ -16,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { trpc } from "~/trpc/client";
 import { AdminAlbumType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 
@@ -80,13 +80,29 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const ctx = trpc.useContext();
+      const { mutate: updateAlbum, isLoading } =
+        trpc.album.updateAlbumById.useMutation({
+          onMutate: () => toast.loading("Uppdaterar album"),
+          onSettled(_, __, ___, context) {
+            toast.dismiss(context);
+            ctx.album.invalidate();
+            ctx.image.invalidate();
+          },
+          onSuccess() {
+            toast.success("Album uppdaterat!");
+          },
+          onError(error) {
+            toast.error("Kunde inte uppdatera, försök igen senare...");
+            toast.error(error.message);
+          },
+        });
+
       const album = row.original;
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const router = useRouter();
 
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild disabled={isLoading}>
             <Button className="h-8 w-8 p-0" variant="ghost">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
@@ -107,22 +123,21 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
               <Link href={`/admin/albums/${album.id}`}>Redigera album</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={async () => {
-                const res = await fetch(`/api/albums/${album.id}`, {
-                  method: "PATCH",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ visible: !album.visible }),
-                });
-                if (!res.ok) {
-                  return toast.error(
-                    "Kunde inte uppdatera, försök igen senare..",
-                  );
-                }
-                router.refresh();
-                toast.success("Uppdaterat!");
-              }}
+              onClick={() =>
+                updateAlbum({ albumId: album.id, visible: !album.visible })
+              }
             >
               {`${album.visible ? "Dölj" : "Visa"} album`}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                updateAlbum({
+                  albumId: album.id,
+                  isReception: !album.isReception,
+                })
+              }
+            >
+              {`Sätt ${album.isReception ? "ej" : "är"} mottagningsalbum`}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

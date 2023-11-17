@@ -1,6 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "~/components/ui/button";
@@ -12,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { trpc } from "~/trpc/client";
 
 const ImageColumnActions: FC<{
   id: string;
@@ -19,12 +19,28 @@ const ImageColumnActions: FC<{
   coverImage: boolean;
   visible: boolean;
 }> = ({ id, albumId, visible, coverImage }) => {
-  const router = useRouter();
+  const ctx = trpc.useContext();
+  const { mutate: updateImage, isLoading } =
+    trpc.image.updateImageById.useMutation({
+      onMutate: () => toast.loading("Uppdaterar bild"),
+      onSettled(_, __, ___, context) {
+        toast.dismiss(context);
+        ctx.image.invalidate();
+        ctx.album.invalidate();
+      },
+      onSuccess() {
+        toast.success("Bild uppdaterad!");
+      },
+      onError(e) {
+        toast.error("Kunde inte uppdatera, försök igen senare...");
+        toast.error(e.message);
+      },
+    });
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-8 w-8 p-0" variant="ghost">
+        <Button className="h-8 w-8 p-0" variant="ghost" disabled={isLoading}>
           <span className="sr-only">Open menu</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
@@ -50,34 +66,12 @@ const ImageColumnActions: FC<{
           <Link href={`/admin/images/${id}`}>Redigera bild</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={async () => {
-            const res = await fetch(`/api/images/${id}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ visible: !visible }),
-            });
-            if (!res.ok) {
-              return toast.error("Kunde inte uppdatera, försök igen senare..");
-            }
-            router.refresh();
-            toast.success("Uppdaterat!");
-          }}
+          onClick={() => updateImage({ imageId: id, visible: !visible })}
         >
           {`${visible ? "Dölj" : "Visa"} bild`}
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={async () => {
-            const res = await fetch(`/api/images/${id}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ coverImage: !coverImage }),
-            });
-            if (!res.ok) {
-              return toast.error("Kunde inte uppdatera, försök igen senare..");
-            }
-            router.refresh();
-            toast.success("Uppdaterat!");
-          }}
+          onClick={() => updateImage({ imageId: id, coverImage: !coverImage })}
         >
           {`${coverImage ? "Dölj" : "Sätt"} omslag`}
         </DropdownMenuItem>

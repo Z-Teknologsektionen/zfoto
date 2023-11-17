@@ -15,10 +15,11 @@ model Album {
   title       String
   images      Image[]
   visible     Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
   date        DateTime @default(now())
   isReception Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([title, date])
 }
@@ -32,7 +33,9 @@ model Image {
   photographer String   @default("zFoto")
   visible      Boolean  @default(true)
   date         DateTime @default(now())
-  createdAt    DateTime @default(now())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt //Optional because of added after the fact
 }
 
 model Account {

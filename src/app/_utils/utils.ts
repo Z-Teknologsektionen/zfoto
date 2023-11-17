@@ -17,3 +17,10 @@ export function createByline(photographers: string | string[]): string {
 
   return `Foto: ${photographersString}/zFoto`;
 }
+
+export const getLocalDateTimeFromUTC = (date: Date) => {
+  const getHours = date.getHours();
+  const getUTCOffset = date.getTimezoneOffset() / -60;
+  date.setHours(getHours + getUTCOffset);
+  return date;
+};

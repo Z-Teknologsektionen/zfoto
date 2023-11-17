@@ -1,4 +1,5 @@
 import { Copy, Download, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
@@ -13,6 +14,10 @@ const ImagePopupHeader = ({
   photographer: string;
   closePopup: () => void;
 }) => {
+  const { data: session } = useSession();
+
+  const isAuthenticated = session && session.user && session.user.role;
+
   return (
     <header className="flex h-16 w-full justify-end gap-4 bg-white pr-2 pt-2 text-right md:pr-4 md:pt-4">
       <StandardTooltip
@@ -34,7 +39,11 @@ const ImagePopupHeader = ({
       <StandardTooltip
         Trigger={
           <a
-            href={`/img/lowres/${filename}`}
+            href={
+              isAuthenticated
+                ? `/img/full/${filename}`
+                : `/img/lowres/${filename}`
+            }
             onClick={() => {
               toast.success("Laddar ner bild...\nGlöm inte följa vår policy!");
             }}

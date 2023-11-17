@@ -49,7 +49,8 @@ const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60 * 24, //24 timmar
+    maxAge: 60 * 60 * 24 * 30, //30 dagars
+    updateAge: 60 * 60 * 24, //24 timmar
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -57,7 +58,7 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) session.user.role = token.role;
+      if (session.user) session.user.role = token.role;
       return session;
     },
   },

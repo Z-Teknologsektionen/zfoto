@@ -3,8 +3,28 @@
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { Button } from "~/components/ui/button";
+import { trpc } from "~/trpc/client";
 
 const Sidebar = () => {
+  const { mutate: setReceptionVisibility, isLoading } =
+    trpc.album.setReceptionVisibility.useMutation({
+      onMutate: ({ visible }) =>
+        toast.loading(
+          `${visible ? "Visar" : "Döljer"} alla mottagningsalbum...`,
+        ),
+      onSettled: (_, __, ___, context) => toast.dismiss(context),
+      onSuccess: (_, { visible }) =>
+        toast.success(
+          `${visible ? "Visar" : "Döljer"} nu alla mottagningsalbum!`,
+        ),
+      onError: (error, { visible }) => {
+        toast.error(
+          `Kunde inte ${visible ? "visa" : "dölja"} alla mottagningsalbum!`,
+        );
+        toast.error(error.message);
+      },
+    });
+
   return (
     <aside className="left-0 top-0 flex flex-row items-start justify-center gap-8 lg:sticky lg:-mt-8 lg:h-screen lg:w-[200px] lg:flex-col lg:items-center lg:justify-start lg:gap-4 lg:pt-10">
       <div className="flex flex-col">
@@ -29,17 +49,8 @@ const Sidebar = () => {
           className="mx-2"
           size="sm"
           variant="outline"
-          onClick={async () => {
-            const res = await fetch(`/api/images/reception`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ visible: false }),
-            });
-            if (!res.ok) {
-              return toast.error("Okänt fel, försök igen senare...");
-            }
-            toast.success("Mottaningsalbum dolda!");
-          }}
+          disabled={isLoading}
+          onClick={() => setReceptionVisibility({ visible: false })}
         >
           Dölj mottagningsalbum
         </Button>
@@ -47,17 +58,8 @@ const Sidebar = () => {
           className="mx-2"
           size="sm"
           variant="outline"
-          onClick={async () => {
-            const res = await fetch(`/api/images/reception`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ visible: true }),
-            });
-            if (!res.ok) {
-              return toast.error("Okänt fel, försök igen senare...");
-            }
-            toast.success("Mottaningsalbum visas!");
-          }}
+          disabled={isLoading}
+          onClick={() => setReceptionVisibility({ visible: true })}
         >
           Visa mottagningsalbum
         </Button>
