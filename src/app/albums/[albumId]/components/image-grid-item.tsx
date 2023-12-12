@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { FC } from "react";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
+import { getFullFilePath } from "~/utils/utils";
 
 export const ImageGridItem: FC<{
   album: PublicAlbum;
@@ -21,7 +22,7 @@ export const ImageGridItem: FC<{
         className="object-contain object-center"
         loading={priority ? "eager" : "lazy"}
         priority={priority}
-        src={`/img/thumb/${filename}`}
+        src={getFullFilePath(filename, "thumb")}
         fill
         unoptimized
       />

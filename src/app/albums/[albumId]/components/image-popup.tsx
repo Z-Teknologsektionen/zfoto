@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Button } from "~/components/ui/button";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
+import { getFullFilePath } from "~/utils/utils";
 import ImagePopupFooter from "./image-popup-footer";
 import ImagePopupHeader from "./image-popup-header";
 
@@ -96,14 +97,14 @@ const ImagePopup: FC<ImagePopupTypes> = ({
   useEffect(() => {
     if (nextImage) {
       // eslint-disable-next-line no-new
-      new Image().src = `/img/lowres/${nextImage.filename}`;
+      new Image().src = getFullFilePath(nextImage.filename, "lowres");
     }
   }, [nextImage]);
 
   useEffect(() => {
     if (secondNextImage) {
       // eslint-disable-next-line no-new
-      new Image().src = `/img/lowres/${secondNextImage.filename}`;
+      new Image().src = getFullFilePath(secondNextImage.filename, "lowres");
     }
   }, [secondNextImage]);
 
@@ -136,9 +137,9 @@ const ImagePopup: FC<ImagePopupTypes> = ({
         <div className="relative flex-grow">
           <NextImage
             alt={`Bild från ${album.title}, Foto: ${activeImage.photographer}`}
-            blurDataURL={`/img/thumb/${activeImage.filename}`}
+            blurDataURL={getFullFilePath(activeImage.filename, "thumb")}
             placeholder="blur"
-            src={`/img/lowres/${activeImage.filename}`}
+            src={getFullFilePath(activeImage.filename, "lowres")}
             style={{ objectFit: "contain", objectPosition: "center" }}
             fill
             priority

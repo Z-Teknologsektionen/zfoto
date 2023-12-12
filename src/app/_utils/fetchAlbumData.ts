@@ -60,9 +60,16 @@ export const getLatestAlbums = async ({
 };
 
 export const getAlbumById = async (id: string) => {
-  return prisma.album.findFirstOrThrow({
+  const rawAlbum = await prisma.album.findFirstOrThrow({
     where: {
       id: id,
+      images: {
+        some: {
+          visible: {
+            equals: true,
+          },
+        },
+      },
     },
     select: {
       id: true,
@@ -79,12 +86,25 @@ export const getAlbumById = async (id: string) => {
           filename: true,
           photographer: true,
           id: true,
+          coverImage: true,
         },
       },
       date: true,
       _count: true,
     },
   });
+
+  let coverImageFilename = rawAlbum.images.find((image) => image.coverImage)
+    ?.filename;
+
+  if (!coverImageFilename)
+    coverImageFilename = rawAlbum.images.at(0)!.filename as string;
+
+  const photographers = [
+    ...new Set(rawAlbum.images.map((item) => item.photographer)),
+  ];
+
+  return { ...rawAlbum, coverImageFilename, photographers };
 };
 
 export type PublicAlbums = Prisma.PromiseReturnType<typeof getLatestAlbums>;

@@ -6,6 +6,7 @@ import DataTableColumnHeader from "~/components/data-table/data-table-column-hea
 import ImageColumnActions from "~/components/data-table/data-table-image-actions";
 import { AdminTableImageType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
+import { getFullFilePath } from "~/utils/utils";
 
 export const columns: ColumnDef<AdminTableImageType>[] = [
   {
@@ -16,7 +17,7 @@ export const columns: ColumnDef<AdminTableImageType>[] = [
           <Image
             alt={`Bild: ${row.original.filename}, Foto: ${row.original.photographer}`}
             className="object-contain object-center"
-            src={`/img/thumb/${row.original.filename}`}
+            src={getFullFilePath(row.original.filename, "thumb")}
             fill
             unoptimized
           />

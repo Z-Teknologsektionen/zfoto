@@ -18,6 +18,7 @@ import {
 import { trpc } from "~/trpc/client";
 import { AdminAlbumType } from "~/utils/fetchAdminData";
 import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
+import { getFullFilePath } from "~/utils/utils";
 
 export const columns: ColumnDef<AdminAlbumType>[] = [
   {
@@ -28,7 +29,10 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
           <Image
             alt={`Omslagsbild till: ${row.original.title}`}
             className="object-contain object-center"
-            src={`/img/thumb/${row.original.coverImageFilename || ""}`}
+            src={getFullFilePath(
+              row.original.coverImageFilename || "",
+              "thumb",
+            )}
             fill
             unoptimized
           />
