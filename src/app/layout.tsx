@@ -41,6 +41,9 @@ export const metadata: Metadata = {
       sizes: "96x96",
     },
   },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 const BaseLayout = async ({ children }: { children: ReactNode }) => {

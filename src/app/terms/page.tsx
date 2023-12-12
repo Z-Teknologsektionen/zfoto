@@ -1,9 +1,14 @@
 import { PortableText } from "@portabletext/react";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getPageBySlug } from "~/utils/fetchDataFromSanity";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: "Villkor",
+};
 
 const TermsPage = async () => {
   const page = await getPageBySlug("policy").catch(() => notFound());
