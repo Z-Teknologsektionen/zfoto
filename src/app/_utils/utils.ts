@@ -24,3 +24,8 @@ export const getLocalDateTimeFromUTC = (date: Date) => {
   date.setHours(getHours + getUTCOffset);
   return date;
 };
+
+export const getFullFilePath = (
+  filename: string,
+  variant: "full" | "lowres" | "thumb" = "lowres",
+): string => `/img/${variant}/${filename}`;

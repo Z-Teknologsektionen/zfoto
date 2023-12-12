@@ -1,7 +1,12 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 
 export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: "Obehörig",
+};
 
 const unauthorizedPage = () => {
   return (

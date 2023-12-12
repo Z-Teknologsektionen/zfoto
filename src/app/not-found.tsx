@@ -1,6 +1,4 @@
-import type { NextPage } from "next";
-
-const Custom404Page: NextPage = () => {
+const Custom404Page = () => {
   return (
     <>
       <div className="grid h-full flex-grow place-items-center text-3xl">

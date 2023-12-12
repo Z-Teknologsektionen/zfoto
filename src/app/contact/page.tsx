@@ -1,7 +1,12 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 
 export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: "Kontakt",
+};
 
 const ContactPage = () => {
   return (

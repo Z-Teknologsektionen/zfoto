@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { FC } from "react";
 import { PublicAlbums } from "~/utils/fetchAlbumData";
 import { formatDateString } from "~/utils/formatDateAndTimeStrings";
+import { getFullFilePath } from "~/utils/utils";
 
 type Album = PublicAlbums[0];
 
@@ -30,7 +31,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
           after:absolute after:left-1/2 after:top-1/2 after:z-10 after:block after:w-5/6 after:-translate-x-1/2 after:-translate-y-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_saknas']
         `}
         priority={priorityLoadning}
-        src={`/img/thumb/${coverImageFilename}`}
+        src={getFullFilePath(coverImageFilename, "thumb")}
         fill
         unoptimized
       />

@@ -1,14 +1,41 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
-import { createByline } from "~/utils/utils";
+import { createByline, getFullFilePath } from "~/utils/utils";
 
 export const revalidate = 300;
 
-const ImagePage = async ({ params }: { params: { imageId: string } }) => {
-  const image = await getImagebyId(params.imageId).catch(() => notFound());
+const getImage = cache(getImagebyId);
+
+interface ImagePageProps {
+  params: { imageId: string };
+}
+
+export async function generateMetadata({
+  params: { imageId },
+}: ImagePageProps): Promise<Metadata> {
+  const image = await getImage(imageId);
+
+  return {
+    title: image.album.title,
+    description: `Bild från ${image.album.title}, ${image.date.toDateString()}`,
+    openGraph: {
+      images: [
+        {
+          url: getFullFilePath(image.filename),
+        },
+      ],
+      authors: image.photographer,
+    },
+  };
+}
+
+const ImagePage = async ({ params }: ImagePageProps) => {
+  const image = await getImage(params.imageId).catch(() => notFound());
 
   const byline = createByline(image.photographer);
   return (
@@ -21,7 +48,7 @@ const ImagePage = async ({ params }: { params: { imageId: string } }) => {
               alt={`Bild från "${image.album.title}"`}
               className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
               sizes="750px"
-              src={image.filename ? `/img/lowres/${image.filename}` : ""}
+              src={getFullFilePath(image.filename, "lowres")}
             />
             <div className="mt-2">
               <p className="text-center font-semibold">{byline}</p>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import BackButton from "~/components/back-button";
 import { getImageAsAdmin } from "~/utils/fetchAdminData";
+import { getFullFilePath } from "~/utils/utils";
 import EditImageForm from "./edit-form";
 
 const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
@@ -22,7 +23,7 @@ const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
         </div>
         <div className="">
           <Image
-            src={`/img/lowres/${image.filename}`}
+            src={getFullFilePath(image.filename, "lowres")}
             alt={`Filnamn: ${image.filename}, Fotograf: ${image.photographer}`}
             height={400}
             width={400}

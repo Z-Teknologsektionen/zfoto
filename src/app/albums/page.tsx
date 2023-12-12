@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import type { FC } from "react";
 import AlbumGrid from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
@@ -6,6 +7,10 @@ import { getLatestAlbums } from "~/utils/fetchAlbumData";
 import FilterAlbumsWizard from "./filter-albums-wizard";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: "Album",
+};
 
 interface IAlbumId {
   searchParams: { year: string | undefined };

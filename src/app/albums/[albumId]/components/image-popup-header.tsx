@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
-import { createByline } from "~/utils/utils";
+import { createByline, getFullFilePath } from "~/utils/utils";
 
 const ImagePopupHeader = ({
   filename,
@@ -39,11 +39,10 @@ const ImagePopupHeader = ({
       <StandardTooltip
         Trigger={
           <a
-            href={
-              isAuthenticated
-                ? `/img/full/${filename}`
-                : `/img/lowres/${filename}`
-            }
+            href={getFullFilePath(
+              filename,
+              isAuthenticated ? "full" : "lowres",
+            )}
             onClick={() => {
               toast.success("Laddar ner bild...\nGlöm inte följa vår policy!");
             }}
