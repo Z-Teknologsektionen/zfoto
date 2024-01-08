@@ -16,29 +16,20 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/zFoto-32x32.ico",
-        sizes: "32x32",
+        url: "/zFoto.ico",
       },
-      {
-        url: "/zFoto-32x32.png",
-        type: "image/png",
-        sizes: "32x32",
-      },
-
       {
         url: "/zFoto.svg",
         type: "image/svg+xml",
       },
     ],
     shortcut: {
-      url: "/zFoto-96x96.png",
-      type: "image/png",
-      sizes: "96x96",
+      url: "/zFoto.svg",
+      type: "image/svg+xml",
     },
     apple: {
-      url: "/zFoto-180x180.png",
-      type: "image/png",
-      sizes: "96x96",
+      url: "/zFoto.svg",
+      type: "image/svg+xml",
     },
   },
   twitter: {
