@@ -35,10 +35,13 @@ const Sidebar = () => {
           <Link href="/admin/albums">Album</Link>
         </Button>
         <Button asChild variant="link">
+          <Link href="/admin/images">Bilder</Link>
+        </Button>
+        <Button asChild variant="link">
           <Link href="/admin/users">Användare</Link>
         </Button>
         <Button asChild variant="link">
-          <Link href="/admin/images">Bilder</Link>
+          <Link href="/admin/info">Information</Link>
         </Button>
       </div>
       <div className="flex flex-col gap-2">
