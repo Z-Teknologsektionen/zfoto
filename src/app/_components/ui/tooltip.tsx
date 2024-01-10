@@ -28,13 +28,18 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 const StandardTooltip: React.FC<{
-  Trigger: React.ReactNode;
   Content: React.ReactNode;
-}> = ({ Trigger: TriggerComponent, Content: ContentContent }) => {
+  Trigger: React.ReactNode;
+  asChild?: boolean;
+}> = ({
+  Trigger: TriggerComponent,
+  Content: ContentContent,
+  asChild = true,
+}) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>{TriggerComponent}</TooltipTrigger>
+        <TooltipTrigger asChild={asChild}>{TriggerComponent}</TooltipTrigger>
         <TooltipContent>{ContentContent}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
