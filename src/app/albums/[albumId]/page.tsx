@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cache } from "react";
+import { Suspense, cache } from "react";
 import BackButton from "~/components/back-button";
 import SectionWrapper from "~/components/layout/SectionWrapper";
-import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
+import { getAlbumById } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
 import AlbumInfo from "./components/album-info";
 import Client from "./components/client";
+import RecommendedAlbums from "./components/recomended-albums";
 
 interface AlbumPageProps {
   params: { albumId: string };
@@ -40,11 +41,6 @@ const AlbumPage = async ({ params: { albumId } }: AlbumPageProps) => {
     return notFound();
   });
 
-  const recommendedAlbums = await getLatestAlbums({
-    count: 3,
-    notIds: [albumId],
-  });
-
   return (
     <>
       <SectionWrapper className="flex flex-col gap-2">
@@ -54,11 +50,10 @@ const AlbumPage = async ({ params: { albumId } }: AlbumPageProps) => {
           photographers={album.photographers}
           title={album.title}
         />
-        <Client
-          album={album}
-          recommendedAlbums={recommendedAlbums}
-          key={albumId}
-        />
+        <Client album={album} key={albumId} />
+        <Suspense fallback={"Laddar rekomenderade album..."}>
+          <RecommendedAlbums albumId={albumId} />
+        </Suspense>
       </SectionWrapper>
     </>
   );
