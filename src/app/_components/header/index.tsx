@@ -1,5 +1,3 @@
-"use client";
-
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +30,8 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
           {session?.user && (
             <AvatarWithDropdown
               role={session.user.role}
-              filename={session?.user.image || ""}
+              filename={session.user.image || ""}
+              name={session.user.name}
             />
           )}
           <MobileNav />

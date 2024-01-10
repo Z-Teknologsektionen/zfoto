@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
+import Header from "~/components/header";
 import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
 import { Footer } from "./footer";
-import Header from "./header";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
