@@ -18,11 +18,13 @@ export function createByline(photographers: string | string[]): string {
   return `Foto: ${photographersString}/zFoto`;
 }
 
-export const getLocalDateTimeFromUTC = (date: Date) => {
-  const getHours = date.getHours();
-  const getUTCOffset = date.getTimezoneOffset() / -60;
-  date.setHours(getHours + getUTCOffset);
-  return date;
+export const getLocalDateTimeFromUTC = (UTCDate: Date) => {
+  const getUTCOffset = UTCDate.getTimezoneOffset() / -60;
+
+  const localDate = new Date(UTCDate);
+  localDate.setHours(localDate.getHours() + getUTCOffset);
+
+  return localDate;
 };
 
 export const getFullFilePath = (

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateImageSchema } from "@/server/trpc/helpers/zodScheams";
+import { updateImageFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -42,8 +42,8 @@ const EditImageForm: FC<AdminImage> = ({
       },
     });
 
-  const form = useForm<z.infer<typeof updateImageSchema>>({
-    resolver: zodResolver(updateImageSchema),
+  const form = useForm<z.infer<typeof updateImageFrontEndSchema>>({
+    resolver: zodResolver(updateImageFrontEndSchema),
     defaultValues: {
       photographer: photographer,
       coverImage: coverImage,
@@ -52,8 +52,12 @@ const EditImageForm: FC<AdminImage> = ({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof updateImageSchema>) {
-    updateImage({ ...values, imageId: id });
+  async function onSubmit(values: z.infer<typeof updateImageFrontEndSchema>) {
+    updateImage({
+      ...values,
+      imageId: id,
+      date: new Date(values.date).toISOString(),
+    });
   }
 
   return (
