@@ -24,8 +24,7 @@ export const updateAlbumAPISchema = updateAlbumBaseSchema
   .partial()
   .extend({ albumId: objectId });
 
-export const updateImageSchema = z.object({
-  imageId: objectId,
+const updateImageBaseSchema = z.object({
   filename: z.string().min(1).optional(),
   photographer: z
     .string()
@@ -35,6 +34,18 @@ export const updateImageSchema = z.object({
     .optional(),
   visible: z.boolean().optional(),
   coverImage: z.boolean().optional(),
-  date: fullDatetimeString.optional(),
   albumId: objectId.optional(),
 });
+
+export const updateImageFrontEndSchema = updateImageBaseSchema.extend({
+  date: frontEndDatetimeString,
+});
+
+export const updateImageAPISchema = updateImageBaseSchema
+  .extend({
+    date: fullDatetimeString,
+  })
+  .partial()
+  .extend({
+    imageId: objectId,
+  });
