@@ -1,19 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { FC } from "react";
 import type { SafeLinkType } from "~/utils/links";
 
 export interface HeaderNavLinkProps extends SafeLinkType {
   closeNav?: () => void;
-  pathname: string | null;
 }
 
 export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
   closeNav,
   href,
   newPage,
-  pathname,
   label,
 }) => {
+  const pathname = usePathname();
+
   return (
     <li>
       <Link

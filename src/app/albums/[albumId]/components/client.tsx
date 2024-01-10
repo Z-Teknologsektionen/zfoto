@@ -1,20 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { FC, useEffect } from "react";
-import AlbumGrid from "~/components/albums/album-grid";
-import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { useCounter } from "~/hooks/useCounter";
 import { useToggle } from "~/hooks/useToggle";
-import { PublicAlbum, PublicAlbums } from "~/utils/fetchAlbumData";
+import { PublicAlbum } from "~/utils/fetchAlbumData";
 import { ImageGridItem } from "./image-grid-item";
 import ImagePopup from "./image-popup";
 
-const Client: FC<{ album: PublicAlbum; recommendedAlbums: PublicAlbums }> = ({
-  album,
-  recommendedAlbums,
-}) => {
+const Client: FC<{ album: PublicAlbum }> = ({ album }) => {
   const {
     value: imageIndex,
     decrement: decrementImageIndex,
@@ -49,20 +43,6 @@ const Client: FC<{ album: PublicAlbum; recommendedAlbums: PublicAlbums }> = ({
             }}
           />
         ))}
-      </SectionWrapper>
-      <SectionWrapper>
-        <h1 className="text-2xl font-medium">Kika även in dessa albumen</h1>
-        <AlbumGrid>
-          {recommendedAlbums.map((recommendedAlbum) => (
-            <AlbumGridItem key={recommendedAlbum.id} {...recommendedAlbum} />
-          ))}
-          <Link
-            className="relative grid h-full w-full max-w-xs flex-grow items-center justify-center overflow-hidden rounded-lg border-2 bg-[#333333]/95 px-4 py-3 text-[#a7a7a7] shadow"
-            href="/"
-          >
-            <h2 className="text-xl font-normal">Visa fler...</h2>
-          </Link>
-        </AlbumGrid>
       </SectionWrapper>
       {showPopup && (
         <ImagePopup

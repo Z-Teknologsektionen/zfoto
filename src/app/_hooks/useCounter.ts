@@ -3,7 +3,7 @@ import { useState } from "react";
 export const useCounter = (
   defaultValue?: number,
   min?: number,
-  max?: number
+  max?: number,
 ): {
   decrement: () => void;
   increment: () => void;

@@ -1,11 +1,6 @@
-"use client";
-
-import { Copy } from "lucide-react";
 import type { NextPage } from "next";
-import { Button } from "~/components/ui/button";
-import { StandardTooltip } from "~/components/ui/tooltip";
 import { formatDateString } from "~/utils/formatDateAndTimeStrings";
-import { createByline } from "~/utils/utils";
+import CopyBylineButton from "./copy-byline-button";
 
 const AlbumInfo: NextPage<{
   date: Date;
@@ -13,6 +8,7 @@ const AlbumInfo: NextPage<{
   title: string;
 }> = ({ date, title, photographers }) => {
   const formatedDateString = formatDateString(date);
+
   return (
     <div className="my-4 flex flex-col gap-2">
       <h1 className="hidden text-3xl font-bold md:block">
@@ -26,22 +22,7 @@ const AlbumInfo: NextPage<{
         <p>{`${
           photographers.length > 1 ? "Fotografer" : "Fotograf"
         }: ${photographers.join(", ")}`}</p>
-        <StandardTooltip
-          Trigger={
-            <Button
-              variant={"ghost"}
-              size={"icon"}
-              className="h-6 w-6"
-              onClick={() => {
-                navigator.clipboard.writeText(createByline(photographers));
-              }}
-            >
-              <Copy size={12} />
-              <span className="sr-only">Kopiera byline</span>
-            </Button>
-          }
-          Content={<p>Kopiera byline</p>}
-        />
+        <CopyBylineButton photographers={photographers} />
       </div>
     </div>
   );

@@ -15,14 +15,14 @@ export const deskToolStructure = deskTool({
       .title("Base")
       .items([
         ...S.documentTypeListItems().filter(
-          (item) => !excudedIds.includes(item.getId() ?? "")
+          (item) => !excudedIds.includes(item.getId() ?? ""),
         ),
         S.divider(),
         ...singleTons.map((s) =>
           S.listItem()
             .title(s.title)
             .icon(s.Icon)
-            .child(S.document().schemaType(s.id).documentId(s.id))
+            .child(S.document().schemaType(s.id).documentId(s.id)),
         ),
       ]),
 });
