@@ -1,6 +1,6 @@
 "use client";
 
-import { updateAlbumSchema } from "@/server/trpc/helpers/zodScheams";
+import { updateAlbumFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -34,15 +34,17 @@ const EditAlbumForm: FC<{
       onSettled: (_, __, ___, context) => {
         toast.dismiss(context);
       },
-      onSuccess: () => toast.success("Bild uppdaterad!"),
+      onSuccess: () => toast.success("Album uppdaterat!"),
       onError: (error) => {
         toast.error("Kunde inte uppdatera, försök igen senare...");
         toast.error(error.message);
       },
     });
 
-  const form = useForm<z.infer<typeof updateAlbumSchema>>({
-    resolver: zodResolver(updateAlbumSchema),
+  console.log(date);
+
+  const form = useForm<z.infer<typeof updateAlbumFrontEndSchema>>({
+    resolver: zodResolver(updateAlbumFrontEndSchema),
     defaultValues: {
       title: title,
       isReception: isReception,
@@ -51,8 +53,12 @@ const EditAlbumForm: FC<{
     },
   });
 
-  async function onSubmit(values: z.infer<typeof updateAlbumSchema>) {
-    updateAlbum({ ...values, albumId: id });
+  async function onSubmit(values: z.infer<typeof updateAlbumFrontEndSchema>) {
+    updateAlbum({
+      ...values,
+      albumId: id,
+      date: new Date(values.date).toISOString(),
+    });
   }
 
   return (
@@ -84,9 +90,9 @@ const EditAlbumForm: FC<{
                 <FormLabel>Datum och tid</FormLabel>
                 <FormControl>
                   <Input
+                    {...field}
                     type="datetime-local"
                     placeholder="Fyll i datum och tid"
-                    {...field}
                   />
                 </FormControl>
                 <FormDescription>

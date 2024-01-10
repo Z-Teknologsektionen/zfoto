@@ -1,18 +1,28 @@
 import { z } from "zod";
-import { datetimeString, objectId } from "./zodTypes";
+import {
+  frontEndDatetimeString,
+  fullDatetimeString,
+  objectId,
+} from "./zodTypes";
 
-export const updateAlbumSchema = z.object({
-  albumId: objectId,
-  title: z
-    .string()
-    .min(1, {
-      message: "Rubiken måste vara minst 1 tecken lång",
-    })
-    .optional(),
-  visible: z.boolean().optional(),
-  isReception: z.boolean().optional(),
-  date: datetimeString.optional(),
+const updateAlbumBaseSchema = z.object({
+  title: z.string().min(1, {
+    message: "Rubiken måste vara minst 1 tecken lång",
+  }),
+  visible: z.boolean(),
+  isReception: z.boolean(),
 });
+
+export const updateAlbumFrontEndSchema = updateAlbumBaseSchema.extend({
+  date: frontEndDatetimeString,
+});
+
+export const updateAlbumAPISchema = updateAlbumBaseSchema
+  .extend({
+    date: fullDatetimeString,
+  })
+  .partial()
+  .extend({ albumId: objectId });
 
 export const updateImageSchema = z.object({
   imageId: objectId,
@@ -25,6 +35,6 @@ export const updateImageSchema = z.object({
     .optional(),
   visible: z.boolean().optional(),
   coverImage: z.boolean().optional(),
-  date: datetimeString.optional(),
+  date: fullDatetimeString.optional(),
   albumId: objectId.optional(),
 });
