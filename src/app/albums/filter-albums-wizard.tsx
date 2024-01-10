@@ -36,13 +36,13 @@ const FilterAlbumsWizard: FC<{ selectedYear: string | undefined }> = ({
 
         return push(`${pathname}?year=${value}`, {});
       }}
-      defaultValue={selectedYear?.toString() || ""}
+      defaultValue={selectedYear?.toString() || "all"}
     >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Välj år" />
       </SelectTrigger>
       <SelectContent className="">
-        <SelectItem value="">Alla år</SelectItem>
+        <SelectItem value="all">Alla år</SelectItem>
         {generateYearsBetweenNowAnd2016()
           .reverse()
           .map((year) => (
