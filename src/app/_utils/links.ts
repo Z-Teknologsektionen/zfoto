@@ -79,7 +79,7 @@ const links: LinkType[] = [
   },
   {
     label: "ztek.se",
-    href: "http://www.ztek.se/",
+    href: "https://ztek.se/",
     newPage: true,
     order: 99,
     useInHeader: true,
