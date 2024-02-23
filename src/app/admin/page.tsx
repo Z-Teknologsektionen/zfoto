@@ -5,8 +5,8 @@ import {
   getTotalAlbumCount,
   getTotalImageCount,
 } from "~/utils/fetchAdminData";
+import { adminPhotographerColumns } from "./admin-photograhper-columns";
 import AdminSidebar from "./admin-sidebar";
-import { adminPhotographerColumns } from "./columns";
 import { DataTable } from "./data-table";
 import InfoCard from "./info-card";
 
