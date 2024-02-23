@@ -43,6 +43,14 @@ declare module "next-auth/jwt" {
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/auth/sign-in",
+  },
+  /*
+   * Om du lägger till providers bör du även uppdatera
+   * src\app\auth\sign-in\sign-in-content.tsx
+   * med en ny knapp så du kan logga in med den nya providern
+   */
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
