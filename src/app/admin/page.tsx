@@ -5,35 +5,41 @@ import {
   getTotalAlbumCount,
   getTotalImageCount,
 } from "~/utils/fetchAdminData";
-import { columns } from "./columns";
+import AdminSidebar from "./admin-sidebar";
+import { adminPhotographerColumns } from "./columns";
 import { DataTable } from "./data-table";
 import InfoCard from "./info-card";
-import Sidebar from "./sidebar";
 
 const AdminDashbord = async () => {
   const currentDate = new Date();
-  let activeYear = currentDate.getFullYear();
-  if (currentDate.getMonth() < 10) {
-    activeYear -= 1;
-  }
+  const currentYear = currentDate.getFullYear();
+  const activeYear =
+    currentDate.getMonth() < 10 ? currentYear - 1 : currentYear;
 
-  const photographerCounts = await getCountsPerPhotographer();
-  const imagesThisYear = await getImageCountFromYear(activeYear);
-  const imagesPrevYear = await getImageCountFromYear(activeYear - 1);
-  const albumsThisYear = await getAlbumCountFromYear(activeYear);
-  const totalImages = await getTotalImageCount();
-  const totalAlbums = await getTotalAlbumCount();
+  const [
+    photographerCounts,
+    imagesThisYear,
+    imagesPrevYear,
+    albumsThisYear,
+    totalImages,
+    totalAlbums,
+  ] = await Promise.all([
+    getCountsPerPhotographer(),
+    getImageCountFromYear(activeYear),
+    getImageCountFromYear(activeYear - 1),
+    getAlbumCountFromYear(activeYear),
+    getTotalImageCount(),
+    getTotalAlbumCount(),
+  ]);
+
   const numberOfPhotographers = photographerCounts.length;
-
-  const imagesPrevVSThisYear = `${
-    imagesThisYear - imagesPrevYear > 0 ? "+" : "-"
-  }${Math.abs(imagesThisYear - imagesPrevYear)}`;
+  const imagesPrevVSThisYear = imagesThisYear - imagesPrevYear;
 
   return (
     <>
       <div className="flex flex-col gap-4 lg:flex-row">
         <h1 className="text-center text-3xl font-bold lg:hidden">Adminpanel</h1>
-        <Sidebar />
+        <AdminSidebar isAdmin={true} />
         <div className="space-y-8">
           <h1 className="container hidden text-3xl font-bold lg:block">
             Adminpanel
@@ -62,12 +68,15 @@ const AdminDashbord = async () => {
             <InfoCard
               title="Bilder av sittande"
               number={imagesThisYear}
-              info={`${imagesPrevVSThisYear} mot förra sittande`}
+              info={`${imagesPrevVSThisYear.toLocaleString()} mot förra sittande`}
             />
           </section>
           <section className="container space-y-4">
             <h2 className="text-xl font-semibold">Fotografer</h2>
-            <DataTable columns={columns} data={photographerCounts} />
+            <DataTable
+              columns={adminPhotographerColumns}
+              data={photographerCounts.filter(({ images }) => images >= 20)} //Visa bara fotografer med fler än 20 bilder
+            />
           </section>
         </div>
       </div>
