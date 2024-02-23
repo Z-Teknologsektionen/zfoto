@@ -94,4 +94,5 @@ model VerificationToken {
 enum Roles {
   ADMIN
   USER
+  PASSWORD_ADMIN
 }
