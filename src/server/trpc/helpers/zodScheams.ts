@@ -49,3 +49,9 @@ export const updateImageAPISchema = updateImageBaseSchema
   .extend({
     imageId: objectId,
   });
+
+export const emailSchema = z.object({
+  email: z.string().email(),
+  subject: z.string().min(3).max(100),
+  message: z.string().min(10).max(10_000),
+});
