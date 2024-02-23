@@ -7,8 +7,10 @@ import type { GetServerSidePropsContext } from "next";
 import type { NextAuthOptions } from "next-auth";
 import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "~/utils/db";
+import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -45,6 +47,25 @@ const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: "Patet inlogg",
+      type: "credentials",
+      credentials: {
+        email: {
+          label: "Epost",
+          type: "email",
+          placeholder: "Fyll i din epost",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Fyll i ditt lösenord",
+        },
+      },
+      async authorize(credentials, req) {
+        return isValidCredentials(credentials);
+      },
     }),
   ],
   session: {

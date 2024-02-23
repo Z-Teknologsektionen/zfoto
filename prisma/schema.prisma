@@ -11,7 +11,8 @@ datasource db {
 }
 
 model Album {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   title       String
   images      Image[]
   visible     Boolean  @default(true)
@@ -25,14 +26,16 @@ model Album {
 }
 
 model Image {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  albumId String @db.ObjectId
+
   filename     String   @unique
   coverImage   Boolean  @default(false)
-  album        Album    @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  albumId      String   @db.ObjectId
   photographer String   @default("zFoto")
   visible      Boolean  @default(true)
   date         DateTime @default(now())
+
+  album Album @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now()) @updatedAt //Optional because of added after the fact
@@ -66,14 +69,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          Roles     @default(USER)
   accounts      Account[]
   sessions      Session[]
+
+  role     Roles   @default(USER)
+  password String?
 }
 
 model VerificationToken {
