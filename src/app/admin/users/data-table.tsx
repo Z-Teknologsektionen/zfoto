@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTableFC } from "@/types/data-table";
+import { DataTableProps } from "@/types/data-table";
 import { Roles } from "@prisma/client";
 import type { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import {
@@ -27,10 +27,10 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "~/components/ui/table";
 
-export const DataTable: DataTableFC = ({ columns, data }) => {
+export const DataTable = <TData, TValue>({ columns, data }:DataTableProps<TData, TValue> ) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -67,12 +67,12 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
             }}
             defaultValue={""}
           >
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="Välj år" />
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Välj användartyp" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Alla</SelectItem>
-              {(Object.keys(Roles) as Array<keyof typeof Roles>).map((key) => (
+              <SelectItem value="ALL">Alla</SelectItem>
+              {(Object.values(Roles)).map((key) => (
                 <SelectItem
                   className="pointer-events-auto"
                   key={key}
@@ -128,7 +128,7 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
                   className="h-24 text-center"
                   colSpan={columns.length}
                 >
-                  Inga album
+                  Inga användare
                 </TableCell>
               </TableRow>
             )}
