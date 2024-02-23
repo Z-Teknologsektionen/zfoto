@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Obehörig",
 };
 
-const unauthorizedPage = () => {
+const UnauthorizedPage = () => {
   return (
     <div className="grid flex-grow place-items-center">
       <section className="flex flex-col items-center gap-12">
@@ -27,4 +27,4 @@ const unauthorizedPage = () => {
   );
 };
 
-export default unauthorizedPage;
+export default UnauthorizedPage;
