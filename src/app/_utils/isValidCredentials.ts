@@ -1,14 +1,9 @@
+import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
 import { compare } from "bcrypt";
-import { z } from "zod";
 import { prisma } from "~/utils/db";
 
 export const isValidCredentials = async (data: unknown) => {
-  const reqBodyTest = z
-    .object({
-      email: z.string().trim().toLowerCase().email(),
-      password: z.string().trim().min(8),
-    })
-    .safeParse(data);
+  const reqBodyTest = userSignInForm.safeParse(data);
 
   if (!reqBodyTest.success) return null;
 
