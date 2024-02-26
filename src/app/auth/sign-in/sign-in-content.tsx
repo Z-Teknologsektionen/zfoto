@@ -7,9 +7,10 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "~/utils/utils";
 import FormFieldInputEmail from "../../_components/form/form-field-input-email";
 import FormFieldInputPassword from "../../_components/form/form-field-input-password";
-import { Button } from "../../_components/ui/button";
+import { Button, buttonVariants } from "../../_components/ui/button";
 import { Form } from "../../_components/ui/form";
 import { Separator } from "../../_components/ui/separator";
 
@@ -22,9 +23,20 @@ const SignInContent = () => {
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get("callbackUrl") || "";
+  const error = searchParams?.get("error");
 
   return (
     <>
+      {error === "SessionRequired" && (
+        <div
+          className={cn(
+            buttonVariants({ variant: "outline", size: "lg" }),
+            "grid place-items-center text-red-500",
+          )}
+        >
+          <p>Vänligen logga in för att kunna se denna sidan</p>
+        </div>
+      )}
       <Button
         className="flex w-full flex-row justify-center gap-4"
         variant="outline"
@@ -45,6 +57,17 @@ const SignInContent = () => {
         <p className="font-medium">Logga in med Google</p>
       </Button>
       <Separator />
+      {error === "CredentialsSignin" && (
+        <div
+          className={cn(
+            buttonVariants({ variant: "outline", size: "lg" }),
+            "grid place-items-center text-red-500",
+          )}
+        >
+          <p>Felaktiga uppgifter. Försök igen</p>
+        </div>
+      )}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(({ email, password }) =>

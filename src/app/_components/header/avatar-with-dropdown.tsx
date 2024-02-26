@@ -1,3 +1,4 @@
+import { adminLikeRoles } from "@/constants/admin";
 import { Roles } from "@prisma/client";
 import { Lock } from "lucide-react";
 import Link from "next/link";
@@ -16,7 +17,7 @@ const AvatarWithDropdown: FC<{
   role: Roles;
   name: string;
 }> = ({ filename, role, name }) => {
-  const isAdmin = role === Roles.ADMIN;
+  const hasAdminLikeRole = adminLikeRoles.includes(role);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,7 +27,7 @@ const AvatarWithDropdown: FC<{
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mt-2">
-        {isAdmin && (
+        {hasAdminLikeRole && (
           <DropdownMenuItem asChild>
             <Link href={"/admin"}>
               <Lock className="mr-2 h-4 w-4" />

@@ -86,9 +86,23 @@ const authOptions: NextAuthOptions = {
       if (user) token.role = user.role;
       return token;
     },
-    async session({ session, token }) {
-      if (session.user) session.user.role = token.role;
-      return session;
+    async session({ session }) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session.user.email,
+        },
+        select: {
+          role: true,
+          email: true,
+          image: true,
+          name: true,
+          id: true,
+        },
+      });
+      return {
+        ...session,
+        user: { ...session.user, ...user },
+      };
     },
   },
   secret: env.NEXTAUTH_SECRET,
