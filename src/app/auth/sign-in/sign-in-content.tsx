@@ -34,7 +34,7 @@ const SignInContent = () => {
             "grid place-items-center text-red-500",
           )}
         >
-          <p>Vänligen logga in för att kunna se denna sidan</p>
+          <p>Du måste logga in för att se denna sida</p>
         </div>
       )}
       <Button

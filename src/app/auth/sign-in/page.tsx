@@ -15,7 +15,7 @@ const LoginPage: FC = async () => {
           Logga in
         </h1>
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
-          Du som aktiv i Z-teknologsektionen kan logga in med ditt google konto.
+          Du som aktiv i Z-Teknologsektionen kan logga in med ditt Google-konto.
           Om du har fått ett eget inlogg kan du logga in med din epost.
         </p>
         <SignInContent />

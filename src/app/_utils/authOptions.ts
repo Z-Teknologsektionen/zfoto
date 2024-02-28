@@ -57,7 +57,7 @@ const authOptions: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      name: "Patet inlogg",
+      name: "Patetinlogg",
       type: "credentials",
       credentials: {
         email: {

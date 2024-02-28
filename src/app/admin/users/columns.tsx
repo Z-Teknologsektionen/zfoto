@@ -98,7 +98,7 @@ export const columns: ColumnDef<AdminUser>[] = [
                     toast.success("Uppdaterat!");
                   }}
                 >
-                  <span>{`Sätt till "${formatRole(key)}"`}</span>
+                  <span>{`Ge roll "${formatRole(key)}"`}</span>
                 </DropdownMenuItem>
               );
             })}

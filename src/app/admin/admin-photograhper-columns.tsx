@@ -45,7 +45,7 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       cell: ({ row }) =>
         row.original.firstImage
           ? formatDateString(row.original.firstImage)
-          : "Okänd",
+          : "Okänt",
     },
     {
       accessorKey: "latestImage",
@@ -55,6 +55,6 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       cell: ({ row }) =>
         row.original.latestImage
           ? formatDateString(row.original.latestImage)
-          : "Okänd",
+          : "Okänt",
     },
   ];

@@ -34,7 +34,7 @@ export const Footer: FC<{ session: Session | null }> = ({ session }) => {
           >
             <span className="text-center text-base">En del av:</span>
             <Image
-              alt="Bild på Z-teknologsektionens logga"
+              alt="Bild på Z-Teknologsektionens logga"
               className="object-contain object-left"
               height={90}
               quality={100}
