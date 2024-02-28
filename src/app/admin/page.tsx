@@ -1,3 +1,4 @@
+import { DataTable } from "~/components/data-table/data-table";
 import {
   getAlbumCountFromYear,
   getCountsPerPhotographer,
@@ -6,8 +7,8 @@ import {
   getTotalImageCount,
 } from "~/utils/fetchAdminData";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import InfoCard from "./info-card";
+import PhotographerFilteringToolbar from "./photographer-filtering-toolbar";
 import Sidebar from "./sidebar";
 
 const AdminDashbord = async () => {
@@ -67,7 +68,12 @@ const AdminDashbord = async () => {
           </section>
           <section className="container space-y-4">
             <h2 className="text-xl font-semibold">Fotografer</h2>
-            <DataTable columns={columns} data={photographerCounts} />
+            <DataTable
+              toolbar={PhotographerFilteringToolbar}
+              columns={columns}
+              data={photographerCounts}
+              usePagination
+            />
           </section>
         </div>
       </div>

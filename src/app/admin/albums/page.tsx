@@ -1,7 +1,8 @@
 import BackButton from "~/components/back-button";
+import { DataTable } from "~/components/data-table/data-table";
 import { getAllAlbumsAsAdmin } from "~/utils/fetchAdminData";
+import AlbumsFilteringToolbar from "./albums-filtering-toolbar";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
 
 const AlbumsAdminPage = async () => {
   const data = await getAllAlbumsAsAdmin();
@@ -12,7 +13,12 @@ const AlbumsAdminPage = async () => {
       </div>
       <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Album</h1>
-        <DataTable columns={columns} data={data} />
+        <DataTable
+          toolbar={AlbumsFilteringToolbar}
+          columns={columns}
+          data={data}
+          usePagination
+        />
       </section>
     </>
   );

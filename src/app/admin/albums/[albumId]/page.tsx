@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import BackButton from "~/components/back-button";
+import { DataTable } from "~/components/data-table/data-table";
 import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
+import AlbumImageFilteringToolbar from "./album-image-filtering-toolbar";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import EditAlbumForm from "./edit-form";
 
 const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
@@ -23,7 +24,12 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
       </section>
       <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Bilder</h1>
-        <DataTable columns={columns} data={album.images} />
+        <DataTable
+          toolbar={AlbumImageFilteringToolbar}
+          columns={columns}
+          data={album.images}
+          usePagination
+        />
       </section>
     </>
   );
