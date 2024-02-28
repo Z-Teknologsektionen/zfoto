@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { updateAlbumAPISchema } from "../helpers/zodScheams";
 import { objectId } from "../helpers/zodTypes";
-import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import {
+  adminLikeProcedure,
+  adminProcedure,
+  createTRPCRouter,
+  publicProcedure,
+} from "../trpc";
 
 export const albumRouter = createTRPCRouter({
   getAlbumById: publicProcedure
@@ -17,7 +22,7 @@ export const albumRouter = createTRPCRouter({
         },
       }),
     ),
-  updateAlbumById: adminProcedure
+  updateAlbumById: adminLikeProcedure
     .input(updateAlbumAPISchema)
     .mutation(({ ctx, input }) =>
       ctx.prisma.album.update({

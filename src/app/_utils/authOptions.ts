@@ -7,8 +7,10 @@ import type { GetServerSidePropsContext } from "next";
 import type { NextAuthOptions } from "next-auth";
 import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "~/utils/db";
+import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -41,10 +43,37 @@ declare module "next-auth/jwt" {
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/auth/sign-in",
+  },
+  /*
+   * Om du lägger till providers bör du även uppdatera
+   * src\app\auth\sign-in\sign-in-content.tsx
+   * med en ny knapp så du kan logga in med den nya providern
+   */
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: "Patetinlogg",
+      type: "credentials",
+      credentials: {
+        email: {
+          label: "Epost",
+          type: "email",
+          placeholder: "Fyll i din epost",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Fyll i ditt lösenord",
+        },
+      },
+      async authorize(credentials, req) {
+        return isValidCredentials(credentials);
+      },
     }),
   ],
   session: {
@@ -57,9 +86,23 @@ const authOptions: NextAuthOptions = {
       if (user) token.role = user.role;
       return token;
     },
-    async session({ session, token }) {
-      if (session.user) session.user.role = token.role;
-      return session;
+    async session({ session }) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session.user.email,
+        },
+        select: {
+          role: true,
+          email: true,
+          image: true,
+          name: true,
+          id: true,
+        },
+      });
+      return {
+        ...session,
+        user: { ...session.user, ...user },
+      };
     },
   },
   secret: env.NEXTAUTH_SECRET,

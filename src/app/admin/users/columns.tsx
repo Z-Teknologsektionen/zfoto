@@ -12,10 +12,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { AdminUser } from "~/utils/fetchAdminData";
+import { formatRole } from "./helpers";
 
 export const columns: ColumnDef<AdminUser>[] = [
   {
@@ -61,7 +61,7 @@ export const columns: ColumnDef<AdminUser>[] = [
     ),
     cell: ({ row }) => {
       const role = row.original.role;
-      return role.slice(0, 1).toUpperCase() + role.slice(1).toLowerCase();
+      return formatRole(role);
     },
   },
   {
@@ -78,9 +78,6 @@ export const columns: ColumnDef<AdminUser>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel className="underline underline-offset-2">
-              Admin
-            </DropdownMenuLabel>
             {(Object.keys(Roles) as Array<keyof typeof Roles>).map((key) => {
               if (key === row.original.role) return;
               return (
@@ -101,9 +98,7 @@ export const columns: ColumnDef<AdminUser>[] = [
                     toast.success("Uppdaterat!");
                   }}
                 >
-                  <span>{`Sätt till "${key.toUpperCase().at(0)}${key
-                    .toLowerCase()
-                    .slice(1)}"`}</span>
+                  <span>{`Ge roll "${formatRole(key)}"`}</span>
                 </DropdownMenuItem>
               );
             })}
