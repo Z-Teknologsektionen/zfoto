@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { updateImageAPISchema } from "../helpers/zodScheams";
 import { objectId } from "../helpers/zodTypes";
-import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import { adminLikeProcedure, createTRPCRouter, publicProcedure } from "../trpc";
 
 export const imageRouter = createTRPCRouter({
   getOneById: publicProcedure
@@ -17,7 +17,7 @@ export const imageRouter = createTRPCRouter({
         },
       }),
     ),
-  updateImageById: adminProcedure
+  updateImageById: adminLikeProcedure
     .input(updateImageAPISchema)
     .mutation(({ ctx, input }) =>
       ctx.prisma.image.update({

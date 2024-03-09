@@ -1,4 +1,5 @@
 import { Column } from "@tanstack/react-table";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -42,16 +43,18 @@ const ToolbarSelectDropdown = <TData,>({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">Alla</SelectItem>
-        {options.map(({ label, value }) => (
-          <SelectItem
-            className="pointer-events-auto cursor-pointer"
-            key={value}
-            value={value}
-          >
-            {label}
-          </SelectItem>
-        ))}
+        <ScrollArea className="h-48">
+          <SelectItem value="all">Alla</SelectItem>
+          {options.map(({ label, value }) => (
+            <SelectItem
+              className="pointer-events-auto cursor-pointer"
+              key={value}
+              value={value}
+            >
+              {label}
+            </SelectItem>
+          ))}
+        </ScrollArea>
       </SelectContent>
     </Select>
   );

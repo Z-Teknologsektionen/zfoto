@@ -14,7 +14,7 @@ const InfoCard: FC<IInfoCard> = ({ info, number, title }) => {
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{number}</div>
+        <div className="text-2xl font-bold">{number.toLocaleString()}</div>
         <p className="text-muted-foreground text-xs">{info}</p>
       </CardContent>
     </Card>

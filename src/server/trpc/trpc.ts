@@ -163,4 +163,21 @@ const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserisAdminLike = t.middleware(({ ctx, next }) => {
+  const adminLikeRoles = [Roles.PASSWORD_ADMIN, Roles.ADMIN] as Roles[];
+  if (!ctx.session || !adminLikeRoles.includes(ctx.session.user.role)) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: {
+        ...ctx.session,
+      },
+    },
+  });
+});
+
 export const adminProcedure = t.procedure.use(enforceUserIsAdmin);
+
+export const adminLikeProcedure = t.procedure.use(enforceUserisAdminLike);

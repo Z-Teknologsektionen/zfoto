@@ -27,10 +27,13 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "~/components/ui/table";
 
-export const DataTable = <TData, TValue>({ columns, data }:DataTableProps<TData, TValue> ) => {
+export const DataTable = <TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -63,7 +66,9 @@ export const DataTable = <TData, TValue>({ columns, data }:DataTableProps<TData,
           <span className="hidden md:block">Användartyp</span>
           <Select
             onValueChange={(value) => {
-              table.getColumn("role")?.setFilterValue(value);
+              table
+                .getColumn("role")
+                ?.setFilterValue(value !== "all" ? value : "");
             }}
             defaultValue={""}
           >
@@ -72,7 +77,7 @@ export const DataTable = <TData, TValue>({ columns, data }:DataTableProps<TData,
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">Alla</SelectItem>
-              {(Object.values(Roles)).map((key) => (
+              {Object.values(Roles).map((key) => (
                 <SelectItem
                   className="pointer-events-auto"
                   key={key}

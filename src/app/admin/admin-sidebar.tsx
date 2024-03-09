@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 import { trpc } from "~/trpc/client";
 
-const Sidebar = () => {
+const AdminSidebar = ({ isAdmin }: { isAdmin: boolean }) => {
   const { mutate: setReceptionVisibility, isLoading } =
     trpc.album.setReceptionVisibility.useMutation({
       onMutate: ({ visible }) =>
@@ -26,7 +27,7 @@ const Sidebar = () => {
     });
 
   return (
-    <aside className="left-0 top-0 flex flex-row items-start justify-center gap-8 lg:sticky lg:-mt-8 lg:h-screen lg:w-[200px] lg:flex-col lg:items-center lg:justify-start lg:gap-4 lg:pt-10">
+    <aside className="left-0 top-0 mx-4 flex flex-row items-start justify-center gap-8 lg:sticky lg:-mt-8 lg:h-screen lg:w-[250px] lg:flex-col lg:items-center lg:justify-start lg:gap-4 lg:pt-10">
       <div className="flex flex-col">
         <h2 className="mb-2 text-center text-xl font-medium underline underline-offset-2">
           Navigering
@@ -44,31 +45,37 @@ const Sidebar = () => {
           <Link href="/admin/info">Information</Link>
         </Button>
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="text-center text-xl font-medium underline underline-offset-2">
-          Funktioner
-        </h2>
-        <Button
-          className="mx-2"
-          size="sm"
-          variant="outline"
-          disabled={isLoading}
-          onClick={() => setReceptionVisibility({ visible: false })}
-        >
-          Dölj mottagningsalbum
-        </Button>
-        <Button
-          className="mx-2"
-          size="sm"
-          variant="outline"
-          disabled={isLoading}
-          onClick={() => setReceptionVisibility({ visible: true })}
-        >
-          Visa mottagningsalbum
-        </Button>
-      </div>
+      {isAdmin && (
+        <>
+          <Separator className="hidden lg:block" />
+          <div className="flex flex-col gap-2">
+            <h2 className="text-center text-xl font-medium underline underline-offset-2">
+              Funktioner
+            </h2>
+            <Button
+              className="mx-2"
+              size="sm"
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => setReceptionVisibility({ visible: false })}
+            >
+              Dölj mottagningsalbum
+            </Button>
+            <Button
+              className="mx-2"
+              size="sm"
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => setReceptionVisibility({ visible: true })}
+            >
+              Visa mottagningsalbum
+            </Button>
+            {/* TODO: Lägg till möjligheten att återställa lösenordet för patetinlogg */}
+          </div>
+        </>
+      )}
     </aside>
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;
