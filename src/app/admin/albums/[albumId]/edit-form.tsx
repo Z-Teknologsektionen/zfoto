@@ -41,8 +41,6 @@ const EditAlbumForm: FC<{
       },
     });
 
-  console.log(date);
-
   const form = useForm<z.infer<typeof updateAlbumFrontEndSchema>>({
     resolver: zodResolver(updateAlbumFrontEndSchema),
     defaultValues: {
