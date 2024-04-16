@@ -1,10 +1,12 @@
 "use client";
 
 import { emailSchema } from "@/server/trpc/helpers/zodScheams";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
-import FormWrapper from "~/components/layout/FormWrapper";
+import FormFieldInputEmail from "~/components/form/form-field-input-email";
+import BasicFormWrapper from "~/components/layout/BasicFormWrapper";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,
@@ -16,54 +18,45 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { useFormWithZodShema } from "~/hooks/useFormWithZodShema";
 import { trpc } from "~/trpc/client";
 
-type FormValuesType = z.infer<typeof emailSchema>;
-
 const ContactForm: FC = () => {
-  const form = useFormWithZodShema({
-    schema: emailSchema,
-    defaultValues: {
-      email: "dennis@holmstrom.nu",
-      message: "FÖRLÅT jag utvecklar hemsidan. Ber om ursäkt för spam",
-      subject: "Dennis Leker",
-    },
-  });
-
   const { mutate: sendEmail, isLoading } =
     trpc.email.sendEmailAsUser.useMutation({
       onSuccess: () => toast.success("Sjukt, de funka"),
       onError: (err) => toast.error(err.message),
     });
 
-  const onSubmit = (values: FormValuesType) => {
-    sendEmail(values);
-  };
+  const form = useForm({
+    resolver: zodResolver(emailSchema),
+    defaultValues: {
+      email: "",
+      message: "",
+      subject: "",
+    },
+  });
 
   return (
-    <FormWrapper form={form} onSubmit={onSubmit}>
-      <FormField
-        control={form.control}
+    <BasicFormWrapper
+      className="grid grid-cols-2 gap-4"
+      form={form}
+      onValid={(values) => {
+        sendEmail(values);
+      }}
+      schema={emailSchema}
+    >
+      <FormFieldInputEmail
+        form={form}
         name="email"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Epost</FormLabel>
-            <FormControl>
-              <Input type="email" placeholder="Fyll i din epost" {...field} />
-            </FormControl>
-            <FormDescription className="text-xs font-light">
-              Används för att kunna svara på din fråga
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Epost"
+        description="Används för att kunna svara på din fråga"
+        placeholder="Fyll i din epost..."
       />
       <FormField
         control={form.control}
         name="subject"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="col-span-2 md:col-span-1">
             <FormLabel>Ämne</FormLabel>
             <FormControl>
               <Input type="text" placeholder="Fyll i ditt ämne" {...field} />
@@ -107,7 +100,7 @@ const ContactForm: FC = () => {
           Skicka
         </Button>
       </div>
-    </FormWrapper>
+    </BasicFormWrapper>
   );
 };
 

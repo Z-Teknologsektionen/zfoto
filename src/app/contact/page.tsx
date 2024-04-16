@@ -12,7 +12,7 @@ const ContactPage = () => {
   return (
     <>
       <SectionWrapper>
-        <div className="mx-auto flex w-fit flex-col gap-2 rounded-lg border border-gray-400 bg-gray-100 px-4 py-8 shadow">
+        <div className="mx-auto flex max-w-3xl flex-col gap-2 rounded-lg border border-gray-400 bg-gray-100 px-4 py-8 shadow">
           <h1 className="text-center text-2xl font-medium">Kontakt</h1>
           <ContactForm />
         </div>
