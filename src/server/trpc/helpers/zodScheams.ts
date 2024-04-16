@@ -50,6 +50,11 @@ export const updateImageAPISchema = updateImageBaseSchema
     imageId: objectId,
   });
 
+export const userSignInForm = z.object({
+  email: z.string().trim().toLowerCase().email(),
+  password: z.string().trim().min(8),
+});
+
 export const emailSchema = z.object({
   email: z.string().email(),
   subject: z.string().min(3).max(100),

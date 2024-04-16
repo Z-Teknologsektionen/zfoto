@@ -17,10 +17,12 @@ import { Input } from "~/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { Separator } from "~/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -29,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { formatRole } from "./helpers";
 
 export const DataTable: DataTableFC = ({ columns, data }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -63,24 +66,33 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
           <span className="hidden md:block">Användartyp</span>
           <Select
             onValueChange={(value) => {
-              table.getColumn("role")?.setFilterValue(value);
+              table
+                .getColumn("role")
+                ?.setFilterValue(value !== "all" ? value : "");
             }}
             defaultValue={""}
           >
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="Välj år" />
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Välj roll" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Alla</SelectItem>
-              {(Object.keys(Roles) as Array<keyof typeof Roles>).map((key) => (
-                <SelectItem
-                  className="pointer-events-auto"
-                  key={key}
-                  value={key}
-                >
-                  {key.toUpperCase().at(0) + key.toLowerCase().slice(1)}
+              <SelectGroup>
+                <SelectItem value="all" className="cursor-pointer">
+                  Alla
                 </SelectItem>
-              ))}
+              </SelectGroup>
+              <Separator />
+              <SelectGroup>
+                {Object.values(Roles).map((role) => (
+                  <SelectItem
+                    className="cursor-pointer"
+                    key={role}
+                    value={role}
+                  >
+                    {formatRole(role)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>

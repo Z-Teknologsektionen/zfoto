@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import { Input } from "~/components/ui/input";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -64,23 +65,27 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
         />
         <Select
           onValueChange={(value) => {
-            table.getColumn("photographer")?.setFilterValue(value);
+            table
+              .getColumn("photographer")
+              ?.setFilterValue(value !== "all" ? value : "");
           }}
           defaultValue={""}
         >
           <SelectTrigger className="w-[250px]">
-            <SelectValue placeholder="Välj år" />
+            <SelectValue placeholder="Välj fotograf" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Alla</SelectItem>
-            {photographers.map((phototograher) => (
-              <SelectItem
-                key={phototograher.toLowerCase()}
-                value={phototograher}
-              >
-                {phototograher}
-              </SelectItem>
-            ))}
+            <ScrollArea className="h-40">
+              <SelectItem value="all">Alla</SelectItem>
+              {photographers.map((phototograher) => (
+                <SelectItem
+                  key={phototograher.toLowerCase()}
+                  value={phototograher}
+                >
+                  {phototograher}
+                </SelectItem>
+              ))}
+            </ScrollArea>
           </SelectContent>
         </Select>
       </div>

@@ -9,7 +9,7 @@ const SignInButton = () => {
       variant="link"
       className="text-[#a7a7a7]"
       onClick={() => {
-        signIn("google");
+        signIn();
       }}
     >
       Login
