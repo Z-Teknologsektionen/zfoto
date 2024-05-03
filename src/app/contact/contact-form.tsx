@@ -5,26 +5,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import FormFieldInputEmail from "~/components/form/form-field-input-email";
+import {
+  FormFieldInput,
+  FormFieldInputEmail,
+} from "~/components/form/form-field-input";
 import BasicFormWrapper from "~/components/layout/BasicFormWrapper";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { trpc } from "~/trpc/client";
 
 const ContactForm: FC = () => {
   const { mutate: sendEmail, isLoading } =
     trpc.email.sendEmailAsUser.useMutation({
-      onSuccess: () => toast.success("Sjukt, de funka"),
-      onError: (err) => toast.error(err.message),
+      onSuccess: () => {
+        toast.success("Ditt meddelande har skickats!");
+        form.reset();
+      },
+      onError: () =>
+        toast.error(
+          "Okänt fel, försök igen senare eller kontakta oss via mail: zfoto@ztek.se",
+        ),
     });
 
   const form = useForm({
@@ -52,21 +59,12 @@ const ContactForm: FC = () => {
         description="Används för att kunna svara på din fråga"
         placeholder="Fyll i din epost..."
       />
-      <FormField
-        control={form.control}
+      <FormFieldInput
+        form={form}
+        label="Ämne"
         name="subject"
-        render={({ field }) => (
-          <FormItem className="col-span-2 md:col-span-1">
-            <FormLabel>Ämne</FormLabel>
-            <FormControl>
-              <Input type="text" placeholder="Fyll i ditt ämne" {...field} />
-            </FormControl>
-            <FormDescription className="text-xs font-light">
-              Används som rubrik i ditt mail
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
+        description="Används som rubik i ditt mail"
+        placeholder="Fyll i ditt ämne"
       />
       <FormField
         control={form.control}
