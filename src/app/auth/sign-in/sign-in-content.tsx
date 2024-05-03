@@ -7,12 +7,14 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import {
+  FormFieldInputEmail,
+  FormFieldInputPassword,
+} from "~/components/form/form-field-input";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Form } from "~/components/ui/form";
+import { Separator } from "~/components/ui/separator";
 import { cn } from "~/utils/utils";
-import FormFieldInputEmail from "../../_components/form/form-field-input-email";
-import FormFieldInputPassword from "../../_components/form/form-field-input-password";
-import { Button, buttonVariants } from "../../_components/ui/button";
-import { Form } from "../../_components/ui/form";
-import { Separator } from "../../_components/ui/separator";
 
 type UserSignInFormType = z.infer<typeof userSignInForm>;
 

@@ -1,3 +1,4 @@
+import { DataTable } from "~/components/data-table/data-table";
 import {
   getAlbumCountFromYear,
   getCountsPerPhotographer,
@@ -7,8 +8,8 @@ import {
 } from "~/utils/fetchAdminData";
 import { adminPhotographerColumns } from "./admin-photograhper-columns";
 import AdminSidebar from "./admin-sidebar";
-import { DataTable } from "./data-table";
 import InfoCard from "./info-card";
+import PhotographerFilteringToolbar from "./photographer-filtering-toolbar";
 
 const AdminDashbord = async () => {
   const currentDate = new Date();
@@ -74,8 +75,10 @@ const AdminDashbord = async () => {
           <section className="container space-y-4">
             <h2 className="text-xl font-semibold">Fotografer</h2>
             <DataTable
+              toolbar={PhotographerFilteringToolbar}
               columns={adminPhotographerColumns}
-              data={photographerCounts.filter(({ images }) => images >= 20)} //Visa bara fotografer med fler än 20 bilder
+              data={photographerCounts.filter(({ images }) => images >= 20)}
+              usePagination
             />
           </section>
         </div>

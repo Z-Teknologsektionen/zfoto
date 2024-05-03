@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
@@ -44,11 +45,14 @@ const ImagePage = async ({ params }: ImagePageProps) => {
         <BackButton />
         <div className="mt-4 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-grow sm:min-w-[300px]">
-            <img
+            <Image
               alt={`Bild från "${image.album.title}"`}
               className="mx-auto max-h-[75vmin] w-fit max-w-full object-contain object-center"
               sizes="750px"
               src={getFullFilePath(image.filename, "lowres")}
+              unoptimized
+              height={1500}
+              width={1500}
             />
             <div className="mt-2">
               <p className="text-center font-semibold">{byline}</p>

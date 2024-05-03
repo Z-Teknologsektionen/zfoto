@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTableFC } from "@/types/data-table";
+import { DataTableProps } from "@/types/data-table";
 import { Roles } from "@prisma/client";
 import type { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import {
@@ -17,12 +17,10 @@ import { Input } from "~/components/ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Separator } from "~/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -31,9 +29,11 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { formatRole } from "./helpers";
 
-export const DataTable: DataTableFC = ({ columns, data }) => {
+export const DataTable = <TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -72,27 +72,20 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
             }}
             defaultValue={""}
           >
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Välj roll" />
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Välj användartyp" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="all" className="cursor-pointer">
-                  Alla
+              <SelectItem value="ALL">Alla</SelectItem>
+              {Object.values(Roles).map((key) => (
+                <SelectItem
+                  className="pointer-events-auto"
+                  key={key}
+                  value={key}
+                >
+                  {key.toUpperCase().at(0) + key.toLowerCase().slice(1)}
                 </SelectItem>
-              </SelectGroup>
-              <Separator />
-              <SelectGroup>
-                {Object.values(Roles).map((role) => (
-                  <SelectItem
-                    className="cursor-pointer"
-                    key={role}
-                    value={role}
-                  >
-                    {formatRole(role)}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -140,7 +133,7 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
                   className="h-24 text-center"
                   colSpan={columns.length}
                 >
-                  Inga album
+                  Inga användare
                 </TableCell>
               </TableRow>
             )}

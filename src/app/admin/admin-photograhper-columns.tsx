@@ -1,9 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import DataTableCell from "~/components/data-table/data-table-cell";
 import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import { CountsPerPhotographerType } from "~/utils/fetchAdminData";
-import { formatDateString } from "~/utils/formatDateAndTimeStrings";
+import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 
 export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
   [
@@ -18,11 +19,17 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Album" />
       ),
+      cell: ({ row }) => (
+        <DataTableCell center>{row.original.album}</DataTableCell>
+      ),
     },
     {
       accessorKey: "images",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Bilder" />
+      ),
+      cell: ({ row }) => (
+        <DataTableCell center>{row.original.images}</DataTableCell>
       ),
     },
     {
@@ -30,11 +37,17 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Bilder som visas" />
       ),
+      cell: ({ row }) => (
+        <DataTableCell center>{row.original.visible}</DataTableCell>
+      ),
     },
     {
       accessorKey: "coverImage",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Omslag" />
+      ),
+      cell: ({ row }) => (
+        <DataTableCell center>{row.original.coverImage}</DataTableCell>
       ),
     },
     {
@@ -42,19 +55,25 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Första bild" />
       ),
-      cell: ({ row }) =>
-        row.original.firstImage
-          ? formatDateString(row.original.firstImage)
-          : "Okänt",
+      cell: ({ row }) => (
+        <DataTableCell center>
+          {row.original.firstImage
+            ? formatDateTimeString(row.original.firstImage)
+            : "Okänd"}
+        </DataTableCell>
+      ),
     },
     {
       accessorKey: "latestImage",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Senaste bild" />
       ),
-      cell: ({ row }) =>
-        row.original.latestImage
-          ? formatDateString(row.original.latestImage)
-          : "Okänt",
+      cell: ({ row }) => (
+        <DataTableCell center>
+          {row.original.latestImage
+            ? formatDateTimeString(row.original.latestImage)
+            : "Okänd"}
+        </DataTableCell>
+      ),
     },
   ];
