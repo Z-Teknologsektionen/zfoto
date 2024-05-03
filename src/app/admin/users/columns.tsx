@@ -6,6 +6,7 @@ import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
 import {
@@ -63,6 +64,11 @@ export const columns: ColumnDef<AdminUser>[] = [
       const role = row.original.role;
       return formatRole(role);
     },
+    filterFn: (row, id, value)=>{
+      const filterString = z.string().toUpperCase().parse(value);
+      if (filterString === "ALL") return true;
+      return filterString === row.original.role
+    }
   },
   {
     id: "actions",

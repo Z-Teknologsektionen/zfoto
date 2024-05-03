@@ -19,7 +19,7 @@ const ImageColumnActions: FC<{
   coverImage: boolean;
   visible: boolean;
 }> = ({ id, albumId, visible, coverImage }) => {
-  const ctx = trpc.useContext();
+  const ctx = trpc.useUtils();
   const { mutate: updateImage, isLoading } =
     trpc.image.updateImageById.useMutation({
       onMutate: () => toast.loading("Uppdaterar bild"),
