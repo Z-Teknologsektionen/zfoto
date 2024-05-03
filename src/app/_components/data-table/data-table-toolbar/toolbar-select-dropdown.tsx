@@ -19,7 +19,7 @@ const ToolbarSelectDropdown = <TData,>({
   className?: string;
   placeholder: string;
   column: Column<TData, unknown> | undefined;
-  size?: "xl" | "lg" | "default" | "sm";
+  size?: "3xl" | "2xl" | "xl" | "lg" | "default" | "sm";
   options: { value: string; label: string }[];
 }) => {
   if (!column) throw new Error("No column found");
@@ -29,7 +29,7 @@ const ToolbarSelectDropdown = <TData,>({
       onValueChange={(value) => {
         column.setFilterValue(value !== "all" ? value : "");
       }}
-      defaultValue={""}
+      defaultValue={"all"}
     >
       <SelectTrigger
         className={cn(
@@ -37,6 +37,8 @@ const ToolbarSelectDropdown = <TData,>({
           size === "default" && "w-[150px]",
           size === "lg" && "w-[200px]",
           size === "xl" && "w-[250px]",
+          size === "2xl" && "w-[300px]",
+          size === "3xl" && "w-[350px]",
           className,
         )}
       >

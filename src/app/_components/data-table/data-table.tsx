@@ -84,7 +84,7 @@ export const DataTable = <TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.length === 0 ? (
+            {table.getRowModel().rows.length !== 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -113,6 +113,7 @@ export const DataTable = <TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       {usePagination && <DataTablePagination table={table} />}
     </>
   );

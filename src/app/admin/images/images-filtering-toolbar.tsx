@@ -1,18 +1,22 @@
+"use client";
+
+import { useMemo } from "react";
 import { DataTableToolBarProps } from "~/components/data-table/data-table";
 import ToolbarGroup from "~/components/data-table/data-table-toolbar/toolbar-group";
 import ToolbarSelectDropdown from "~/components/data-table/data-table-toolbar/toolbar-select-dropdown";
 import ToolbarTextInput from "~/components/data-table/data-table-toolbar/toolbar-text-input";
 import ToolbarWrapper from "~/components/data-table/data-table-toolbar/toolbar-wrapper";
-import { prisma } from "~/utils/db";
 
-const ImagesFilteringToolbar = async <TData,>({
+const ImagesFilteringToolbar = <TData,>({
   table,
 }: DataTableToolBarProps<TData>) => {
-  const images = await prisma.image.findMany({
-    select: { photographer: true },
-  });
-  const photographers = [...new Set(images.map((image) => image.photographer))];
-
+  const images = [{ photographer: "abcs" }];
+  const photographers = useMemo(() => {
+    const values = table
+      .getCoreRowModel()
+      .flatRows.map((row) => row.getValue("photographer")) as string[];
+    return Array.from(new Set(values));
+  }, [table]);
   return (
     <ToolbarWrapper>
       <ToolbarGroup>
@@ -24,7 +28,7 @@ const ImagesFilteringToolbar = async <TData,>({
           column={table.getColumn("photographer")}
           options={photographers.map((name) => ({ label: name, value: name }))}
           placeholder="Välj fotograf"
-          size="xl"
+          size="2xl"
         />
       </ToolbarGroup>
     </ToolbarWrapper>

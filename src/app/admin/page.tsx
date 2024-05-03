@@ -80,10 +80,10 @@ const AdminDashbord = async () => {
           <section className="container space-y-4">
             <h2 className="text-xl font-semibold">Fotografer</h2>
             <DataTable
+              noResultText="Inga fotografer"
               toolbar={PhotographerFilteringToolbar}
               columns={adminPhotographerColumns}
               data={photographerCounts.filter(({ images }) => images >= 20)}
-              usePagination
             />
           </section>
         </div>

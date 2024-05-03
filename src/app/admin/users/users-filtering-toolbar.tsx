@@ -1,3 +1,5 @@
+"use client";
+
 import { Roles } from "@prisma/client";
 import { DataTableToolBarProps } from "~/components/data-table/data-table";
 import ToolbarGroup from "~/components/data-table/data-table-toolbar/toolbar-group";
