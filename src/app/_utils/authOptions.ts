@@ -3,7 +3,11 @@
 import { env } from "@/env/server.mjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Roles } from "@prisma/client";
-import type { GetServerSidePropsContext } from "next";
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 import type { NextAuthOptions } from "next-auth";
 import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
@@ -83,7 +87,7 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) token = { ...token, ...user };
       return token;
     },
     async session({ session }) {
@@ -108,11 +112,13 @@ const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
 };
 
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+export const getServerAuthSession = (
+  ctx:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | [] = [],
+) => {
+  return getServerSession(...ctx, authOptions);
 };
 
 export default authOptions;
