@@ -9,7 +9,7 @@ const setReceptionVisibilitySchema = z.object({ isVisible: z.boolean() });
 
 export const setReceptionVisibilityAction = async (
   input: z.input<typeof setReceptionVisibilitySchema>,
-) => {
+): ActionReturnType => {
   const setReceptionVisibilitySchema = z.object({ isVisible: z.boolean() });
   const result = setReceptionVisibilitySchema.safeParse(input);
   if (!result.success) {
@@ -40,7 +40,8 @@ export const setReceptionVisibilityAction = async (
       },
     });
     return {
-      success: false,
+      success: true,
+      data: undefined,
     };
   } catch (error) {
     return {

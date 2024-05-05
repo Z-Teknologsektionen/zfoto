@@ -11,7 +11,7 @@ export const setReceptionVisibilityClientAction = async (visible: boolean) => {
 
   toast.dismiss(loadingId);
 
-  if (result.error) {
+  if (!result.success) {
     return toast.error(result.error);
   }
 
