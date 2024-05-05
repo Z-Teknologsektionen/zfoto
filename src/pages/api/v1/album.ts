@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 const createAlbumSchema = z.object({
@@ -52,7 +52,7 @@ const albumRouter = async (
       }
       const body = req.body as PostBodyType;
 
-      const createdAlbum = await prisma.album.upsert({
+      const createdAlbum = await db.album.upsert({
         where: {
           title_date: {
             title: body.title,

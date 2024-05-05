@@ -13,7 +13,7 @@ import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
@@ -46,7 +46,7 @@ declare module "next-auth/jwt" {
  */
 
 const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
   },
@@ -91,7 +91,7 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session }) {
-      const user = await prisma.user.findUnique({
+      const user = await db.user.findUnique({
         where: {
           email: session.user.email,
         },

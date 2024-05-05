@@ -3,7 +3,7 @@
 import { Roles } from "@prisma/client";
 import { z } from "zod";
 import { getServerAuthSession } from "~/utils/authOptions";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 const setReceptionVisibilitySchema = z.object({ isVisible: z.boolean() });
 
@@ -31,7 +31,7 @@ export const setReceptionVisibilityAction = async (
   const isVisible = result.data.isVisible;
 
   try {
-    await prisma.album.updateMany({
+    await db.album.updateMany({
       where: {
         isReception: true,
       },

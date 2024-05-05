@@ -2,7 +2,7 @@ import { Roles } from "@prisma/client";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 const patchUserSchema = z.object({
   role: z.nativeEnum(Roles),
@@ -12,7 +12,7 @@ export async function GET(
   req: Request,
   { params }: { params: { userId: string } },
 ): Promise<NextResponse<unknown>> {
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await db.user.findUniqueOrThrow({
     where: {
       id: params.userId,
     },
@@ -37,7 +37,7 @@ export async function PATCH(
   }
 
   try {
-    await prisma.user.update({
+    await db.user.update({
       where: {
         id: userId,
       },

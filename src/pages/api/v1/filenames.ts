@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 const filenamesRouter = async (
   req: NextApiRequest,
@@ -7,7 +7,7 @@ const filenamesRouter = async (
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const images = await prisma.image.findMany({
+      const images = await db.image.findMany({
         select: {
           filename: true,
         },

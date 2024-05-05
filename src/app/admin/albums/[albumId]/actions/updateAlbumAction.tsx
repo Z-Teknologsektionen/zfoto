@@ -3,7 +3,7 @@
 import { updateAlbumAPISchema } from "@/server/trpc/helpers/zodScheams";
 import { z } from "zod";
 import { getUTCFromLocalDate } from "~/utils/date-utils";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 export const updateAlbumAction = async (
   rawData: z.input<typeof updateAlbumAPISchema>,
@@ -27,7 +27,7 @@ export const updateAlbumAction = async (
   const { albumId, date, ...data } = result.data;
 
   try {
-    const album = await prisma.album.update({
+    const album = await db.album.update({
       where: {
         id: albumId,
       },

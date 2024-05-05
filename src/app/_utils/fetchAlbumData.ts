@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 export const getLatestAlbums = async ({
   count,
@@ -10,7 +10,7 @@ export const getLatestAlbums = async ({
   notIds?: string[];
   year?: number;
 }) => {
-  const albums = await prisma.album.findMany({
+  const albums = await db.album.findMany({
     take: count,
     where: {
       id: {
@@ -60,7 +60,7 @@ export const getLatestAlbums = async ({
 };
 
 export const getAlbumById = async (id: string) => {
-  const rawAlbum = await prisma.album.findFirstOrThrow({
+  const rawAlbum = await db.album.findFirstOrThrow({
     where: {
       id: id,
       images: {
@@ -94,8 +94,9 @@ export const getAlbumById = async (id: string) => {
     },
   });
 
-  let coverImageFilename = rawAlbum.images.find((image) => image.coverImage)
-    ?.filename;
+  let coverImageFilename = rawAlbum.images.find(
+    (image) => image.coverImage,
+  )?.filename;
 
   if (!coverImageFilename)
     coverImageFilename = rawAlbum.images.at(0)!.filename as string;

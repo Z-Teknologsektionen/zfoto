@@ -29,7 +29,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/utils/authOptions";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 import type { Context } from "./context";
 
 type CreateContextOptions = {
@@ -49,7 +49,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    prisma,
+    prisma: db,
   };
 };
 
