@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "~/components/header";
 import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
-import { Footer } from "./_components/footer";
+import { Footer } from "./components/footer";
 import Providers from "./providers";
 
 export const metadata: Metadata = {

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { FC } from "react";
+import { buttonVariants } from "~/components/ui/button";
 import { orderdFooterLinks } from "~/utils/links";
 import { cn } from "~/utils/utils";
-import { buttonVariants } from "../ui/button";
 import SignInButton from "./sign-in-button";
 
 const FooterLinks: FC<{ isAuthenticated: boolean; isAdmin: boolean }> = ({
