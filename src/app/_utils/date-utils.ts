@@ -1,3 +1,8 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
 export const formatDateString = (
   date: Date,
   local?: Intl.LocalesArgument,
@@ -12,3 +17,8 @@ export const formatTimeString = (
   date: Date,
   local?: Intl.LocalesArgument,
 ): string => new Date(date).toLocaleTimeString(local ?? "sv-SE").toString();
+
+export const getLocalDateTimeFromUTC = (UTCDate: Date) =>
+  dayjs.utc(UTCDate).local();
+
+export const getUTCFromLocalDate = (localDate: Date) => dayjs(localDate).utc();

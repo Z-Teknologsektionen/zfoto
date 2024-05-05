@@ -3,8 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import DataTableCell from "~/components/data-table/data-table-cell";
 import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
+import { formatDateTimeString } from "~/utils/date-utils";
 import { CountsPerPhotographerType } from "~/utils/fetchAdminData";
-import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 
 export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
   [

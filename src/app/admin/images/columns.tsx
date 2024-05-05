@@ -4,8 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import DataTableColumnHeader from "~/components/data-table/data-table-column-header";
 import ImageColumnActions from "~/components/data-table/data-table-image-actions";
+import { formatDateTimeString } from "~/utils/date-utils";
 import { AdminTableImageType } from "~/utils/fetchAdminData";
-import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 import { getFullFilePath } from "~/utils/utils";
 
 export const columns: ColumnDef<AdminTableImageType>[] = [
