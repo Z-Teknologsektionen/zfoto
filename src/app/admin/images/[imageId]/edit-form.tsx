@@ -19,8 +19,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
 import { trpc } from "~/trpc/client";
+import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 import { AdminImage } from "~/utils/fetchAdminData";
-import { getLocalDateTimeFromUTC } from "~/utils/utils";
 
 const EditImageForm: FC<AdminImage> = ({
   coverImage,

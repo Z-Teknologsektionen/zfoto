@@ -1,12 +1,13 @@
 "use client";
 
+import { ReactNode } from "react";
 import { DataTableToolBarProps } from "~/components/data-table/data-table";
 import ToolbarTextInput from "~/components/data-table/data-table-toolbar/toolbar-text-input";
 import ToolbarWrapper from "~/components/data-table/data-table-toolbar/toolbar-wrapper";
 
 const PhotographerFilteringToolbar = <TData,>({
   table,
-}: DataTableToolBarProps<TData>): JSX.Element => {
+}: DataTableToolBarProps<TData>): ReactNode => {
   return (
     <ToolbarWrapper>
       <ToolbarTextInput

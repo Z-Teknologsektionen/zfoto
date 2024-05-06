@@ -10,7 +10,6 @@ import ToolbarWrapper from "~/components/data-table/data-table-toolbar/toolbar-w
 const ImagesFilteringToolbar = <TData,>({
   table,
 }: DataTableToolBarProps<TData>) => {
-  const images = [{ photographer: "abcs" }];
   const photographers = useMemo(() => {
     const values = table
       .getCoreRowModel()

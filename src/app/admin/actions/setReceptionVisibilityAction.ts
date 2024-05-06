@@ -1,5 +1,6 @@
 "use server";
 
+import { ActionReturnType } from "@/types/actions";
 import { Roles } from "@prisma/client";
 import { z } from "zod";
 import { getServerAuthSession } from "~/utils/authOptions";

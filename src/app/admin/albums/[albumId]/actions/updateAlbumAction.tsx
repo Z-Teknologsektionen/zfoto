@@ -1,6 +1,7 @@
 "use server";
 
 import { updateAlbumAPISchema } from "@/server/trpc/helpers/zodScheams";
+import { ActionReturnType } from "@/types/actions";
 import { z } from "zod";
 import { getUTCFromLocalDate } from "~/utils/date-utils";
 import { db } from "~/utils/db";
