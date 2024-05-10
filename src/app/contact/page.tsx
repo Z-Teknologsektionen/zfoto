@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import SectionWrapper from "~/components/layout/SectionWrapper";
+import ContactForm from "./contact-form";
 
 export const dynamic = "force-static";
 
@@ -12,16 +12,10 @@ const ContactPage = () => {
   return (
     <>
       <SectionWrapper>
-        <h1>Kommer snart...</h1>
-        <p>
-          Sålänge kan du skicka ett mail till oss
-          <Link
-            className="underline underline-offset-2"
-            href="mailto:zfoto@ztek.se"
-          >
-            {` här `}
-          </Link>
-        </p>
+        <div className="mx-auto flex max-w-xl flex-col gap-4 rounded-lg border border-gray-400 bg-gray-100 p-8 shadow">
+          <h1 className="text-2xl font-medium">Kontakt</h1>
+          <ContactForm />
+        </div>
       </SectionWrapper>
     </>
   );

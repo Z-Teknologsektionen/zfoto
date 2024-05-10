@@ -1,7 +1,11 @@
 "use client";
 
-import { DataTableFC } from "@/types/data-table";
-import type { ColumnFiltersState, SortingState } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  Table as TableType,
+} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -10,9 +14,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { ComponentType, useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
-import { Input } from "~/components/ui/input";
 import {
   Table,
   TableBody,
@@ -22,7 +25,24 @@ import {
   TableRow,
 } from "~/components/ui/table";
 
-export const DataTable: DataTableFC = ({ columns, data }) => {
+export interface DataTableToolBarProps<TData> {
+  table: TableType<TData>;
+}
+export interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  toolbar?: ComponentType<DataTableToolBarProps<TData>>;
+  usePagination?: boolean;
+  noResultText?: string;
+}
+
+export const DataTable = <TData, TValue>({
+  columns,
+  data,
+  toolbar: Toolbar,
+  usePagination = false,
+  noResultText,
+}: DataTableProps<TData, TValue>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -42,16 +62,7 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
 
   return (
     <>
-      <div className="flex items-center py-4">
-        <Input
-          className="max-w-sm"
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          placeholder="Filtrera efter titel..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-        />
-      </div>
+      {Toolbar && <Toolbar table={table} />}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -73,7 +84,7 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length === 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -95,14 +106,14 @@ export const DataTable: DataTableFC = ({ columns, data }) => {
                   className="h-24 text-center"
                   colSpan={columns.length}
                 >
-                  Inga album
+                  {noResultText}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {usePagination && <DataTablePagination table={table} />}
     </>
   );
 };

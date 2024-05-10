@@ -84,7 +84,7 @@ export const columns: ColumnDef<AdminAlbumType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const ctx = trpc.useContext();
+      const ctx = trpc.useUtils();
       const { mutate: updateAlbum, isLoading } =
         trpc.album.updateAlbumById.useMutation({
           onMutate: () => toast.loading("Uppdaterar album"),
