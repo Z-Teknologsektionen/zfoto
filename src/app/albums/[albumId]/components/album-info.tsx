@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { formatDateString } from "~/utils/formatDateAndTimeStrings";
+import { formatDateString } from "~/utils/date-utils";
 import CopyBylineButton from "./copy-byline-button";
 
 const AlbumInfo: NextPage<{

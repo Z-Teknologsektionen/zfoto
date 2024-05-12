@@ -1,6 +1,6 @@
 import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
 import { compare } from "bcrypt";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 export const isValidCredentials = async (data: unknown) => {
   const reqBodyTest = userSignInForm.safeParse(data);
@@ -9,7 +9,7 @@ export const isValidCredentials = async (data: unknown) => {
 
   const reqBody = reqBodyTest.data;
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
       email: reqBody.email,
       password: {

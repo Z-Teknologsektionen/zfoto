@@ -3,13 +3,17 @@
 import { env } from "@/env/server.mjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Roles } from "@prisma/client";
-import type { GetServerSidePropsContext } from "next";
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 import type { NextAuthOptions } from "next-auth";
 import { DefaultSession, DefaultUser, getServerSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
@@ -42,7 +46,7 @@ declare module "next-auth/jwt" {
  */
 
 const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
   },
@@ -83,11 +87,11 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) token = { ...token, ...user };
       return token;
     },
     async session({ session }) {
-      const user = await prisma.user.findUnique({
+      const user = await db.user.findUnique({
         where: {
           email: session.user.email,
         },
@@ -108,11 +112,13 @@ const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
 };
 
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+export const getServerAuthSession = (
+  ctx:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | [] = [],
+) => {
+  return getServerSession(...ctx, authOptions);
 };
 
 export default authOptions;

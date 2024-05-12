@@ -1,3 +1,5 @@
+"use client";
+
 import { Column } from "@tanstack/react-table";
 import { Input } from "~/components/ui/input";
 import { cn } from "~/utils/utils";
