@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import type { NextPage } from "next";
-import { NextStudio } from "next-sanity/studio";
-import { metadata } from "next-sanity/studio/metadata";
+import { NextStudio, metadata } from "next-sanity/studio";
 import Head from "next/head";
 
 import config from "../../../sanity.config";

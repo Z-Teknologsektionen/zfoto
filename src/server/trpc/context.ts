@@ -3,7 +3,7 @@
 import { type inferAsyncReturnType } from "@trpc/server";
 import { Session } from "next-auth";
 
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 import { createTRPCContext } from "./trpc";
 
 /**
@@ -21,7 +21,7 @@ type CreateContextOptions = {
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    prisma,
+    prisma: db,
   };
 };
 

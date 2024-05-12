@@ -16,8 +16,8 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { trpc } from "~/trpc/client";
+import { formatDateTimeString } from "~/utils/date-utils";
 import { AdminAlbumType } from "~/utils/fetchAdminData";
-import { formatDateTimeString } from "~/utils/formatDateAndTimeStrings";
 import { getFullFilePath } from "~/utils/utils";
 
 export const columns: ColumnDef<AdminAlbumType>[] = [

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 const createImageSchema = z.object({
   filename: z.string().min(1),
@@ -27,7 +27,7 @@ const imageRouter = async (
       }
       const body = req.body as PostBodyType;
 
-      const createdImage = await prisma.image.create({
+      const createdImage = await db.image.create({
         data: {
           filename: body.filename,
           photographer: body.photographer,

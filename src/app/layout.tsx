@@ -1,12 +1,12 @@
+import Header from "@/app/components/header";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
-import Header from "~/components/header";
 import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
-import { Footer } from "./_components/footer";
+import { Footer } from "./components/footer";
 import Providers from "./providers";
 
 export const metadata: Metadata = {

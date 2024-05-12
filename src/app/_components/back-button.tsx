@@ -3,10 +3,18 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
-const BackButton: FC<{ href?: string }> = ({ href }) => {
+const BackButton: FC<PropsWithChildren<{ href?: string }>> = ({
+  href,
+  children = (
+    <>
+      <ChevronLeft />
+      <span>Tillbaka</span>
+    </>
+  ),
+}) => {
   const router = useRouter();
 
   if (href) {
@@ -18,15 +26,14 @@ const BackButton: FC<{ href?: string }> = ({ href }) => {
           className: "-ml-8 w-fit",
         })}
       >
-        <ChevronLeft />
-        <span>Tillbaka</span>
+        {children}
       </Link>
     );
   }
 
   return (
     <Button
-      variant={"link"}
+      variant="link"
       onClick={() => {
         if (window.history.length === 1) {
           router.push("/");
@@ -35,8 +42,7 @@ const BackButton: FC<{ href?: string }> = ({ href }) => {
       }}
       className="-ml-8 w-fit"
     >
-      <ChevronLeft />
-      <span>Tillbaka</span>
+      {children}
     </Button>
   );
 };

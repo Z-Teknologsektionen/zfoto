@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
-import { prisma } from "~/utils/db";
+import { db } from "~/utils/db";
 
 export const getAllAlbumsAsAdmin = async () => {
-  const albums = await prisma.album.findMany({
+  const albums = await db.album.findMany({
     include: {
       _count: true,
       images: {
@@ -32,7 +32,7 @@ export const getAlbumAsAdmin = async (id: string) => {
     images,
     _count: { images: numberOfImages },
     ...album
-  } = await prisma.album.findUniqueOrThrow({
+  } = await db.album.findUniqueOrThrow({
     where: {
       id,
     },
@@ -65,7 +65,7 @@ export const getAlbumAsAdmin = async (id: string) => {
 };
 
 export const getAllImagesAsAdmin = async () => {
-  const images = await prisma.image.findMany({
+  const images = await db.image.findMany({
     select: {
       id: true,
       filename: true,
@@ -94,7 +94,7 @@ export const getAllImagesAsAdmin = async () => {
 };
 
 export const getImageAsAdmin = async (id: string) => {
-  return prisma.image.findUniqueOrThrow({
+  return db.image.findUniqueOrThrow({
     where: {
       id: id,
     },
@@ -111,7 +111,7 @@ export const getImageAsAdmin = async (id: string) => {
 };
 
 export const getAllUsersAsAdmin = () => {
-  return prisma.user.findMany({
+  return db.user.findMany({
     select: {
       name: true,
       email: true,
@@ -124,7 +124,7 @@ export const getAllUsersAsAdmin = () => {
 };
 
 export const getCountsPerPhotographer = async () => {
-  const images = await prisma.image.groupBy({
+  const images = await db.image.groupBy({
     by: ["photographer"],
     _count: {
       _all: true,
@@ -134,7 +134,7 @@ export const getCountsPerPhotographer = async () => {
     orderBy: [{ photographer: "asc" }],
   });
 
-  const imagesDates = await prisma.image.findMany({
+  const imagesDates = await db.image.findMany({
     select: {
       date: true,
       photographer: true,
@@ -142,7 +142,7 @@ export const getCountsPerPhotographer = async () => {
     orderBy: [{ date: "asc" }],
   });
 
-  const album = await prisma.album.findMany({
+  const album = await db.album.findMany({
     select: {
       images: {
         select: {
@@ -168,7 +168,7 @@ export const getCountsPerPhotographer = async () => {
 };
 
 export const getImageCountFromYear = async (startYear: number) => {
-  return prisma.image.count({
+  return db.image.count({
     where: {
       date: {
         gt: new Date(startYear, 10, 1),
@@ -179,7 +179,7 @@ export const getImageCountFromYear = async (startYear: number) => {
 };
 
 export const getAlbumCountFromYear = async (startYear: number) => {
-  return prisma.album.count({
+  return db.album.count({
     where: {
       date: {
         gt: new Date(startYear, 10, 1),
@@ -190,10 +190,10 @@ export const getAlbumCountFromYear = async (startYear: number) => {
 };
 
 export const getTotalImageCount = async () => {
-  return prisma.image.count();
+  return db.image.count();
 };
 export const getTotalAlbumCount = async () => {
-  return prisma.album.count();
+  return db.album.count();
 };
 
 export type AdminAlbumType = Prisma.PromiseReturnType<

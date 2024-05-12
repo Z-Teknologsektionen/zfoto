@@ -8,6 +8,7 @@ import EditAlbumForm from "./edit-form";
 
 const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
   const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());
+
   return (
     <>
       <div className="container">
@@ -18,9 +19,7 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
           <h1 className="text-xl font-semibold">Redigera album</h1>
           <p className="text-sm">{album.id}</p>
         </div>
-        <div>
-          <EditAlbumForm {...album} />
-        </div>
+        <EditAlbumForm {...album} />
       </section>
       <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Bilder</h1>

@@ -1,4 +1,4 @@
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -18,11 +18,6 @@ type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
   label: string;
   description?: string;
 };
-
-type CustomFormFieldInputProps<TFieldValues extends FieldValues> = Omit<
-  FormFieldInputProps<TFieldValues>,
-  "type" | "autoComplete"
->;
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -55,10 +50,7 @@ export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
   label = "Epost",
   placeholder = "Fyll i epost...",
   ...rest
-}: PartialBy<
-  CustomFormFieldInputProps<TFieldValues>,
-  "label" | "placeholder"
->) =>
+}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
   FormFieldInput({
     label,
     placeholder,
@@ -70,15 +62,43 @@ export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
 export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
   label = "Epost",
   placeholder = "Fyll i epost...",
+  type = "password",
+  autoComplete = "current-password",
   ...rest
-}: PartialBy<
-  CustomFormFieldInputProps<TFieldValues>,
-  "label" | "placeholder"
->) =>
+}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
   FormFieldInput({
     label,
     placeholder,
-    type: "password",
-    autoComplete: "current-password",
+    type,
+    autoComplete,
+    ...rest,
+  });
+
+export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
+  label = "Datum och tid",
+  placeholder = "Fyll i datum och tid...",
+  type = "datetime-local",
+  form,
+  name,
+  onChange = (e) => {
+    form.setValue(
+      name,
+      (e.target.value + ":00.000Z") as PathValue<
+        TFieldValues,
+        Path<TFieldValues>
+      >,
+    );
+  },
+  value = (form.getValues(name) as string).slice(0, -8),
+  ...rest
+}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+  FormFieldInput({
+    label,
+    placeholder,
+    type,
+    form,
+    name,
+    onChange,
+    value,
     ...rest,
   });

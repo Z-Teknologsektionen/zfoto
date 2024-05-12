@@ -11,16 +11,12 @@ const updateAlbumBaseSchema = z.object({
   }),
   visible: z.boolean(),
   isReception: z.boolean(),
+  date: fullDatetimeString,
 });
 
-export const updateAlbumFrontEndSchema = updateAlbumBaseSchema.extend({
-  date: frontEndDatetimeString,
-});
+export const updateAlbumFrontEndSchema = updateAlbumBaseSchema;
 
 export const updateAlbumAPISchema = updateAlbumBaseSchema
-  .extend({
-    date: fullDatetimeString,
-  })
   .partial()
   .extend({ albumId: objectId });
 
@@ -28,9 +24,7 @@ const updateImageBaseSchema = z.object({
   filename: z.string().min(1).optional(),
   photographer: z
     .string()
-    .min(1, {
-      message: "Fotografens namn måste vara minst 1 tecken lång",
-    })
+    .min(1, "Fotografens namn måste vara minst 1 tecken lång")
     .optional(),
   visible: z.boolean().optional(),
   coverImage: z.boolean().optional(),

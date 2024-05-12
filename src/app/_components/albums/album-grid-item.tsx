@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import { formatDateString } from "~/utils/date-utils";
 import { PublicAlbums } from "~/utils/fetchAlbumData";
-import { formatDateString } from "~/utils/formatDateAndTimeStrings";
 import { getFullFilePath } from "~/utils/utils";
 
 type Album = PublicAlbums[0];
