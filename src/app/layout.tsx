@@ -1,3 +1,4 @@
+import { Footer } from "@/app/components/footer/footer";
 import { Header } from "@/app/components/header/header";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
