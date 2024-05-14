@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { orderdHeaderLinks } from "~/utils/links";
 import { HeaderNavLink } from "./header-nav-link";
 
-const MobileNav = () => {
+export const HeaderMobileNav = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,5 +35,3 @@ const MobileNav = () => {
     </nav>
   );
 };
-
-export default MobileNav;

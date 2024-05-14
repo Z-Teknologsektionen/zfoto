@@ -1,12 +1,9 @@
-import Header from "@/app/components/header";
+import { Header } from "@/app/components/header/header";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
-import { getServerSession } from "next-auth";
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
-import authOptions from "~/utils/authOptions";
 import "../styles/globals.css";
-import { Footer } from "./components/footer";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
@@ -38,8 +35,6 @@ export const metadata: Metadata = {
 };
 
 const BaseLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await getServerSession(authOptions);
-
   return (
     <html lang="sv">
       <body className="">
@@ -47,12 +42,12 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
           <Toaster position="top-center" reverseOrder={false} />
           <>
             <div className="flex min-h-screen flex-col">
-              <Header key={JSON.stringify(session)} session={session} />
+              <Header />
               <main className="my-8 flex flex-grow flex-col gap-y-8">
                 {children}
               </main>
             </div>
-            <Footer key={JSON.stringify(session)} session={session} />
+            <Footer />
           </>
           <Analytics />
         </Providers>
