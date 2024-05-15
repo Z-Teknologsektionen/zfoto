@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { FC } from "react";
+import type { FC, MouseEventHandler } from "react";
 import type { SafeLinkType } from "~/utils/links";
 
 type HeaderNavLinkProps = SafeLinkType & {
-  closeNav?: () => void;
+  closeNav?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
@@ -22,14 +22,14 @@ export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
       <Link
         className={`border-b-2 px-2 py-1 hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80
           ${
-            pathname?.startsWith(href)
+            (href !== "/" && pathname?.startsWith(href)) || pathname === href
               ? "border-transparent font-bold lg:border-[#a7a7a7]/80"
               : "border-transparent font-normal"
           }
         `}
         href={href}
         onClick={closeNav}
-        rel={newPage ? "noopener noreferrer" : undefined}
+        referrerPolicy={newPage ? "no-referrer" : undefined}
         target={newPage ? "_blank" : "_self"}
       >
         {label}

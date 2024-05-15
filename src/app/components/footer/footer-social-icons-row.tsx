@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { socialIconLinks } from "~/utils/links";
 
-const SocialIconsRow: FC = () => {
+export const FooterSocialIconsRow: FC = () => {
   return (
     <ul className="flex h-10 flex-row gap-2 md:gap-4">
       {socialIconLinks.map(({ Icon, href, newPage, ariaLabel }) => (
@@ -20,5 +20,3 @@ const SocialIconsRow: FC = () => {
     </ul>
   );
 };
-
-export default SocialIconsRow;

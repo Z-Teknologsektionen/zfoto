@@ -2,7 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { DropdownMenuItem } from "../_components/ui/dropdown-menu";
+import { DropdownMenuItem } from "../../_components/ui/dropdown-menu";
 
 const SignOutDropdownMenuItem = () => {
   return (

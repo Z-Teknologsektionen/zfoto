@@ -1,133 +1,72 @@
+"use client";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { FC } from "react";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
+import { useRateLimitPerSecond } from "~/hooks/useRateLimitPerSecond";
+import { useWindowKeydownListener } from "~/hooks/useWindowKeydownListener";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
-import { getFullFilePath } from "~/utils/utils";
-import ImagePopupFooter from "./image-popup-footer";
-import ImagePopupHeader from "./image-popup-header";
+import { cn, getFullFilePath } from "~/utils/utils";
+import { useActiveImageDetails } from "../hooks/useActiveImageDetails";
+import { updateUrl } from "../utils/updateUrl";
+import { ImagePopupFooter } from "./image-popup-footer";
+import { ImagePopupHeader } from "./image-popup-header";
 
-interface ImagePopupTypes {
+type ImagePopupProps = {
   album: PublicAlbum;
-  closePopup: () => void;
-  decrementImageIndex: () => void;
-  imageIndex: number;
-  incrementImageIndex: () => void;
-  showPopup: boolean;
-}
+};
 
-const ImagePopup: FC<ImagePopupTypes> = ({
-  album,
-  closePopup,
-  showPopup,
-  imageIndex,
-  decrementImageIndex,
-  incrementImageIndex,
-}) => {
-  const { back } = useRouter();
-  const activeImage = useMemo(() => {
-    return album.images.at(imageIndex);
-  }, [album.images, imageIndex]);
+const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
+  const searchParams = useSearchParams();
+  const currentImageId = searchParams?.get("imageId");
 
-  const nextImage = useMemo(() => {
-    return album.images.at(imageIndex + 1);
-  }, [album.images, imageIndex]);
+  const { rateLimitedFunction } = useRateLimitPerSecond(5);
 
-  const secondNextImage = useMemo(() => {
-    return album.images.at(imageIndex + 2);
-  }, [album.images, imageIndex]);
+  const handleUpdateUrl = (newImageId: string | undefined) => {
+    rateLimitedFunction(() =>
+      updateUrl({
+        albumId: album.id,
+        imageId: newImageId,
+        isOpen: !!currentImageId,
+      }),
+    );
+  };
 
-  const hasPrevImage = useMemo(() => {
-    return imageIndex > 0;
-  }, [imageIndex]);
-
-  const hasNextImage = useMemo(() => {
-    return imageIndex < album.images.length - 1;
-  }, [imageIndex, album.images.length]);
-
-  const lastCallTime = useRef(0);
-  const minDelay = 1000 / 4;
-
-  const canCallUpdate = useCallback((): boolean => {
-    if (Date.now() - lastCallTime.current >= minDelay) {
-      lastCallTime.current = Date.now();
-      return true;
-    }
-    return false;
-  }, [minDelay]);
-
-  const viewPrevImage = useCallback((): void => {
-    if (!hasPrevImage || !canCallUpdate()) {
-      return;
-    }
-    decrementImageIndex();
-  }, [canCallUpdate, decrementImageIndex, hasPrevImage]);
-
-  const viewNextImage = useCallback((): void => {
-    if (!hasNextImage || !canCallUpdate()) {
-      return;
-    }
-    incrementImageIndex();
-  }, [canCallUpdate, incrementImageIndex, hasNextImage]);
-
-  useEffect(() => {
-    const keydownListener = (event: KeyboardEvent): void => {
-      if (event.key === "ArrowRight") {
-        viewNextImage();
-      } else if (event.key === "ArrowLeft") {
-        viewPrevImage();
-      } else if (event.key === "Escape") {
-        if (showPopup) {
-          closePopup();
-        } else {
-          back();
-        }
-      }
-    };
-
-    window.addEventListener("keydown", keydownListener);
-
-    return () => {
-      window.removeEventListener("keydown", keydownListener);
-    };
+  const { activeImage, nextImageId, prevImageId } = useActiveImageDetails({
+    images: album.images,
+    imageId: currentImageId,
+    closePopup: () => handleUpdateUrl(undefined),
   });
 
-  useEffect(() => {
-    if (nextImage) {
-      // eslint-disable-next-line no-new
-      new Image().src = getFullFilePath(nextImage.filename, "lowres");
-    }
-  }, [nextImage]);
+  useBodyOverflowToggle(!!currentImageId);
 
-  useEffect(() => {
-    if (secondNextImage) {
-      // eslint-disable-next-line no-new
-      new Image().src = getFullFilePath(secondNextImage.filename, "lowres");
-    }
-  }, [secondNextImage]);
+  useWindowKeydownListener((event: KeyboardEvent): void => {
+    if (event.key === "ArrowRight" && nextImageId) handleUpdateUrl(nextImageId);
+    if (event.key === "ArrowLeft" && prevImageId) handleUpdateUrl(prevImageId);
+    if (event.key === "Escape") handleUpdateUrl(undefined);
+  });
 
-  if (!activeImage) {
-    return null;
-  }
+  if (!activeImage) return null;
 
   return (
     <section className="fixed inset-0 z-50 !my-0 flex flex-col gap-4 bg-white/75">
       <ImagePopupHeader
-        key={activeImage.filename}
         photographer={activeImage.photographer}
         filename={activeImage.filename}
-        closePopup={closePopup}
+        closePopup={() => handleUpdateUrl(undefined)}
       />
       <main className="flex flex-grow flex-row gap-4 px-4">
         <div className="flex place-items-center">
           <Button
-            className="group p-2"
-            disabled={!hasPrevImage}
-            onClick={() => {
-              viewPrevImage();
-            }}
+            className={cn(
+              buttonVariants({ size: "icon", variant: "ghost" }),
+              "group p-2",
+            )}
+            onClick={() => handleUpdateUrl(prevImageId)}
+            disabled={prevImageId === undefined}
             size="icon"
             variant="ghost"
           >
@@ -149,12 +88,10 @@ const ImagePopup: FC<ImagePopupTypes> = ({
         <div className="flex place-items-center">
           <Button
             className="group p-2"
-            disabled={!hasNextImage}
-            onClick={() => {
-              viewNextImage();
-            }}
+            disabled={nextImageId === undefined}
             size="icon"
             variant="ghost"
+            onClick={() => handleUpdateUrl(nextImageId)}
           >
             <ArrowRight className="group-disabled:opacity-50" size={24} />
           </Button>

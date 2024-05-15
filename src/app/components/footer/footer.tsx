@@ -1,14 +1,16 @@
-import { Roles } from "@prisma/client";
-import { Session } from "next-auth";
+import { adminLikeRoles } from "@/constants/admin";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import FooterLinks from "./footer-links";
-import SocialIconsRow from "./social-icons-row";
+import { getServerAuthSession } from "~/utils/authOptions";
+import { FooterLinks } from "./footer-links";
+import { FooterSocialIconsRow } from "./footer-social-icons-row";
 
-export const Footer: FC<{ session: Session | null }> = ({ session }) => {
+export const Footer: FC = async () => {
+  const session = await getServerAuthSession();
   const isAuthenticated = !!session?.user;
-  const isAdmin = isAuthenticated && session.user.role === Roles.ADMIN;
+  const isAdminLike =
+    isAuthenticated && adminLikeRoles.includes(session.user.role);
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
@@ -23,9 +25,10 @@ export const Footer: FC<{ session: Session | null }> = ({ session }) => {
               width={112}
             />
           </Link>
-
-          <FooterLinks isAdmin={isAdmin} isAuthenticated={isAuthenticated} />
-
+          <FooterLinks
+            isAdmin={isAdminLike}
+            isAuthenticated={isAuthenticated}
+          />
           <Link
             className="flex w-28 flex-col justify-between gap-2"
             href="https://ztek.se"
@@ -44,7 +47,7 @@ export const Footer: FC<{ session: Session | null }> = ({ session }) => {
           </Link>
         </div>
         <hr className="w-full" />
-        <SocialIconsRow />
+        <FooterSocialIconsRow />
       </footer>
     </div>
   );

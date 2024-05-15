@@ -1,7 +1,7 @@
 import { orderdHeaderLinks } from "~/utils/links";
 import { HeaderNavLink } from "./header-nav-link";
 
-const MainNav = () => {
+export const HeaderMainNav = () => {
   return (
     <nav className="hidden md:block">
       <ul className="flex flex-row items-center justify-center gap-4">
@@ -17,5 +17,3 @@ const MainNav = () => {
     </nav>
   );
 };
-
-export default MainNav;

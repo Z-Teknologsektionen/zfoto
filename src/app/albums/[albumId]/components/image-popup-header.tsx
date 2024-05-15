@@ -1,18 +1,21 @@
 import { Copy, Download, X } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
 import { createByline, getFullFilePath } from "~/utils/utils";
 
-const ImagePopupHeader = ({
-  filename,
-  photographer,
-  closePopup,
-}: {
+type ImagePopupHeaderProps = {
   filename: string;
   photographer: string;
   closePopup: () => void;
+};
+
+export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
+  filename,
+  photographer,
+  closePopup,
 }) => {
   const { data: session } = useSession();
 
@@ -21,7 +24,7 @@ const ImagePopupHeader = ({
   return (
     <header className="flex h-16 w-full justify-end gap-4 bg-white pr-2 pt-2 text-right md:pr-4 md:pt-4">
       <StandardTooltip
-        Trigger={
+        trigger={
           <Button
             type="button"
             size="icon"
@@ -34,10 +37,10 @@ const ImagePopupHeader = ({
             <span className="sr-only">Kopiera byline</span>
           </Button>
         }
-        Content={<p>Kopiera byline</p>}
+        content={<p>Kopiera byline</p>}
       />
       <StandardTooltip
-        Trigger={
+        trigger={
           <a
             href={getFullFilePath(
               filename,
@@ -54,10 +57,10 @@ const ImagePopupHeader = ({
             <span className="sr-only">Ladda ner bild</span>
           </a>
         }
-        Content={<p>Ladda ner bild</p>}
+        content={<p>Ladda ner bild</p>}
       />
       <StandardTooltip
-        Trigger={
+        trigger={
           <Button
             onClick={() => {
               closePopup();
@@ -70,10 +73,8 @@ const ImagePopupHeader = ({
             <span className="sr-only">Stäng popup</span>
           </Button>
         }
-        Content={<p>Stäng popup</p>}
+        content={<p>Stäng popup</p>}
       />
     </header>
   );
 };
-
-export default ImagePopupHeader;

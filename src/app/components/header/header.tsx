@@ -1,12 +1,14 @@
-import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import AvatarWithDropdown from "./avatar-with-dropdown";
-import MainNav from "./main-nav";
-import MobileNav from "./mobile-nav";
+import { getServerAuthSession } from "~/utils/authOptions";
+import { HeaderAvatarWithDropdown } from "./header-avatar-with-dropdown";
+import { HeaderMainNav } from "./header-main-nav";
+import { HeaderMobileNav } from "./header-mobile-nav";
 
-const Header: FC<{ session: Session | null }> = ({ session }) => {
+export const Header: FC = async () => {
+  const session = await getServerAuthSession();
+
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
       <header
@@ -26,19 +28,17 @@ const Header: FC<{ session: Session | null }> = ({ session }) => {
           <span className="ml-4 mr-6 text-lg font-semibold">zFoto</span>
         </Link>
         <div className="flex flex-row items-center justify-center gap-4">
-          <MainNav />
+          <HeaderMainNav />
           {session?.user && (
-            <AvatarWithDropdown
+            <HeaderAvatarWithDropdown
               role={session.user.role}
               filename={session.user.image || ""}
               name={session.user.name}
             />
           )}
-          <MobileNav />
+          <HeaderMobileNav />
         </div>
       </header>
     </div>
   );
 };
-
-export default Header;

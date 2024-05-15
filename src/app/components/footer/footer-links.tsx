@@ -3,30 +3,22 @@ import { FC } from "react";
 import { buttonVariants } from "~/components/ui/button";
 import { orderdFooterLinks } from "~/utils/links";
 import { cn } from "~/utils/utils";
+import { FooterLinkItem } from "./footer-link-item";
 import SignInButton from "./sign-in-button";
 
-const FooterLinks: FC<{ isAuthenticated: boolean; isAdmin: boolean }> = ({
-  isAdmin,
-  isAuthenticated,
-}) => {
+export const FooterLinks: FC<{
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}> = ({ isAdmin, isAuthenticated }) => {
   return (
     <ul className="flex w-24 flex-col items-center justify-center gap-2 py-2 text-center text-sm md:w-full md:flex-row md:gap-4">
       {orderdFooterLinks.map(({ href, label, newPage }) => (
-        <li key={href}>
-          <Link
-            href={href}
-            rel={newPage ? "noopener noreferrer" : undefined}
-            target={newPage ? "_blank" : "_self"}
-            className={cn(
-              buttonVariants({
-                variant: "link",
-                className: "text-[#a7a7a7]",
-              }),
-            )}
-          >
-            {label}
-          </Link>
-        </li>
+        <FooterLinkItem
+          key={href}
+          href={href}
+          label={label}
+          newPage={newPage}
+        />
       ))}
       {!isAuthenticated && (
         <li>
@@ -51,5 +43,3 @@ const FooterLinks: FC<{ isAuthenticated: boolean; isAdmin: boolean }> = ({
     </ul>
   );
 };
-
-export default FooterLinks;
