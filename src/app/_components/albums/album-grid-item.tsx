@@ -4,14 +4,13 @@ import type { FC } from "react";
 import { formatDateString } from "~/utils/date-utils";
 import { PublicAlbums } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
+import { Skeleton } from "../ui/skeleton";
 
-type Album = PublicAlbums[0];
-
-interface IAlbumGridItem extends Album {
+type AlbumGridItemProps = PublicAlbums[0] & {
   priorityLoadning?: boolean;
-}
+};
 
-export const AlbumGridItem: FC<IAlbumGridItem> = ({
+export const AlbumGridItem: FC<AlbumGridItemProps> = ({
   id,
   title,
   coverImageFilename,
@@ -45,3 +44,7 @@ export const AlbumGridItem: FC<IAlbumGridItem> = ({
     </Link>
   );
 };
+
+export const AlbumGridItemSkeleton = () => (
+  <Skeleton className="h-[250px] w-full max-w-xs rounded-lg" />
+);

@@ -6,14 +6,14 @@ const SectionWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
   className = "",
 }) => {
   return (
-    <div
+    <section
       className={cn(
         "mx-auto w-full max-w-7xl space-y-8 px-4 py-8 md:px-6 xl:px-0",
         className,
       )}
     >
       {children}
-    </div>
+    </section>
   );
 };
 

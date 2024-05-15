@@ -6,14 +6,16 @@ import { Button } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
 import { createByline } from "~/utils/utils";
 
-const CopyBylineButton: FC<{ photographers: string[] }> = ({
+type CopyBylineButtonProps = { photographers: string[] };
+
+export const CopyBylineButton: FC<CopyBylineButtonProps> = ({
   photographers,
 }) => (
   <StandardTooltip
-    Trigger={
+    trigger={
       <Button
-        variant={"ghost"}
-        size={"icon"}
+        variant="ghost"
+        size="icon"
         className="h-6 w-6"
         onClick={() => {
           navigator.clipboard.writeText(createByline(photographers));
@@ -23,8 +25,6 @@ const CopyBylineButton: FC<{ photographers: string[] }> = ({
         <span className="sr-only">Kopiera byline</span>
       </Button>
     }
-    Content={<p>Kopiera byline</p>}
+    content={<p>Kopiera byline</p>}
   />
 );
-
-export default CopyBylineButton;
