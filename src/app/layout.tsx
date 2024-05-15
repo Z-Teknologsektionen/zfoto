@@ -44,9 +44,7 @@ const BaseLayout = async ({ children }: { children: ReactNode }) => {
           <>
             <div className="flex min-h-screen flex-col">
               <Header />
-              <main className="my-8 flex flex-grow flex-col gap-y-8">
-                {children}
-              </main>
+              <main className="my-8 flex flex-grow flex-col">{children}</main>
             </div>
             <Footer />
           </>

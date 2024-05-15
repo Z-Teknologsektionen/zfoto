@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import SectionWrapper from "~/components/layout/SectionWrapper";
 import { SignInContent } from "./components/sign-in-content";
 
@@ -17,7 +17,9 @@ const LoginPage: FC = () => {
         Du som aktiv i Z-Teknologsektionen kan logga in med ditt Google-konto.
         Om du har fått ett eget inlogg kan du logga in med din epost.
       </p>
-      <SignInContent />
+      <Suspense>
+        <SignInContent />
+      </Suspense>
     </SectionWrapper>
   );
 };

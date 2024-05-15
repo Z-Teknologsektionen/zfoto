@@ -32,7 +32,9 @@ const HomePage = async () => {
         </AlbumGrid>
         <div className="mx-auto w-fit">
           <Button asChild variant="default" size="lg" className="leading-none">
-            <Link href={"/albums"}>Visa fler</Link>
+            <Link scroll={false} href="/albums">
+              Visa fler
+            </Link>
           </Button>
         </div>
       </SectionWrapper>
