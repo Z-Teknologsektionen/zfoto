@@ -8,20 +8,20 @@ import {
 import { Form } from "~/components/ui/form";
 import { cn } from "~/utils/utils";
 
-interface FormWrapperProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  onSubmit: SubmitHandler<T>;
-  onInvalid?: SubmitErrorHandler<T>;
+type FormWrapperProps<TFieldValues extends FieldValues> = {
+  form: UseFormReturn<TFieldValues>;
+  onSubmit: SubmitHandler<TFieldValues>;
+  onInvalid?: SubmitErrorHandler<TFieldValues>;
   className?: string;
-}
+};
 
-const FormWrapper = <T extends FieldValues>({
+export const FormWrapper = <TFieldValues extends FieldValues>({
   form,
   onSubmit,
   onInvalid,
   children,
   className = "",
-}: PropsWithChildren<FormWrapperProps<T>>) => {
+}: PropsWithChildren<FormWrapperProps<TFieldValues>>) => {
   return (
     <Form {...form}>
       <form
@@ -34,5 +34,3 @@ const FormWrapper = <T extends FieldValues>({
     </Form>
   );
 };
-
-export default FormWrapper;

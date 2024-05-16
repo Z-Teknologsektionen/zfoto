@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { cn } from "~/utils/utils";
 
-const SectionWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
+export const SectionWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
   children,
   className = "",
 }) => {
@@ -16,5 +16,3 @@ const SectionWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
     </section>
   );
 };
-
-export default SectionWrapper;

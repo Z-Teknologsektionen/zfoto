@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import BackButton from "~/components/back-button";
+import { BackButton } from "~/components/back-button";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
-import AlbumImageFilteringToolbar from "./album-image-filtering-toolbar";
-import { columns } from "./columns";
-import EditAlbumForm from "./edit-form";
+import { AlbumImageFilteringToolbar } from "./_components/album-image-filtering-toolbar";
+import { columns } from "./_components/columns";
+import { EditAlbumForm } from "./_components/edit-form";
 
 const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
   const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());

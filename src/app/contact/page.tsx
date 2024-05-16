@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import SectionWrapper from "~/components/layout/SectionWrapper";
-import ContactForm from "./contact-form";
+import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { ContactForm } from "./_components/contact-form";
 
 export const dynamic = "force-static";
 

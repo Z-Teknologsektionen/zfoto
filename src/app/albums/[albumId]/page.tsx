@@ -1,16 +1,16 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
-import SectionWrapper from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/SectionWrapper";
 import { getAlbumById } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
-import { AlbumInfo } from "./components/album-info";
-import { ImageGridItem } from "./components/image-grid-item";
-import { ImagePopup } from "./components/image-popup";
+import { AlbumInfo } from "./_components/album-info";
+import { ImageGridItem } from "./_components/image-grid-item";
+import { ImagePopup } from "./_components/image-popup";
 import {
   RecommendedAlbumsGrid,
   RecommendedAlbumsGridSkeleton,
-} from "./components/recomended-albums-grid";
+} from "./_components/recomended-albums-grid";
 
 type AlbumPageProps = {
   params: { albumId: string };

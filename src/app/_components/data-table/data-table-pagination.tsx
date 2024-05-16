@@ -10,15 +10,15 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 
-interface DataTablePaginationProps<TData> {
+type DataTablePaginationProps<TData> = {
   table: Table<TData>;
   pageSizes?: number[];
-}
+};
 
-export function DataTablePagination<TData>({
+export const DataTablePagination = <TData,>({
   table,
   pageSizes = [10, 30, 90, 300],
-}: DataTablePaginationProps<TData>) {
+}: DataTablePaginationProps<TData>) => {
   return (
     <div className="flex items-center justify-between px-2">
       <div />
@@ -88,4 +88,4 @@ export function DataTablePagination<TData>({
       </div>
     </div>
   );
-}
+};

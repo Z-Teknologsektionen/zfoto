@@ -4,15 +4,17 @@ import { Column } from "@tanstack/react-table";
 import { Input } from "~/components/ui/input";
 import { cn } from "~/utils/utils";
 
-const ToolbarTextInput = <TData,>({
-  column,
-  placeholder,
-  className,
-}: {
+type ToolbarTextInputProps<TData> = {
   className?: string;
   placeholder: string;
   column: Column<TData, unknown> | undefined;
-}) => {
+};
+
+export const ToolbarTextInput = <TData,>({
+  column,
+  placeholder,
+  className,
+}: ToolbarTextInputProps<TData>) => {
   if (!column) throw new Error("No column found");
 
   return (
@@ -24,5 +26,3 @@ const ToolbarTextInput = <TData,>({
     />
   );
 };
-
-export default ToolbarTextInput;

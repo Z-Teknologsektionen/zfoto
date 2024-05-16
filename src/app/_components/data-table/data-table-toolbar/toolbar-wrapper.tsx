@@ -1,7 +1,9 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "~/utils/utils";
 
-const ToolbarWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
+type ToolbarWrapperProps = { className?: string };
+
+export const ToolbarWrapper: FC<PropsWithChildren<ToolbarWrapperProps>> = ({
   children,
   className,
 }) => {
@@ -11,5 +13,3 @@ const ToolbarWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
     </div>
   );
 };
-
-export default ToolbarWrapper;

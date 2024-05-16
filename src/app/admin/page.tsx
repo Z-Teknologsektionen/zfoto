@@ -8,10 +8,10 @@ import {
   getTotalAlbumCount,
   getTotalImageCount,
 } from "~/utils/fetchAdminData";
-import { adminPhotographerColumns } from "./admin-photograhper-columns";
-import AdminSidebar from "./admin-sidebar";
-import InfoCard from "./info-card";
-import PhotographerFilteringToolbar from "./photographer-filtering-toolbar";
+import { AdminInfoCard } from "./_components/admin-info-card";
+import { adminPhotographerColumns } from "./_components/admin-photograhper-columns";
+import { AdminSidebar } from "./_components/admin-sidebar";
+import { PhotographerFilteringToolbar } from "./_components/photographer-filtering-toolbar";
 
 const AdminDashbord = async () => {
   const session = await getServerAuthSession();
@@ -52,26 +52,26 @@ const AdminDashbord = async () => {
           </h1>
           <section className="container grid gap-x-2 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
             <h2 className="col-span-full text-xl font-semibold">Statistik</h2>
-            <InfoCard
+            <AdminInfoCard
               title="Antal bilder"
               number={totalImages}
               info={`${((imagesThisYear / totalImages) * 100).toFixed(2)}% av
               sittande`}
             />
-            <InfoCard
+            <AdminInfoCard
               title="Antal album"
               number={totalAlbums}
               info={`${((albumsThisYear / totalAlbums) * 100).toFixed(2)}% av
                   sittande`}
             />
-            <InfoCard
+            <AdminInfoCard
               title="Antal fotografer"
               number={numberOfPhotographers}
               info={`~${(totalImages / totalAlbums).toFixed(
                 2,
               )} bilder per album`}
             />
-            <InfoCard
+            <AdminInfoCard
               title="Bilder av sittande"
               number={imagesThisYear}
               info={`${imagesPrevVSThisYear.toLocaleString()} mot förra sittande`}

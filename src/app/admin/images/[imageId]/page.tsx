@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import BackButton from "~/components/back-button";
+import { BackButton } from "~/components/back-button";
 import { getImageAsAdmin } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
-import EditImageForm from "./edit-form";
+import EditImageForm from "./_components/edit-form";
 
 const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
   const image = await getImageAsAdmin(params.imageId).catch(() => notFound());

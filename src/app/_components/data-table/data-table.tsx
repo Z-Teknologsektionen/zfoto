@@ -25,16 +25,16 @@ import {
   TableRow,
 } from "~/components/ui/table";
 
-export interface DataTableToolBarProps<TData> {
+export type DataTableToolBarProps<TData> = {
   table: TableType<TData>;
-}
-export interface DataTableProps<TData, TValue> {
+};
+export type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   toolbar?: ComponentType<DataTableToolBarProps<TData>>;
   usePagination?: boolean;
   noResultText?: string;
-}
+};
 
 export const DataTable = <TData, TValue>({
   columns,

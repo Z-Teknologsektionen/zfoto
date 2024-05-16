@@ -1,7 +1,7 @@
-import BackButton from "~/components/back-button";
+import { BackButton } from "~/components/back-button";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAllUsersAsAdmin } from "~/utils/fetchAdminData";
-import { columns } from "./columns";
+import { columns } from "./_components/columns";
 
 const UsersAdminPage = async () => {
   const data = await getAllUsersAsAdmin();

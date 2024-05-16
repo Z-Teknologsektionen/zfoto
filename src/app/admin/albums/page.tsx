@@ -1,8 +1,8 @@
-import BackButton from "~/components/back-button";
+import { BackButton } from "~/components/back-button";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAllAlbumsAsAdmin } from "~/utils/fetchAdminData";
-import AlbumsFilteringToolbar from "./albums-filtering-toolbar";
-import { columns } from "./columns";
+import { AlbumsFilteringToolbar } from "./_components/albums-filtering-toolbar";
+import { columns } from "./_components/columns";
 
 const AlbumsAdminPage = async () => {
   const data = await getAllAlbumsAsAdmin();

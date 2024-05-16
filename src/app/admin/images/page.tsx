@@ -1,8 +1,8 @@
-import BackButton from "~/components/back-button";
+import { BackButton } from "~/components/back-button";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAllImagesAsAdmin } from "~/utils/fetchAdminData";
-import { columns } from "./columns";
-import ImagesFilteringToolbar from "./images-filtering-toolbar";
+import { columns } from "./_components/columns";
+import { ImagesFilteringToolbar } from "./_components/images-filtering-toolbar";
 
 const ImagesAdminPage = async () => {
   const data = await getAllImagesAsAdmin();

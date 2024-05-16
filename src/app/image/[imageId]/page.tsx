@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import BackButton from "~/components/back-button";
-import SectionWrapper from "~/components/layout/SectionWrapper";
+import { BackButton } from "~/components/back-button";
+import { SectionWrapper } from "~/components/layout/SectionWrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
 import { createByline, getFullFilePath } from "~/utils/utils";
 
@@ -12,9 +12,9 @@ export const revalidate = 300;
 
 const getImage = cache(getImagebyId);
 
-interface ImagePageProps {
+type ImagePageProps = {
   params: { imageId: string };
-}
+};
 
 export async function generateMetadata({
   params: { imageId },

@@ -13,12 +13,19 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { trpc } from "~/trpc/client";
 
-const ImageColumnActions: FC<{
+type ImageColumnActionsProps = {
   id: string;
   albumId: string;
   coverImage: boolean;
   visible: boolean;
-}> = ({ id, albumId, visible, coverImage }) => {
+};
+
+export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
+  id,
+  albumId,
+  visible,
+  coverImage,
+}) => {
   const ctx = trpc.useUtils();
   const { mutate: updateImage, isLoading } =
     trpc.image.updateImageById.useMutation({
@@ -79,5 +86,3 @@ const ImageColumnActions: FC<{
     </DropdownMenu>
   );
 };
-
-export default ImageColumnActions;

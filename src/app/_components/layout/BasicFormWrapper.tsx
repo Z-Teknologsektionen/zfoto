@@ -8,7 +8,7 @@ import { z } from "zod";
 import { cn } from "~/utils/utils";
 import { Form } from "../ui/form";
 
-const BasicFormWrapper = <TSchema extends z.Schema>({
+export const BasicFormWrapper = <TSchema extends z.Schema>({
   form,
   onInvalid,
   onValid,
@@ -33,5 +33,3 @@ const BasicFormWrapper = <TSchema extends z.Schema>({
     </Form>
   );
 };
-
-export default BasicFormWrapper;

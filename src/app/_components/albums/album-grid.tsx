@@ -1,10 +1,10 @@
 import type { FC, PropsWithChildren } from "react";
 
-interface IAlbumGrid {
+type AlbumGridProps = {
   className?: string;
-}
+};
 
-const AlbumGrid: FC<PropsWithChildren<IAlbumGrid>> = ({
+export const AlbumGrid: FC<PropsWithChildren<AlbumGridProps>> = ({
   children,
   className = "",
 }) => {
@@ -16,5 +16,3 @@ const AlbumGrid: FC<PropsWithChildren<IAlbumGrid>> = ({
     </div>
   );
 };
-
-export default AlbumGrid;

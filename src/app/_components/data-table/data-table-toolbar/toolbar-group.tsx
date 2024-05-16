@@ -1,7 +1,9 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "~/utils/utils";
 
-const ToolbarGroup: FC<PropsWithChildren<{ className?: string }>> = ({
+type ToolbarGroupProps = { className?: string };
+
+export const ToolbarGroup: FC<PropsWithChildren<ToolbarGroupProps>> = ({
   className,
   children,
 }) => {
@@ -11,5 +13,3 @@ const ToolbarGroup: FC<PropsWithChildren<{ className?: string }>> = ({
     </div>
   );
 };
-
-export default ToolbarGroup;

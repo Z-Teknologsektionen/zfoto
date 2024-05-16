@@ -1,11 +1,11 @@
-import { Footer } from "@/app/components/footer/footer";
-import { Header } from "@/app/components/header/header";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
+import { Footer } from "~/components/footer/footer";
+import { Header } from "~/components/header/header";
 import "../styles/globals.css";
-import Providers from "./providers";
+import { Providers } from "./_components/layout/providers";
 
 export const metadata: Metadata = {
   title: { default: "zFoto", template: "%s | zFoto" },

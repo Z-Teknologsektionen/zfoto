@@ -9,19 +9,21 @@ import {
 } from "~/components/ui/select";
 import { cn } from "~/utils/utils";
 
-const ToolbarSelectDropdown = <TData,>({
-  column,
-  placeholder,
-  className = "",
-  size = "default",
-  options,
-}: {
+type ToolbarSelectDropdownProps<TData> = {
   className?: string;
   placeholder: string;
   column: Column<TData, unknown> | undefined;
   size?: "3xl" | "2xl" | "xl" | "lg" | "default" | "sm";
   options: { value: string; label: string }[];
-}) => {
+};
+
+export const ToolbarSelectDropdown = <TData,>({
+  column,
+  placeholder,
+  className = "",
+  size = "default",
+  options,
+}: ToolbarSelectDropdownProps<TData>) => {
   if (!column) throw new Error("No column found");
 
   return (
@@ -61,5 +63,3 @@ const ToolbarSelectDropdown = <TData,>({
     </Select>
   );
 };
-
-export default ToolbarSelectDropdown;

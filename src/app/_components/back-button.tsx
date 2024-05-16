@@ -10,7 +10,7 @@ type BackButtonProps = {
   href?: string;
 };
 
-const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
+export const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
   href,
   children = (
     <>
@@ -51,5 +51,3 @@ const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
     </Button>
   );
 };
-
-export default BackButton;

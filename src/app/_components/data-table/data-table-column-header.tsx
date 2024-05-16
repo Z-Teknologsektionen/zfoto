@@ -2,7 +2,7 @@ import { Column } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
-const DataTableColumnHeader = ({
+export const DataTableColumnHeader = ({
   column,
   title,
   sortable = true,
@@ -21,5 +21,3 @@ const DataTableColumnHeader = ({
     </Button>
   );
 };
-
-export default DataTableColumnHeader;
