@@ -11,7 +11,7 @@ import { useWindowKeydownListener } from "~/hooks/useWindowKeydownListener";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
 import { cn, getFullFilePath } from "~/utils/utils";
 import { useActiveImageDetails } from "../hooks/useActiveImageDetails";
-import { updateUrl } from "../utils/updateUrl";
+import { handleUpdateAlbumUrl } from "../utils/updateUrl";
 import { ImagePopupFooter } from "./image-popup-footer";
 import { ImagePopupHeader } from "./image-popup-header";
 
@@ -19,15 +19,17 @@ type ImagePopupProps = {
   album: PublicAlbum;
 };
 
-const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
+export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const searchParams = useSearchParams();
   const currentImageId = searchParams?.get("imageId");
 
   const { rateLimitedFunction } = useRateLimitPerSecond(5);
 
-  const handleUpdateUrl = (newImageId: string | undefined) => {
+  const handleUpdateAlbumUrlWithRateLimit = (
+    newImageId: string | undefined,
+  ) => {
     rateLimitedFunction(() =>
-      updateUrl({
+      handleUpdateAlbumUrl({
         albumId: album.id,
         imageId: newImageId,
         isOpen: !!currentImageId,
@@ -38,15 +40,17 @@ const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const { activeImage, nextImageId, prevImageId } = useActiveImageDetails({
     images: album.images,
     imageId: currentImageId,
-    closePopup: () => handleUpdateUrl(undefined),
+    closePopup: () => handleUpdateAlbumUrlWithRateLimit(undefined),
   });
 
   useBodyOverflowToggle(!!currentImageId);
 
   useWindowKeydownListener((event: KeyboardEvent): void => {
-    if (event.key === "ArrowRight" && nextImageId) handleUpdateUrl(nextImageId);
-    if (event.key === "ArrowLeft" && prevImageId) handleUpdateUrl(prevImageId);
-    if (event.key === "Escape") handleUpdateUrl(undefined);
+    if (event.key === "ArrowRight" && nextImageId)
+      handleUpdateAlbumUrlWithRateLimit(nextImageId);
+    if (event.key === "ArrowLeft" && prevImageId)
+      handleUpdateAlbumUrlWithRateLimit(prevImageId);
+    if (event.key === "Escape") handleUpdateAlbumUrlWithRateLimit(undefined);
   });
 
   if (!activeImage) return null;
@@ -56,7 +60,7 @@ const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
       <ImagePopupHeader
         photographer={activeImage.photographer}
         filename={activeImage.filename}
-        closePopup={() => handleUpdateUrl(undefined)}
+        closePopup={() => handleUpdateAlbumUrlWithRateLimit(undefined)}
       />
       <main className="flex flex-grow flex-row gap-4 px-4">
         <div className="flex place-items-center">
@@ -65,7 +69,7 @@ const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
               buttonVariants({ size: "icon", variant: "ghost" }),
               "group p-2",
             )}
-            onClick={() => handleUpdateUrl(prevImageId)}
+            onClick={() => handleUpdateAlbumUrlWithRateLimit(prevImageId)}
             disabled={prevImageId === undefined}
             size="icon"
             variant="ghost"
@@ -91,7 +95,7 @@ const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
             disabled={nextImageId === undefined}
             size="icon"
             variant="ghost"
-            onClick={() => handleUpdateUrl(nextImageId)}
+            onClick={() => handleUpdateAlbumUrlWithRateLimit(nextImageId)}
           >
             <ArrowRight className="group-disabled:opacity-50" size={24} />
           </Button>
@@ -101,4 +105,3 @@ const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
     </section>
   );
 };
-export default ImagePopup;

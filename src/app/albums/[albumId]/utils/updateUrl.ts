@@ -4,7 +4,11 @@ type UpdateUrlProps = {
   isOpen: boolean;
 };
 
-export const updateUrl = ({ albumId, imageId, isOpen }: UpdateUrlProps) => {
+export const handleUpdateAlbumUrl = ({
+  albumId,
+  imageId,
+  isOpen,
+}: UpdateUrlProps) => {
   if (typeof window === "undefined") return;
 
   if (imageId)
@@ -16,5 +20,8 @@ export const updateUrl = ({ albumId, imageId, isOpen }: UpdateUrlProps) => {
 
   if (!isOpen) return;
 
-  return window.history.replaceState(null, "", `/albums/${albumId}`);
+  if (window.history.length <= 2)
+    return window.history.replaceState(null, "", `/albums/${albumId}`);
+
+  return window.history.back();
 };

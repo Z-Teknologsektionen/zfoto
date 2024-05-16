@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { FC, PropsWithChildren } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
-const BackButton: FC<PropsWithChildren<{ href?: string }>> = ({
+type BackButtonProps = {
+  href?: string;
+};
+
+const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
   href,
   children = (
     <>
@@ -35,10 +39,11 @@ const BackButton: FC<PropsWithChildren<{ href?: string }>> = ({
     <Button
       variant="link"
       onClick={() => {
-        if (window.history.length === 1) {
+        if (window.history.length <= 2) {
           router.push("/");
+        } else {
+          router.back();
         }
-        router.back();
       }}
       className="-ml-8 w-fit"
     >
