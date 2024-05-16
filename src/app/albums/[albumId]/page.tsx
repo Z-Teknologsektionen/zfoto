@@ -6,7 +6,7 @@ import { getAlbumById } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
 import { AlbumInfo } from "./components/album-info";
 import { ImageGridItem } from "./components/image-grid-item";
-import ImagePopup from "./components/image-popup";
+import { ImagePopup } from "./components/image-popup";
 import {
   RecommendedAlbumsGrid,
   RecommendedAlbumsGridSkeleton,
