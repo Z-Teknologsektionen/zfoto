@@ -9,7 +9,7 @@ import {
   FormFieldInput,
   FormFieldInputEmail,
 } from "~/components/form/form-field-input";
-import { BasicFormWrapper } from "~/components/layout/BasicFormWrapper";
+import { BasicFormWrapper } from "~/components/layout/basic-form-wrapper";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,

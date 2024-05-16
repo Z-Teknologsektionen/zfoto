@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { FC, Suspense } from "react";
-import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { SignInContent } from "./_components/sign-in-content";
 
 export const metadata: Metadata = {

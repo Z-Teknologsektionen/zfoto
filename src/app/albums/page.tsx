@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
-import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 import { FilterAlbumsWizard } from "./_components/filter-albums-wizard";
 

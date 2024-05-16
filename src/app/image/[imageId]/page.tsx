@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { BackButton } from "~/components/back-button";
-import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
 import { createByline, getFullFilePath } from "~/utils/utils";
 

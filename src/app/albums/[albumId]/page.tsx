@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
-import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getAlbumById } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
 import { AlbumInfo } from "./_components/album-info";

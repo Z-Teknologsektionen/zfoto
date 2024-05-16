@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
-import { SectionWrapper } from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { Button } from "~/components/ui/button";
 import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
