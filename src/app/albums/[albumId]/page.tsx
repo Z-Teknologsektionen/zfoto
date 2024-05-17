@@ -1,17 +1,20 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
-import BackButton from "~/components/back-button";
-import SectionWrapper from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getAlbumById } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
-import AlbumInfo from "./components/album-info";
-import Client from "./components/client";
-import RecommendedAlbums from "./components/recomended-albums";
+import { AlbumInfo } from "./_components/album-info";
+import { ImageGridItem } from "./_components/image-grid-item";
+import { ImagePopup } from "./_components/image-popup";
+import {
+  RecommendedAlbumsGrid,
+  RecommendedAlbumsGridSkeleton,
+} from "./_components/recomended-albums-grid";
 
-interface AlbumPageProps {
+type AlbumPageProps = {
   params: { albumId: string };
-}
+};
 
 export const revalidate = 300;
 
@@ -37,24 +40,30 @@ export async function generateMetadata({
 }
 
 const AlbumPage = async ({ params: { albumId } }: AlbumPageProps) => {
-  const album = await getAlbumById(albumId).catch(() => {
+  const album = await getAlbum(albumId).catch(() => {
     return notFound();
   });
 
   return (
     <>
-      <SectionWrapper className="flex flex-col gap-2">
-        <BackButton />
+      <SectionWrapper className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
         <AlbumInfo
           date={album.date}
           photographers={album.photographers}
           title={album.title}
         />
-        <Client album={album} key={albumId} />
-        <Suspense fallback={"Laddar rekomenderade album..."}>
-          <RecommendedAlbums albumId={albumId} />
+
+        {album.images.map(({ id, filename }) => (
+          <ImageGridItem key={id} id={id} album={album} filename={filename} />
+        ))}
+      </SectionWrapper>
+      <SectionWrapper>
+        <h1 className="text-2xl font-medium">Kika även in dessa albumen</h1>
+        <Suspense fallback={<RecommendedAlbumsGridSkeleton />}>
+          <RecommendedAlbumsGrid albumId={albumId} />
         </Suspense>
       </SectionWrapper>
+      <ImagePopup album={album} />
     </>
   );
 };

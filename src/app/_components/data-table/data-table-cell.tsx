@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import { cn } from "~/utils/utils";
 
-const DataTableCell: FC<
+export const DataTableCell: FC<
   PropsWithChildren<{
     className?: string;
     center?: boolean;
@@ -15,5 +15,3 @@ const DataTableCell: FC<
     </div>
   );
 };
-
-export default DataTableCell;

@@ -45,7 +45,7 @@ declare module "next-auth/jwt" {
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
@@ -120,5 +120,3 @@ export const getServerAuthSession = (
 ) => {
   return getServerSession(...ctx, authOptions);
 };
-
-export default authOptions;

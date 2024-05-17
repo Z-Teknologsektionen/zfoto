@@ -1,8 +1,8 @@
-import BackButton from "~/components/back-button";
 import { DataTable } from "~/components/data-table/data-table";
+import { BackButton } from "~/components/layout/back-button";
 import { getAllImagesAsAdmin } from "~/utils/fetchAdminData";
-import { columns } from "./columns";
-import ImagesFilteringToolbar from "./images-filtering-toolbar";
+import { imageColumns } from "./_components/image-columns";
+import { ImagesFilteringToolbar } from "./_components/images-filtering-toolbar";
 
 const ImagesAdminPage = async () => {
   const data = await getAllImagesAsAdmin();
@@ -15,7 +15,7 @@ const ImagesAdminPage = async () => {
         <h1 className="text-xl font-semibold">Bilder</h1>
         <DataTable
           toolbar={ImagesFilteringToolbar}
-          columns={columns}
+          columns={imageColumns}
           data={data}
           usePagination
         />

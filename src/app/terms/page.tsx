@@ -1,7 +1,7 @@
 import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import SectionWrapper from "~/components/layout/SectionWrapper";
+import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getPageBySlug } from "~/utils/fetchDataFromSanity";
 
 export const revalidate = 300;
