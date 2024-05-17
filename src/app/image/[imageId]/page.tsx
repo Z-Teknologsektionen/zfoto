@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { BackButton } from "~/components/back-button";
+import { BackButton } from "~/components/layout/back-button";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getImagebyId } from "~/utils/fetchImageData";
 import { createByline, getFullFilePath } from "~/utils/utils";

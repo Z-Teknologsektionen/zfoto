@@ -5,11 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
   FormFieldInputEmail,
 } from "~/components/form/form-field-input";
-import { BasicFormWrapper } from "~/components/layout/basic-form-wrapper";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,

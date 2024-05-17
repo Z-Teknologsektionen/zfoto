@@ -2,15 +2,14 @@
 
 import { useCallback, useRef } from "react";
 
-export const useRateLimitPerSecond = (callsPerSecond: number) => {
+export const useRateLimit = (intervalMs: number) => {
   const lastCalledRef = useRef(0);
-  const interval = 1000 / callsPerSecond;
 
   const rateLimitedFunction = useCallback(
     (func: () => void) => {
       const now = Date.now();
       const elapsed = now - lastCalledRef.current;
-      const leftToWait = interval - elapsed;
+      const leftToWait = intervalMs - elapsed;
 
       if (leftToWait > 0) {
         setTimeout(() => {
@@ -22,7 +21,7 @@ export const useRateLimitPerSecond = (callsPerSecond: number) => {
         func();
       }
     },
-    [interval],
+    [intervalMs],
   );
 
   const reset = useCallback(() => {

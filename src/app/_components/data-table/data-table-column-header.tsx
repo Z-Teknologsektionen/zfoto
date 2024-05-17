@@ -1,15 +1,18 @@
 import { Column } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+import { FC } from "react";
 import { Button } from "~/components/ui/button";
 
-export const DataTableColumnHeader = ({
-  column,
-  title,
-  sortable = true,
-}: {
+type DataTableColumnHeaderProps = {
   title: string;
   column: Column<any, any>;
   sortable?: boolean;
+};
+
+export const DataTableColumnHeader: FC<DataTableColumnHeaderProps> = ({
+  column,
+  title,
+  sortable = true,
 }) => {
   return (
     <Button

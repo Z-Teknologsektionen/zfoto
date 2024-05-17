@@ -1,8 +1,8 @@
 "use client";
 
 import { DataTableToolBarProps } from "~/components/data-table/data-table";
-import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar/toolbar-text-input";
-import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar/toolbar-wrapper";
+import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";
+import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar-wrapper";
 
 export const AlbumsFilteringToolbar = <TData,>({
   table,

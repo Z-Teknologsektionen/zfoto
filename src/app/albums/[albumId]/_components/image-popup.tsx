@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import type { FC } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
-import { useRateLimitPerSecond } from "~/hooks/useRateLimitPerSecond";
+import { useRateLimit } from "~/hooks/useRateLimitPerSecond";
 import { useWindowKeydownListener } from "~/hooks/useWindowKeydownListener";
 import { PublicAlbum } from "~/utils/fetchAlbumData";
 import { cn, getFullFilePath } from "~/utils/utils";
@@ -23,7 +23,7 @@ export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const searchParams = useSearchParams();
   const currentImageId = searchParams?.get("imageId");
 
-  const { rateLimitedFunction } = useRateLimitPerSecond(5);
+  const { rateLimitedFunction } = useRateLimit(200);
 
   const handleUpdateAlbumUrlWithRateLimit = (
     newImageId: string | undefined,

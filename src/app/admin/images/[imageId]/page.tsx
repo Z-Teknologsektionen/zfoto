@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { BackButton } from "~/components/back-button";
+import { BackButton } from "~/components/layout/back-button";
 import { getImageAsAdmin } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
 import EditImageForm from "./_components/edit-form";

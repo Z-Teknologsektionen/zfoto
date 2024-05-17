@@ -1,7 +1,9 @@
 import type { FC, PropsWithChildren } from "react";
 import { cn } from "~/utils/utils";
 
-export const SectionWrapper: FC<PropsWithChildren<{ className?: string }>> = ({
+type SectionWrapperProps = { className?: string };
+
+export const SectionWrapper: FC<PropsWithChildren<SectionWrapperProps>> = ({
   children,
   className = "",
 }) => {

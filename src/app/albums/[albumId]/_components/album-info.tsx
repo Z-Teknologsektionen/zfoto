@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { BackButton } from "~/components/back-button";
+import { BackButton } from "~/components/layout/back-button";
 import { formatDateString } from "~/utils/date-utils";
 import { CopyBylineButton } from "./copy-byline-button";
 

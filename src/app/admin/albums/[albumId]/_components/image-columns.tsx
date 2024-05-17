@@ -8,7 +8,7 @@ import { formatDateTimeString } from "~/utils/date-utils";
 import { AdminAlbumImageType } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
 
-export const columns: ColumnDef<AdminAlbumImageType>[] = [
+export const imageColumns: ColumnDef<AdminAlbumImageType>[] = [
   {
     accessorKey: "image",
     cell: ({ row }) => {

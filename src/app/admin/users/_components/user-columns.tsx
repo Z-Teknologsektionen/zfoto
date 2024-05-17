@@ -18,7 +18,7 @@ import {
 import { AdminUser } from "~/utils/fetchAdminData";
 import { formatRole } from "../_utils/formatUserRole";
 
-export const columns: ColumnDef<AdminUser>[] = [
+export const userColumns: ColumnDef<AdminUser>[] = [
   {
     accessorKey: "image",
     cell: ({ row }) => {

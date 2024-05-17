@@ -12,11 +12,17 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { SignOutDropdownMenuItem } from "./sign-out-dropdown-menu-item";
 
-export const HeaderAvatarWithDropdown: FC<{
+type HeaderAvatarWithDropdownProps = {
   filename: string;
   role: Roles;
   name: string;
-}> = ({ filename, role, name }) => {
+};
+
+export const HeaderAvatarWithDropdown: FC<HeaderAvatarWithDropdownProps> = ({
+  filename,
+  role,
+  name,
+}) => {
   const hasAdminLikeRole = adminLikeRoles.includes(role);
 
   return (

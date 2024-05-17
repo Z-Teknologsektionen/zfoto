@@ -20,7 +20,7 @@ import { formatDateTimeString } from "~/utils/date-utils";
 import { AdminAlbumType } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
 
-export const columns: ColumnDef<AdminAlbumType>[] = [
+export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   {
     accessorKey: "coverImageFilename",
     cell: ({ row }) => {

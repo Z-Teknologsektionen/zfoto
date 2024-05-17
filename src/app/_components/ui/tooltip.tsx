@@ -27,11 +27,13 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-const StandardTooltip: React.FC<{
+type StandardTooltipProps = {
   content: React.ReactNode;
   trigger: React.ReactNode;
   asChild?: boolean;
-}> = ({
+};
+
+const StandardTooltip: React.FC<StandardTooltipProps> = ({
   trigger: TriggerComponent,
   content: ContentComponent,
   asChild = true,

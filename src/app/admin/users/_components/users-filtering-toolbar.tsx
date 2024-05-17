@@ -2,10 +2,10 @@
 
 import { Roles } from "@prisma/client";
 import { DataTableToolBarProps } from "~/components/data-table/data-table";
-import { ToolbarGroup } from "~/components/data-table/data-table-toolbar/toolbar-group";
-import { ToolbarSelectDropdown } from "~/components/data-table/data-table-toolbar/toolbar-select-dropdown";
-import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar/toolbar-text-input";
-import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar/toolbar-wrapper";
+import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
+import { ToolbarSelectDropdown } from "~/components/data-table/data-table-toolbar-select-dropdown";
+import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";
+import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar-wrapper";
 
 export const UsersFilteringToolbar = <TData,>({
   table,
