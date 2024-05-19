@@ -4,7 +4,6 @@ import { emailSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -19,20 +18,12 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
-import { trpc } from "~/trpc/client";
+import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
 export const ContactForm: FC = () => {
-  const { mutate: sendEmail, isLoading } =
-    trpc.email.sendEmailAsUser.useMutation({
-      onSuccess: () => {
-        toast.success("Ditt meddelande har skickats!");
-        form.reset();
-      },
-      onError: () =>
-        toast.error(
-          "Okänt fel, försök igen senare eller kontakta oss via mail: zfoto@ztek.se",
-        ),
-    });
+  const { execute: sendEmail, status } = useSendContactEmail({
+    onSuccess: () => form.reset(),
+  });
 
   const form = useForm({
     resolver: zodResolver(emailSchema),
@@ -85,13 +76,13 @@ export const ContactForm: FC = () => {
           onClick={() => form.reset()}
           variant="outline"
           size="default"
-          disabled={isLoading}
+          disabled={status === "executing"}
         >
           Återställ
         </Button>
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={status === "executing"}
           variant="default"
           size="default"
         >

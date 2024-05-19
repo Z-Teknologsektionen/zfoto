@@ -5,3 +5,9 @@ export type ActionReturnType<T extends {} | undefined = undefined> = Promise<
       data: T;
     }
 >;
+
+export type UseActionCallbackProps =
+  | {
+      onSuccess?: () => void;
+    }
+  | undefined;
