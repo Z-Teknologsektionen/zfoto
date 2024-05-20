@@ -12,8 +12,9 @@ export const FooterSocialIconsRow: FC = () => {
             href={href}
             rel={newPage ? "noopener noreferrer" : undefined}
             target={newPage ? "_blank" : "_self"}
+            className="grid size-10 place-items-center rounded-full border-2 border-gray-500 bg-white/90 p-1.5"
           >
-            <Icon className="h-10 w-10 rounded-full border-2 border-gray-500 bg-white/90 p-1.5 text-black shadow hover:scale-105 hover:text-black focus:scale-105 active:scale-95" />
+            <Icon className="size-6 text-black shadow hover:scale-105 focus:scale-105 active:scale-95" />
           </Link>
         </li>
       ))}
