@@ -2,9 +2,8 @@
 
 import { updateAlbumFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useTransition } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { z } from "zod";
 import {
   FormFieldInput,
@@ -14,7 +13,7 @@ import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
-import { updateAlbumAction } from "../_actions/updateAlbumAction";
+import { useUpdateAlbum } from "../_hooks/use-update-album";
 
 type EditAlbumFormProps = {
   title: string;
@@ -31,7 +30,8 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   visible,
   date,
 }) => {
-  const [isLoading, startTransition] = useTransition();
+  const { execute: updateAlbum, status: updateAlbumstatus } = useUpdateAlbum();
+
   const form = useForm<z.input<typeof updateAlbumFrontEndSchema>>({
     resolver: zodResolver(updateAlbumFrontEndSchema),
     defaultValues: {
@@ -46,20 +46,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) =>
-          startTransition(async () => {
-            const loadingToastId = toast.loading("Uppdaterar album...");
-
-            const results = await updateAlbumAction({ albumId: id, ...values });
-
-            toast.dismiss(loadingToastId);
-
-            if (!results.success) {
-              toast.error(results.error);
-              return;
-            }
-
-            toast.success("Album uppdaterat!");
-          }),
+          updateAlbum({ albumId: id, ...values }),
         )}
         className="grid gap-4 md:grid-cols-2"
       >
@@ -85,14 +72,14 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
         />
         <div className="col-span-full flex flex-row justify-end gap-2">
           <Button
-            disabled={isLoading}
+            disabled={updateAlbumstatus === "executing"}
             type="button"
             variant="outline"
             onClick={() => form.reset()}
           >
             Återställ
           </Button>
-          <Button disabled={isLoading} type="submit">
+          <Button disabled={updateAlbumstatus === "executing"} type="submit">
             Spara
           </Button>
         </div>
