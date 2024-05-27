@@ -2,7 +2,6 @@
 
 import { emailSchema } from "@/server/trpc/helpers/zodScheams";
 import { baseSafeAction } from "~/actions/safe-action";
-import { ActionError } from "~/actions/safe-action-helpers";
 import { emailTransporter } from "~/utils/emailTransporter";
 
 export const sendContactEmail = baseSafeAction(
@@ -10,7 +9,7 @@ export const sendContactEmail = baseSafeAction(
   async ({ email, message, subject }) => {
     await emailTransporter.verify();
 
-    const emailResults = await emailTransporter.sendMail({
+    await emailTransporter.sendMail({
       replyTo: email,
       to: "zfoto@ztek.se",
       subject: subject,
@@ -27,11 +26,6 @@ export const sendContactEmail = baseSafeAction(
           ${email}
           `,
     });
-
-    if (!emailResults.accepted)
-      throw new ActionError(
-        "Kunde inte skicka.\nFörsök igen senare eller kontakta oss via mail: zfoto@ztek.se!",
-      );
 
     return true;
   },

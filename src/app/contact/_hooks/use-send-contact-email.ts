@@ -7,8 +7,11 @@ import toast from "react-hot-toast";
 import { defaultOnErrorToastHandler } from "~/actions/safe-action-helpers";
 import { sendContactEmail } from "../_actions/send-contact-email";
 
-export const useSendContactEmail = (callbacks: UseActionCallbackProps) => {
+export const useSendContactEmail = (
+  callbacks: UseActionCallbackProps = undefined,
+) => {
   const toastId = useId();
+
   return useAction(sendContactEmail, {
     onExecute: () => {
       toast.loading("Skickar meddelande...", {
