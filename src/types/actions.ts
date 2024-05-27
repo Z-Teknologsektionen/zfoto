@@ -1,13 +1,12 @@
-export type ActionReturnType<T extends {} | undefined = undefined> = Promise<
-  | { success: false; error: string }
-  | {
-      success: true;
-      data: T;
-    }
->;
+export type UseActionCallback = {
+  onSuccess?: () => void;
+  onExecute?: () => void;
+  onSettled?: () => void;
+  onError?: () => void;
+};
 
-export type UseActionCallbackProps =
-  | {
-      onSuccess?: () => void;
-    }
+export type UseActionCallbackProps = UseActionCallback | undefined;
+
+export type UseActionCallbackWithOutErrorProps =
+  | Omit<UseActionCallback, "onError">
   | undefined;

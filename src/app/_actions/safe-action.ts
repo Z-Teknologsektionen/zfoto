@@ -1,5 +1,4 @@
-"use server";
-
+import { adminLikeRoles } from "@/constants/admin";
 import { env } from "@/env/server.mjs";
 import { SafeClientOpts, createSafeActionClient } from "next-safe-action";
 import { getServerAuthSession } from "~/utils/authOptions";
@@ -45,6 +44,44 @@ export const authSafeAction = createSafeActionClient({
         "Du måste vara inloggad, vänligen logga in och försök igen",
       );
     }
+
+    return { session };
+  },
+});
+
+export const adminLikeSafeAction = createSafeActionClient({
+  handleReturnedServerError,
+  handleServerErrorLog,
+  middleware: async () => {
+    const session = await getServerAuthSession();
+
+    if (!session) {
+      throw new ActionError(
+        "Du måste vara inloggad, vänligen logga in och försök igen",
+      );
+    }
+
+    if (!adminLikeRoles.includes(session.user.role))
+      throw new ActionError("Du har inte behörighet att utföra denna åtgärden");
+
+    return { session };
+  },
+});
+
+export const adminSafeAction = createSafeActionClient({
+  handleReturnedServerError,
+  handleServerErrorLog,
+  middleware: async () => {
+    const session = await getServerAuthSession();
+
+    if (!session) {
+      throw new ActionError(
+        "Du måste vara inloggad, vänligen logga in och försök igen",
+      );
+    }
+
+    if (!adminLikeRoles.includes(session.user.role))
+      throw new ActionError("Du har inte behörighet att utföra denna åtgärden");
 
     return { session };
   },
