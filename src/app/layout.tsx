@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
       type: "image/svg+xml",
     },
   },
+  metadataBase: new URL(env.NEXTAUTH_URL),
   twitter: {
     card: "summary_large_image",
   },
