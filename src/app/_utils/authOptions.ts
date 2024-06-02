@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { env } from "@/env/server.mjs";
+import { env } from "@/env.mjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Roles } from "@prisma/client";
 import type {

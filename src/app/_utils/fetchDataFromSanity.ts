@@ -1,4 +1,4 @@
-import { env } from "@/env/client.mjs";
+import { env } from "@/env.mjs";
 import { createClient } from "next-sanity";
 import type { PortableTextBlock } from "sanity";
 

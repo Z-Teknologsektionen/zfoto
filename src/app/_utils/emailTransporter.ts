@@ -1,4 +1,4 @@
-import { env } from "@/env/server.mjs";
+import { env } from "@/env.mjs";
 import nodemailer from "nodemailer";
 
 export const emailTransporter = nodemailer.createTransport(

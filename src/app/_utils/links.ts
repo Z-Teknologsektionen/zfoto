@@ -23,7 +23,7 @@ type SocialIconLinkType = {
   newPage?: boolean;
 };
 
-const socialIconLinks: SocialIconLinkType[] = [
+const socialIconLinks = [
   {
     newPage: true,
     Icon: LuInstagram,
@@ -41,7 +41,7 @@ const socialIconLinks: SocialIconLinkType[] = [
     href: "/contact",
     ariaLabel: "Kontakta oss här",
   },
-];
+] satisfies SocialIconLinkType[] as readonly SocialIconLinkType[];
 
 const links: LinkType[] = [
   {

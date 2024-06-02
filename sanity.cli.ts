@@ -1,5 +1,5 @@
+import { env } from "@/env.mjs";
 import { defineCliConfig } from "sanity/cli";
-import { env } from "./src/env/client.mjs";
 
 export default defineCliConfig({
   api: {

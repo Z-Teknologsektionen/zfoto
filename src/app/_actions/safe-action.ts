@@ -1,5 +1,5 @@
 import { adminLikeRoles } from "@/constants/admin";
-import { env } from "@/env/server.mjs";
+import { env } from "@/env.mjs";
 import { SafeClientOpts, createSafeActionClient } from "next-safe-action";
 import { getServerAuthSession } from "~/utils/authOptions";
 import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
@@ -20,7 +20,7 @@ const handleServerErrorLog: SafeClientOpts<
   if (env.NODE_ENV === "production") {
     // TODO: Updatera denna till att maila webbgruppen eller likande för bättre hantering
   }
-  console.error(e.message);
+  console.error(e);
 };
 
 export const baseSafeAction = createSafeActionClient({
