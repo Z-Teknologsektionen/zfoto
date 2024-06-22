@@ -2,13 +2,11 @@
 
 import { useEffect } from "react";
 
-export const useBodyOverflowToggle = (hideOverflow: boolean) => {
+export const useBodyOverflowToggle = (hideOverflow: boolean): void => {
   useEffect(() => {
-    if (hideOverflow) {
-      document.body.classList.add("overflow-hidden");
-    }
+    if (hideOverflow) document.body.classList.add("overflow-hidden");
 
-    return () => {
+    return (): void => {
       document.body.classList.remove("overflow-hidden");
     };
   }, [hideOverflow]);

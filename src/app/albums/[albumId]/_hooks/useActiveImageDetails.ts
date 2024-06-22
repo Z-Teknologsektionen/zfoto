@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { PublicAlbum } from "~/utils/fetchAlbumData";
+import type { PublicAlbum } from "~/utils/fetchAlbumData";
 
 export const useActiveImageDetails = ({
   images,
@@ -9,7 +9,7 @@ export const useActiveImageDetails = ({
   closePopup,
 }: {
   images: PublicAlbum["images"];
-  imageId: string | undefined | null;
+  imageId: string | null | undefined;
   closePopup: () => void;
 }) =>
   useMemo(() => {
@@ -19,12 +19,12 @@ export const useActiveImageDetails = ({
       return {};
     }
     return {
-      activeImage: images.at(currentIndex)!,
+      activeImage: images.at(currentIndex),
       prevImageId:
-        currentIndex > 0 ? images.at(currentIndex - 1)!.id : undefined,
+        currentIndex > 0 ? images.at(currentIndex - 1)?.id : undefined,
       nextImageId:
         currentIndex < images.length - 1
-          ? images.at(currentIndex + 1)!.id
+          ? images.at(currentIndex + 1)?.id
           : undefined,
     };
   }, [images, imageId, closePopup]);

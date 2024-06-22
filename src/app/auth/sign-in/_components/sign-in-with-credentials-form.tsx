@@ -2,10 +2,11 @@
 
 import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInOptions, signIn } from "next-auth/react";
-import { FC } from "react";
+import type { SignInOptions } from "next-auth/react";
+import { signIn } from "next-auth/react";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 import {
   FormFieldInputEmail,
   FormFieldInputPassword,
@@ -15,7 +16,7 @@ import { Form } from "~/components/ui/form";
 
 type UserSignInFormType = z.infer<typeof userSignInForm>;
 
-type SignInWithCredentialsFormProps = {} & SignInOptions;
+type SignInWithCredentialsFormProps = SignInOptions;
 
 export const SignInWithCredentialsForm: FC<SignInWithCredentialsFormProps> = ({
   callbackUrl,
@@ -28,14 +29,16 @@ export const SignInWithCredentialsForm: FC<SignInWithCredentialsFormProps> = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(({ email, password }) =>
-          signIn("credentials", {
-            email: email,
-            password: password,
-            callbackUrl,
-            redirect,
-          }),
-        )}
+        onSubmit={
+          void form.handleSubmit(async ({ email, password }) =>
+            signIn("credentials", {
+              email,
+              password,
+              callbackUrl,
+              redirect,
+            }),
+          )
+        }
         className="grid gap-2"
       >
         <FormFieldInputEmail form={form} name="email" />

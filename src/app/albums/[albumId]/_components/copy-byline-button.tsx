@@ -1,7 +1,7 @@
 "use client";
 
 import { Copy } from "lucide-react";
-import { FC } from "react";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
 import { createByline } from "~/utils/utils";
@@ -16,9 +16,9 @@ export const CopyBylineButton: FC<CopyBylineButtonProps> = ({
       <Button
         variant="ghost"
         size="icon"
-        className="h-6 w-6"
+        className="size-6"
         onClick={() => {
-          navigator.clipboard.writeText(createByline(photographers));
+          void navigator.clipboard.writeText(createByline(photographers));
         }}
       >
         <Copy size={12} />

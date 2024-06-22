@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { getServerAuthSession } from "~/utils/authOptions";
 import { HeaderAvatarWithDropdown } from "./header-avatar-with-dropdown";
 import { HeaderMainNav } from "./header-main-nav";
@@ -11,9 +11,7 @@ export const Header: FC = async () => {
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
-      <header
-        className={`container flex h-16 flex-row items-center justify-between gap-8`}
-      >
+      <header className="container flex h-16 flex-row items-center justify-between gap-8">
         <Link
           className="z-20 flex flex-row items-center justify-center"
           href="/"
@@ -29,10 +27,10 @@ export const Header: FC = async () => {
         </Link>
         <div className="flex flex-row items-center justify-center gap-4">
           <HeaderMainNav />
-          {session?.user && (
+          {session !== null && (
             <HeaderAvatarWithDropdown
               role={session.user.role}
-              filename={session.user.image || ""}
+              filename={session.user.image ?? ""}
               name={session.user.name}
             />
           )}

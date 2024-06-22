@@ -1,4 +1,7 @@
-import { Prisma } from "@prisma/client";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
+import type { Prisma } from "@prisma/client";
 import { db } from "~/utils/db";
 
 export const getAllAlbumsAsAdmin = async () => {
@@ -18,13 +21,11 @@ export const getAllAlbumsAsAdmin = async () => {
       date: "desc",
     },
   });
-  return albums.map(({ images, _count, ...album }) => {
-    return {
-      ...album,
-      coverImageFilename: images.at(0)?.filename,
-      count: _count.images,
-    };
-  });
+  return albums.map(({ images, _count, ...album }) => ({
+    ...album,
+    coverImageFilename: images.at(0)?.filename,
+    count: _count.images,
+  }));
 };
 
 export const getAlbumAsAdmin = async (id: string) => {
@@ -84,19 +85,17 @@ export const getAllImagesAsAdmin = async () => {
       date: "desc",
     },
   });
-  return images.map(({ album: { title, id }, ...image }) => {
-    return {
-      albumTitle: title,
-      albumId: id,
-      ...image,
-    };
-  });
+  return images.map(({ album: { title, id }, ...image }) => ({
+    albumTitle: title,
+    albumId: id,
+    ...image,
+  }));
 };
 
-export const getImageAsAdmin = async (id: string) => {
-  return db.image.findUniqueOrThrow({
+export const getImageAsAdmin = async (id: string) =>
+  db.image.findUniqueOrThrow({
     where: {
-      id: id,
+      id,
     },
     select: {
       id: true,
@@ -108,10 +107,9 @@ export const getImageAsAdmin = async (id: string) => {
       date: true,
     },
   });
-};
 
-export const getAllUsersAsAdmin = () => {
-  return db.user.findMany({
+export const getAllUsersAsAdmin = async () =>
+  db.user.findMany({
     select: {
       name: true,
       email: true,
@@ -121,7 +119,6 @@ export const getAllUsersAsAdmin = () => {
     },
     orderBy: [{ name: "asc" }],
   });
-};
 
 export const getCountsPerPhotographer = async () => {
   const images = await db.image.groupBy({
@@ -167,34 +164,28 @@ export const getCountsPerPhotographer = async () => {
   });
 };
 
-export const getImageCountFromYear = async (startYear: number) => {
-  return db.image.count({
+export const getImageCountFromYear = async (startYear: number) =>
+  db.image.count({
     where: {
       date: {
-        gt: new Date(startYear, 10, 1),
-        lt: new Date(startYear + 1, 9, 31),
+        gt: new Date(startYear, MONTH_INDEX_NOVEMBER, 1),
+        lt: new Date(startYear + 1, MONTH_INDEX_NOVEMBER - 1, 31),
       },
     },
   });
-};
 
-export const getAlbumCountFromYear = async (startYear: number) => {
-  return db.album.count({
+export const getAlbumCountFromYear = async (startYear: number) =>
+  db.album.count({
     where: {
       date: {
-        gt: new Date(startYear, 10, 1),
-        lt: new Date(startYear + 1, 9, 31),
+        gt: new Date(startYear, MONTH_INDEX_NOVEMBER, 1),
+        lt: new Date(startYear + 1, MONTH_INDEX_NOVEMBER - 1, 31),
       },
     },
   });
-};
 
-export const getTotalImageCount = async () => {
-  return db.image.count();
-};
-export const getTotalAlbumCount = async () => {
-  return db.album.count();
-};
+export const getTotalImageCount = async () => db.image.count();
+export const getTotalAlbumCount = async () => db.album.count();
 
 export type AdminAlbumType = Prisma.PromiseReturnType<
   typeof getAllAlbumsAsAdmin

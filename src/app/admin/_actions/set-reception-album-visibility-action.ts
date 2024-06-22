@@ -11,11 +11,12 @@ const setReceptionAlbumVisibilitySchema = z.object({ isVisible: z.boolean() });
 export const setReceptionAlbumVisibilityAction = authSafeAction(
   setReceptionAlbumVisibilitySchema,
   async ({ isVisible }, { session }) => {
-    if (session.user.role !== Roles.ADMIN)
+    if (session.user.role !== Roles.ADMIN) {
       throw new ActionError(
         "Obehörig: Du har inte behörighet att göra den här åtgärden",
       );
+    }
 
-    setReceptionAlbumVisibility(isVisible);
+    return setReceptionAlbumVisibility(isVisible);
   },
 );

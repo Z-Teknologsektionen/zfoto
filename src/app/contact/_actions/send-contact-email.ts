@@ -12,7 +12,7 @@ export const sendContactEmail = baseSafeAction(
     await emailTransporter.sendMail({
       replyTo: email,
       to: "zfoto@ztek.se",
-      subject: subject,
+      subject,
       text: `
           Nytt meddelande från hemsidan!
   

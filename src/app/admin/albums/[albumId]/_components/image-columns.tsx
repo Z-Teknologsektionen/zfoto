@@ -1,31 +1,29 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { ImageColumnActions } from "~/components/data-table/data-table-image-actions";
 import { formatDateTimeString } from "~/utils/date-utils";
-import { AdminAlbumImageType } from "~/utils/fetchAdminData";
+import type { AdminAlbumImageType } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
 
 export const imageColumns: ColumnDef<AdminAlbumImageType>[] = [
   {
     accessorKey: "image",
-    cell: ({ row }) => {
-      return (
-        <div className="relative h-24 w-36">
-          <Image
-            alt={`Bild: ${row.original.filename}, Foto: ${row.original.photographer}`}
-            className="object-contain object-center"
-            src={getFullFilePath(row.original.filename, "thumb")}
-            fill
-            unoptimized
-          />
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="relative h-24 w-36">
+        <Image
+          alt={`Bild: ${row.original.filename}, Foto: ${row.original.photographer}`}
+          className="object-contain object-center"
+          src={getFullFilePath(row.original.filename, "thumb")}
+          fill
+          unoptimized
+        />
+      </div>
+    ),
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Bild" sortable={false} />
+      <DataTableColumnHeader column={column} title="Bild" isSortable={false} />
     ),
     enableSorting: false,
   },
@@ -64,6 +62,14 @@ export const imageColumns: ColumnDef<AdminAlbumImageType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <ImageColumnActions {...row.original} />,
+    cell: ({ row }) => (
+      <ImageColumnActions
+        key={row.original.id}
+        id={row.original.id}
+        albumId={row.original.albumId}
+        isCoverImage={row.original.coverImage}
+        isVisible={row.original.visible}
+      />
+    ),
   },
 ];

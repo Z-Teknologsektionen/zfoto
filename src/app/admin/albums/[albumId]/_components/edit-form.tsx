@@ -2,9 +2,9 @@
 
 import { updateAlbumFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 import {
   FormFieldInput,
   FormFieldInputDateTimeLocal,
@@ -18,7 +18,7 @@ import { useUpdateAlbum } from "../_hooks/use-update-album";
 type EditAlbumFormProps = {
   title: string;
   id: string;
-  visible: boolean;
+  isVisible: boolean;
   isReception: boolean;
   date: Date;
 };
@@ -27,7 +27,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   title,
   id,
   isReception,
-  visible,
+  isVisible,
   date,
 }) => {
   const { execute: updateAlbum, status: updateAlbumstatus } = useUpdateAlbum();
@@ -35,9 +35,9 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   const form = useForm<z.input<typeof updateAlbumFrontEndSchema>>({
     resolver: zodResolver(updateAlbumFrontEndSchema),
     defaultValues: {
-      title: title,
-      isReception: isReception,
-      visible: visible,
+      title,
+      isReception,
+      visible: isVisible,
       date: getLocalDateTimeFromUTC(date).toISOString(),
     },
   });
@@ -45,9 +45,11 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((values) =>
-          updateAlbum({ albumId: id, ...values }),
-        )}
+        onSubmit={
+          void form.handleSubmit((values) => {
+            updateAlbum({ albumId: id, ...values });
+          })
+        }
         className="grid gap-4 md:grid-cols-2"
       >
         <FormFieldInput
@@ -75,7 +77,9 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
             disabled={updateAlbumstatus === "executing"}
             type="button"
             variant="outline"
-            onClick={() => form.reset()}
+            onClick={() => {
+              form.reset();
+            }}
           >
             Återställ
           </Button>

@@ -5,6 +5,8 @@ import * as React from "react";
 
 import { cn } from "~/utils/utils";
 
+const DEFAULT_SIDE_OFFSET = 4;
+
 const TooltipProvider = TooltipPrimitive.Provider;
 
 const Tooltip = TooltipPrimitive.Root;
@@ -14,7 +16,7 @@ const TooltipTrigger = TooltipPrimitive.Trigger;
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+>(({ className, sideOffset = DEFAULT_SIDE_OFFSET, ...props }, ref) => (
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
@@ -30,6 +32,7 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 type StandardTooltipProps = {
   content: React.ReactNode;
   trigger: React.ReactNode;
+  // eslint-disable-next-line react/boolean-prop-naming
   asChild?: boolean;
 };
 
@@ -37,16 +40,14 @@ const StandardTooltip: React.FC<StandardTooltipProps> = ({
   trigger: TriggerComponent,
   content: ContentComponent,
   asChild = true,
-}) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild={asChild}>{TriggerComponent}</TooltipTrigger>
-        <TooltipContent>{ContentComponent}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
+}) => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild={asChild}>{TriggerComponent}</TooltipTrigger>
+      <TooltipContent>{ContentComponent}</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 export {
   StandardTooltip,

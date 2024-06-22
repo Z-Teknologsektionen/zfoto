@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import type { FC } from "react";
+import { Fragment } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { BackButton } from "~/components/layout/back-button";
 import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
@@ -6,11 +8,13 @@ import { AlbumImageFilteringToolbar } from "./_components/album-image-filtering-
 import { EditAlbumForm } from "./_components/edit-form";
 import { imageColumns } from "./_components/image-columns";
 
-const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
+type AlbumAdminPageProps = { params: { albumId: string } };
+
+const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
   const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());
 
   return (
-    <>
+    <Fragment>
       <div className="container">
         <BackButton />
       </div>
@@ -19,7 +23,13 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
           <h1 className="text-xl font-semibold">Redigera album</h1>
           <p className="text-sm">{album.id}</p>
         </div>
-        <EditAlbumForm {...album} />
+        <EditAlbumForm
+          id={album.id}
+          title={album.title}
+          date={album.date}
+          isReception={album.isReception}
+          isVisible={album.visible}
+        />
       </section>
       <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Bilder</h1>
@@ -30,7 +40,7 @@ const AlbumAdminPage = async ({ params }: { params: { albumId: string } }) => {
           usePagination
         />
       </section>
-    </>
+    </Fragment>
   );
 };
 

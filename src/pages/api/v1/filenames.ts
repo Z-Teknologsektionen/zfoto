@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "~/utils/db";
 
 const filenamesRouter = async (
@@ -15,12 +15,15 @@ const filenamesRouter = async (
 
       const filenames = images.map((image) => image.filename);
 
-      return res.status(200).json(filenames);
+      res.status(200).json(filenames);
+      return;
     } catch (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
     }
   } else {
-    return res.status(200).json({ message: "Unused method" });
+    res.status(200).json({ message: "Unused method" });
+    return;
   }
 };
 

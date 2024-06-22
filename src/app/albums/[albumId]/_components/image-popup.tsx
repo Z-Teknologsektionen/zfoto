@@ -3,12 +3,12 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 import { useSearchParams } from "next/navigation";
-import type { FC } from "react";
+import { useCallback, type FC } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
 import { useRateLimit } from "~/hooks/useRateLimitPerSecond";
 import { useWindowKeydownListener } from "~/hooks/useWindowKeydownListener";
-import { PublicAlbum } from "~/utils/fetchAlbumData";
+import type { PublicAlbum } from "~/utils/fetchAlbumData";
 import { cn, getFullFilePath } from "~/utils/utils";
 import { useActiveImageDetails } from "../_hooks/useActiveImageDetails";
 import { handleUpdateAlbumUrl } from "../_utils/updateUrl";
@@ -19,57 +19,67 @@ type ImagePopupProps = {
   album: PublicAlbum;
 };
 
+const MINIMUM_MS_BETWEEN_IMAGE_CHANGE = 200;
+
+// eslint-disable-next-line max-lines-per-function
 export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const searchParams = useSearchParams();
   const currentImageId = searchParams?.get("imageId");
 
-  const { rateLimitedFunction } = useRateLimit(200);
+  const { rateLimitedFunction } = useRateLimit(MINIMUM_MS_BETWEEN_IMAGE_CHANGE);
 
-  const handleUpdateAlbumUrlWithRateLimit = (
-    newImageId: string | undefined,
-  ) => {
-    rateLimitedFunction(() =>
-      handleUpdateAlbumUrl({
-        albumId: album.id,
-        imageId: newImageId,
-        isOpen: !!currentImageId,
-      }),
-    );
-  };
+  const handleUpdateAlbumUrlWithRateLimit = useCallback(
+    (newImageId: string | undefined): void => {
+      rateLimitedFunction(() => {
+        handleUpdateAlbumUrl({
+          albumId: album.id,
+          imageId: newImageId,
+          isOpen: Boolean(currentImageId),
+        });
+      });
+    },
+    [album.id, currentImageId, rateLimitedFunction],
+  );
 
   const { activeImage, nextImageId, prevImageId } = useActiveImageDetails({
     images: album.images,
     imageId: currentImageId,
-    closePopup: () => handleUpdateAlbumUrlWithRateLimit(undefined),
+    closePopup: () => {
+      handleUpdateAlbumUrlWithRateLimit(undefined);
+    },
   });
 
-  useBodyOverflowToggle(!!currentImageId);
+  useBodyOverflowToggle(Boolean(currentImageId));
 
   useWindowKeydownListener((event: KeyboardEvent): void => {
-    if (event.key === "ArrowRight" && nextImageId)
+    if (event.key === "ArrowRight" && nextImageId !== undefined)
       handleUpdateAlbumUrlWithRateLimit(nextImageId);
-    if (event.key === "ArrowLeft" && prevImageId)
+    if (event.key === "ArrowLeft" && prevImageId !== undefined)
       handleUpdateAlbumUrlWithRateLimit(prevImageId);
     if (event.key === "Escape") handleUpdateAlbumUrlWithRateLimit(undefined);
   });
 
-  if (!activeImage) return null;
+  if (activeImage === undefined) return null;
 
   return (
     <section className="fixed inset-0 z-50 !my-0 flex flex-col gap-4 bg-white/75">
       <ImagePopupHeader
         photographer={activeImage.photographer}
         filename={activeImage.filename}
-        closePopup={() => handleUpdateAlbumUrlWithRateLimit(undefined)}
+        closePopup={() => {
+          handleUpdateAlbumUrlWithRateLimit(undefined);
+        }}
       />
-      <main className="flex flex-grow flex-row gap-4 px-4">
+      <main className="flex grow flex-row gap-4 px-4">
         <div className="flex place-items-center">
           <Button
             className={cn(
               buttonVariants({ size: "icon", variant: "ghost" }),
               "group p-2",
             )}
-            onClick={() => handleUpdateAlbumUrlWithRateLimit(prevImageId)}
+            onClick={() => {
+              handleUpdateAlbumUrlWithRateLimit(prevImageId);
+            }}
             disabled={prevImageId === undefined}
             size="icon"
             variant="ghost"
@@ -77,7 +87,7 @@ export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
             <ArrowLeft className="group-disabled:opacity-50" size={24} />
           </Button>
         </div>
-        <div className="relative flex-grow">
+        <div className="relative grow">
           <NextImage
             alt={`Bild från ${album.title}, Foto: ${activeImage.photographer}`}
             blurDataURL={getFullFilePath(activeImage.filename, "thumb")}
@@ -95,7 +105,9 @@ export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
             disabled={nextImageId === undefined}
             size="icon"
             variant="ghost"
-            onClick={() => handleUpdateAlbumUrlWithRateLimit(nextImageId)}
+            onClick={() => {
+              handleUpdateAlbumUrlWithRateLimit(nextImageId);
+            }}
           >
             <ArrowRight className="group-disabled:opacity-50" size={24} />
           </Button>

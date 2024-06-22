@@ -8,7 +8,7 @@ import { FooterSocialIconsRow } from "./footer-social-icons-row";
 
 export const Footer: FC = async () => {
   const session = await getServerAuthSession();
-  const isAuthenticated = !!session?.user;
+  const isAuthenticated = session !== null;
   const isAdminLike =
     isAuthenticated && adminLikeRoles.includes(session.user.role);
 
@@ -19,7 +19,7 @@ export const Footer: FC = async () => {
           <Link className="hidden min-[425px]:block" href="/">
             <Image
               alt="Bild på zFotos logga"
-              className="w-28 object-contain object-center "
+              className="w-28 object-contain object-center"
               height={112}
               src="/zFoto.svg"
               width={112}

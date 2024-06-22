@@ -23,8 +23,10 @@ const imageRouter = async (
     try {
       const vaild = createImageSchema.safeParse(req.body).success;
       if (!vaild) {
-        return res.status(404).send("Invalid input");
+        res.status(404).send("Invalid input");
+        return;
       }
+
       const body = req.body as PostBodyType;
 
       const createdImage = await db.image.create({
@@ -38,12 +40,15 @@ const imageRouter = async (
           },
         },
       });
-      return res.status(200).json(createdImage);
+      res.status(200).json(createdImage);
+      return;
     } catch (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
     }
   } else {
-    return res.status(200).json({ message: "Unused method" });
+    res.status(200).json({ message: "Unused method" });
+    return;
   }
 };
 

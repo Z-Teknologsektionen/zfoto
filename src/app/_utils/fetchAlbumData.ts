@@ -1,4 +1,7 @@
-import { Prisma } from "@prisma/client";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
+import type { Prisma } from "@prisma/client";
 import { db } from "~/utils/db";
 
 export const getLatestAlbums = async ({
@@ -9,7 +12,14 @@ export const getLatestAlbums = async ({
   count?: number;
   notIds?: string[];
   year?: number;
-}) => {
+}): Promise<
+  {
+    coverImageFilename: string;
+    date: Date;
+    id: string;
+    title: string;
+  }[]
+> => {
   const albums = await db.album.findMany({
     take: count,
     where: {
@@ -26,8 +36,8 @@ export const getLatestAlbums = async ({
         },
       },
       date: {
-        lte: new Date(year || new Date().getFullYear(), 12).toISOString(),
-        gte: new Date(year || 1970, 1).toISOString(),
+        lte: new Date(year ?? new Date().getFullYear(), 12).toISOString(),
+        gte: new Date(year ?? 1970, 1).toISOString(),
       },
     },
     select: {
@@ -51,18 +61,16 @@ export const getLatestAlbums = async ({
     },
   });
 
-  return albums.map(({ images, ...album }) => {
-    return {
-      ...album,
-      coverImageFilename: images.at(0)?.filename ?? "",
-    };
-  });
+  return albums.map(({ images, ...album }) => ({
+    ...album,
+    coverImageFilename: images.at(0)?.filename ?? "",
+  }));
 };
 
 export const getAlbumById = async (id: string) => {
   const rawAlbum = await db.album.findFirstOrThrow({
     where: {
-      id: id,
+      id,
       images: {
         some: {
           visible: {
@@ -98,8 +106,8 @@ export const getAlbumById = async (id: string) => {
     (image) => image.coverImage,
   )?.filename;
 
-  if (!coverImageFilename)
-    coverImageFilename = rawAlbum.images.at(0)!.filename as string;
+  if (coverImageFilename === undefined)
+    coverImageFilename = rawAlbum.images.at(0)?.filename ?? "";
 
   const photographers = [
     ...new Set(rawAlbum.images.map((item) => item.photographer)),

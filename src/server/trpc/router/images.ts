@@ -10,7 +10,7 @@ export const imageRouter = createTRPCRouter({
         imageId: objectId,
       }),
     )
-    .query(({ ctx, input }) =>
+    .query(async ({ ctx, input }) =>
       ctx.prisma.image.findUniqueOrThrow({
         where: {
           id: input.imageId,
@@ -19,7 +19,7 @@ export const imageRouter = createTRPCRouter({
     ),
   updateImageById: adminLikeProcedure
     .input(updateImageAPISchema)
-    .mutation(({ ctx, input }) =>
+    .mutation(async ({ ctx, input }) =>
       ctx.prisma.image.update({
         where: {
           id: input.imageId,

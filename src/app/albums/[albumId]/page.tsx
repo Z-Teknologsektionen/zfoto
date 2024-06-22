@@ -1,6 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense, cache } from "react";
+import type { FC } from "react";
+import { Fragment, Suspense, cache } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
@@ -50,13 +51,11 @@ export const generateMetadata = async ({
   };
 };
 
-const AlbumPage = async ({ params: { albumId } }: AlbumPageProps) => {
-  const album = await getAlbum(albumId).catch(() => {
-    return notFound();
-  });
+const AlbumPage: FC<AlbumPageProps> = async ({ params: { albumId } }) => {
+  const album = await getAlbum(albumId).catch(() => notFound());
 
   return (
-    <>
+    <Fragment>
       <SectionWrapper className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
         <AlbumInfo
           date={album.date}
@@ -75,7 +74,7 @@ const AlbumPage = async ({ params: { albumId } }: AlbumPageProps) => {
         </Suspense>
       </SectionWrapper>
       <ImagePopup album={album} />
-    </>
+    </Fragment>
   );
 };
 

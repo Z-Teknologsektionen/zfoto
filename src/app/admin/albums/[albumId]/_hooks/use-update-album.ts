@@ -1,6 +1,6 @@
 "use client";
 
-import { UseActionCallbackWithOutErrorProps } from "@/types/actions";
+import type { UseActionCallbackWithOutErrorProps } from "@/types/actions";
 import { useAction } from "next-safe-action/hooks";
 import { useId } from "react";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ export const useUpdateAlbum = (
   callbacks: UseActionCallbackWithOutErrorProps = undefined,
 ) => {
   const toastId = useId();
-  const props = useAction(updateAlbumAction, {
+  return useAction(updateAlbumAction, {
     onExecute: () => {
       toast.loading("Updaterar album...", {
         id: toastId,
@@ -28,6 +28,4 @@ export const useUpdateAlbum = (
     },
     onError: defaultOnErrorToastHandler,
   });
-
-  return props;
 };

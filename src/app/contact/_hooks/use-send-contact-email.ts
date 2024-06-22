@@ -1,6 +1,6 @@
 "use client";
 
-import { UseActionCallbackProps } from "@/types/actions";
+import type { UseActionCallbackProps } from "@/types/actions";
 import { useAction } from "next-safe-action/hooks";
 import { useId } from "react";
 import toast from "react-hot-toast";

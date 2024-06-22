@@ -1,12 +1,11 @@
 import { db } from "~/utils/db";
 
-export const getImagebyId = (id: string) => {
-  return db.image.findUniqueOrThrow({
+export const getImagebyId = async (id: string) =>
+  db.image.findUniqueOrThrow({
     where: {
-      id: id,
+      id,
     },
     include: {
       album: true,
     },
   });
-};

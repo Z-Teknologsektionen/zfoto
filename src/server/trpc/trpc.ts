@@ -14,8 +14,8 @@
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { Session } from "next-auth";
 
 /**
  * 2. INITIALIZATION
@@ -25,7 +25,7 @@ import { type Session } from "next-auth";
  * errors on the backend.
  */
 import { Roles } from "@prisma/client";
-import { initTRPC, TRPCError } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/utils/authOptions";
@@ -46,12 +46,10 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  return {
-    session: opts.session,
-    prisma: db,
-  };
-};
+const createInnerTRPCContext = (opts: CreateContextOptions) => ({
+  session: opts.session,
+  prisma: db,
+});
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -126,13 +124,12 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (ctx.session === null) throw new TRPCError({ code: "UNAUTHORIZED" });
+
   return next({
     ctx: {
-      // infers the `session` as non-nullable
+      // Infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
     },
   });
@@ -148,13 +145,13 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
-const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !(ctx.session.user.role === Roles.ADMIN)) {
+const enforceUserIsAdmin = t.middleware(async ({ ctx, next }) => {
+  if (ctx.session === null || !(ctx.session.user.role === Roles.ADMIN))
     throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+
   return next({
     ctx: {
-      // infers the `session` as non-nullable
+      // Infers the `session` as non-nullable
       session: {
         ...ctx.session,
         user: { ...ctx.session.user, role: Roles.ADMIN },
@@ -163,14 +160,14 @@ const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
   });
 });
 
-const enforceUserisAdminLike = t.middleware(({ ctx, next }) => {
+const enforceUserisAdminLike = t.middleware(async ({ ctx, next }) => {
   const adminLikeRoles = [Roles.PASSWORD_ADMIN, Roles.ADMIN] as Roles[];
-  if (!ctx.session || !adminLikeRoles.includes(ctx.session.user.role)) {
+  if (ctx.session === null || !adminLikeRoles.includes(ctx.session.user.role))
     throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+
   return next({
     ctx: {
-      // infers the `session` as non-nullable
+      // Infers the `session` as non-nullable
       session: {
         ...ctx.session,
       },

@@ -1,4 +1,9 @@
-import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form";
+import type {
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -11,7 +16,7 @@ import { Input } from "~/components/ui/input";
 
 type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
   Parameters<typeof Input>[0],
-  "form" | "name" | "label" | "description"
+  "description" | "form" | "label" | "name"
 > & {
   form: UseFormReturn<TFieldValues>;
   name: Path<TFieldValues>;
@@ -27,30 +32,33 @@ export const FormFieldInput = <TFieldValues extends FieldValues>({
   label,
   description,
   ...rest
-}: FormFieldInputProps<TFieldValues>) => {
-  return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input {...field} {...rest} />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};
+}: FormFieldInputProps<TFieldValues>): JSX.Element => (
+  <FormField
+    control={form.control}
+    name={name}
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>{label}</FormLabel>
+        <FormControl>
+          <Input {...field} {...rest} />
+        </FormControl>
+        {description !== undefined && (
+          <FormDescription>{description}</FormDescription>
+        )}
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+);
 
 export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
   label = "Epost",
   placeholder = "Fyll i epost...",
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
@@ -65,7 +73,10 @@ export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
   type = "password",
   autoComplete = "current-password",
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
@@ -91,7 +102,10 @@ export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
   },
   value = (form.getValues(name) as string).slice(0, -8),
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,

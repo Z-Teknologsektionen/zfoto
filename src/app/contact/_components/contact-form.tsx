@@ -2,7 +2,7 @@
 
 import { emailSchema } from "@/server/trpc/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
@@ -21,16 +21,18 @@ import { Textarea } from "~/components/ui/textarea";
 import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
 export const ContactForm: FC = () => {
-  const { execute: sendEmail, status } = useSendContactEmail({
-    onSuccess: () => form.reset(),
-  });
-
   const form = useForm({
     resolver: zodResolver(emailSchema),
     defaultValues: {
       email: "",
       message: "",
       subject: "",
+    },
+  });
+
+  const { execute: sendEmail, status } = useSendContactEmail({
+    onSuccess: () => {
+      form.reset();
     },
   });
 
@@ -73,7 +75,9 @@ export const ContactForm: FC = () => {
       <div className="col-span-2 flex w-full flex-row items-center justify-end gap-2">
         <Button
           type="button"
-          onClick={() => form.reset()}
+          onClick={() => {
+            form.reset();
+          }}
           variant="outline"
           size="default"
           disabled={status === "executing"}

@@ -8,20 +8,24 @@ export const handleUpdateAlbumUrl = ({
   albumId,
   imageId,
   isOpen,
-}: UpdateUrlProps) => {
+}: UpdateUrlProps): void => {
   if (typeof window === "undefined") return;
 
-  if (imageId)
-    return window.history.replaceState(
+  if (imageId !== undefined) {
+    window.history.replaceState(
       null,
       "",
       `/albums/${albumId}?imageId=${imageId}`,
     );
+    return;
+  }
 
   if (!isOpen) return;
 
-  if (window.history.length <= 2)
-    return window.history.replaceState(null, "", `/albums/${albumId}`);
+  if (window.history.length <= 2) {
+    window.history.replaceState(null, "", `/albums/${albumId}`);
+    return;
+  }
 
-  return window.history.back();
+  window.history.back();
 };

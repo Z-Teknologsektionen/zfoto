@@ -3,13 +3,14 @@ import { appRouter } from "@/server/trpc";
 import { createTRPCContext } from "@/server/trpc/trpc";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 
-// export API handler
+// Export API handler
 export default createNextApiHandler({
   router: appRouter,
   createContext: createTRPCContext,
   onError:
     env.NODE_ENV === "development"
-      ? ({ path = "", error }) => {
+      ? ({ path = "", error }): undefined => {
+          // eslint-disable-next-line no-console
           console.error(`❌ tRPC failed on ${path}: ${error.message}`);
         }
       : undefined,

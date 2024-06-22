@@ -38,17 +38,18 @@ const albumRouter = async (
   if (req.method === "GET") {
     try {
       const album = await getLatestAlbums({});
-      return res.status(200).json(album);
+      res.status(200).json(album);
+      return;
     } catch (error) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
     }
   } else if (req.method === "POST") {
     try {
       const parse = createAlbumSchema.safeParse(req.body);
       if (!parse.success) {
-        return res
-          .status(400)
-          .json({ error: parse.error.flatten().fieldErrors });
+        res.status(400).json({ error: parse.error.flatten().fieldErrors });
+        return;
       }
       const body = req.body as PostBodyType;
 
@@ -98,20 +99,24 @@ const albumRouter = async (
           },
         },
       });
-      return res.status(200).json(createdAlbum);
+      res.status(200).json(createdAlbum);
+      return;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === "P2002") {
-          return res.status(400).json({
+          res.status(400).json({
             error:
               "Image with filename already exists, please check filenames and try again. No album has been created",
           });
+          return;
         }
       }
-      return res.status(500).json({ error: err });
+      res.status(500).json({ error: err });
+      return;
     }
   } else {
-    return res.status(200).json({ message: "Unused method" });
+    res.status(200).json({ message: "Unused method" });
+    return;
   }
 };
 

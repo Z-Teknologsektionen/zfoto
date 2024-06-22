@@ -1,6 +1,7 @@
 import { adminLikeRoles } from "@/constants/admin";
 import { env } from "@/env.mjs";
-import { SafeClientOpts, createSafeActionClient } from "next-safe-action";
+import type { SafeClientOpts } from "next-safe-action";
+import { createSafeActionClient } from "next-safe-action";
 import { getServerAuthSession } from "~/utils/authOptions";
 import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
 
@@ -19,8 +20,10 @@ const handleServerErrorLog: SafeClientOpts<
 >["handleServerErrorLog"] = (e) => {
   if (env.NODE_ENV === "production") {
     // TODO: Updatera denna till att maila webbgruppen eller likande för bättre hantering
+  } else {
+    // eslint-disable-next-line no-console
+    console.error(e);
   }
-  console.error(e);
 };
 
 export const baseSafeAction = createSafeActionClient({
@@ -39,7 +42,7 @@ export const authSafeAction = createSafeActionClient({
   middleware: async () => {
     const session = await getServerAuthSession();
 
-    if (!session) {
+    if (session === null) {
       throw new ActionError(
         "Du måste vara inloggad, vänligen logga in och försök igen",
       );
@@ -55,7 +58,7 @@ export const adminLikeSafeAction = createSafeActionClient({
   middleware: async () => {
     const session = await getServerAuthSession();
 
-    if (!session) {
+    if (session === null) {
       throw new ActionError(
         "Du måste vara inloggad, vänligen logga in och försök igen",
       );
@@ -74,7 +77,7 @@ export const adminSafeAction = createSafeActionClient({
   middleware: async () => {
     const session = await getServerAuthSession();
 
-    if (!session) {
+    if (session === null) {
       throw new ActionError(
         "Du måste vara inloggad, vänligen logga in och försök igen",
       );

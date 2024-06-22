@@ -15,7 +15,7 @@ export const albumRouter = createTRPCRouter({
         albumId: objectId,
       }),
     )
-    .query(({ ctx, input }) =>
+    .query(async ({ ctx, input }) =>
       ctx.prisma.album.findUniqueOrThrow({
         where: {
           id: input.albumId,
@@ -24,7 +24,7 @@ export const albumRouter = createTRPCRouter({
     ),
   updateAlbumById: adminLikeProcedure
     .input(updateAlbumAPISchema)
-    .mutation(({ ctx, input }) =>
+    .mutation(async ({ ctx, input }) =>
       ctx.prisma.album.update({
         where: {
           id: input.albumId,
@@ -39,7 +39,7 @@ export const albumRouter = createTRPCRouter({
     ),
   setReceptionVisibility: adminProcedure
     .input(z.object({ visible: z.boolean() }))
-    .mutation(({ ctx, input }) =>
+    .mutation(async ({ ctx, input }) =>
       ctx.prisma.album.updateMany({
         where: {
           isReception: true,

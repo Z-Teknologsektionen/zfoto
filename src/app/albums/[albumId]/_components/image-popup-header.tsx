@@ -1,6 +1,6 @@
 import { Copy, Download, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { FC } from "react";
+import type { FC } from "react";
 import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
@@ -19,7 +19,7 @@ export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
 }) => {
   const { data: session } = useSession();
 
-  const isAuthenticated = session && session.user && session.user.role;
+  const isAuthenticated = session !== null;
 
   return (
     <header className="flex h-16 w-full justify-end gap-4 bg-white pr-2 pt-2 text-right md:pr-4 md:pt-4">
@@ -30,7 +30,7 @@ export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
             size="icon"
             variant="outline"
             onClick={() => {
-              navigator.clipboard.writeText(createByline(photographer));
+              void navigator.clipboard.writeText(createByline(photographer));
             }}
           >
             <Copy size={20} />

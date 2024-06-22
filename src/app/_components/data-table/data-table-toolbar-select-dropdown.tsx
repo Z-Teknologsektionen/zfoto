@@ -1,4 +1,4 @@
-import { Column } from "@tanstack/react-table";
+import type { Column } from "@tanstack/react-table";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Select,
@@ -13,7 +13,7 @@ type ToolbarSelectDropdownProps<TData> = {
   className?: string;
   placeholder: string;
   column: Column<TData, unknown> | undefined;
-  size?: "3xl" | "2xl" | "xl" | "lg" | "default" | "sm";
+  size?: "2xl" | "3xl" | "default" | "lg" | "sm" | "xl";
   options: { value: string; label: string }[];
 };
 
@@ -23,15 +23,15 @@ export const ToolbarSelectDropdown = <TData,>({
   className = "",
   size = "default",
   options,
-}: ToolbarSelectDropdownProps<TData>) => {
-  if (!column) throw new Error("No column found");
+}: ToolbarSelectDropdownProps<TData>): JSX.Element => {
+  if (column === undefined) throw new Error("No column found");
 
   return (
     <Select
       onValueChange={(value) => {
-        column.setFilterValue(value !== "all" ? value : "");
+        column.setFilterValue(value === "all" ? "" : value);
       }}
-      defaultValue={"all"}
+      defaultValue="all"
     >
       <SelectTrigger
         className={cn(

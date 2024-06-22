@@ -9,7 +9,7 @@ const patchUserSchema = z.object({
 });
 
 export async function GET(
-  req: Request,
+  _req: Request,
   { params }: { params: { userId: string } },
 ): Promise<NextResponse<unknown>> {
   const user = await db.user.findUniqueOrThrow({
@@ -28,13 +28,11 @@ export async function PATCH(
 
   const { userId } = params;
 
-  if (!result.success) {
+  if (!result.success)
     return NextResponse.json({ error: result.error }, { status: 400 });
-  }
 
-  if (!isObjectIdOrHexString(userId)) {
+  if (!isObjectIdOrHexString(userId))
     return NextResponse.json({ error: "Invalid ObjectId" }, { status: 400 });
-  }
 
   try {
     await db.user.update({
@@ -47,7 +45,6 @@ export async function PATCH(
     });
     return NextResponse.json({ message: "No Content" }, { status: 200 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: "Internal error" }, { status: 500 });
   }
 }

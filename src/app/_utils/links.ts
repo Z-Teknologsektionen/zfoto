@@ -1,4 +1,4 @@
-import { IconType } from "react-icons";
+import type { IconType } from "react-icons";
 import { LuFacebook, LuInstagram, LuMail } from "react-icons/lu";
 import type { NrRange } from "ts-number-range";
 

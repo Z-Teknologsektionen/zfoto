@@ -1,8 +1,11 @@
 import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
+import type { User } from "@prisma/client";
 import { compare } from "bcrypt";
 import { db } from "~/utils/db";
 
-export const isValidCredentials = async (data: unknown) => {
+export const isValidCredentials = async (
+  data: unknown,
+): Promise<User | null> => {
   const reqBodyTest = userSignInForm.safeParse(data);
 
   if (!reqBodyTest.success) return null;
@@ -20,7 +23,8 @@ export const isValidCredentials = async (data: unknown) => {
     },
   });
 
-  if (!user || !user.password) return null;
+  if (user === null) return null;
+  if (user.password === null) return null;
 
   const isCorrectPassword = await compare(reqBody.password, user.password);
 

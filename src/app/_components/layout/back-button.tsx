@@ -3,7 +3,7 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC, PropsWithChildren } from "react";
+import { Fragment, type FC, type PropsWithChildren } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
 type BackButtonProps = {
@@ -13,15 +13,15 @@ type BackButtonProps = {
 export const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
   href,
   children = (
-    <>
+    <Fragment>
       <ChevronLeft />
       <span>Tillbaka</span>
-    </>
+    </Fragment>
   ),
 }) => {
   const router = useRouter();
 
-  if (href) {
+  if (href !== undefined) {
     return (
       <Link
         href={href}
@@ -39,11 +39,8 @@ export const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
     <Button
       variant="link"
       onClick={() => {
-        if (window.history.length <= 2) {
-          router.push("/");
-        } else {
-          router.back();
-        }
+        if (window.history.length <= 2) router.push("/");
+        else router.back();
       }}
       className="-ml-8 w-fit"
     >

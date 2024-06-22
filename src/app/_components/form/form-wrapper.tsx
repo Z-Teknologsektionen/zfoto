@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
-import {
+import type { PropsWithChildren } from "react";
+import type {
   FieldValues,
   SubmitErrorHandler,
   SubmitHandler,
@@ -21,16 +21,14 @@ export const FormWrapper = <TFieldValues extends FieldValues>({
   onInvalid,
   children,
   className = "",
-}: PropsWithChildren<FormWrapperProps<TFieldValues>>) => {
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-        className={cn("mx-auto grid max-w-3xl grid-cols-2 gap-2", className)}
-        spellCheck
-      >
-        {children}
-      </form>
-    </Form>
-  );
-};
+}: PropsWithChildren<FormWrapperProps<TFieldValues>>): JSX.Element => (
+  <Form {...form}>
+    <form
+      onSubmit={void form.handleSubmit(onSubmit, onInvalid)}
+      className={cn("mx-auto grid max-w-3xl grid-cols-2 gap-2", className)}
+      spellCheck
+    >
+      {children}
+    </form>
+  </Form>
+);

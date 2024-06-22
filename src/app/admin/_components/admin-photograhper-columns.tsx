@@ -1,10 +1,10 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { formatDateTimeString } from "~/utils/date-utils";
-import { CountsPerPhotographerType } from "~/utils/fetchAdminData";
+import type { CountsPerPhotographerType } from "~/utils/fetchAdminData";
 
 export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
   [
@@ -57,9 +57,9 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       ),
       cell: ({ row }) => (
         <DataTableCell center>
-          {row.original.firstImage
-            ? formatDateTimeString(row.original.firstImage)
-            : "Okänd"}
+          {row.original.firstImage === undefined
+            ? "Okänd"
+            : formatDateTimeString(row.original.firstImage)}
         </DataTableCell>
       ),
     },
@@ -70,9 +70,9 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       ),
       cell: ({ row }) => (
         <DataTableCell center>
-          {row.original.latestImage
-            ? formatDateTimeString(row.original.latestImage)
-            : "Okänd"}
+          {row.original.latestImage === undefined
+            ? "Okänd"
+            : formatDateTimeString(row.original.latestImage)}
         </DataTableCell>
       ),
     },

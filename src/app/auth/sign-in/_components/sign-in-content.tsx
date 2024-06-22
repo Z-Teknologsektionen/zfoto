@@ -1,18 +1,20 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import type { FC } from "react";
+import { Fragment } from "react";
 import { Separator } from "~/components/ui/separator";
 import { SignInErrorCard } from "./sign-in-error-card";
 import { SignInWithCredentialsForm } from "./sign-in-with-credentials-form";
 import { SignInWithExternalProvider } from "./sign-in-with-external-provider";
 
-export const SignInContent = () => {
+export const SignInContent: FC = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") || undefined;
+  const callbackUrl = searchParams?.get("callbackUrl") ?? undefined;
   const error = searchParams?.get("error");
 
   return (
-    <>
+    <Fragment>
       {error === "Default" && (
         <SignInErrorCard text="Okänt fel har inträffat. Försök igen senare!" />
       )}
@@ -26,6 +28,6 @@ export const SignInContent = () => {
         <SignInErrorCard text="Felaktiga uppgifter. Försök igen!" />
       )}
       <SignInWithCredentialsForm callbackUrl={callbackUrl} />
-    </>
+    </Fragment>
   );
 };
