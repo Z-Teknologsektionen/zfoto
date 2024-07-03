@@ -2,12 +2,12 @@ import { adminLikeRoles } from "@/constants/admin";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { getServerAuthSession } from "~/utils/authOptions";
+import { getAuth } from "~/utils/auth";
 import { FooterLinks } from "./footer-links";
 import { FooterSocialIconsRow } from "./footer-social-icons-row";
 
 export const Footer: FC = async () => {
-  const session = await getServerAuthSession();
+  const session = await getAuth();
   const isAuthenticated = session !== null;
   const isAdminLike =
     isAuthenticated && adminLikeRoles.includes(session.user.role);

@@ -2,7 +2,7 @@ import { adminLikeRoles } from "@/constants/admin";
 import { env } from "@/env.mjs";
 import type { SafeClientOpts } from "next-safe-action";
 import { createSafeActionClient } from "next-safe-action";
-import { getServerAuthSession } from "~/utils/authOptions";
+import { getAuth } from "~/utils/auth";
 import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
 
 const handleReturnedServerError: SafeClientOpts<
@@ -30,7 +30,7 @@ export const baseSafeAction = createSafeActionClient({
   handleReturnedServerError,
   handleServerErrorLog,
   middleware: async () => {
-    const session = await getServerAuthSession();
+    const session = await getAuth();
 
     return { session };
   },
@@ -40,7 +40,7 @@ export const authSafeAction = createSafeActionClient({
   handleReturnedServerError,
   handleServerErrorLog,
   middleware: async () => {
-    const session = await getServerAuthSession();
+    const session = await getAuth();
 
     if (session === null) {
       throw new ActionError(
@@ -56,7 +56,7 @@ export const adminLikeSafeAction = createSafeActionClient({
   handleReturnedServerError,
   handleServerErrorLog,
   middleware: async () => {
-    const session = await getServerAuthSession();
+    const session = await getAuth();
 
     if (session === null) {
       throw new ActionError(
@@ -75,7 +75,7 @@ export const adminSafeAction = createSafeActionClient({
   handleReturnedServerError,
   handleServerErrorLog,
   middleware: async () => {
-    const session = await getServerAuthSession();
+    const session = await getAuth();
 
     if (session === null) {
       throw new ActionError(

@@ -2,7 +2,7 @@ import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
 import { Roles } from "@prisma/client";
 import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
-import { getServerAuthSession } from "~/utils/authOptions";
+import { getAuth } from "~/utils/auth";
 import {
   getAlbumCountFromYear,
   getCountsPerPhotographer,
@@ -21,7 +21,7 @@ const DECIMAL_TO_PROCENT = 100;
 
 // eslint-disable-next-line max-lines-per-function
 const AdminDashbord: FC = async () => {
-  const session = await getServerAuthSession();
+  const session = await getAuth();
   const isAdmin = session?.user.role === Roles.ADMIN;
 
   const currentDate = new Date();

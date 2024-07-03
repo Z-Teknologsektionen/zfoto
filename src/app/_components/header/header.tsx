@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
-import { getServerAuthSession } from "~/utils/authOptions";
+import { getAuth } from "~/utils/auth";
 import { HeaderAvatarWithDropdown } from "./header-avatar-with-dropdown";
 import { HeaderMainNav } from "./header-main-nav";
 import { HeaderMobileNav } from "./header-mobile-nav";
 
 export const Header: FC = async () => {
-  const session = await getServerAuthSession();
+  const session = await getAuth();
 
   return (
     <div className="bg-[#333333] text-[#a7a7a7]">
