@@ -13,7 +13,7 @@ export const useSetReceptionAlbumVisibility = (
   const toastId = useId();
 
   return useAction(setReceptionAlbumVisibilityAction, {
-    onExecute: ({ isVisible }) => {
+    onExecute: ({ input: { isVisible } }) => {
       toast.loading(
         `${isVisible ? "Visar" : "Döljer"} alla mottagningsalbum...`,
         {
@@ -26,7 +26,7 @@ export const useSetReceptionAlbumVisibility = (
       toast.dismiss(toastId);
       callbacks?.onSettled?.();
     },
-    onSuccess: (_, { isVisible }) => {
+    onSuccess: ({ input: { isVisible } }) => {
       toast.success(
         `${isVisible ? "Visar" : "Döljer"} nu alla mottagningsalbum!`,
       );

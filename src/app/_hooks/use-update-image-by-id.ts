@@ -20,8 +20,8 @@ export const useUpdateImageById = (
       toast.dismiss(toastId);
       callbacks?.onSettled?.();
     },
-    onSuccess: ({ filename }) => {
-      toast.success(`Bild med filnamn: ${filename} har nu updaterats!`);
+    onSuccess: ({ data }) => {
+      toast.success(`Bild med filnamn: ${data?.filename} har nu updaterats!`);
       callbacks?.onSuccess?.();
     },
     onError: defaultOnErrorToastHandler,

@@ -6,7 +6,6 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
 import {
@@ -17,9 +16,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { trpc } from "~/trpc/client";
 import { formatDateTimeString } from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
+import { useUpdateAlbumById } from "../_hooks/use-update-album-by-id";
 
 type AdminAlbumType = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
@@ -82,30 +81,14 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const ctx = trpc.useUtils();
-      const { mutate: updateAlbum, isLoading } =
-        trpc.album.updateAlbumById.useMutation({
-          onMutate: () => toast.loading("Uppdaterar album"),
-          // eslint-disable-next-line @typescript-eslint/max-params
-          onSettled: async (_, __, ___, context) => {
-            toast.dismiss(context);
-            await ctx.album.invalidate();
-            await ctx.image.invalidate();
-          },
-          onSuccess() {
-            toast.success("Album uppdaterat!");
-          },
-          onError(error) {
-            toast.error("Kunde inte uppdatera, försök igen senare...");
-            toast.error(error.message);
-          },
-        });
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { execute: updateAlbum, status } = useUpdateAlbumById();
 
       const album = row.original;
 
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={isLoading}>
+          <DropdownMenuTrigger asChild disabled={status === "executing"}>
             <Button className="size-8 p-0" variant="ghost">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="size-4" />

@@ -1,29 +1,25 @@
 "use client";
 
+import { updateImageFrontEndSchema } from "@/schemas/helpers/zodScheams";
 import type { getImagebyId } from "@/server/data-access/images";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Prisma } from "@prisma/client";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import type { z } from "zod";
-import { Button } from "~/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import { Switch } from "~/components/ui/switch";
-import { trpc } from "~/trpc/client";
+  FormFieldInput,
+  FormFieldInputDateTimeLocal,
+} from "~/components/form/form-field-input";
+import { FormFieldSwitch } from "~/components/form/form-field-switch";
+import { Button } from "~/components/ui/button";
+import { Form } from "~/components/ui/form";
+import { useUpdateImageById } from "~/hooks/use-update-image-by-id";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 
 type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
 
+// eslint-disable-next-line max-lines-per-function
 export const EditImageForm: FC<AdminImage> = ({
   coverImage,
   date,
@@ -31,19 +27,7 @@ export const EditImageForm: FC<AdminImage> = ({
   photographer,
   visible,
 }) => {
-  const { mutate: updateImage, isLoading } =
-    trpc.image.updateImageById.useMutation({
-      onMutate: () => toast.loading("Uppdaterar album..."),
-      // eslint-disable-next-line @typescript-eslint/max-params
-      onSettled: (_, __, ___, context) => {
-        toast.dismiss(context);
-      },
-      onSuccess: () => toast.success("Bild uppdaterad!"),
-      onError: (error) => {
-        toast.error("Kunde inte uppdatera, försök igen senare...");
-        toast.error(error.message);
-      },
-    });
+  const { execute: updateImage, isExecuting } = useUpdateImageById();
 
   const form = useForm<z.infer<typeof updateImageFrontEndSchema>>({
     resolver: zodResolver(updateImageFrontEndSchema),
@@ -69,83 +53,35 @@ export const EditImageForm: FC<AdminImage> = ({
         }
         className="grid gap-4 md:grid-cols-2"
       >
-        <FormField
-          control={form.control}
+        <FormFieldInput
+          form={form}
           name="photographer"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fotograf</FormLabel>
-              <FormControl>
-                <Input placeholder="Fyll i fotografensnamn..." {...field} />
-              </FormControl>
-              <FormDescription>Namnet på fotografen</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+          label="Fotograf"
+          placeholder="Fyll i fotografensnamn..."
+          description="Namnet på fotografen"
         />
-        <FormField
-          control={form.control}
+        <FormFieldInputDateTimeLocal
+          form={form}
           name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Datum och tid</FormLabel>
-              <FormControl>
-                <Input
-                  type="datetime-local"
-                  placeholder="Fyll i datum och tid"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Datumet och tiden då bilden togs
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+          label="Datum och tid"
+          placeholder="Fyll i datum och tid"
+          description="Datumet och tiden då bilden togs"
         />
-        <FormField
-          control={form.control}
+        <FormFieldSwitch
+          form={form}
           name="visible"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Visas på hemsidan</FormLabel>
-                <FormDescription>
-                  Välj om bilden ska visas för användare eller inte.
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
+          label="Visas på hemsidan"
+          description="Välj om bilden ska visas för användare eller inte."
         />
-        <FormField
-          control={form.control}
+        <FormFieldSwitch
+          form={form}
           name="coverImage"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Omslagsbild</FormLabel>
-                <FormDescription>
-                  Välj om bilden ska visas som omslagsbild
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
+          label="Omslagsbild"
+          description="Välj om bilden ska visas som omslagsbild"
         />
         <div className="col-span-full flex flex-row justify-end gap-2">
           <Button
-            disabled={isLoading}
+            disabled={isExecuting}
             type="button"
             variant="outline"
             onClick={() => {
@@ -154,7 +90,7 @@ export const EditImageForm: FC<AdminImage> = ({
           >
             Återställ
           </Button>
-          <Button disabled={isLoading} type="submit">
+          <Button disabled={isExecuting} type="submit">
             Spara
           </Button>
         </div>

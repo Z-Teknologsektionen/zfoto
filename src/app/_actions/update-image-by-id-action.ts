@@ -1,8 +1,11 @@
-import { updateImageAPISchema } from "@/server/trpc/helpers/zodScheams";
-import { updateImageById } from "~/utils/update-image-by-id";
+"use server";
+
+import { updateImageById } from "@/server/data-access/images";
+import { updateImageAPISchema } from "@/server/schemas/helpers/zodScheams";
 import { adminLikeSafeAction } from "./safe-action";
 
-export const updateImageByIdAction = adminLikeSafeAction(
-  updateImageAPISchema,
-  async ({ imageId, ...data }) => updateImageById(imageId, data),
-);
+export const updateImageByIdAction = adminLikeSafeAction
+  .schema(updateImageAPISchema)
+  .action(async ({ parsedInput: { imageId, ...data } }) =>
+    updateImageById(imageId, data),
+  );

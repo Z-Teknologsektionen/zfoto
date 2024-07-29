@@ -1,6 +1,6 @@
 "use client";
 
-import { updateAlbumFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
+import { updateAlbumFrontEndSchema } from "@/schemas/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ type EditAlbumFormProps = {
   date: Date;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   title,
   id,

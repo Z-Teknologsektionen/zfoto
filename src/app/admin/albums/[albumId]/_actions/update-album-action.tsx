@@ -1,24 +1,21 @@
 "use server";
 
-import { updateAlbumAPISchema } from "@/server/trpc/helpers/zodScheams";
+import { updateAlbumAPISchema } from "@/schemas/helpers/zodScheams";
+import { updateAlbumById } from "@/server/data-access/albums";
 import { adminLikeSafeAction } from "~/actions/safe-action";
 import { getUTCFromLocalDate } from "~/utils/date-utils";
-import { updateAlbumById } from "../_utils/update-album-by-id";
 
-export const updateAlbumAction = adminLikeSafeAction(
-  updateAlbumAPISchema,
-  async ({ albumId, date, isReception, title, visible }) => {
-    const album = await updateAlbumById({
-      albumId,
-      data: {
+export const updateAlbumAction = adminLikeSafeAction
+  .schema(updateAlbumAPISchema)
+  .action(
+    async ({ parsedInput: { albumId, date, isReception, title, visible } }) => {
+      const album = await updateAlbumById(albumId, {
         isReception,
         title,
         visible,
-        date:
-          date === undefined ? undefined : getUTCFromLocalDate(new Date(date)),
-      },
-    });
+        date: date === undefined ? undefined : getUTCFromLocalDate(date),
+      });
 
-    return album;
-  },
-);
+      return album;
+    },
+  );
