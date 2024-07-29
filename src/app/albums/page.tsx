@@ -1,10 +1,10 @@
 import { NUMBER_OF_IMAGES_TO_PRELOAD } from "@/constants/album";
+import { getLatestAlbums } from "@/server/data-access/albums";
 import type { Metadata } from "next";
 import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 import { FilterAlbumsWizard } from "./_components/filter-albums-wizard";
 
 export const revalidate = 300;

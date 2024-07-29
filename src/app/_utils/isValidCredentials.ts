@@ -1,34 +1,21 @@
-import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
+"use server";
+
+import { getUserByEmailWithPassword } from "@/server/data-access/users";
 import type { User } from "@prisma/client";
 import { compare } from "bcrypt";
-import { db } from "~/utils/db";
 
-export const isValidCredentials = async (
-  data: unknown,
-): Promise<User | null> => {
-  const reqBodyTest = userSignInForm.safeParse(data);
-
-  if (!reqBodyTest.success) return null;
-
-  const reqBody = reqBodyTest.data;
-
-  const user = await db.user.findUnique({
-    where: {
-      email: reqBody.email,
-      password: {
-        not: {
-          equals: null,
-        },
-      },
-    },
-  });
+export const isValidCredentials = async (data: {
+  password: string;
+  email: string;
+}): Promise<User | null> => {
+  const user = await getUserByEmailWithPassword(data.email);
 
   if (user === null) return null;
   if (user.password === null) return null;
 
-  const isCorrectPassword = await compare(reqBody.password, user.password);
+  const isCorrectPassword = await compare(data.password, user.password);
 
   if (!isCorrectPassword) return null;
 
-  return user;
+  return { ...user, password: null };
 };

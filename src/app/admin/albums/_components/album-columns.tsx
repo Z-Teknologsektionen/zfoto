@@ -1,5 +1,7 @@
 "use client";
 
+import type { getAllAlbumsAsAdmin } from "@/server/data-access/albums";
+import type { Prisma } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
@@ -17,8 +19,9 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { trpc } from "~/trpc/client";
 import { formatDateTimeString } from "~/utils/date-utils";
-import type { AdminAlbumType } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
+
+type AdminAlbumType = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
 export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   {

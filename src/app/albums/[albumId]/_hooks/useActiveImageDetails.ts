@@ -1,14 +1,19 @@
 "use client";
 
+import type { getAlbumWithImagesById } from "@/server/data-access/albums";
+import type { Prisma } from "@prisma/client";
 import { useMemo } from "react";
-import type { PublicAlbum } from "~/utils/fetchAlbumData";
+
+type ImageType = Prisma.PromiseReturnType<
+  typeof getAlbumWithImagesById
+>["images"];
 
 export const useActiveImageDetails = ({
   images,
   imageId,
   closePopup,
 }: {
-  images: PublicAlbum["images"];
+  images: ImageType;
   imageId: string | null | undefined;
   closePopup: () => void;
 }) =>

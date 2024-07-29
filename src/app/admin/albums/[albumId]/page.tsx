@@ -1,9 +1,9 @@
+import { getAlbumWithImagesAsAdmin } from "@/server/data-access/albums";
 import { notFound } from "next/navigation";
 import type { FC } from "react";
 import { Fragment } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { BackButton } from "~/components/layout/back-button";
-import { getAlbumAsAdmin } from "~/utils/fetchAdminData";
 import { AlbumImageFilteringToolbar } from "./_components/album-image-filtering-toolbar";
 import { EditAlbumForm } from "./_components/edit-form";
 import { imageColumns } from "./_components/image-columns";
@@ -11,7 +11,9 @@ import { imageColumns } from "./_components/image-columns";
 type AlbumAdminPageProps = { params: { albumId: string } };
 
 const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
-  const album = await getAlbumAsAdmin(params.albumId).catch(() => notFound());
+  const album = await getAlbumWithImagesAsAdmin(params.albumId).catch(() =>
+    notFound(),
+  );
 
   return (
     <Fragment>

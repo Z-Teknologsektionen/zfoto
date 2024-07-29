@@ -1,5 +1,7 @@
 "use client";
 
+import type { getAlbumWithImagesById } from "@/server/data-access/albums";
+import type { Prisma } from "@prisma/client";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -8,7 +10,6 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
 import { useRateLimit } from "~/hooks/useRateLimitPerSecond";
 import { useWindowKeydownListener } from "~/hooks/useWindowKeydownListener";
-import type { PublicAlbum } from "~/utils/fetchAlbumData";
 import { cn, getFullFilePath } from "~/utils/utils";
 import { useActiveImageDetails } from "../_hooks/useActiveImageDetails";
 import { handleUpdateAlbumUrl } from "../_utils/updateUrl";
@@ -16,7 +17,7 @@ import { ImagePopupFooter } from "./image-popup-footer";
 import { ImagePopupHeader } from "./image-popup-header";
 
 type ImagePopupProps = {
-  album: PublicAlbum;
+  album: Prisma.PromiseReturnType<typeof getAlbumWithImagesById>;
 };
 
 const MINIMUM_MS_BETWEEN_IMAGE_CHANGE = 200;

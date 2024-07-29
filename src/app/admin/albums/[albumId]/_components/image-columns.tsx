@@ -1,12 +1,17 @@
 "use client";
 
+import type { getAlbumWithImagesAsAdmin } from "@/server/data-access/albums";
+import type { Prisma } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { ImageColumnActions } from "~/components/data-table/data-table-image-actions";
 import { formatDateTimeString } from "~/utils/date-utils";
-import type { AdminAlbumImageType } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
+
+type AdminAlbumImageType = Prisma.PromiseReturnType<
+  typeof getAlbumWithImagesAsAdmin
+>["images"][0];
 
 export const imageColumns: ColumnDef<AdminAlbumImageType>[] = [
   {

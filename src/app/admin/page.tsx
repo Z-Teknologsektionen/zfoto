@@ -1,15 +1,17 @@
 import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
+import {
+  getAlbumCountFromActiveYear,
+  getTotalAlbumCount,
+} from "@/server/data-access/albums";
+import {
+  getImageCountFromActiveYear,
+  getTotalImageCount,
+} from "@/server/data-access/images";
+import { getCountsPerPhotographer } from "@/server/data-access/photographers";
 import { Roles } from "@prisma/client";
 import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAuth } from "~/utils/auth";
-import {
-  getAlbumCountFromYear,
-  getCountsPerPhotographer,
-  getImageCountFromYear,
-  getTotalAlbumCount,
-  getTotalImageCount,
-} from "~/utils/fetchAdminData";
 import { AdminInfoCard } from "./_components/admin-info-card";
 import { adminPhotographerColumns } from "./_components/admin-photograhper-columns";
 import { AdminSidebar } from "./_components/admin-sidebar";
@@ -40,9 +42,9 @@ const AdminDashbord: FC = async () => {
     totalAlbums,
   ] = await Promise.all([
     getCountsPerPhotographer(),
-    getImageCountFromYear(activeYear),
-    getImageCountFromYear(activeYear - 1),
-    getAlbumCountFromYear(activeYear),
+    getImageCountFromActiveYear(activeYear),
+    getImageCountFromActiveYear(activeYear - 1),
+    getAlbumCountFromActiveYear(activeYear),
     getTotalImageCount(),
     getTotalAlbumCount(),
   ]);

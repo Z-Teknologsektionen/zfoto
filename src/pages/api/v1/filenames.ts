@@ -1,5 +1,5 @@
+import { getAllImageFilenames } from "@/server/data-access/images";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "~/utils/db";
 
 const filenamesRouter = async (
   req: NextApiRequest,
@@ -7,13 +7,7 @@ const filenamesRouter = async (
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const images = await db.image.findMany({
-        select: {
-          filename: true,
-        },
-      });
-
-      const filenames = images.map((image) => image.filename);
+      const filenames = await getAllImageFilenames();
 
       res.status(200).json(filenames);
       return;

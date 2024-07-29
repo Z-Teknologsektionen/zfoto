@@ -1,10 +1,15 @@
 "use client";
 
+import type { getCountsPerPhotographer } from "@/server/data-access/photographers";
+import type { Prisma } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { formatDateTimeString } from "~/utils/date-utils";
-import type { CountsPerPhotographerType } from "~/utils/fetchAdminData";
+
+type CountsPerPhotographerType = Prisma.PromiseReturnType<
+  typeof getCountsPerPhotographer
+>[0];
 
 export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
   [

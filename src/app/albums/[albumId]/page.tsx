@@ -1,9 +1,12 @@
+import {
+  getAlbumWithImagesById,
+  getLatestAlbums,
+} from "@/server/data-access/albums";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { FC } from "react";
 import { Fragment, Suspense, cache } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
-import { getAlbumById, getLatestAlbums } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
 import { AlbumInfo } from "./_components/album-info";
 import { ImageGridItem } from "./_components/image-grid-item";
@@ -30,7 +33,7 @@ export const generateStaticParams = async (): Promise<
   }));
 };
 
-const getAlbum = cache(getAlbumById);
+const getAlbum = cache(getAlbumWithImagesById);
 
 export const generateMetadata = async ({
   params: { albumId },

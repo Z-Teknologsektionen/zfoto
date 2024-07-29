@@ -1,3 +1,4 @@
+import { getImagebyId } from "@/server/data-access/images";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +7,6 @@ import type { FC } from "react";
 import { cache } from "react";
 import { BackButton } from "~/components/layout/back-button";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
-import { getImagebyId } from "~/utils/fetchImageData";
 import { createByline, getFullFilePath } from "~/utils/utils";
 
 export const revalidate = 300;

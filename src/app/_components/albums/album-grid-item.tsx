@@ -1,12 +1,15 @@
+import type { getLatestAlbums } from "@/server/data-access/albums";
+import type { Prisma } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
 import { formatDateString } from "~/utils/date-utils";
-import type { PublicAlbums } from "~/utils/fetchAlbumData";
 import { getFullFilePath } from "~/utils/utils";
 import { Skeleton } from "../ui/skeleton";
 
-type AlbumGridItemProps = PublicAlbums[0] & {
+type AlbumGridItemProps = Prisma.PromiseReturnType<
+  typeof getLatestAlbums
+>[0] & {
   usePriorityLoadning?: boolean;
 };
 

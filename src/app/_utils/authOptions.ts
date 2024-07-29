@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 import { env } from "@/env.mjs";
+import { getUserByEmailForSession } from "@/server/data-access/users";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { Roles } from "@prisma/client";
 import type {
@@ -81,7 +82,10 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Fyll i ditt lösenord",
         },
       },
+
       async authorize(credentials) {
+        if (credentials === undefined) return null;
+
         return isValidCredentials(credentials);
       },
     }),
@@ -96,18 +100,7 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user };
     },
     async session({ session }) {
-      const user = await db.user.findUnique({
-        where: {
-          email: session.user.email,
-        },
-        select: {
-          role: true,
-          email: true,
-          image: true,
-          name: true,
-          id: true,
-        },
-      });
+      const user = await getUserByEmailForSession(session.user.email);
       return {
         ...session,
         user: { ...session.user, ...user },

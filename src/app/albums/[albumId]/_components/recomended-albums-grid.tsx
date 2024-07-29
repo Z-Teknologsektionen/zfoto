@@ -1,3 +1,4 @@
+import { getLatestAlbums } from "@/server/data-access/albums";
 import Link from "next/link";
 import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
@@ -5,7 +6,6 @@ import {
   AlbumGridItem,
   AlbumGridItemSkeleton,
 } from "~/components/albums/album-grid-item";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 type RecommendedAlbumsProps = { albumId: string };
 

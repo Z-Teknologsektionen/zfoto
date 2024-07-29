@@ -1,7 +1,8 @@
 "use client";
 
-import { updateImageFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
+import type { getImagebyId } from "@/server/data-access/images";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Prisma } from "@prisma/client";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -20,7 +21,8 @@ import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
 import { trpc } from "~/trpc/client";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
-import type { AdminImage } from "~/utils/fetchAdminData";
+
+type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
 
 export const EditImageForm: FC<AdminImage> = ({
   coverImage,

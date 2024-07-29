@@ -1,8 +1,8 @@
+import { getLatestAlbums } from "@/server/data-access/albums";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/utils/db";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 const createAlbumSchema = z.object({
   title: z.string().min(1, "There must be at least one character in the title"),
@@ -37,7 +37,7 @@ const albumRouter = async (
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const album = await getLatestAlbums({});
+      const album = await getLatestAlbums();
       res.status(200).json(album);
       return;
     } catch (error) {
