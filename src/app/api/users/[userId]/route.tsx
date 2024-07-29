@@ -1,14 +1,14 @@
+import { updateUserRoleById } from "@/server/data-access/users";
 import { Roles } from "@prisma/client";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from "~/utils/db";
 
 const patchUserSchema = z.object({
   role: z.nativeEnum(Roles),
 });
 
-export async function GET(
+/* Export async function GET(
   _req: Request,
   { params }: { params: { userId: string } },
 ): Promise<NextResponse<unknown>> {
@@ -18,7 +18,7 @@ export async function GET(
     },
   });
   return NextResponse.json(user, { status: 200 });
-}
+} */
 
 export async function PATCH(
   req: Request,
@@ -35,14 +35,8 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid ObjectId" }, { status: 400 });
 
   try {
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        role: result.data.role,
-      },
-    });
+    await updateUserRoleById(userId, result.data.role);
+
     return NextResponse.json({ message: "No Content" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Internal error" }, { status: 500 });

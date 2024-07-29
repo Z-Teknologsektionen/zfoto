@@ -1,6 +1,6 @@
 "use client";
 
-import { emailSchema } from "@/server/trpc/helpers/zodScheams";
+import { emailSchema } from "@/schemas/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
+// eslint-disable-next-line max-lines-per-function
 export const ContactForm: FC = () => {
   const form = useForm({
     resolver: zodResolver(emailSchema),

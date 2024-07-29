@@ -1,6 +1,6 @@
 "use client";
 
-import { userSignInForm } from "@/server/trpc/helpers/zodScheams";
+import { userSignInForm } from "@/schemas/helpers/zodScheams";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { SignInOptions } from "next-auth/react";
 import { signIn } from "next-auth/react";

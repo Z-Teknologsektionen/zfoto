@@ -11,7 +11,7 @@ const updateAlbumBaseSchema = z.object({
   }),
   visible: z.boolean(),
   isReception: z.boolean(),
-  date: fullDatetimeString,
+  date: fullDatetimeString.transform((str) => new Date(str)),
 });
 
 export const updateAlbumFrontEndSchema = updateAlbumBaseSchema;
@@ -52,5 +52,5 @@ export const userSignInForm = z.object({
 export const emailSchema = z.object({
   email: z.string().email(),
   subject: z.string().min(3).max(100),
-  message: z.string().min(10).max(10_000),
+  message: z.string().min(10).max(100_000),
 });

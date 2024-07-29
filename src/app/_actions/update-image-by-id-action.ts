@@ -1,7 +1,7 @@
 "use server";
 
+import { updateImageAPISchema } from "@/schemas/helpers/zodScheams";
 import { updateImageById } from "@/server/data-access/images";
-import { updateImageAPISchema } from "@/server/schemas/helpers/zodScheams";
 import { adminLikeSafeAction } from "./safe-action";
 
 export const updateImageByIdAction = adminLikeSafeAction
