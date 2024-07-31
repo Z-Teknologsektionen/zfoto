@@ -18,6 +18,7 @@ type DataTablePaginationProps<TData> = {
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const DEAULT_PAGE_SIZES = [10, 30, 90, 300];
 
+// eslint-disable-next-line max-lines-per-function
 export const DataTablePagination = <TData,>({
   table,
   pageSizes = DEAULT_PAGE_SIZES,

@@ -37,6 +37,7 @@ export type DataTableProps<TData, TValue> = {
   noResultText?: string;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const DataTable = <TData, TValue>({
   columns,
   data,

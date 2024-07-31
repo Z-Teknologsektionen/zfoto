@@ -12,6 +12,7 @@ type ImagePopupHeaderProps = {
   closePopup: () => void;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
   filename,
   photographer,

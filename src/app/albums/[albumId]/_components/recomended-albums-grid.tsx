@@ -35,6 +35,7 @@ export const RecommendedAlbumsGrid: FC<RecommendedAlbumsProps> = async ({
 export const RecommendedAlbumsGridSkeleton: FC = () => (
   <AlbumGrid>
     {Array.from({ length: 4 }).map((_, idx) => (
+      // eslint-disable-next-line react/no-array-index-key
       <AlbumGridItemSkeleton key={idx} />
     ))}
   </AlbumGrid>

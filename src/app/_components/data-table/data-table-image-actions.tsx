@@ -19,6 +19,7 @@ type ImageColumnActionsProps = {
   isVisible: boolean;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
   id,
   albumId,
@@ -61,14 +62,14 @@ export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            updateImage({ imageId: id, visible: !isVisible });
+            updateImage({ imageId: id, isVisible: !isVisible });
           }}
         >
           {`${isVisible ? "Dölj" : "Visa"} bild`}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            updateImage({ imageId: id, coverImage: !isCoverImage });
+            updateImage({ imageId: id, isCoverImage: !isCoverImage });
           }}
         >
           {`${isCoverImage ? "Dölj" : "Sätt"} omslag`}
