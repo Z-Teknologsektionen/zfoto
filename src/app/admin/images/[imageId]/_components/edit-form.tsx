@@ -1,12 +1,9 @@
 "use client";
 
-import { updateImageFrontEndSchema } from "@/schemas/helpers/zodScheams";
+import { imageBaseSchema } from "@/schemas/helpers/zodScheams";
 import type { getImagebyId } from "@/server/data-access/images";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Prisma } from "@prisma/client";
 import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import {
   FormFieldInput,
   FormFieldInputDateTimeLocal,
@@ -14,6 +11,7 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { useUpdateImageById } from "~/hooks/use-update-image-by-id";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 
@@ -21,20 +19,20 @@ type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
 
 // eslint-disable-next-line max-lines-per-function
 export const EditImageForm: FC<AdminImage> = ({
-  coverImage,
+  coverImage: isCoverImage,
   date,
   id,
   photographer,
-  visible,
+  visible: isVisible,
 }) => {
   const { execute: updateImage, isExecuting } = useUpdateImageById();
 
-  const form = useForm<z.infer<typeof updateImageFrontEndSchema>>({
-    resolver: zodResolver(updateImageFrontEndSchema),
+  const form = useFormWithZod({
+    schema: imageBaseSchema,
     defaultValues: {
       photographer,
-      coverImage,
-      visible,
+      isCoverImage,
+      isVisible,
       date: getLocalDateTimeFromUTC(date).toISOString().slice(0, -8),
     },
   });
@@ -69,13 +67,13 @@ export const EditImageForm: FC<AdminImage> = ({
         />
         <FormFieldSwitch
           form={form}
-          name="visible"
+          name="isVisible"
           label="Visas på hemsidan"
           description="Välj om bilden ska visas för användare eller inte."
         />
         <FormFieldSwitch
           form={form}
-          name="coverImage"
+          name="isCoverImage"
           label="Omslagsbild"
           description="Välj om bilden ska visas som omslagsbild"
         />

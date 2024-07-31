@@ -110,7 +110,7 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                updateAlbum({ albumId: album.id, visible: !album.visible });
+                updateAlbum({ albumId: album.id, isVisible: !album.visible });
               }}
             >
               {`${album.visible ? "Dölj" : "Visa"} album`}

@@ -1,12 +1,7 @@
+import { patchUserSchema } from "@/schemas/user";
 import { updateUserRoleById } from "@/server/data-access/users";
-import { Roles } from "@prisma/client";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-const patchUserSchema = z.object({
-  role: z.nativeEnum(Roles),
-});
 
 /* Export async function GET(
   _req: Request,

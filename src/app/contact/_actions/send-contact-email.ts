@@ -1,11 +1,11 @@
 "use server";
 
-import { emailSchema } from "@/schemas/helpers/zodScheams";
+import { contactEmailSchema } from "@/schemas/email";
 import { baseSafeAction } from "~/actions/safe-action";
 import { emailTransporter } from "~/utils/emailTransporter";
 
 export const sendContactEmail = baseSafeAction
-  .schema(emailSchema)
+  .schema(contactEmailSchema)
   .action(async ({ parsedInput: { email, message, subject } }) => {
     await emailTransporter.verify();
 

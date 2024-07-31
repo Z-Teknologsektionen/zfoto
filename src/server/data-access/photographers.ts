@@ -1,5 +1,8 @@
 import { db } from "~/utils/db";
 
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 export const getCountsPerPhotographer = async () => {
   const images = await db.image.groupBy({
     by: ["photographer"],

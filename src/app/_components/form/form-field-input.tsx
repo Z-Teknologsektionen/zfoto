@@ -14,11 +14,14 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 
-type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
+type FormFieldInputProps<
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+> = Omit<
   Parameters<typeof Input>[0],
   "description" | "form" | "label" | "name"
 > & {
-  form: UseFormReturn<TFieldValues>;
+  form: UseFormReturn<TFieldValues, unknown, TTransformedValues>;
   name: Path<TFieldValues>;
   label: string;
   description?: string;
@@ -26,13 +29,16 @@ type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export const FormFieldInput = <TFieldValues extends FieldValues>({
+export const FormFieldInput = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   form,
   name,
   label,
   description,
   ...rest
-}: FormFieldInputProps<TFieldValues>): JSX.Element => (
+}: FormFieldInputProps<TFieldValues, TTransformedValues>): JSX.Element => (
   <FormField
     control={form.control}
     name={name}
@@ -51,12 +57,15 @@ export const FormFieldInput = <TFieldValues extends FieldValues>({
   />
 );
 
-export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
+export const FormFieldInputEmail = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   label = "Epost",
   placeholder = "Fyll i epost...",
   ...rest
 }: PartialBy<
-  FormFieldInputProps<TFieldValues>,
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
 >): JSX.Element =>
   FormFieldInput({
@@ -67,14 +76,17 @@ export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
     ...rest,
   });
 
-export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
+export const FormFieldInputPassword = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   label = "Epost",
   placeholder = "Fyll i epost...",
   type = "password",
   autoComplete = "current-password",
   ...rest
 }: PartialBy<
-  FormFieldInputProps<TFieldValues>,
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
 >): JSX.Element =>
   FormFieldInput({
@@ -85,7 +97,10 @@ export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
     ...rest,
   });
 
-export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
+export const FormFieldInputDateTimeLocal = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   label = "Datum och tid",
   placeholder = "Fyll i datum och tid...",
   type = "datetime-local",
@@ -103,7 +118,7 @@ export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
   value = (form.getValues(name) as string).slice(0, -8),
   ...rest
 }: PartialBy<
-  FormFieldInputProps<TFieldValues>,
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
 >): JSX.Element =>
   FormFieldInput({

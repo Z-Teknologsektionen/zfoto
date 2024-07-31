@@ -1,9 +1,7 @@
 "use client";
 
-import { emailSchema } from "@/schemas/helpers/zodScheams";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { contactEmailSchema } from "@/schemas/email";
 import type { FC } from "react";
-import { useForm } from "react-hook-form";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -18,12 +16,13 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
 // eslint-disable-next-line max-lines-per-function
 export const ContactForm: FC = () => {
-  const form = useForm({
-    resolver: zodResolver(emailSchema),
+  const form = useFormWithZod({
+    schema: contactEmailSchema,
     defaultValues: {
       email: "",
       message: "",
@@ -44,7 +43,7 @@ export const ContactForm: FC = () => {
       onValid={(values) => {
         sendEmail(values);
       }}
-      schema={emailSchema}
+      schema={contactEmailSchema}
     >
       <FormFieldInputEmail
         form={form}

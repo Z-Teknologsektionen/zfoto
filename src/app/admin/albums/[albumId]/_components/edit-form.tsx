@@ -1,10 +1,7 @@
 "use client";
 
-import { updateAlbumFrontEndSchema } from "@/schemas/helpers/zodScheams";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { albumBaseSchema } from "@/schemas/helpers/zodScheams";
 import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import {
   FormFieldInput,
   FormFieldInputDateTimeLocal,
@@ -12,6 +9,7 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 import { useUpdateAlbum } from "../_hooks/use-update-album";
 
@@ -33,12 +31,12 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
 }) => {
   const { execute: updateAlbum, status: updateAlbumstatus } = useUpdateAlbum();
 
-  const form = useForm<z.input<typeof updateAlbumFrontEndSchema>>({
-    resolver: zodResolver(updateAlbumFrontEndSchema),
+  const form = useFormWithZod({
+    schema: albumBaseSchema,
     defaultValues: {
       title,
       isReception,
-      visible: isVisible,
+      isVisible,
       date: getLocalDateTimeFromUTC(date).toISOString(),
     },
   });
@@ -65,7 +63,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
           form={form}
           description="Välj om albumet ska visas för användare eller inte"
           label="Visas på hemsidan"
-          name="visible"
+          name="isVisible"
         />
         <FormFieldSwitch
           form={form}

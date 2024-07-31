@@ -1,36 +1,10 @@
+import { createAlbumAPISchema } from "@/schemas/album";
 import { getLatestAlbums } from "@/server/data-access/albums";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
 import { db } from "~/utils/db";
 
-const createAlbumSchema = z.object({
-  title: z.string().min(1, "There must be at least one character in the title"),
-  date: z.string().datetime({
-    precision: 3,
-    offset: false,
-    message: "Invalid datetime format",
-  }), //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
-  images: z
-    .array(
-      z.object({
-        filename: z.string().min(1),
-        photographer: z.string().min(1).optional(),
-        date: z
-          .string()
-          .datetime({
-            precision: 3,
-            offset: false,
-            message: "Invalid datetime format",
-          }) //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
-          .optional(),
-      }),
-    )
-    .min(1, "There needs to be at least 1 image in the album"),
-});
-
-type PostBodyType = z.infer<typeof createAlbumSchema>;
-
+// eslint-disable-next-line max-lines-per-function
 const albumRouter = async (
   req: NextApiRequest,
   res: NextApiResponse,
@@ -46,12 +20,12 @@ const albumRouter = async (
     }
   } else if (req.method === "POST") {
     try {
-      const parse = createAlbumSchema.safeParse(req.body);
+      const parse = createAlbumAPISchema.safeParse(req.body);
       if (!parse.success) {
         res.status(400).json({ error: parse.error.flatten().fieldErrors });
         return;
       }
-      const body = req.body as PostBodyType;
+      const body = parse.data;
 
       const createdAlbum = await db.album.upsert({
         where: {

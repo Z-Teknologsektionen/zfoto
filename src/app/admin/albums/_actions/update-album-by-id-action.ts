@@ -1,11 +1,11 @@
 "use server";
 
-import { updateAlbumAPISchema } from "@/schemas/helpers/zodScheams";
+import { updateAlbumSchema } from "@/schemas/album";
 import { updateAlbumById } from "@/server/data-access/albums";
 import { adminLikeSafeAction } from "~/actions/safe-action";
 
 export const updateAlbumByIdAction = adminLikeSafeAction
-  .schema(updateAlbumAPISchema)
+  .schema(updateAlbumSchema)
   .action(async ({ parsedInput: { albumId, ...data } }) =>
     updateAlbumById(albumId, data),
   );

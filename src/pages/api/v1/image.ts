@@ -1,19 +1,6 @@
+import { createImageAPISchema } from "@/schemas/image";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
 import { db } from "~/utils/db";
-
-const createImageSchema = z.object({
-  filename: z.string().min(1),
-  photographer: z.string().min(1),
-  date: z.string().datetime({
-    precision: 3,
-    offset: false,
-    message: "Invalid datetime format",
-  }), //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
-  albumId: z.string().min(1),
-});
-
-type PostBodyType = z.infer<typeof createImageSchema>;
 
 const imageRouter = async (
   req: NextApiRequest,
@@ -21,13 +8,13 @@ const imageRouter = async (
 ): Promise<void> => {
   if (req.method === "POST") {
     try {
-      const vaild = createImageSchema.safeParse(req.body).success;
-      if (!vaild) {
+      const parse = createImageAPISchema.safeParse(req.body);
+      if (!parse.success) {
         res.status(404).send("Invalid input");
         return;
       }
 
-      const body = req.body as PostBodyType;
+      const body = parse.data;
 
       const createdImage = await db.image.create({
         data: {

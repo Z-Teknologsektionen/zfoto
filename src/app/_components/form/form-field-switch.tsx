@@ -8,23 +8,29 @@ import {
 } from "~/components/ui/form";
 import { Switch } from "~/components/ui/switch";
 
-type FormFieldSwitchProps<TFieldValues extends FieldValues> = Omit<
+type FormFieldSwitchProps<
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+> = Omit<
   Parameters<typeof Switch>[0],
   "description" | "form" | "label" | "name"
 > & {
-  form: UseFormReturn<TFieldValues>;
+  form: UseFormReturn<TFieldValues, unknown, TTransformedValues>;
   name: Path<TFieldValues>;
   label: string;
   description: string;
 };
 
-export const FormFieldSwitch = <TFieldValues extends FieldValues>({
+export const FormFieldSwitch = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   form,
   name,
   label,
   description,
   ...rest
-}: FormFieldSwitchProps<TFieldValues>): JSX.Element => (
+}: FormFieldSwitchProps<TFieldValues, TTransformedValues>): JSX.Element => (
   <FormField
     control={form.control}
     name={name}
