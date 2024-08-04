@@ -12,7 +12,8 @@ export const BasicFormWrapper = <TSchema extends z.Schema>({
 }: FormWrapperProps<TSchema>): JSX.Element => (
   <Form {...form}>
     <form
-      onSubmit={void form.handleSubmit(onValid, onInvalid)}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={form.handleSubmit(onValid, onInvalid)}
       className={cn(className)}
     >
       {children}

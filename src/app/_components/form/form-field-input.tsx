@@ -80,8 +80,8 @@ export const FormFieldInputPassword = <
   TFieldValues extends FieldValues,
   TTransformedValues extends FieldValues,
 >({
-  label = "Epost",
-  placeholder = "Fyll i epost...",
+  label = "Lösenord",
+  placeholder = "Fyll i lösenord...",
   type = "password",
   autoComplete = "current-password",
   ...rest

@@ -2,10 +2,29 @@
 
 import { updateImageSchema } from "@/schemas/image";
 import { updateImageById } from "@/server/data-access/images";
+import { getUTCFromLocalDate } from "~/utils/date-utils";
 import { adminLikeSafeAction } from "./safe-action";
 
 export const updateImageByIdAction = adminLikeSafeAction
   .schema(updateImageSchema)
-  .action(async ({ parsedInput: { imageId, ...data } }) =>
-    updateImageById(imageId, data),
+  .action(
+    async ({
+      parsedInput: {
+        imageId,
+        albumId,
+        date,
+        filename,
+        isCoverImage,
+        isVisible,
+        photographer,
+      },
+    }) =>
+      updateImageById(imageId, {
+        albumId,
+        coverImage: isCoverImage,
+        date: date === undefined ? undefined : getUTCFromLocalDate(date),
+        filename,
+        photographer,
+        visible: isVisible,
+      }),
   );
