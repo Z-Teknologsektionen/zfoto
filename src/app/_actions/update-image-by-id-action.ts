@@ -21,10 +21,10 @@ export const updateImageByIdAction = adminLikeSafeAction
     }) =>
       updateImageById(imageId, {
         albumId,
-        coverImage: isCoverImage,
+        isCoverImage,
         date: date === undefined ? undefined : getUTCFromLocalDate(date),
         filename,
         photographer,
-        visible: isVisible,
+        isVisible,
       }),
   );

@@ -19,11 +19,11 @@ type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
 
 // eslint-disable-next-line max-lines-per-function
 export const EditImageForm: FC<AdminImage> = ({
-  coverImage: isCoverImage,
+  isCoverImage,
   date,
   id,
   photographer,
-  visible: isVisible,
+  isVisible,
   filename,
 }) => {
   const { execute: updateImage, isExecuting } = useUpdateImageById();

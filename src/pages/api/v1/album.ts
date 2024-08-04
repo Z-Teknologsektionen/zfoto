@@ -44,6 +44,8 @@ const albumRouter = async (
         create: {
           title: body.title,
           date: body.date,
+          isReception: body.isReception,
+          isVisible: body.isVisible,
           images: {
             createMany: {
               data: body.images,
@@ -54,7 +56,7 @@ const albumRouter = async (
           id: true,
           title: true,
           date: true,
-          visible: true,
+          isVisible: true,
           isReception: true,
           images: {
             select: {
@@ -62,8 +64,8 @@ const albumRouter = async (
               filename: true,
               photographer: true,
               date: true,
-              visible: true,
-              coverImage: true,
+              isVisible: true,
+              isCoverImage: true,
             },
           },
           _count: {

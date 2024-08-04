@@ -14,7 +14,7 @@ export const updateAlbumAction = adminLikeSafeAction
       const album = await updateAlbumById(albumId, {
         isReception,
         title,
-        visible: isVisible,
+        isVisible,
         date: date === undefined ? undefined : getUTCFromLocalDate(date),
       });
 

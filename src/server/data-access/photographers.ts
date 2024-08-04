@@ -8,8 +8,8 @@ export const getCountsPerPhotographer = async () => {
     by: ["photographer"],
     _count: {
       _all: true,
-      visible: true,
-      coverImage: true,
+      isVisible: true,
+      isCoverImage: true,
     },
     orderBy: [{ photographer: "asc" }],
   });
@@ -39,8 +39,8 @@ export const getCountsPerPhotographer = async () => {
     return {
       name: image.photographer,
       images: image._count._all,
-      visible: image._count.visible,
-      coverImage: image._count.coverImage,
+      visible: image._count.isVisible,
+      coverImage: image._count.isCoverImage,
       album: album.filter((a) => a.images.some(samePhotographer)).length,
       firstImage: imagesDates.find(samePhotographer)?.date,
       latestImage: imagesDates.findLast(samePhotographer)?.date,

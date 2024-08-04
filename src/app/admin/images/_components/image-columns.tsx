@@ -60,14 +60,14 @@ export const imageColumns: ColumnDef<AdminTableImageType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visas" />
     ),
-    cell: ({ row }) => (row.original.visible ? "Ja" : "Nej"),
+    cell: ({ row }) => (row.original.isVisible ? "Ja" : "Nej"),
   },
   {
     accessorKey: "coverImage",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Omslagsbild" />
     ),
-    cell: ({ row }) => (row.original.coverImage ? "Ja" : "Nej"),
+    cell: ({ row }) => (row.original.isCoverImage ? "Ja" : "Nej"),
   },
   {
     accessorKey: "albumTitle",
@@ -82,8 +82,8 @@ export const imageColumns: ColumnDef<AdminTableImageType>[] = [
         key={row.original.id}
         id={row.original.id}
         albumId={row.original.albumId}
-        isCoverImage={row.original.coverImage}
-        isVisible={row.original.visible}
+        isCoverImage={row.original.isCoverImage}
+        isVisible={row.original.isVisible}
       />
     ),
   },

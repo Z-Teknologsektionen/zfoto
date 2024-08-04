@@ -63,7 +63,7 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visas" />
     ),
-    cell: ({ row }) => (row.original.visible ? "Ja" : "Nej"),
+    cell: ({ row }) => (row.original.isVisible ? "Ja" : "Nej"),
   },
   {
     accessorKey: "isReception",
@@ -110,10 +110,10 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                updateAlbum({ albumId: album.id, isVisible: !album.visible });
+                updateAlbum({ albumId: album.id, isVisible: !album.isVisible });
               }}
             >
-              {`${album.visible ? "Dölj" : "Visa"} album`}
+              {`${album.isVisible ? "Dölj" : "Visa"} album`}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {

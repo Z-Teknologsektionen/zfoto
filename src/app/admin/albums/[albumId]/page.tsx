@@ -30,7 +30,7 @@ const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
           title={album.title}
           date={album.date}
           isReception={album.isReception}
-          isVisible={album.visible}
+          isVisible={album.isVisible}
         />
       </section>
       <section className="container space-y-4">

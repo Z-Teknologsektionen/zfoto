@@ -25,6 +25,9 @@ const imageRouter = async (
               id: body.albumId,
             },
           },
+          date: body.date,
+          isCoverImage: body.isCoverImage,
+          isVisible: body.isVisible,
         },
       });
       res.status(200).json(createdImage);

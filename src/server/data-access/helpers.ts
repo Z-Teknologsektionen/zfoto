@@ -20,7 +20,7 @@ export const coverImageFromAlbumSelect = {
     filename: true,
   },
   where: {
-    coverImage: true,
-    visible: true,
+    isCoverImage: true,
+    isVisible: true,
   },
 } satisfies Prisma.Album$imagesArgs;

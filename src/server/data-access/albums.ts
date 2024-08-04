@@ -29,13 +29,13 @@ export const getLatestAlbums = async ({
       id: {
         notIn: notIds,
       },
-      visible: {
+      isVisible: {
         equals: true,
       },
       images: {
         some: {
-          coverImage: true,
-          visible: true,
+          isCoverImage: true,
+          isVisible: true,
         },
       },
       date: {
@@ -68,8 +68,8 @@ export const getAllAlbumsAsAdmin = async () => {
         orderBy: imagesOrderBy,
         take: 1,
         where: {
-          coverImage: true,
-          visible: true,
+          isCoverImage: true,
+          isVisible: true,
         },
       },
     },
@@ -91,7 +91,7 @@ export const getAlbumWithImagesById = async (id: string) => {
       id,
       images: {
         some: {
-          visible: {
+          isVisible: {
             equals: true,
           },
         },
@@ -102,7 +102,7 @@ export const getAlbumWithImagesById = async (id: string) => {
       title: true,
       images: {
         where: {
-          visible: {
+          isVisible: {
             equals: true,
           },
         },
@@ -112,7 +112,7 @@ export const getAlbumWithImagesById = async (id: string) => {
           filename: true,
           photographer: true,
           id: true,
-          coverImage: true,
+          isCoverImage: true,
         },
       },
       date: true,
@@ -121,7 +121,7 @@ export const getAlbumWithImagesById = async (id: string) => {
   });
 
   let coverImageFilename = rawAlbum.images.find(
-    (image) => image.coverImage,
+    (image) => image.isCoverImage,
   )?.filename;
 
   if (coverImageFilename === undefined)
@@ -165,7 +165,7 @@ export const setReceptionAlbumVisibility = async (isVisible: boolean) =>
       isReception: true,
     },
     data: {
-      visible: isVisible,
+      isVisible,
     },
   });
 
