@@ -10,7 +10,7 @@ export const dateTimeFilterByActiveYear = (
 
 export const imagesOrderBy = [
   { date: "asc" },
-  { filename: "desc" },
+  { filename: "asc" },
 ] satisfies Prisma.ImageOrderByWithRelationInput[];
 
 export const coverImageFromAlbumSelect = {
