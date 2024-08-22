@@ -54,6 +54,7 @@ export const getAllImageFilenames = async () => {
 
   return images.map((image) => image.filename);
 };
+
 export const updateImageById = async (
   imageId: string,
   data: PrismaTypeToUpdateByIdData<Image>,
@@ -63,4 +64,11 @@ export const updateImageById = async (
       id: imageId,
     },
     data,
+  });
+
+export const deleteImageById = async (imageId: string) =>
+  db.image.delete({
+    where: {
+      id: imageId,
+    },
   });

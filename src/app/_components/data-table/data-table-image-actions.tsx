@@ -1,3 +1,4 @@
+import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
@@ -10,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useUpdateImageById } from "~/hooks/use-update-image-by-id";
 
 type ImageColumnActionsProps = {
   id: string;

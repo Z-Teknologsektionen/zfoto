@@ -3,7 +3,7 @@ import { useAction } from "next-safe-action/hooks";
 import { useId } from "react";
 import toast from "react-hot-toast";
 import { defaultOnErrorToastHandler } from "~/actions/safe-action-helpers";
-import { updateImageByIdAction } from "~/actions/update-image-by-id-action";
+import { updateImageByIdAction } from "../_actions/update-image-by-id-action";
 
 export const useUpdateImageById = (
   callbacks: UseActionCallbackWithOutErrorProps = undefined,
