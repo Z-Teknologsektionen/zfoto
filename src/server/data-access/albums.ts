@@ -10,7 +10,6 @@ import {
   coverImageFromAlbumSelect,
   dateTimeFilterByActiveYear,
   imagesOrderBy,
-  imagesOrderByForAdmin,
 } from "./helpers";
 
 export const getLatestAlbums = async ({
@@ -100,7 +99,7 @@ export const getAlbumWithImagesById = async (id: string) => {
             equals: true,
           },
         },
-        orderBy: imagesOrderByForAdmin,
+        orderBy: imagesOrderBy,
         select: {
           date: true,
           filename: true,
