@@ -1,46 +1,40 @@
 "use client";
 
-import { useTransition } from "react";
+import type { FC } from "react";
+import { Fragment } from "react";
 import { Button } from "~/components/ui/button";
-import { setReceptionVisibilityClientAction } from "../_actions/setReceptionVisibilityClientAction";
+import { useSetReceptionAlbumVisibility } from "../_hooks/use-set-reception-album-visibility";
 
-export const AdminSidebarReceptionVisibilityButtons = () => {
-  const [isUpdating, startTransition] = useTransition();
+export const AdminSidebarReceptionVisibilityButtons: FC = () => {
+  const {
+    execute: updateReceptionAlbumVisibility,
+    status: updateVisibilityStatus,
+  } = useSetReceptionAlbumVisibility();
 
   return (
-    <>
-      <form
-        action={() =>
-          startTransition(() => {
-            setReceptionVisibilityClientAction(false);
-          })
-        }
+    <Fragment>
+      <Button
+        className="mx-2"
+        size="sm"
+        variant="outline"
+        disabled={updateVisibilityStatus === "executing"}
+        onClick={() => {
+          updateReceptionAlbumVisibility({ isVisible: false });
+        }}
       >
-        <Button
-          className="mx-2"
-          size="sm"
-          variant="outline"
-          disabled={isUpdating}
-        >
-          Dölj mottagningsalbum
-        </Button>
-      </form>
-      <form
-        action={() =>
-          startTransition(() => {
-            setReceptionVisibilityClientAction(true);
-          })
-        }
+        Dölj mottagningsalbum
+      </Button>
+      <Button
+        className="mx-2"
+        size="sm"
+        variant="outline"
+        disabled={updateVisibilityStatus === "executing"}
+        onClick={() => {
+          updateReceptionAlbumVisibility({ isVisible: true });
+        }}
       >
-        <Button
-          className="mx-2"
-          size="sm"
-          variant="outline"
-          disabled={isUpdating}
-        >
-          Visa mottagningsalbum
-        </Button>
-      </form>
-    </>
+        Visa mottagningsalbum
+      </Button>
+    </Fragment>
   );
 };

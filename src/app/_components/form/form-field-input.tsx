@@ -1,4 +1,9 @@
-import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form";
+import type {
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -9,11 +14,14 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 
-type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
+type FormFieldInputProps<
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+> = Omit<
   Parameters<typeof Input>[0],
-  "form" | "name" | "label" | "description"
+  "description" | "form" | "label" | "name"
 > & {
-  form: UseFormReturn<TFieldValues>;
+  form: UseFormReturn<TFieldValues, unknown, TTransformedValues>;
   name: Path<TFieldValues>;
   label: string;
   description?: string;
@@ -21,36 +29,45 @@ type FormFieldInputProps<TFieldValues extends FieldValues> = Omit<
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export const FormFieldInput = <TFieldValues extends FieldValues>({
+export const FormFieldInput = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   form,
   name,
   label,
   description,
   ...rest
-}: FormFieldInputProps<TFieldValues>) => {
-  return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input {...field} {...rest} />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};
+}: FormFieldInputProps<TFieldValues, TTransformedValues>): JSX.Element => (
+  <FormField
+    control={form.control}
+    name={name}
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>{label}</FormLabel>
+        <FormControl>
+          <Input {...field} {...rest} />
+        </FormControl>
+        {description !== undefined && (
+          <FormDescription>{description}</FormDescription>
+        )}
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+);
 
-export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
+export const FormFieldInputEmail = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   label = "Epost",
   placeholder = "Fyll i epost...",
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
@@ -59,13 +76,19 @@ export const FormFieldInputEmail = <TFieldValues extends FieldValues>({
     ...rest,
   });
 
-export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
-  label = "Epost",
-  placeholder = "Fyll i epost...",
+export const FormFieldInputPassword = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
+  label = "Lösenord",
+  placeholder = "Fyll i lösenord...",
   type = "password",
   autoComplete = "current-password",
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
@@ -74,7 +97,10 @@ export const FormFieldInputPassword = <TFieldValues extends FieldValues>({
     ...rest,
   });
 
-export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
+export const FormFieldInputDateTimeLocal = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
   label = "Datum och tid",
   placeholder = "Fyll i datum och tid...",
   type = "datetime-local",
@@ -91,7 +117,10 @@ export const FormFieldInputDateTimeLocal = <TFieldValues extends FieldValues>({
   },
   value = (form.getValues(name) as string).slice(0, -8),
   ...rest
-}: PartialBy<FormFieldInputProps<TFieldValues>, "label" | "placeholder">) =>
+}: PartialBy<
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
+  "label" | "placeholder"
+>): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,

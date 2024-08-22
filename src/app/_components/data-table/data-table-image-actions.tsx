@@ -1,7 +1,7 @@
+import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { FC } from "react";
-import { toast } from "react-hot-toast";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -11,45 +11,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { trpc } from "~/trpc/client";
 
 type ImageColumnActionsProps = {
   id: string;
   albumId: string;
-  coverImage: boolean;
-  visible: boolean;
+  isCoverImage: boolean;
+  isVisible: boolean;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
   id,
   albumId,
-  visible,
-  coverImage,
+  isVisible,
+  isCoverImage,
 }) => {
-  const ctx = trpc.useUtils();
-  const { mutate: updateImage, isLoading } =
-    trpc.image.updateImageById.useMutation({
-      onMutate: () => toast.loading("Uppdaterar bild"),
-      onSettled(_, __, ___, context) {
-        toast.dismiss(context);
-        ctx.image.invalidate();
-        ctx.album.invalidate();
-      },
-      onSuccess() {
-        toast.success("Bild uppdaterad!");
-      },
-      onError(e) {
-        toast.error("Kunde inte uppdatera, försök igen senare...");
-        toast.error(e.message);
-      },
-    });
+  const { execute: updateImage, status } = useUpdateImageById();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-8 w-8 p-0" variant="ghost" disabled={isLoading}>
+        <Button
+          className="size-8 p-0"
+          variant="ghost"
+          disabled={status === "executing"}
+        >
           <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
+          <MoreHorizontal className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -73,14 +61,18 @@ export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
           <Link href={`/admin/images/${id}`}>Redigera bild</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => updateImage({ imageId: id, visible: !visible })}
+          onClick={() => {
+            updateImage({ imageId: id, isVisible: !isVisible });
+          }}
         >
-          {`${visible ? "Dölj" : "Visa"} bild`}
+          {`${isVisible ? "Dölj" : "Visa"} bild`}
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => updateImage({ imageId: id, coverImage: !coverImage })}
+          onClick={() => {
+            updateImage({ imageId: id, isCoverImage: !isCoverImage });
+          }}
         >
-          {`${coverImage ? "Dölj" : "Sätt"} omslag`}
+          {`${isCoverImage ? "Dölj" : "Sätt"} omslag`}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

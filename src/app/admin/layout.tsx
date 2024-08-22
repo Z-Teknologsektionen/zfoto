@@ -1,12 +1,13 @@
-import { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { Metadata } from "next";
+import { Fragment, type FC, type ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
 
-const AdminLayout = async ({ children }: { children: ReactNode }) => {
-  return <>{children}</>;
-};
+const AdminLayout: FC<{ children: ReactNode }> = ({ children }) => (
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  <Fragment>{children}</Fragment>
+);
 
 export default AdminLayout;

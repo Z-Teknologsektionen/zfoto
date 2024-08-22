@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { BackButton } from "~/components/layout/back-button";
 import { formatDateString } from "~/utils/date-utils";
 import { CopyBylineButton } from "./copy-byline-button";
@@ -14,10 +14,11 @@ export const AlbumInfo: FC<AlbumInfoProps> = ({
   title,
   photographers,
 }) => {
+  const hasMoreThanOnePhotograher = photographers.length > 1;
   const formatedDateString = formatDateString(date);
 
   return (
-    <div className="col-span-full ">
+    <div className="col-span-full">
       <BackButton />
       <div className="my-4 flex flex-col gap-2">
         <h1 className="hidden text-3xl font-bold md:block">
@@ -29,7 +30,7 @@ export const AlbumInfo: FC<AlbumInfoProps> = ({
         </div>
         <div className="flex w-fit flex-row items-center justify-center gap-1">
           <p>{`${
-            photographers.length > 1 ? "Fotografer" : "Fotograf"
+            hasMoreThanOnePhotograher ? "Fotografer" : "Fotograf"
           }: ${photographers.join(", ")}`}</p>
           <CopyBylineButton photographers={photographers} />
         </div>

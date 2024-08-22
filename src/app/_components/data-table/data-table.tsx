@@ -14,7 +14,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ComponentType, useState } from "react";
+import type { ComponentType } from "react";
+import { Fragment, useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import {
   Table,
@@ -36,13 +37,14 @@ export type DataTableProps<TData, TValue> = {
   noResultText?: string;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const DataTable = <TData, TValue>({
   columns,
   data,
   toolbar: Toolbar,
   usePagination = false,
   noResultText,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData, TValue>): JSX.Element => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -61,25 +63,23 @@ export const DataTable = <TData, TValue>({
   });
 
   return (
-    <>
-      {Toolbar && <Toolbar table={table} />}
+    <Fragment>
+      {Toolbar !== undefined && <Toolbar table={table} />}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -114,6 +114,6 @@ export const DataTable = <TData, TValue>({
         </Table>
       </div>
       {usePagination && <DataTablePagination table={table} />}
-    </>
+    </Fragment>
   );
 };

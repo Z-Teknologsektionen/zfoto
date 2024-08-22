@@ -1,6 +1,7 @@
 import { PortableText } from "@portabletext/react";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { FC } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getPageBySlug } from "~/utils/fetchDataFromSanity";
 
@@ -10,21 +11,17 @@ export const metadata: Metadata = {
   title: "Villkor",
 };
 
-const TermsPage = async () => {
+const TermsPage: FC = async () => {
   const page = await getPageBySlug("policy").catch(() => notFound());
 
-  if (!page) {
-    notFound();
-  }
+  if (page === undefined) notFound();
 
   return (
-    <>
-      <SectionWrapper>
-        <div className="prose prose-sm mx-auto prose-h1:font-semibold">
-          <PortableText value={page.content} />
-        </div>
-      </SectionWrapper>
-    </>
+    <SectionWrapper>
+      <div className="prose prose-sm mx-auto prose-h1:font-semibold">
+        <PortableText value={page.content} />
+      </div>
+    </SectionWrapper>
   );
 };
 

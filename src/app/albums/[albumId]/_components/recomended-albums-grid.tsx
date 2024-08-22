@@ -1,11 +1,11 @@
+import { getLatestAlbums } from "@/server/data-access/albums";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import {
   AlbumGridItem,
   AlbumGridItemSkeleton,
 } from "~/components/albums/album-grid-item";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 type RecommendedAlbumsProps = { albumId: string };
 
@@ -23,7 +23,7 @@ export const RecommendedAlbumsGrid: FC<RecommendedAlbumsProps> = async ({
         <AlbumGridItem key={recommendedAlbum.id} {...recommendedAlbum} />
       ))}
       <Link
-        className="relative grid h-full w-full max-w-xs flex-grow items-center justify-center overflow-hidden rounded-lg border-2 bg-[#333333]/95 px-4 py-3 text-[#a7a7a7] shadow"
+        className="relative grid size-full max-w-xs grow items-center justify-center overflow-hidden rounded-lg border-2 bg-[#333333]/95 px-4 py-3 text-[#a7a7a7] shadow"
         href="/"
       >
         <h2 className="text-xl font-normal">Visa fler...</h2>
@@ -32,9 +32,10 @@ export const RecommendedAlbumsGrid: FC<RecommendedAlbumsProps> = async ({
   );
 };
 
-export const RecommendedAlbumsGridSkeleton = () => (
+export const RecommendedAlbumsGridSkeleton: FC = () => (
   <AlbumGrid>
     {Array.from({ length: 4 }).map((_, idx) => (
+      // eslint-disable-next-line react/no-array-index-key
       <AlbumGridItemSkeleton key={idx} />
     ))}
   </AlbumGrid>

@@ -1,10 +1,5 @@
-import { ReactNode } from "react";
-import {
-  SubmitErrorHandler,
-  SubmitHandler,
-  UseFormReturn,
-} from "react-hook-form";
-import { z } from "zod";
+import type { FormWrapperProps } from "@/types/form";
+import type { z } from "zod";
 import { cn } from "~/utils/utils";
 import { Form } from "../ui/form";
 
@@ -14,22 +9,14 @@ export const BasicFormWrapper = <TSchema extends z.Schema>({
   onValid,
   children,
   className,
-}: {
-  form: UseFormReturn<z.input<TSchema>>;
-  schema: TSchema;
-  onValid: SubmitHandler<z.output<TSchema>>;
-  onInvalid?: SubmitErrorHandler<z.output<TSchema>>;
-  children: ReactNode;
-  className?: string;
-}) => {
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className={cn(className)}
-      >
-        {children}
-      </form>
-    </Form>
-  );
-};
+}: FormWrapperProps<TSchema>): JSX.Element => (
+  <Form {...form}>
+    <form
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={form.handleSubmit(onValid, onInvalid)}
+      className={cn(className)}
+    >
+      {children}
+    </form>
+  </Form>
+);

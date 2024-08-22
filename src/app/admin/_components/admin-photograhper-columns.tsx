@@ -1,10 +1,18 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { getCountsPerPhotographer } from "@/server/data-access/photographers";
+import type { Prisma } from "@prisma/client";
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
-import { formatDateTimeString } from "~/utils/date-utils";
-import { CountsPerPhotographerType } from "~/utils/fetchAdminData";
+import {
+  formatDateTimeString,
+  getLocalDateTimeFromUTC,
+} from "~/utils/date-utils";
+
+type CountsPerPhotographerType = Prisma.PromiseReturnType<
+  typeof getCountsPerPhotographer
+>[0];
 
 export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
   [
@@ -57,9 +65,11 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       ),
       cell: ({ row }) => (
         <DataTableCell center>
-          {row.original.firstImage
-            ? formatDateTimeString(row.original.firstImage)
-            : "Okänd"}
+          {row.original.firstImage === undefined
+            ? "Okänd"
+            : formatDateTimeString(
+                getLocalDateTimeFromUTC(row.original.firstImage),
+              )}
         </DataTableCell>
       ),
     },
@@ -70,9 +80,11 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
       ),
       cell: ({ row }) => (
         <DataTableCell center>
-          {row.original.latestImage
-            ? formatDateTimeString(row.original.latestImage)
-            : "Okänd"}
+          {row.original.latestImage === undefined
+            ? "Okänd"
+            : formatDateTimeString(
+                getLocalDateTimeFromUTC(row.original.latestImage),
+              )}
         </DataTableCell>
       ),
     },

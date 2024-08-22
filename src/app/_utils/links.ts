@@ -1,4 +1,5 @@
-import { Facebook, Instagram, LucideIcon, Mail } from "lucide-react";
+import type { IconType } from "react-icons";
+import { LuFacebook, LuInstagram, LuMail } from "react-icons/lu";
 import type { NrRange } from "ts-number-range";
 
 export type LinkType = {
@@ -16,31 +17,31 @@ export type SafeLinkType = Omit<
 >;
 
 type SocialIconLinkType = {
-  Icon: LucideIcon;
+  Icon: IconType;
   ariaLabel: string;
   href: string;
   newPage?: boolean;
 };
 
-const socialIconLinks: SocialIconLinkType[] = [
+const socialIconLinks = [
   {
     newPage: true,
-    Icon: Instagram,
+    Icon: LuInstagram,
     href: "https://www.instagram.com/zfotochalmers/",
     ariaLabel: "Se mer av oss på Instagram",
   },
   {
     newPage: true,
-    Icon: Facebook,
+    Icon: LuFacebook,
     href: "https://www.facebook.com/ztekfoto",
     ariaLabel: "Se mer av oss på Facebook",
   },
   {
-    Icon: Mail,
+    Icon: LuMail,
     href: "/contact",
     ariaLabel: "Kontakta oss här",
   },
-];
+] satisfies SocialIconLinkType[] as readonly SocialIconLinkType[];
 
 const links: LinkType[] = [
   {

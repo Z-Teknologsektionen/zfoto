@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "~/utils/db";
+import { getAllImageFilenames } from "@/server/data-access/images";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const filenamesRouter = async (
   req: NextApiRequest,
@@ -7,20 +7,17 @@ const filenamesRouter = async (
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const images = await db.image.findMany({
-        select: {
-          filename: true,
-        },
-      });
+      const filenames = await getAllImageFilenames();
 
-      const filenames = images.map((image) => image.filename);
-
-      return res.status(200).json(filenames);
+      res.status(200).json(filenames);
+      return;
     } catch (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
     }
   } else {
-    return res.status(200).json({ message: "Unused method" });
+    res.status(200).json({ message: "Unused method" });
+    return;
   }
 };
 

@@ -1,13 +1,15 @@
+import { NUMBER_OF_IMAGES_TO_PRELOAD } from "@/constants/album";
+import { getLatestAlbums } from "@/server/data-access/albums";
 import Link from "next/link";
+import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { Button } from "~/components/ui/button";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
 export const revalidate = 300;
 
-const HomePage = async () => {
+const HomePage: FC = async () => {
   const albums = await getLatestAlbums({ count: 12 });
 
   return (
@@ -19,13 +21,11 @@ const HomePage = async () => {
         {albums.map(({ id, title, date, coverImageFilename }, idx) => (
           <AlbumGridItem
             key={id}
-            {...{
-              id,
-              title,
-              coverImageFilename,
-              priorityLoadning: idx < 10,
-              date,
-            }}
+            id={id}
+            title={title}
+            coverImageFilename={coverImageFilename}
+            date={date}
+            usePriorityLoadning={idx < NUMBER_OF_IMAGES_TO_PRELOAD}
           />
         ))}
       </AlbumGrid>

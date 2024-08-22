@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { FC } from "react";
+import type { FC } from "react";
 import {
   Select,
   SelectContent,
@@ -14,9 +14,9 @@ function generateYearsBetweenNowAnd2016(): number[] {
   const endDate = new Date().getFullYear();
   const years = [];
 
-  for (let i = 2016; i <= endDate; i += 1) {
-    years.push(i);
-  }
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  for (let i = 2016; i <= endDate; i += 1) years.push(i);
+
   return years;
 }
 
@@ -25,20 +25,21 @@ type FilterAlbumsWizardProps = { selectedYear: string | undefined };
 export const FilterAlbumsWizard: FC<FilterAlbumsWizardProps> = ({
   selectedYear,
 }) => {
-  const { push } = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
 
   return (
     <Select
       onValueChange={(value) => {
-        if (!pathname) return;
+        if (pathname === null) return;
         if (value === "") {
-          return push(pathname);
+          router.push(pathname);
+          return;
         }
 
-        return push(`${pathname}?year=${value}`, {});
+        router.push(`${pathname}?year=${value}`, {});
       }}
-      defaultValue={selectedYear?.toString() || "all"}
+      defaultValue={selectedYear?.toString() ?? "all"}
     >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Välj år" />

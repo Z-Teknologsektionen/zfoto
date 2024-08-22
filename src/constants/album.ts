@@ -1,0 +1,1 @@
+export const NUMBER_OF_IMAGES_TO_PRELOAD = 12;

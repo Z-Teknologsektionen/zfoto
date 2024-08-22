@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Fragment, type FC, type ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
@@ -35,24 +35,22 @@ export const metadata: Metadata = {
   },
 };
 
-const BaseLayout = async ({ children }: { children: ReactNode }) => {
-  return (
-    <html lang="sv">
-      <body className="">
-        <Providers>
-          <Toaster position="top-center" reverseOrder={false} />
-          <>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="my-8 flex flex-grow flex-col">{children}</main>
-            </div>
-            <Footer />
-          </>
-          <Analytics />
-        </Providers>
-      </body>
-    </html>
-  );
-};
+const BaseLayout: FC<{ children: ReactNode }> = ({ children }) => (
+  <html lang="sv">
+    <body className="">
+      <Providers>
+        <Toaster position="top-center" reverseOrder={false} />
+        <Fragment>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="my-8 flex grow flex-col">{children}</main>
+          </div>
+          <Footer />
+        </Fragment>
+        <Analytics />
+      </Providers>
+    </body>
+  </html>
+);
 
 export default BaseLayout;

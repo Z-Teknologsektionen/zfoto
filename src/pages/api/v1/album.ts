@@ -1,56 +1,31 @@
+import { createAlbumAPISchema } from "@/schemas/album";
+import { getLatestAlbums } from "@/server/data-access/albums";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
 import { db } from "~/utils/db";
-import { getLatestAlbums } from "~/utils/fetchAlbumData";
 
-const createAlbumSchema = z.object({
-  title: z.string().min(1, "There must be at least one character in the title"),
-  date: z.string().datetime({
-    precision: 3,
-    offset: false,
-    message: "Invalid datetime format",
-  }), //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
-  images: z
-    .array(
-      z.object({
-        filename: z.string().min(1),
-        photographer: z.string().min(1).optional(),
-        date: z
-          .string()
-          .datetime({
-            precision: 3,
-            offset: false,
-            message: "Invalid datetime format",
-          }) //Format: "YYYY-MM-DDTHH:MM:SS.000Z"
-          .optional(),
-      }),
-    )
-    .min(1, "There needs to be at least 1 image in the album"),
-});
-
-type PostBodyType = z.infer<typeof createAlbumSchema>;
-
+// eslint-disable-next-line max-lines-per-function
 const albumRouter = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
   if (req.method === "GET") {
     try {
-      const album = await getLatestAlbums({});
-      return res.status(200).json(album);
+      const album = await getLatestAlbums();
+      res.status(200).json(album);
+      return;
     } catch (error) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
     }
   } else if (req.method === "POST") {
     try {
-      const parse = createAlbumSchema.safeParse(req.body);
+      const parse = createAlbumAPISchema.safeParse(req.body);
       if (!parse.success) {
-        return res
-          .status(400)
-          .json({ error: parse.error.flatten().fieldErrors });
+        res.status(400).json({ error: parse.error.flatten().fieldErrors });
+        return;
       }
-      const body = req.body as PostBodyType;
+      const body = parse.data;
 
       const createdAlbum = await db.album.upsert({
         where: {
@@ -69,6 +44,8 @@ const albumRouter = async (
         create: {
           title: body.title,
           date: body.date,
+          isReception: body.isReception,
+          isVisible: body.isVisible,
           images: {
             createMany: {
               data: body.images,
@@ -79,7 +56,7 @@ const albumRouter = async (
           id: true,
           title: true,
           date: true,
-          visible: true,
+          isVisible: true,
           isReception: true,
           images: {
             select: {
@@ -87,8 +64,8 @@ const albumRouter = async (
               filename: true,
               photographer: true,
               date: true,
-              visible: true,
-              coverImage: true,
+              isVisible: true,
+              isCoverImage: true,
             },
           },
           _count: {
@@ -98,20 +75,24 @@ const albumRouter = async (
           },
         },
       });
-      return res.status(200).json(createdAlbum);
+      res.status(200).json(createdAlbum);
+      return;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === "P2002") {
-          return res.status(400).json({
+          res.status(400).json({
             error:
               "Image with filename already exists, please check filenames and try again. No album has been created",
           });
+          return;
         }
       }
-      return res.status(500).json({ error: err });
+      res.status(500).json({ error: err });
+      return;
     }
   } else {
-    return res.status(200).json({ message: "Unused method" });
+    res.status(200).json({ message: "Unused method" });
+    return;
   }
 };
 

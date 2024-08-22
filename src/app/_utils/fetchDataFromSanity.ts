@@ -1,4 +1,4 @@
-import { env } from "@/env/client.mjs";
+import { env } from "@/env.mjs";
 import { createClient } from "next-sanity";
 import type { PortableTextBlock } from "sanity";
 
@@ -15,17 +15,14 @@ export type PagePayload = {
   title: string;
 };
 
-export const getPageBySlug = (
+export const getPageBySlug = async (
   slug: string,
-): Promise<PagePayload | undefined> => {
-  return client.fetch(`*[_type == "page" && slug.current == "${slug}"]{
+): Promise<PagePayload | undefined> =>
+  client.fetch(`*[_type == "page" && slug.current == "${slug}"]{
   title, slug, content
 }[0]`);
-};
 
-export const getSettings = (): Promise<{
+export const getSettings = async (): Promise<{
   description: string;
   title: string;
-}> => {
-  return client.fetch(`*[_type == 'siteSettings' && _id== 'siteSettings'][0]`);
-};
+}> => client.fetch(`*[_type == 'siteSettings' && _id== 'siteSettings'][0]`);

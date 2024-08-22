@@ -12,7 +12,7 @@ type HeaderNavLinkProps = SafeLinkType & {
 export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
   closeNav,
   href,
-  newPage,
+  newPage = false,
   label,
 }) => {
   const pathname = usePathname();
@@ -20,13 +20,11 @@ export const HeaderNavLink: FC<HeaderNavLinkProps> = ({
   return (
     <li>
       <Link
-        className={`border-b-2 px-2 py-1 hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80
-          ${
-            (href !== "/" && pathname?.startsWith(href)) || pathname === href
-              ? "border-transparent font-bold lg:border-[#a7a7a7]/80"
-              : "border-transparent font-normal"
-          }
-        `}
+        className={`border-b-2 px-2 py-1 hover:text-[#a7a7a7]/80 focus:text-[#a7a7a7]/80 ${
+          (href !== "/" && pathname?.startsWith(href)) ?? pathname === href
+            ? "border-transparent font-bold lg:border-[#a7a7a7]/80"
+            : "border-transparent font-normal"
+        } `}
         href={href}
         onClick={closeNav}
         referrerPolicy={newPage ? "no-referrer" : undefined}

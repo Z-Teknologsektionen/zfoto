@@ -1,10 +1,7 @@
 "use client";
 
-import { emailSchema } from "@/server/trpc/helpers/zodScheams";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { contactEmailSchema } from "@/schemas/email";
+import type { FC } from "react";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -19,27 +16,23 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
-import { trpc } from "~/trpc/client";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
+import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
+// eslint-disable-next-line max-lines-per-function
 export const ContactForm: FC = () => {
-  const { mutate: sendEmail, isLoading } =
-    trpc.email.sendEmailAsUser.useMutation({
-      onSuccess: () => {
-        toast.success("Ditt meddelande har skickats!");
-        form.reset();
-      },
-      onError: () =>
-        toast.error(
-          "Okänt fel, försök igen senare eller kontakta oss via mail: zfoto@ztek.se",
-        ),
-    });
-
-  const form = useForm({
-    resolver: zodResolver(emailSchema),
+  const form = useFormWithZod({
+    schema: contactEmailSchema,
     defaultValues: {
       email: "",
       message: "",
       subject: "",
+    },
+  });
+
+  const { execute: sendEmail, status } = useSendContactEmail({
+    onSuccess: () => {
+      form.reset();
     },
   });
 
@@ -50,7 +43,7 @@ export const ContactForm: FC = () => {
       onValid={(values) => {
         sendEmail(values);
       }}
-      schema={emailSchema}
+      schema={contactEmailSchema}
     >
       <FormFieldInputEmail
         form={form}
@@ -82,16 +75,18 @@ export const ContactForm: FC = () => {
       <div className="col-span-2 flex w-full flex-row items-center justify-end gap-2">
         <Button
           type="button"
-          onClick={() => form.reset()}
+          onClick={() => {
+            form.reset();
+          }}
           variant="outline"
           size="default"
-          disabled={isLoading}
+          disabled={status === "executing"}
         >
           Återställ
         </Button>
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={status === "executing"}
           variant="default"
           size="default"
         >

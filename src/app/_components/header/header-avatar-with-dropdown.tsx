@@ -1,8 +1,8 @@
 import { adminLikeRoles } from "@/constants/admin";
-import { Roles } from "@prisma/client";
+import type { Roles } from "@prisma/client";
 import { Lock } from "lucide-react";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -28,7 +28,7 @@ export const HeaderAvatarWithDropdown: FC<HeaderAvatarWithDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="z-20 h-10 w-10">
+        <Avatar className="z-20 size-10">
           <AvatarImage src={filename} />
           <AvatarFallback>{name[0]}</AvatarFallback>
         </Avatar>
@@ -36,8 +36,8 @@ export const HeaderAvatarWithDropdown: FC<HeaderAvatarWithDropdownProps> = ({
       <DropdownMenuContent className="mt-2">
         {hasAdminLikeRole && (
           <DropdownMenuItem asChild>
-            <Link href={"/admin"}>
-              <Lock className="mr-2 h-4 w-4" />
+            <Link href="/admin">
+              <Lock className="mr-2 size-4" />
               <span>Adminpanel</span>
             </Link>
           </DropdownMenuItem>

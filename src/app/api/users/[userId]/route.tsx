@@ -1,15 +1,10 @@
-import { Roles } from "@prisma/client";
+import { patchUserSchema } from "@/schemas/user";
+import { updateUserRoleById } from "@/server/data-access/users";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { db } from "~/utils/db";
 
-const patchUserSchema = z.object({
-  role: z.nativeEnum(Roles),
-});
-
-export async function GET(
-  req: Request,
+/* Export async function GET(
+  _req: Request,
   { params }: { params: { userId: string } },
 ): Promise<NextResponse<unknown>> {
   const user = await db.user.findUniqueOrThrow({
@@ -18,7 +13,7 @@ export async function GET(
     },
   });
   return NextResponse.json(user, { status: 200 });
-}
+} */
 
 export async function PATCH(
   req: Request,
@@ -28,26 +23,17 @@ export async function PATCH(
 
   const { userId } = params;
 
-  if (!result.success) {
+  if (!result.success)
     return NextResponse.json({ error: result.error }, { status: 400 });
-  }
 
-  if (!isObjectIdOrHexString(userId)) {
+  if (!isObjectIdOrHexString(userId))
     return NextResponse.json({ error: "Invalid ObjectId" }, { status: 400 });
-  }
 
   try {
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        role: result.data.role,
-      },
-    });
+    await updateUserRoleById(userId, result.data.role);
+
     return NextResponse.json({ message: "No Content" }, { status: 200 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: "Internal error" }, { status: 500 });
   }
 }

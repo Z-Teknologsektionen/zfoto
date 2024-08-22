@@ -14,10 +14,11 @@ model Album {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   title       String
-  images      Image[]
-  visible     Boolean  @default(true)
-  date        DateTime @default(now())
-  isReception Boolean  @default(false)
+  isVisible   Boolean  @map("visible")
+  isReception Boolean
+  date        DateTime
+
+  images Image[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -30,15 +31,15 @@ model Image {
   albumId String @db.ObjectId
 
   filename     String   @unique
-  coverImage   Boolean  @default(false)
-  photographer String   @default("zFoto")
-  visible      Boolean  @default(true)
-  date         DateTime @default(now())
+  photographer String
+  isCoverImage Boolean  @map("coverImage")
+  isVisible    Boolean  @map("visible")
+  date         DateTime
 
   album Album @relation(fields: [albumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @default(now()) @updatedAt //Optional because of added after the fact
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -78,7 +79,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  role     Roles   @default(USER)
+  role     Roles
   password String?
 }
 

@@ -1,14 +1,18 @@
+import { getImagebyId } from "@/server/data-access/images";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { FC } from "react";
+import { Fragment } from "react";
 import { BackButton } from "~/components/layout/back-button";
-import { getImageAsAdmin } from "~/utils/fetchAdminData";
 import { getFullFilePath } from "~/utils/utils";
-import EditImageForm from "./_components/edit-form";
+import { EditImageForm } from "./_components/edit-form";
 
-const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
-  const image = await getImageAsAdmin(params.imageId).catch(() => notFound());
+type ImageAdminPageProps = { params: { imageId: string } };
+
+const ImageAdminPage: FC<ImageAdminPageProps> = async ({ params }) => {
+  const image = await getImagebyId(params.imageId).catch(() => notFound());
   return (
-    <>
+    <Fragment>
       <div className="container">
         <BackButton />
       </div>
@@ -31,7 +35,7 @@ const ImageAdminPage = async ({ params }: { params: { imageId: string } }) => {
           />
         </div>
       </section>
-    </>
+    </Fragment>
   );
 };
 

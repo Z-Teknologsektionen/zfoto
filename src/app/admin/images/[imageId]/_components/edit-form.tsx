@@ -1,163 +1,149 @@
 "use client";
 
-import { updateImageFrontEndSchema } from "@/server/trpc/helpers/zodScheams";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { z } from "zod";
+import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
+import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
+import { imageBaseSchema } from "@/schemas/helpers/zodScheams";
+import type { getImagebyId } from "@/server/data-access/images";
+import type { Prisma } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import type { FC } from "react";
+import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
+import {
+  FormFieldInput,
+  FormFieldInputDateTimeLocal,
+} from "~/components/form/form-field-input";
+import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import { Switch } from "~/components/ui/switch";
-import { trpc } from "~/trpc/client";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
-import { AdminImage } from "~/utils/fetchAdminData";
 
-const EditImageForm: FC<AdminImage> = ({
-  coverImage,
+type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
+
+// eslint-disable-next-line max-lines-per-function
+export const EditImageForm: FC<AdminImage> = ({
+  isCoverImage,
   date,
   id,
   photographer,
-  visible,
+  isVisible,
+  filename,
 }) => {
-  const { mutate: updateImage, isLoading } =
-    trpc.image.updateImageById.useMutation({
-      onMutate: () => toast.loading("Uppdaterar album..."),
-      onSettled: (_, __, ___, context) => {
-        toast.dismiss(context);
-      },
-      onSuccess: () => toast.success("Bild uppdaterad!"),
-      onError: (error) => {
-        toast.error("Kunde inte uppdatera, försök igen senare...");
-        toast.error(error.message);
-      },
-    });
+  const router = useRouter();
 
-  const form = useForm<z.infer<typeof updateImageFrontEndSchema>>({
-    resolver: zodResolver(updateImageFrontEndSchema),
+  const { execute: deleteImage, isExecuting: isDeleting } = useDeleteImageById({
+    onSuccess: () => {
+      router.back();
+    },
+  });
+  const { execute: updateImage, isExecuting: isUpdating } =
+    useUpdateImageById();
+
+  const isExecuting = isDeleting || isUpdating;
+
+  const form = useFormWithZod({
+    schema: imageBaseSchema,
     defaultValues: {
-      photographer: photographer,
-      coverImage: coverImage,
-      visible: visible,
-      date: getLocalDateTimeFromUTC(date).toISOString().slice(0, -8),
+      filename,
+      photographer,
+      isCoverImage,
+      isVisible,
+      date: getLocalDateTimeFromUTC(date).toISOString(),
     },
   });
 
-  async function onSubmit(values: z.infer<typeof updateImageFrontEndSchema>) {
-    updateImage({
-      ...values,
-      imageId: id,
-      date: new Date(values.date).toISOString(),
-    });
-  }
-
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="grid gap-4 md:grid-cols-2"
+    <BasicFormWrapper
+      form={form}
+      schema={imageBaseSchema}
+      onValid={(values) => {
+        updateImage({ imageId: id, ...values });
+      }}
+      className="grid gap-4 md:grid-cols-2"
+    >
+      <FormFieldInput
+        form={form}
+        name="photographer"
+        label="Fotograf"
+        placeholder="Fyll i fotografensnamn..."
+        description="Namnet på fotografen"
+      />
+      <FormFieldInputDateTimeLocal
+        form={form}
+        name="date"
+        label="Datum och tid"
+        placeholder="Fyll i datum och tid"
+        description="Datumet och tiden då bilden togs"
+      />
+      <FormFieldSwitch
+        form={form}
+        name="isVisible"
+        label="Visas på hemsidan"
+        description="Välj om bilden ska visas för användare eller inte."
+      />
+      <FormFieldSwitch
+        form={form}
+        name="isCoverImage"
+        label="Omslagsbild"
+        description="Välj om bilden ska visas som omslagsbild"
+      />
+      <div className="col-span-full flex flex-row justify-end gap-2">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button disabled={isExecuting} type="button" variant="destructive">
+              Radera
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Vill du verkligen radera: {filename}</DialogTitle>
+              <DialogDescription>
+                Denna åtgärd går inte att ångra!
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Avbryt
+                </Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => {
+                    deleteImage({ id });
+                  }}
+                >
+                  Radera
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Button
+          disabled={isExecuting}
+          type="button"
+          variant="outline"
+          onClick={() => {
+            form.reset();
+          }}
         >
-          <FormField
-            control={form.control}
-            name="photographer"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fotograf</FormLabel>
-                <FormControl>
-                  <Input placeholder="Fyll i fotografensnamn..." {...field} />
-                </FormControl>
-                <FormDescription>Namnet på fotografen</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Datum och tid</FormLabel>
-                <FormControl>
-                  <Input
-                    type="datetime-local"
-                    placeholder="Fyll i datum och tid"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Datumet och tiden då bilden togs
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="visible"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Visas på hemsidan</FormLabel>
-                  <FormDescription>
-                    Välj om bilden ska visas för användare eller inte.
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="coverImage"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Omslagsbild</FormLabel>
-                  <FormDescription>
-                    Välj om bilden ska visas som omslagsbild
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <div className="col-span-full flex flex-row justify-end gap-2">
-            <Button
-              disabled={isLoading}
-              type="button"
-              variant="outline"
-              onClick={() => form.reset()}
-            >
-              Återställ
-            </Button>
-            <Button disabled={isLoading} type="submit">
-              Spara
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </>
+          Återställ
+        </Button>
+        <Button disabled={isExecuting} type="submit">
+          Spara
+        </Button>
+      </div>
+    </BasicFormWrapper>
   );
 };
-
-export default EditImageForm;

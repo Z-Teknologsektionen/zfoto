@@ -1,22 +1,28 @@
-import { NextRequestWithAuth, withAuth } from "next-auth/middleware";
+import { Roles } from "@prisma/client";
+import type { NextRequestWithAuth } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import { adminLikeRoles } from "./constants/admin";
 
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
-    if (
-      !(
-        request.nextUrl.pathname.startsWith("/admin") &&
-        request.nextauth.token?.role &&
-        adminLikeRoles.includes(request.nextauth.token.role)
-      )
-    ) {
+    const { pathname } = request.nextUrl;
+    const { token } = request.nextauth;
+
+    if (token === null)
       return NextResponse.rewrite(new URL("/denied", request.url));
-    }
+
+    if (pathname.startsWith("/admin") && !adminLikeRoles.includes(token.role))
+      return NextResponse.rewrite(new URL("/denied", request.url));
+
+    if (pathname.startsWith("/admin/users") && token.role !== Roles.ADMIN)
+      return NextResponse.rewrite(new URL("/denied", request.url));
+
+    return undefined;
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token }) => Boolean(token),
     },
   },
 );
