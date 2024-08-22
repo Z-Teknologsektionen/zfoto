@@ -6,7 +6,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { ImageColumnActions } from "~/components/data-table/data-table-image-actions";
-import { formatDateTimeString } from "~/utils/date-utils";
+import {
+  formatDateTimeString,
+  getLocalDateTimeFromUTC,
+} from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
 
 type AdminAlbumImageType = Prisma.PromiseReturnType<
@@ -43,7 +46,8 @@ export const imageColumns: ColumnDef<AdminAlbumImageType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Datum" />
     ),
-    cell: ({ row }) => formatDateTimeString(row.original.date),
+    cell: ({ row }) =>
+      formatDateTimeString(getLocalDateTimeFromUTC(row.original.date)),
   },
   {
     accessorKey: "photographer",

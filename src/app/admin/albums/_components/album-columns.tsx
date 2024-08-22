@@ -16,7 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { formatDateTimeString } from "~/utils/date-utils";
+import {
+  formatDateTimeString,
+  getLocalDateTimeFromUTC,
+} from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
 import { useUpdateAlbumById } from "../_hooks/use-update-album-by-id";
 
@@ -56,7 +59,8 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Datum" />
     ),
-    cell: ({ row }) => formatDateTimeString(row.original.date),
+    cell: ({ row }) =>
+      formatDateTimeString(getLocalDateTimeFromUTC(row.original.date)),
   },
   {
     accessorKey: "visible",

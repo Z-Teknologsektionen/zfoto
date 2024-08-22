@@ -12,10 +12,10 @@ dayjs.tz.setDefault(SWE_TIMEZONE);
 dayjs.locale(SWE_TIMEZONE);
 
 export const formatDateString = (date: Date): string =>
-  dayjs(date).format("YYYY-MM-DD");
+  dayjs.utc(date).format("YYYY-MM-DD");
 
 export const formatDateTimeString = (date: Date): string =>
-  dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+  dayjs.utc(date).format("YYYY-MM-DD HH:mm:ss");
 
 export const getLocalDateTimeFromUTC = (UTCDate: Date): Date =>
   dayjs(UTCDate).tz(UTC_TIMEZONE, true).toDate();

@@ -13,6 +13,11 @@ export const imagesOrderBy = [
   { filename: "asc" },
 ] satisfies Prisma.ImageOrderByWithRelationInput[];
 
+export const imagesOrderByForAdmin = [
+  { date: "desc" },
+  { filename: "desc" },
+] satisfies Prisma.ImageOrderByWithRelationInput[];
+
 export const coverImageFromAlbumSelect = {
   orderBy: imagesOrderBy,
   take: 1,

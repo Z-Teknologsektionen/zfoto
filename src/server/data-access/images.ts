@@ -6,7 +6,7 @@
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
 import type { Image } from "@prisma/client";
 import { db } from "~/utils/db";
-import { dateTimeFilterByActiveYear, imagesOrderBy } from "./helpers";
+import { dateTimeFilterByActiveYear, imagesOrderByForAdmin } from "./helpers";
 
 export const getImagebyId = async (id: string) =>
   db.image.findUniqueOrThrow({
@@ -27,7 +27,7 @@ export const getAllImagesAsAdmin = async () => {
         },
       },
     },
-    orderBy: imagesOrderBy,
+    orderBy: imagesOrderByForAdmin,
   });
 
   return images.map(({ album, ...image }) => ({

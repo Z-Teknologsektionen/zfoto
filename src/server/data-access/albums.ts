@@ -10,6 +10,7 @@ import {
   coverImageFromAlbumSelect,
   dateTimeFilterByActiveYear,
   imagesOrderBy,
+  imagesOrderByForAdmin,
 } from "./helpers";
 
 export const getLatestAlbums = async ({
@@ -64,14 +65,7 @@ export const getAllAlbumsAsAdmin = async () => {
   const albums = await db.album.findMany({
     include: {
       _count: true,
-      images: {
-        orderBy: imagesOrderBy,
-        take: 1,
-        where: {
-          isCoverImage: true,
-          isVisible: true,
-        },
-      },
+      images: coverImageFromAlbumSelect,
     },
     orderBy: {
       date: "desc",
@@ -106,7 +100,7 @@ export const getAlbumWithImagesById = async (id: string) => {
             equals: true,
           },
         },
-        orderBy: imagesOrderBy,
+        orderBy: imagesOrderByForAdmin,
         select: {
           date: true,
           filename: true,

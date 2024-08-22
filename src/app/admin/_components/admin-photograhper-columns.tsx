@@ -5,7 +5,10 @@ import type { Prisma } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
-import { formatDateTimeString } from "~/utils/date-utils";
+import {
+  formatDateTimeString,
+  getLocalDateTimeFromUTC,
+} from "~/utils/date-utils";
 
 type CountsPerPhotographerType = Prisma.PromiseReturnType<
   typeof getCountsPerPhotographer
@@ -64,7 +67,9 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
         <DataTableCell center>
           {row.original.firstImage === undefined
             ? "Okänd"
-            : formatDateTimeString(row.original.firstImage)}
+            : formatDateTimeString(
+                getLocalDateTimeFromUTC(row.original.firstImage),
+              )}
         </DataTableCell>
       ),
     },
@@ -77,7 +82,9 @@ export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
         <DataTableCell center>
           {row.original.latestImage === undefined
             ? "Okänd"
-            : formatDateTimeString(row.original.latestImage)}
+            : formatDateTimeString(
+                getLocalDateTimeFromUTC(row.original.latestImage),
+              )}
         </DataTableCell>
       ),
     },
