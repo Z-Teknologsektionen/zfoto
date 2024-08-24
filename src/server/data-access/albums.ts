@@ -173,6 +173,13 @@ export const updateAlbumById = async (
     data,
   });
 
+export const deleteAlbumById = async (albumId: string) =>
+  db.album.delete({
+    where: {
+      id: albumId,
+    },
+  });
+
 export const getAlbumCountFromActiveYear = async (startYear: number) =>
   db.album.count({
     where: {

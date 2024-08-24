@@ -1,7 +1,9 @@
 "use client";
 
 import { albumBaseSchema } from "@/schemas/helpers/zodScheams";
+import { useRouter } from "next/navigation";
 import type { FC } from "react";
+import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -11,7 +13,8 @@ import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
-import { useUpdateAlbum } from "../_hooks/use-update-album";
+import { useDeleteAlbumById } from "../../_hooks/use-delete-album-by-id";
+import { useUpdateAlbumById } from "../../_hooks/use-update-album-by-id";
 
 type EditAlbumFormProps = {
   title: string;
@@ -29,7 +32,17 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   isVisible,
   date,
 }) => {
-  const { execute: updateAlbum, status: updateAlbumstatus } = useUpdateAlbum();
+  const router = useRouter();
+
+  const { execute: deleteAlbum, isExecuting: isDeleting } = useDeleteAlbumById({
+    onSuccess: () => {
+      router.back();
+    },
+  });
+  const { execute: updateAlbum, isExecuting: isUpdating } =
+    useUpdateAlbumById();
+
+  const isExecuting = isDeleting || isUpdating;
 
   const form = useFormWithZod({
     schema: albumBaseSchema,
@@ -71,8 +84,16 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
         name="isReception"
       />
       <div className="col-span-full flex flex-row justify-end gap-2">
+        <DeleteDialog
+          title={`Vill du verkligen radera: ${title}`}
+          description="Denna åtgärd går inte att ångra! Alla bilder som tillhör albummet kommer också att raderas!"
+          onDelete={() => {
+            deleteAlbum({ id });
+          }}
+          isDisabled={isExecuting}
+        />
         <Button
-          disabled={updateAlbumstatus === "executing"}
+          disabled={isExecuting}
           type="button"
           variant="outline"
           onClick={() => {
@@ -81,7 +102,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
         >
           Återställ
         </Button>
-        <Button disabled={updateAlbumstatus === "executing"} type="submit">
+        <Button disabled={isExecuting} type="submit">
           Spara
         </Button>
       </div>
