@@ -107,19 +107,52 @@ export const FormFieldInputDateTimeLocal = <
   form,
   name,
   onChange = (e) => {
+    const { value } = e.target;
     form.setValue(
       name,
-      (e.target.value + ":00.000Z") as PathValue<
+      (value !== "" ? e.target.value + ":00.000Z" : undefined) as PathValue<
         TFieldValues,
         Path<TFieldValues>
       >,
     );
   },
-  value = (form.getValues(name) as string).slice(0, -8),
+  value = (form.getValues(name) as string | undefined)?.slice(0, -8),
   ...rest
 }: PartialBy<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
+>): JSX.Element =>
+  FormFieldInput({
+    label,
+    placeholder,
+    type,
+    form,
+    name,
+    onChange,
+    value,
+    ...rest,
+  });
+
+export const FormFieldInputNumber = <
+  TFieldValues extends FieldValues,
+  TTransformedValues extends FieldValues,
+>({
+  label,
+  placeholder,
+  type = "number",
+  form,
+  name,
+  onChange = (e) => {
+    form.setValue(
+      name,
+      e.target.valueAsNumber as PathValue<TFieldValues, Path<TFieldValues>>,
+    );
+  },
+  value = form.getValues(name) as number | undefined,
+  ...rest
+}: PartialBy<
+  FormFieldInputProps<TFieldValues, TTransformedValues>,
+  "onChange" | "value"
 >): JSX.Element =>
   FormFieldInput({
     label,

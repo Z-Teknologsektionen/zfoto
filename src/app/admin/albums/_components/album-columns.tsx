@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +27,32 @@ import { useUpdateAlbumById } from "../_hooks/use-update-album-by-id";
 type AdminAlbumType = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
 export const albumColumns: ColumnDef<AdminAlbumType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => {
+          table.toggleAllPageRowsSelected(value === true);
+        }}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => {
+          row.toggleSelected(value === true);
+        }}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "coverImageFilename",
     cell: ({ row }) => (

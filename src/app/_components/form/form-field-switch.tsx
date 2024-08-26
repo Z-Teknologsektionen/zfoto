@@ -5,6 +5,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "~/components/ui/form";
 import { Switch } from "~/components/ui/switch";
 
@@ -39,6 +40,7 @@ export const FormFieldSwitch = <
         <div className="space-y-0.5">
           <FormLabel className="text-base">{label}</FormLabel>
           <FormDescription>{description}</FormDescription>
+          <FormMessage />
         </div>
         <FormControl>
           <Switch

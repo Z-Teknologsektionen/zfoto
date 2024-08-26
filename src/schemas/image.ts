@@ -1,4 +1,8 @@
-import { imageBaseSchema } from "./helpers/zodScheams";
+import { z } from "zod";
+import {
+  imageBaseSchema,
+  updateManyImagesBaseSchema,
+} from "./helpers/zodScheams";
 import { objectId } from "./helpers/zodTypes";
 
 export const createImageAPISchema = imageBaseSchema.extend({
@@ -13,3 +17,8 @@ export const updateImageSchema = imageBaseSchema
   .extend({
     imageId: objectId,
   });
+
+export const updateManyImagesSchema = z.object({
+  imageIds: objectId.array().min(1),
+  data: updateManyImagesBaseSchema,
+});

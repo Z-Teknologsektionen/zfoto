@@ -6,6 +6,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { ImageColumnActions } from "~/components/data-table/data-table-image-actions";
+import { Checkbox } from "~/components/ui/checkbox";
 import {
   formatDateTimeString,
   getLocalDateTimeFromUTC,
@@ -17,6 +18,32 @@ type AdminTableImageType = Prisma.PromiseReturnType<
 >[0];
 
 export const imageColumns: ColumnDef<AdminTableImageType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => {
+          table.toggleAllPageRowsSelected(value === true);
+        }}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => {
+          row.toggleSelected(value === true);
+        }}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "image",
     cell: ({ row }) => (

@@ -65,7 +65,7 @@ export const EditImageForm: FC<AdminImage> = ({
         form={form}
         name="photographer"
         label="Fotograf"
-        placeholder="Fyll i fotografensnamn..."
+        placeholder="Fyll i fotografens namn..."
         description="Namnet på fotografen"
       />
       <FormFieldInputDateTimeLocal

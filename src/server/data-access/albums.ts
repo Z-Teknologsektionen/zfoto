@@ -144,12 +144,14 @@ export const getAlbumWithImagesAsAdmin = async (id: string) => {
     },
   });
 
-  images.map((image) => ({
-    albumTitle: album.title,
-    ...image,
-  }));
-
-  return { numberOfImages, images, ...album };
+  return {
+    numberOfImages,
+    images: images.map((image) => ({
+      albumTitle: album.title,
+      ...image,
+    })),
+    ...album,
+  };
 };
 
 export const setReceptionAlbumVisibility = async (isVisible: boolean) =>
