@@ -1,13 +1,11 @@
 "use client";
 
-import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodScheams";
-import { FC } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
-import {
-  FormFieldInput,
-  FormFieldInputNumber,
-} from "~/components/form/form-field-input";
+import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodScheams";
+
+import type { FC } from "react";
+import { useFormContext } from "react-hook-form";
+import type { z } from "zod";
+import { FormFieldInputNumber } from "~/components/form/form-field-input";
 import { Button } from "~/components/ui/button";
 import {
   FormDescription,
@@ -18,30 +16,31 @@ import {
 } from "~/components/ui/form";
 
 export const FormFieldRelativeTime: FC<{
-  form: UseFormReturn<
-    z.input<typeof updateManyImagesBaseSchema>,
+  label: string;
+  description?: string;
+  resetText?: string;
+  // eslint-disable-next-line max-lines-per-function
+}> = ({ resetText = "Nollställ", description, label }) => {
+  const form = useFormContext<
+    Pick<z.input<typeof updateManyAlbumsBaseSchema>, "relativeDate">,
     unknown,
-    z.output<typeof updateManyImagesBaseSchema>
-  >;
-}> = ({ form }) => {
+    Pick<z.output<typeof updateManyAlbumsBaseSchema>, "relativeDate">
+  >();
+
   return (
     <FormField
       control={form.control}
       name={"relativeDate.root" as "relativeDate"}
+      // eslint-disable-next-line max-lines-per-function
       render={() => (
         <FormItem>
-          <FormLabel>Relativ tid</FormLabel>
-          <FormDescription>
-            Används för att justera varje bild i förhållande till dess nuvarande
-            tid. Bra om kameran går x timmar/minuter/sekunder fel. Lämnas med 0
-            för att behålla nuvarande värden.
-          </FormDescription>
+          <FormLabel>{label}</FormLabel>
+          <FormDescription>{description}</FormDescription>
           <div className="grid grid-cols-4 place-items-center gap-2">
-            <FormFieldInput
+            <FormFieldInputNumber
               label="Timmar"
               name="relativeDate.hours"
               form={form}
-              type="number"
               min={-23}
               max={23}
             />
@@ -52,7 +51,7 @@ export const FormFieldRelativeTime: FC<{
               min={-59}
               max={59}
             />
-            <FormFieldInput
+            <FormFieldInputNumber
               label="Sekunder"
               name="relativeDate.seconds"
               form={form}
@@ -69,7 +68,7 @@ export const FormFieldRelativeTime: FC<{
               variant="outline"
               className="text-sm"
             >
-              Nollställ
+              {resetText}
             </Button>
           </div>
           <FormMessage />

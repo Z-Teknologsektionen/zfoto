@@ -27,3 +27,10 @@ export const getBaseUrl = (): string => {
     return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost
 };
+
+export const getValueIfUnique = <T extends boolean | number | string>(
+  arr: T[],
+): T | undefined => {
+  const areAllSame = arr.every((v: T) => v === arr[0]);
+  return areAllSame ? arr[0] : undefined;
+};

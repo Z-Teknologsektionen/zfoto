@@ -1,7 +1,7 @@
 "use client";
 
-import { getAllImagesAsAdmin } from "@/server/data-access/images";
-import { Prisma } from "@prisma/client";
+import type { getAllImagesAsAdmin } from "@/server/data-access/images";
+import type { Prisma } from "@prisma/client";
 import { useMemo } from "react";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";

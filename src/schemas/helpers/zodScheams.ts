@@ -70,3 +70,13 @@ export const updateManyImagesBaseSchema = z
     date: absoluteDate ?? relativeDate,
     ...rest,
   }));
+
+export const updateManyAlbumsBaseSchema = z.object({
+  isVisible: checkedState.transform(indeterminateToUndefined).optional(),
+  isReception: checkedState.transform(indeterminateToUndefined).optional(),
+  relativeDate: relativeDate
+    .transform((values) =>
+      Object.values(values).some((num) => num !== 0) ? values : undefined,
+    )
+    .optional(),
+});

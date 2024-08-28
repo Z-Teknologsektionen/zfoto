@@ -1,9 +1,4 @@
-import type {
-  FieldValues,
-  Path,
-  PathValue,
-  UseFormReturn,
-} from "react-hook-form";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -29,6 +24,7 @@ type FormFieldInputProps<
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
+// eslint-disable-next-line max-lines-per-function
 export const FormFieldInput = <
   TFieldValues extends FieldValues,
   TTransformedValues extends FieldValues,
@@ -37,6 +33,7 @@ export const FormFieldInput = <
   name,
   label,
   description,
+  type,
   ...rest
 }: FormFieldInputProps<TFieldValues, TTransformedValues>): JSX.Element => (
   <FormField
@@ -46,7 +43,30 @@ export const FormFieldInput = <
       <FormItem>
         <FormLabel>{label}</FormLabel>
         <FormControl>
-          <Input {...field} {...rest} />
+          <Input
+            {...field}
+            type={type}
+            onChange={(e) => {
+              switch (type) {
+                case "number":
+                  field.onChange(e.target.valueAsNumber);
+                  break;
+                case "datetime-local":
+                  field.onChange(
+                    e.target.value !== "" ? e.target.value + ":00.000Z" : "",
+                  );
+                  break;
+                default:
+                  field.onChange(e);
+              }
+            }}
+            value={
+              type === "datetime-local"
+                ? (field.value as string | null | undefined)?.slice(0, -8)
+                : field.value
+            }
+            {...rest}
+          />
         </FormControl>
         {description !== undefined && (
           <FormDescription>{description}</FormDescription>
@@ -72,7 +92,7 @@ export const FormFieldInputEmail = <
     label,
     placeholder,
     type: "email",
-    autoComplete: "em",
+    autoComplete: "email",
     ...rest,
   });
 
@@ -103,33 +123,22 @@ export const FormFieldInputDateTimeLocal = <
 >({
   label = "Datum och tid",
   placeholder = "Fyll i datum och tid...",
-  type = "datetime-local",
   form,
   name,
-  onChange = (e) => {
-    const { value } = e.target;
-    form.setValue(
-      name,
-      (value !== "" ? e.target.value + ":00.000Z" : undefined) as PathValue<
-        TFieldValues,
-        Path<TFieldValues>
-      >,
-    );
-  },
-  value = (form.getValues(name) as string | undefined)?.slice(0, -8),
   ...rest
 }: PartialBy<
-  FormFieldInputProps<TFieldValues, TTransformedValues>,
+  Omit<
+    FormFieldInputProps<TFieldValues, TTransformedValues>,
+    "onChange" | "type" | "value"
+  >,
   "label" | "placeholder"
 >): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
-    type,
+    type: "datetime-local",
     form,
     name,
-    onChange,
-    value,
     ...rest,
   });
 
@@ -139,28 +148,18 @@ export const FormFieldInputNumber = <
 >({
   label,
   placeholder,
-  type = "number",
   form,
   name,
-  onChange = (e) => {
-    form.setValue(
-      name,
-      e.target.valueAsNumber as PathValue<TFieldValues, Path<TFieldValues>>,
-    );
-  },
-  value = form.getValues(name) as number | undefined,
   ...rest
-}: PartialBy<
+}: Omit<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
-  "onChange" | "value"
+  "onChange" | "type" | "value"
 >): JSX.Element =>
   FormFieldInput({
     label,
     placeholder,
-    type,
+    type: "number",
     form,
     name,
-    onChange,
-    value,
     ...rest,
   });

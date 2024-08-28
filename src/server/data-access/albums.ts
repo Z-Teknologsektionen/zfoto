@@ -175,6 +175,19 @@ export const updateAlbumById = async (
     data,
   });
 
+export const updateManyAlbumsByIds = async (
+  albumIds: string[],
+  data: Omit<PrismaTypeToUpdateByIdData<Album>, "title">,
+) =>
+  db.album.updateMany({
+    where: {
+      id: {
+        in: albumIds,
+      },
+    },
+    data,
+  });
+
 export const deleteAlbumById = async (albumId: string) =>
   db.album.delete({
     where: {

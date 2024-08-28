@@ -1,8 +1,7 @@
 "use client";
 
-import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
-import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodScheams";
-import type { getAlbumWithImagesAsAdmin } from "@/server/data-access/albums";
+import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodScheams";
+import type { getAllAlbumsAsAdmin } from "@/server/data-access/albums";
 import type { Prisma } from "@prisma/client";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
@@ -12,10 +11,7 @@ import toast from "react-hot-toast";
 import type { z } from "zod";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import { FormFieldCheckbox } from "~/components/form/form-field-checkbox";
-import {
-  FormFieldInput,
-  FormFieldInputDateTimeLocal,
-} from "~/components/form/form-field-input";
+import { FormFieldRelativeTime } from "~/components/form/form-field-relative-time";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -29,43 +25,35 @@ import {
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
-import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
+import { useUpdateManyAlbumsByIds } from "../../_hooks/use-update-many-albums-by-ids";
 
-type AdminTableImageType = Prisma.PromiseReturnType<
-  typeof getAlbumWithImagesAsAdmin
->["images"][0];
+type AdminAlbumType = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
-export const UpdateManyImagesDialog: FC<{
-  selectedRows: Row<AdminTableImageType>[];
+export const UpdateManyAlbumsDialog: FC<{
+  selectedRows: Row<AdminAlbumType>[];
   // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
-  const { absoluteDate, allIds, isVisible, photographer } = useMemo(() => {
+  const { allIds, isVisible, isReception } = useMemo(() => {
     const allIds = selectedRows.map((row) => row.original.id);
-    const allDates = selectedRows.map((row) =>
-      getLocalDateTimeFromUTC(row.original.date).toISOString(),
-    );
     const allIsVisible = selectedRows.map((row) => row.original.isVisible);
-    const allPhotographers = selectedRows.map(
-      (row) => row.original.photographer,
-    );
+    const allIsReception = selectedRows.map((row) => row.original.isReception);
 
     return {
       allIds,
-      absoluteDate: getValueIfUnique(allDates),
       isVisible: getValueIfUnique(allIsVisible) ?? ("indeterminate" as const),
-      photographer: getValueIfUnique(allPhotographers),
+      isReception:
+        getValueIfUnique(allIsReception) ?? ("indeterminate" as const),
     };
   }, [selectedRows]);
 
   const form = useFormWithZod({
-    schema: updateManyImagesBaseSchema,
+    debug: true,
+    schema: updateManyAlbumsBaseSchema,
     values: {
-      absoluteDate,
       isVisible,
-      photographer,
+      isReception,
       relativeDate: {
         hours: 0,
         minutes: 0,
@@ -74,25 +62,28 @@ export const UpdateManyImagesDialog: FC<{
     },
   });
 
-  const { execute: updateManyImages, isExecuting: isUpdatingMany } =
-    useUpdateManyImagesByIds({
+  const { execute: updateManyAlbums, isExecuting: isUpdatingMany } =
+    useUpdateManyAlbumsByIds({
       onSuccess: () => {
         setOpen(false);
       },
     });
 
   const onValid = useCallback(
-    (values: z.output<typeof updateManyImagesBaseSchema>): undefined => {
+    (values: z.output<typeof updateManyAlbumsBaseSchema>): undefined => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (Object.values(values).every((el) => el === undefined)) {
         toast.error("Alla fält är tomma, inget kommer uppdateras");
+        setOpen(false);
         return;
       }
-      updateManyImages({
-        imageIds: allIds,
+
+      updateManyAlbums({
+        albumIds: allIds,
         data: form.getValues(),
       });
     },
-    [allIds, form, updateManyImages],
+    [allIds, form, updateManyAlbums],
   );
 
   return (
@@ -110,27 +101,20 @@ export const UpdateManyImagesDialog: FC<{
       <DialogContent>
         <BasicFormWrapper
           form={form}
-          schema={updateManyImagesBaseSchema}
+          schema={updateManyAlbumsBaseSchema}
           onValid={onValid}
           className="flex flex-col gap-4"
         >
           <DialogHeader>
-            <DialogTitle>Redigera {selectedRows.length} bilder</DialogTitle>
+            <DialogTitle>Redigera {selectedRows.length} album</DialogTitle>
             <DialogDescription>
-              Alla bilder kommer redigeras till samma värden, denna åtgärd
-              kommer inte gå att ångra. Om alla bilder har samma värde på ett
-              fält kommer ett standardvärde att visas, annars är fälet tomt.
+              Alla album kommer redigeras till samma värden, denna åtgärd kommer
+              inte gå att ångra. Om alla album har samma värde på ett fält
+              kommer ett standardvärde att visas, annars är fälet tomt.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-fit max-h-80">
             <div className="flex flex-col gap-2">
-              <FormFieldInput
-                form={form}
-                name="photographer"
-                label="Fotograf"
-                placeholder="Fyll i fotografens namn..."
-                description="Namnet på fotografen. Lämnas tom för att behålla nuvarande värden"
-              />
               <FormFieldCheckbox
                 form={form}
                 name="isVisible"
@@ -138,16 +122,16 @@ export const UpdateManyImagesDialog: FC<{
                 description="Välj om bilden ska visas för användare eller inte. Lämnas med icke ifylld check för att behålla nuvarande värden"
                 resetText="Behåll nuvarande"
               />
-              <FormFieldInputDateTimeLocal
+              <FormFieldCheckbox
                 form={form}
-                name="absoluteDate"
-                label="Absolut datum och tid"
-                placeholder="Fyll i datum och tid"
-                description="Datumet och tiden då bilden togs. Lämnas tom för att behålla nuvarande värden"
+                name="isReception"
+                label="Album från mottagningen"
+                description="Tagg för att dölja album när mottagningen närmar sig. Lämnas med icke ifylld check för att behålla nuvarande värden"
+                resetText="Behåll nuvarande"
               />
               <FormFieldRelativeTime
                 label="Relativ datum och tid"
-                description="Används för att justera varje bild i förhållande till dess nuvarande tid. Bra om kameran går x timmar/minuter/sekunder fel. Lämnas med 0 för att behålla nuvarande värden."
+                description="Används för att justera varje album i förhållande till dess nuvarande tid. Lämnas med 0 för att behålla nuvarande värden."
               />
             </div>
           </ScrollArea>
