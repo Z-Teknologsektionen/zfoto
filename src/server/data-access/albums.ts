@@ -144,12 +144,14 @@ export const getAlbumWithImagesAsAdmin = async (id: string) => {
     },
   });
 
-  images.map((image) => ({
-    albumTitle: album.title,
-    ...image,
-  }));
-
-  return { numberOfImages, images, ...album };
+  return {
+    numberOfImages,
+    images: images.map((image) => ({
+      albumTitle: album.title,
+      ...image,
+    })),
+    ...album,
+  };
 };
 
 export const setReceptionAlbumVisibility = async (isVisible: boolean) =>
@@ -171,6 +173,26 @@ export const updateAlbumById = async (
       id: albumId,
     },
     data,
+  });
+
+export const updateManyAlbumsByIds = async (
+  albumIds: string[],
+  data: PrismaTypeToUpdateByIdData<Album, "title">,
+) =>
+  db.album.updateMany({
+    where: {
+      id: {
+        in: albumIds,
+      },
+    },
+    data,
+  });
+
+export const deleteAlbumById = async (albumId: string) =>
+  db.album.delete({
+    where: {
+      id: albumId,
+    },
   });
 
 export const getAlbumCountFromActiveYear = async (startYear: number) =>

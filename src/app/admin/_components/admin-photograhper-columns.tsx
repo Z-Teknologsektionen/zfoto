@@ -1,7 +1,6 @@
 "use client";
 
-import type { getCountsPerPhotographer } from "@/server/data-access/photographers";
-import type { Prisma } from "@prisma/client";
+import type { AdminCountsPerPhotographerType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
@@ -10,11 +9,7 @@ import {
   getLocalDateTimeFromUTC,
 } from "~/utils/date-utils";
 
-type CountsPerPhotographerType = Prisma.PromiseReturnType<
-  typeof getCountsPerPhotographer
->[0];
-
-export const adminPhotographerColumns: ColumnDef<CountsPerPhotographerType>[] =
+export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>[] =
   [
     {
       accessorKey: "name",

@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
-import { Fragment, type FC, type ReactNode } from "react";
+import type { FC, ReactNode } from "react";
+import { Fragment } from "react";
 import { Toaster } from "react-hot-toast";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";

@@ -3,6 +3,7 @@
 import type {
   ColumnDef,
   ColumnFiltersState,
+  RowSelectionState,
   SortingState,
   Table as TableType,
 } from "@tanstack/react-table";
@@ -47,6 +48,8 @@ export const DataTable = <TData, TValue>({
 }: DataTableProps<TData, TValue>): JSX.Element => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
   const table = useReactTable({
     data,
     columns,
@@ -56,9 +59,11 @@ export const DataTable = <TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
+      rowSelection,
     },
   });
 

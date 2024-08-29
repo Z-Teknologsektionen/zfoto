@@ -1,7 +1,6 @@
 "use client";
 
-import type { getAlbumWithImagesById } from "@/server/data-access/albums";
-import type { Prisma } from "@prisma/client";
+import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -17,7 +16,7 @@ import { ImagePopupFooter } from "./image-popup-footer";
 import { ImagePopupHeader } from "./image-popup-header";
 
 type ImagePopupProps = {
-  album: Prisma.PromiseReturnType<typeof getAlbumWithImagesById>;
+  album: PublicAlbumWithImagesType;
 };
 
 const MINIMUM_MS_BETWEEN_IMAGE_CHANGE = 200;

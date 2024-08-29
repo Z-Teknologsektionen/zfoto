@@ -13,9 +13,11 @@ export const useFormWithZod = <TSchema extends Schema>({
   schema,
   defaultValues,
   debug = false,
+  values,
 }: {
   schema: TSchema;
   debug?: boolean;
+  values?: z.input<TSchema> | undefined;
   defaultValues?:
     | AsyncDefaultValues<z.input<typeof schema>>
     | DefaultValues<z.input<typeof schema>>;
@@ -32,4 +34,5 @@ export const useFormWithZod = <TSchema extends Schema>({
       return results;
     },
     defaultValues,
+    values,
   });

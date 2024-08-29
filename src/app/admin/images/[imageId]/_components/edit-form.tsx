@@ -3,10 +3,9 @@
 import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
 import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { imageBaseSchema } from "@/schemas/helpers/zodScheams";
-import type { getImagebyId } from "@/server/data-access/images";
-import type { Prisma } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
+import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -14,23 +13,20 @@ import {
 } from "~/components/form/form-field-input";
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 
-type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
+type EditImageFormProps = {
+  id: string;
+  filename: string;
+  photographer: string;
+  isVisible: boolean;
+  isCoverImage: boolean;
+  date: Date;
+};
 
 // eslint-disable-next-line max-lines-per-function
-export const EditImageForm: FC<AdminImage> = ({
+export const EditImageForm: FC<EditImageFormProps> = ({
   isCoverImage,
   date,
   id,
@@ -74,7 +70,7 @@ export const EditImageForm: FC<AdminImage> = ({
         form={form}
         name="photographer"
         label="Fotograf"
-        placeholder="Fyll i fotografensnamn..."
+        placeholder="Fyll i fotografens namn..."
         description="Namnet på fotografen"
       />
       <FormFieldInputDateTimeLocal
@@ -97,39 +93,13 @@ export const EditImageForm: FC<AdminImage> = ({
         description="Välj om bilden ska visas som omslagsbild"
       />
       <div className="col-span-full flex flex-row justify-end gap-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button disabled={isExecuting} type="button" variant="destructive">
-              Radera
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Vill du verkligen radera: {filename}</DialogTitle>
-              <DialogDescription>
-                Denna åtgärd går inte att ångra!
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button type="button" variant="outline">
-                  Avbryt
-                </Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => {
-                    deleteImage({ id });
-                  }}
-                >
-                  Radera
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <DeleteDialog
+          title={`Vill du verkligen radera: ${filename}`}
+          description="Denna åtgärd går inte att ångra!"
+          onDelete={() => {
+            deleteImage({ id });
+          }}
+        />
         <Button
           disabled={isExecuting}
           type="button"

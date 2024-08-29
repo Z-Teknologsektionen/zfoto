@@ -4,9 +4,9 @@ import type { FC } from "react";
 import { Fragment } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { BackButton } from "~/components/layout/back-button";
-import { AlbumImageFilteringToolbar } from "./_components/album-image-filtering-toolbar";
+import { imageColumns } from "../../images/_components/image-columns";
+import { ImagesFilteringToolbar } from "../../images/_components/images-filtering-toolbar";
 import { EditAlbumForm } from "./_components/edit-form";
-import { imageColumns } from "./_components/image-columns";
 
 type AlbumAdminPageProps = { params: { albumId: string } };
 
@@ -36,7 +36,7 @@ const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
       <section className="container space-y-4">
         <h1 className="text-xl font-semibold">Bilder</h1>
         <DataTable
-          toolbar={AlbumImageFilteringToolbar}
+          toolbar={ImagesFilteringToolbar}
           columns={imageColumns}
           data={album.images}
           usePagination

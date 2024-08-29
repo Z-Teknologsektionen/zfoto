@@ -1,19 +1,17 @@
-"use client";
-
 import type { UseActionCallbackWithOutErrorProps } from "@/types/actions";
 import { useAction } from "next-safe-action/hooks";
 import { useId } from "react";
 import toast from "react-hot-toast";
 import { defaultOnErrorToastHandler } from "~/actions/safe-action-helpers";
-import { updateAlbumAction } from "../_actions/update-album-action";
+import { deleteAlbumByIdAction } from "../_actions/delete-album-by-id-action";
 
-export const useUpdateAlbum = (
+export const useDeleteAlbumById = (
   callbacks: UseActionCallbackWithOutErrorProps = undefined,
 ) => {
   const toastId = useId();
-  return useAction(updateAlbumAction, {
+  return useAction(deleteAlbumByIdAction, {
     onExecute: () => {
-      toast.loading("Updaterar album...", {
+      toast.loading(`Raderar album...`, {
         id: toastId,
       });
       callbacks?.onExecute?.();
@@ -22,8 +20,8 @@ export const useUpdateAlbum = (
       toast.dismiss(toastId);
       callbacks?.onSettled?.();
     },
-    onSuccess: ({ data }) => {
-      toast.success(`${data?.title} har nu updaterats!`);
+    onSuccess: () => {
+      toast.success(`Album har raderats!`);
       callbacks?.onSuccess?.();
     },
     onError: defaultOnErrorToastHandler,

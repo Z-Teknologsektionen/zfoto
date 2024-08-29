@@ -47,7 +47,7 @@ export const ToolbarSelectDropdown = <TData,>({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <ScrollArea className="h-48">
+        <ScrollArea className="h-fit max-h-48">
           <SelectItem value="all">Alla</SelectItem>
           {options.map(({ label, value }) => (
             <SelectItem

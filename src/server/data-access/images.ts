@@ -66,6 +66,19 @@ export const updateImageById = async (
     data,
   });
 
+export const updateManyImagesByIds = async (
+  imageIds: string[],
+  data: PrismaTypeToUpdateByIdData<Image, "albumId" | "filename">,
+) =>
+  db.image.updateMany({
+    where: {
+      id: {
+        in: imageIds,
+      },
+    },
+    data,
+  });
+
 export const deleteImageById = async (imageId: string) =>
   db.image.delete({
     where: {
