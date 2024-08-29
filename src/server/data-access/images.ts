@@ -68,11 +68,7 @@ export const updateImageById = async (
 
 export const updateManyImagesByIds = async (
   imageIds: string[],
-  data: {
-    photographer?: string;
-    date?: Date;
-    isVisible?: boolean;
-  },
+  data: PrismaTypeToUpdateByIdData<Image, "albumId" | "filename">,
 ) =>
   db.image.updateMany({
     where: {

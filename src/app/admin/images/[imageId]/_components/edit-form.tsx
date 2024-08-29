@@ -3,8 +3,6 @@
 import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
 import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { imageBaseSchema } from "@/schemas/helpers/zodScheams";
-import type { getImagebyId } from "@/server/data-access/images";
-import type { Prisma } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
@@ -18,10 +16,17 @@ import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 
-type AdminImage = Prisma.PromiseReturnType<typeof getImagebyId>;
+type EditImageFormProps = {
+  id: string;
+  filename: string;
+  photographer: string;
+  isVisible: boolean;
+  isCoverImage: boolean;
+  date: Date;
+};
 
 // eslint-disable-next-line max-lines-per-function
-export const EditImageForm: FC<AdminImage> = ({
+export const EditImageForm: FC<EditImageFormProps> = ({
   isCoverImage,
   date,
   id,

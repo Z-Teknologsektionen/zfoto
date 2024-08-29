@@ -2,8 +2,7 @@
 
 import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
 import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodScheams";
-import type { getAlbumWithImagesAsAdmin } from "@/server/data-access/albums";
-import type { Prisma } from "@prisma/client";
+import type { AdminImageType } from "@/types/data-access";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 import type { FC } from "react";
@@ -33,12 +32,8 @@ import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
 
-type AdminTableImageType = Prisma.PromiseReturnType<
-  typeof getAlbumWithImagesAsAdmin
->["images"][0];
-
 export const UpdateManyImagesDialog: FC<{
-  selectedRows: Row<AdminTableImageType>[];
+  selectedRows: Row<AdminImageType>[];
   // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);

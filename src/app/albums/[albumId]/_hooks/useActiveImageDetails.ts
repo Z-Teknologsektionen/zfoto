@@ -1,28 +1,30 @@
-"use client";
-
-import type { getAlbumWithImagesById } from "@/server/data-access/albums";
-import type { Prisma } from "@prisma/client";
+import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import { useMemo } from "react";
 
-type ImageType = Prisma.PromiseReturnType<
-  typeof getAlbumWithImagesById
->["images"];
+type ImageType = PublicAlbumWithImagesType["images"][0];
+
+type UseActiveImageDetailsProps = {
+  images: ImageType[];
+  imageId: string | null | undefined;
+  closePopup: () => void;
+};
 
 export const useActiveImageDetails = ({
   images,
   imageId,
   closePopup,
-}: {
-  images: ImageType;
-  imageId: string | null | undefined;
-  closePopup: () => void;
-}) =>
+}: UseActiveImageDetailsProps): {
+  activeImage?: ImageType;
+  prevImageId?: string;
+  nextImageId?: string;
+} =>
   useMemo(() => {
     const currentIndex = images.findIndex(({ id }) => imageId === id);
     if (currentIndex === -1) {
       closePopup();
       return {};
     }
+
     return {
       activeImage: images.at(currentIndex),
       prevImageId:

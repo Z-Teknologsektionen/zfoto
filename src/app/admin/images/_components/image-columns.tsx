@@ -1,7 +1,6 @@
 "use client";
 
-import type { getAllImagesAsAdmin } from "@/server/data-access/images";
-import type { Prisma } from "@prisma/client";
+import type { AdminImageType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
@@ -13,11 +12,7 @@ import {
 } from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
 
-type AdminTableImageType = Prisma.PromiseReturnType<
-  typeof getAllImagesAsAdmin
->[0];
-
-export const imageColumns: ColumnDef<AdminTableImageType>[] = [
+export const imageColumns: ColumnDef<AdminImageType>[] = [
   {
     id: "select",
     header: ({ table }) => (

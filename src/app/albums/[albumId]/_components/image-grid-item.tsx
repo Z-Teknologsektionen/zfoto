@@ -1,13 +1,12 @@
 "use client";
 
-import type { getAlbumWithImagesById } from "@/server/data-access/albums";
-import type { Prisma } from "@prisma/client";
+import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import Image from "next/image";
 import type { FC } from "react";
 import { getFullFilePath } from "~/utils/utils";
 
 type ImageGridItemProps = {
-  album: Prisma.PromiseReturnType<typeof getAlbumWithImagesById>;
+  album: PublicAlbumWithImagesType;
   filename: string;
   usePriorityLoading?: boolean;
   id: string;

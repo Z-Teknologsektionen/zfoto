@@ -1,7 +1,6 @@
 "use client";
 
-import type { getAllUsersAsAdmin } from "@/server/data-access/users";
-import type { Prisma } from "@prisma/client";
+import type { AdminUserType } from "@/types/data-access";
 import { Roles } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -19,9 +18,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { formatRole } from "../_utils/formatUserRole";
 
-type UserType = Prisma.PromiseReturnType<typeof getAllUsersAsAdmin>[0];
-
-export const userColumns: ColumnDef<UserType>[] = [
+export const userColumns: ColumnDef<AdminUserType>[] = [
   {
     accessorKey: "image",
     cell: ({ row }) => (

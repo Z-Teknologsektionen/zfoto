@@ -1,8 +1,7 @@
 "use client";
 
 import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodScheams";
-import type { getAllAlbumsAsAdmin } from "@/server/data-access/albums";
-import type { Prisma } from "@prisma/client";
+import type { AdminAlbumType } from "@/types/data-access";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 import type { FC } from "react";
@@ -27,8 +26,6 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getValueIfUnique } from "~/utils/utils";
 import { useUpdateManyAlbumsByIds } from "../../_hooks/use-update-many-albums-by-ids";
-
-type AdminAlbumType = Prisma.PromiseReturnType<typeof getAllAlbumsAsAdmin>[0];
 
 export const UpdateManyAlbumsDialog: FC<{
   selectedRows: Row<AdminAlbumType>[];
