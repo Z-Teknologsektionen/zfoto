@@ -70,6 +70,6 @@ export const photographerString = baseString.min(
 
 export const isVisibleBoolean = baseBoolean.optional().default(true);
 
-export const isCoverImageBoolean = baseBoolean.optional().default(true);
+export const isCoverImageBoolean = baseBoolean.optional().default(false);
 
 export const isReceptionBoolean = baseBoolean.optional().default(false);
