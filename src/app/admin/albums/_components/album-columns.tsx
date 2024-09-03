@@ -2,26 +2,16 @@
 
 import type { AdminAlbumType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
-import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import {
   formatDateTimeString,
   getLocalDateTimeFromUTC,
 } from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
-import { useUpdateAlbumById } from "../_hooks/use-update-album-by-id";
+import { AlbumColumnActions } from "./album-column-actions";
 
 export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   {
@@ -53,7 +43,10 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   {
     accessorKey: "coverImageFilename",
     cell: ({ row }) => (
-      <div className="relative h-24 w-36">
+      <Link
+        href={`/albums/${row.original.id}`}
+        className="relative block h-24 w-36"
+      >
         <Image
           alt={`Omslagsbild till: ${row.original.title}`}
           className="object-contain object-center"
@@ -61,7 +54,7 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
           fill
           unoptimized
         />
-      </div>
+      </Link>
     ),
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -108,54 +101,6 @@ export const albumColumns: ColumnDef<AdminAlbumType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const { execute: updateAlbum, status } = useUpdateAlbumById();
-
-      const album = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild disabled={status === "executing"}>
-            <Button className="size-8 p-0" variant="ghost">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel className="underline underline-offset-2">
-              Alla
-            </DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/albums/${album.id}`}>Öppna album</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel className="underline underline-offset-2">
-              Admin
-            </DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/admin/albums/${album.id}`}>Redigera album</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                updateAlbum({ albumId: album.id, isVisible: !album.isVisible });
-              }}
-            >
-              {`${album.isVisible ? "Dölj" : "Visa"} album`}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                updateAlbum({
-                  albumId: album.id,
-                  isReception: !album.isReception,
-                });
-              }}
-            >
-              {`Sätt ${album.isReception ? "ej" : "är"} mottagningsalbum`}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <AlbumColumnActions album={row.original} />,
   },
 ];

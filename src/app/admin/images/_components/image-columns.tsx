@@ -3,14 +3,15 @@
 import type { AdminImageType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
+import Link from "next/link";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
-import { ImageColumnActions } from "~/components/data-table/data-table-image-actions";
 import { Checkbox } from "~/components/ui/checkbox";
 import {
   formatDateTimeString,
   getLocalDateTimeFromUTC,
 } from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
+import { ImageColumnActions } from "./image-column-actions";
 
 export const imageColumns: ColumnDef<AdminImageType>[] = [
   {
@@ -42,7 +43,10 @@ export const imageColumns: ColumnDef<AdminImageType>[] = [
   {
     accessorKey: "image",
     cell: ({ row }) => (
-      <div className="relative h-24 w-36">
+      <Link
+        href={`/image/${row.original.id}`}
+        className="relative block h-24 w-36"
+      >
         <Image
           alt={`Bild: ${row.original.filename}, Foto: ${row.original.photographer}`}
           className="object-contain object-center"
@@ -50,7 +54,7 @@ export const imageColumns: ColumnDef<AdminImageType>[] = [
           fill
           unoptimized
         />
-      </div>
+      </Link>
     ),
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Bild" isSortable={false} />

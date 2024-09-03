@@ -44,20 +44,20 @@ export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
         <DropdownMenuLabel className="underline underline-offset-2">
           Alla
         </DropdownMenuLabel>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href={`/image/${id}`}>Öppna bild</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href={`/albums/${id}`}>Öppna album</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel className="underline underline-offset-2">
           Admin
         </DropdownMenuLabel>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href={`/admin/albums/${albumId}`}>Redigera album</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link href={`/admin/images/${id}`}>Redigera bild</Link>
         </DropdownMenuItem>
         <DropdownMenuItem
