@@ -3,8 +3,8 @@
 import type { AdminImageType } from "@/types/data-access";
 import { useMemo } from "react";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
+import { ToolbarComboboxDropdown } from "~/components/data-table/data-table-toolbar-combobox-dropdown";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
-import { ToolbarSelectDropdown } from "~/components/data-table/data-table-toolbar-select-dropdown";
 import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";
 import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar-wrapper";
 import { UpdateManyImagesDialog } from "./update-many-images-dialog";
@@ -28,9 +28,13 @@ export const ImagesFilteringToolbar = ({
           column={table.getColumn("filename")}
           placeholder="Filtrera efter filnamn..."
         />
-        <ToolbarSelectDropdown
+        <ToolbarComboboxDropdown
+          noOptionsText="Inga fotografer"
           column={table.getColumn("photographer")}
-          options={photographers.map((name) => ({ label: name, value: name }))}
+          options={photographers.map((name) => ({
+            label: name,
+            value: name.toLowerCase(),
+          }))}
           placeholder="Välj fotograf"
           size="2xl"
         />

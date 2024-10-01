@@ -63,10 +63,12 @@ export const filenameString = baseString
     message: "Filnamn måste innehålla en punkt före filändelsen ",
   });
 
-export const photographerString = baseString.min(
-  3,
-  "Namnet på fotografen måste vara minst 3 tecken",
-);
+export const photographerString = baseString
+  .min(3, "Namnet på fotografen måste vara minst 3 tecken")
+  .refine(
+    (str) => !str.includes('"'),
+    `Får inte innehålla ". Använd ' eller motsvarande istället.`,
+  );
 
 export const isVisibleBoolean = baseBoolean.optional().default(true);
 
