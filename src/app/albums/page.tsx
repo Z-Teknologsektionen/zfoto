@@ -19,11 +19,15 @@ type AlbumsPageProps = {
 
 const AlbumsPage: FC<AlbumsPageProps> = async ({ searchParams }) => {
   const year =
-    searchParams.year === undefined
-      ? undefined
-      : parseInt(searchParams.year.toString(), 10);
+    (searchParams.year !== undefined &&
+      searchParams.year !== "" &&
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      parseInt(searchParams.year.toString())) ||
+    undefined;
 
-  const albums = await getLatestAlbums({ year });
+  const albums = await getLatestAlbums({
+    year,
+  });
 
   return (
     <SectionWrapper>
