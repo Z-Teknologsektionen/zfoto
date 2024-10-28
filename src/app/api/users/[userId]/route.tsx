@@ -3,18 +3,6 @@ import { updateUserRoleById } from "@/server/data-access/users";
 import { isObjectIdOrHexString } from "mongoose";
 import { NextResponse } from "next/server";
 
-/* Export async function GET(
-  _req: Request,
-  { params }: { params: { userId: string } },
-): Promise<NextResponse<unknown>> {
-  const user = await db.user.findUniqueOrThrow({
-    where: {
-      id: params.userId,
-    },
-  });
-  return NextResponse.json(user, { status: 200 });
-} */
-
 export async function PATCH(
   req: Request,
   { params }: { params: { userId: string } },

@@ -1,80 +1,22 @@
 import { createAlbumAPISchema } from "@/schemas/album";
-import { getLatestAlbums } from "@/server/data-access/albums";
+import { upsertAlbum } from "@/server/data-access/albums";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "~/utils/db";
 
-// eslint-disable-next-line max-lines-per-function
 const albumRouter = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  if (req.method === "GET") {
-    try {
-      const album = await getLatestAlbums();
-      res.status(200).json(album);
-      return;
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-  } else if (req.method === "POST") {
+  if (req.method === "POST") {
     try {
       const parse = createAlbumAPISchema.safeParse(req.body);
       if (!parse.success) {
         res.status(400).json({ error: parse.error.flatten().fieldErrors });
         return;
       }
-      const body = parse.data;
 
-      const createdAlbum = await db.album.upsert({
-        where: {
-          title_date: {
-            title: body.title,
-            date: body.date,
-          },
-        },
-        update: {
-          images: {
-            createMany: {
-              data: body.images,
-            },
-          },
-        },
-        create: {
-          title: body.title,
-          date: body.date,
-          isReception: body.isReception,
-          isVisible: body.isVisible,
-          images: {
-            createMany: {
-              data: body.images,
-            },
-          },
-        },
-        select: {
-          id: true,
-          title: true,
-          date: true,
-          isVisible: true,
-          isReception: true,
-          images: {
-            select: {
-              id: true,
-              filename: true,
-              photographer: true,
-              date: true,
-              isVisible: true,
-              isCoverImage: true,
-            },
-          },
-          _count: {
-            select: {
-              images: true,
-            },
-          },
-        },
-      });
+      const createdAlbum = await upsertAlbum(parse.data);
+
       res.status(200).json(createdAlbum);
       return;
     } catch (err) {
