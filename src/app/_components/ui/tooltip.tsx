@@ -1,8 +1,13 @@
 "use client";
 
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import * as React from "react";
-
+import type {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  FC,
+  ReactNode,
+} from "react";
+import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
 const DEFAULT_SIDE_OFFSET = 4;
@@ -13,9 +18,9 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
-const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+const TooltipContent = forwardRef<
+  ElementRef<typeof TooltipPrimitive.Content>,
+  ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
 >(({ className, sideOffset = DEFAULT_SIDE_OFFSET, ...props }, ref) => (
   <TooltipPrimitive.Content
     ref={ref}
@@ -30,13 +35,12 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 type StandardTooltipProps = {
-  content: React.ReactNode;
-  trigger: React.ReactNode;
-  // eslint-disable-next-line react/boolean-prop-naming
+  content: ReactNode;
+  trigger: ReactNode;
   asChild?: boolean;
 };
 
-const StandardTooltip: React.FC<StandardTooltipProps> = ({
+const StandardTooltip: FC<StandardTooltipProps> = ({
   trigger: TriggerComponent,
   content: ContentComponent,
   asChild = true,
