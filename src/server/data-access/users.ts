@@ -3,10 +3,16 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
+import {
+  CACHE_TAGS,
+  dbCache,
+  getGlobalTag,
+  revalidateDbCache,
+} from "@/lib/cache";
 import type { Roles } from "@prisma/client";
 import { db } from "~/utils/db";
 
-export const getUserByEmailForSession = async (email: string) =>
+const getUserByEmailForSessionInternal = async (email: string) =>
   db.user.findUnique({
     where: {
       email,
@@ -20,7 +26,7 @@ export const getUserByEmailForSession = async (email: string) =>
     },
   });
 
-export const getUserByEmailWithPassword = async (email: string) =>
+const getUserByEmailWithPasswordInternal = async (email: string) =>
   db.user.findUnique({
     where: {
       email,
@@ -32,7 +38,7 @@ export const getUserByEmailWithPassword = async (email: string) =>
     },
   });
 
-export const getAllUsersAsAdmin = async () =>
+const getAllUsersAsAdminInternal = async () =>
   db.user.findMany({
     select: {
       name: true,
@@ -44,8 +50,8 @@ export const getAllUsersAsAdmin = async () =>
     orderBy: [{ name: "asc" }],
   });
 
-export const updateUserRoleById = async (userId: string, role: Roles) =>
-  db.user.update({
+export const updateUserRoleById = async (userId: string, role: Roles) => {
+  await db.user.update({
     where: {
       id: userId,
     },
@@ -53,3 +59,20 @@ export const updateUserRoleById = async (userId: string, role: Roles) =>
       role,
     },
   });
+
+  revalidateDbCache({ tag: CACHE_TAGS.users, id: userId });
+};
+export const getUserByEmailForSession = async (email: string) =>
+  dbCache(getUserByEmailForSessionInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.users)],
+  })(email);
+
+export const getUserByEmailWithPassword = async (email: string) =>
+  dbCache(getUserByEmailWithPasswordInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.users)],
+  })(email);
+
+export const getAllUsersAsAdmin = async () =>
+  dbCache(getAllUsersAsAdminInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.users)],
+  })();

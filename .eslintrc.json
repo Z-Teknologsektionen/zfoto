@@ -222,7 +222,7 @@
     "react/boolean-prop-naming": [
       "warn",
       {
-        "rule": "^(is|has|use)[A-Z]([A-Za-z0-9]?)+",
+        "rule": "^(is|has|use|as)[A-Z]([A-Za-z0-9]?)+",
         "message": "It is better if your prop ({{ propName }}) matches this pattern: ({{ pattern }})",
         "validateNested": true
       }

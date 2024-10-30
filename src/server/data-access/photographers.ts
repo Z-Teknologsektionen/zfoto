@@ -1,9 +1,12 @@
-import { db } from "~/utils/db";
+"use server";
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-export const getCountsPerPhotographer = async () => {
+import { CACHE_TAGS, dbCache, getGlobalTag } from "@/lib/cache";
+import { db } from "~/utils/db";
+
+const getCountsPerPhotographerInternal = async () => {
   const images = await db.image.groupBy({
     by: ["photographer"],
     _count: {
@@ -47,3 +50,8 @@ export const getCountsPerPhotographer = async () => {
     };
   });
 };
+
+export const getCountsPerPhotographer = async () =>
+  dbCache(getCountsPerPhotographerInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.images), getGlobalTag(CACHE_TAGS.albums)],
+  })();

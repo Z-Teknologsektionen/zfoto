@@ -31,9 +31,6 @@ export const metadata: Metadata = {
       type: "image/svg+xml",
     },
   },
-  twitter: {
-    card: "summary_large_image",
-  },
 };
 
 const BaseLayout: FC<{ children: ReactNode }> = ({ children }) => (

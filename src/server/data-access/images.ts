@@ -3,12 +3,19 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
+import {
+  CACHE_TAGS,
+  dbCache,
+  getGlobalTag,
+  getIdTag,
+  revalidateDbCache,
+} from "@/lib/cache";
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
 import type { Image } from "@prisma/client";
 import { db } from "~/utils/db";
 import { dateTimeFilterByActiveYear, imagesOrderByForAdmin } from "./helpers";
 
-export const getImagebyId = async (id: string) =>
+const getImagebyIdInternal = async (id: string) =>
   db.image.findUniqueOrThrow({
     where: {
       id,
@@ -18,7 +25,7 @@ export const getImagebyId = async (id: string) =>
     },
   });
 
-export const getAllImagesAsAdmin = async () => {
+const getAllImagesAsAdminInternal = async () => {
   const images = await db.image.findMany({
     include: {
       album: {
@@ -36,16 +43,16 @@ export const getAllImagesAsAdmin = async () => {
   }));
 };
 
-export const getImageCountFromActiveYear = async (startYear: number) =>
+const getImageCountFromActiveYearInternal = async (startYear: number) =>
   db.image.count({
     where: {
       date: dateTimeFilterByActiveYear(startYear),
     },
   });
 
-export const getTotalImageCount = async () => db.image.count();
+const getTotalImageCountInternal = async () => db.image.count();
 
-export const getAllImageFilenames = async () => {
+const getAllImageFilenamesInternal = async () => {
   const images = await db.image.findMany({
     select: {
       filename: true,
@@ -58,19 +65,25 @@ export const getAllImageFilenames = async () => {
 export const updateImageById = async (
   imageId: string,
   data: PrismaTypeToUpdateByIdData<Image>,
-) =>
-  db.image.update({
+) => {
+  const updatedImage = await db.image.update({
     where: {
       id: imageId,
     },
     data,
   });
 
+  revalidateDbCache({ tag: CACHE_TAGS.images, id: imageId });
+  revalidateDbCache({ tag: CACHE_TAGS.albums, id: updatedImage.albumId });
+
+  return updatedImage;
+};
+
 export const updateManyImagesByIds = async (
   imageIds: string[],
   data: PrismaTypeToUpdateByIdData<Image, "albumId" | "filename">,
-) =>
-  db.image.updateMany({
+) => {
+  const { count } = await db.image.updateMany({
     where: {
       id: {
         in: imageIds,
@@ -79,9 +92,56 @@ export const updateManyImagesByIds = async (
     data,
   });
 
-export const deleteImageById = async (imageId: string) =>
-  db.image.delete({
+  const albumsIds = (
+    await db.image.findMany({
+      where: { id: { in: imageIds } },
+      select: { albumId: true },
+    })
+  ).map(({ albumId }) => albumId);
+
+  const uniqueAlbumIds = [...new Set(albumsIds)];
+
+  revalidateDbCache({ tag: CACHE_TAGS.images, ids: imageIds });
+  revalidateDbCache({ tag: CACHE_TAGS.albums, ids: uniqueAlbumIds });
+
+  return count;
+};
+
+export const deleteImageById = async (imageId: string) => {
+  const deletedImage = await db.image.delete({
     where: {
       id: imageId,
     },
   });
+
+  revalidateDbCache({ tag: CACHE_TAGS.images, id: imageId });
+  revalidateDbCache({ tag: CACHE_TAGS.albums, id: deletedImage.albumId });
+};
+
+export const getImagebyId = async (imageId: string) =>
+  dbCache(getImagebyIdInternal, {
+    tags: [
+      getGlobalTag(CACHE_TAGS.images),
+      getIdTag(imageId, CACHE_TAGS.images),
+    ],
+  })(imageId);
+
+export const getAllImagesAsAdmin = async () =>
+  dbCache(getAllImagesAsAdminInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.images)],
+  })();
+
+export const getImageCountFromActiveYear = async (year: number) =>
+  dbCache(getImageCountFromActiveYearInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.images)],
+  })(year);
+
+export const getTotalImageCount = async () =>
+  dbCache(getTotalImageCountInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.images)],
+  })();
+
+export const getAllImageFilenames = async () =>
+  dbCache(getAllImageFilenamesInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.images)],
+  })();
