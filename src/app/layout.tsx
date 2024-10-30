@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: { default: "zFoto", template: "%s | zFoto" },
   description:
     "Vill du se de senaste bilderna från Z-Teknologsektionens arrangemang? Då är du på rätt ställe, här finns mängder av bilder att tillgå!",
-  metadataBase: new URL(env.NEXTAUTH_URL),
+  metadataBase: new URL("/", env.NEXTAUTH_URL),
   icons: {
     icon: [
       {
