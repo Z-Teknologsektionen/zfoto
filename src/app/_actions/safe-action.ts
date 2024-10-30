@@ -3,7 +3,7 @@ import { env } from "@/env.mjs";
 import { Roles } from "@prisma/client";
 import type { SafeActionClientOpts } from "next-safe-action";
 import { createSafeActionClient } from "next-safe-action";
-import { getServerAuthSession } from "~/utils/authOptions";
+import { getAuth } from "~/utils/auth";
 import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
 
 const handleReturnedServerError: SafeActionClientOpts<
@@ -37,7 +37,7 @@ export const baseSafeAction = createSafeActionClient({
   handleServerErrorLog,
   defaultValidationErrorsShape: "flattened",
 }).use(async ({ next }) => {
-  const session = await getServerAuthSession();
+  const session = await getAuth();
 
   return next({ ctx: { session } });
 });

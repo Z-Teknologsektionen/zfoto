@@ -1,5 +1,6 @@
+import { clearFullCacheAction } from "@/server/actions/clearFullCacheAction";
 import Link from "next/link";
-import { Fragment, type FC } from "react";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { AdminSidebarReceptionVisibilityButtons } from "./admin-sidebar-reception-visibility-buttons";
@@ -27,17 +28,18 @@ export const AdminSidebar: FC<AdminSidebarProps> = ({ isAdmin }) => (
         <Link href="/admin/info">Information</Link>
       </Button>
     </div>
-    {isAdmin && (
-      <Fragment>
-        <Separator className="hidden lg:block" />
-        <div className="flex flex-col gap-2">
-          <h2 className="text-center text-xl font-medium underline underline-offset-2">
-            Funktioner
-          </h2>
-          <AdminSidebarReceptionVisibilityButtons />
-          {/* TODO: Lägg till möjligheten att återställa lösenordet för patetinlogg */}
-        </div>
-      </Fragment>
-    )}
+    <Separator className="hidden lg:block" />
+    <div className="flex flex-col gap-2">
+      <h2 className="text-center text-xl font-medium underline underline-offset-2">
+        Funktioner
+      </h2>
+      <form action={clearFullCacheAction}>
+        <Button className="mx-2" size="sm" variant="outline" type="submit">
+          Rensa hela sidans cache
+        </Button>
+      </form>
+      {isAdmin && <AdminSidebarReceptionVisibilityButtons />}
+      {/* TODO: Lägg till möjligheten att återställa lösenordet för patetinlogg */}
+    </div>
   </aside>
 );
