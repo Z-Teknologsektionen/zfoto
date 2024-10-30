@@ -1,13 +1,13 @@
-import type { HTMLAttributes } from "react";
+import type { FC, HTMLAttributes } from "react";
 import { cn } from "~/utils/utils";
 
-const Skeleton = ({
+const Skeleton: FC<HTMLAttributes<HTMLDivElement>> = ({
   className,
   ...props
-}: HTMLAttributes<HTMLDivElement>): JSX.Element => (
+}) => (
   <div
     className={cn(
-      "animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800",
+      "animate-pulse rounded-md bg-neutral-100 dark:bg-neutral-800",
       className,
     )}
     {...props}

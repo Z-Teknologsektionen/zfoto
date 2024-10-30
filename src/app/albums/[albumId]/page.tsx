@@ -5,7 +5,7 @@ import {
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { FC } from "react";
-import { Fragment, Suspense, cache } from "react";
+import { Fragment, Suspense } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getFullFilePath } from "~/utils/utils";
 import { AlbumInfo } from "./_components/album-info";
@@ -33,16 +33,14 @@ export const generateStaticParams = async (): Promise<
   }));
 };
 
-const getAlbum = cache(getAlbumWithImagesById);
-
 export const generateMetadata = async ({
   params: { albumId },
 }: AlbumPageProps): Promise<Metadata> => {
-  const album = await getAlbum(albumId);
+  const album = await getAlbumWithImagesById(albumId);
 
   return {
     title: album.title,
-    description: `Bilder från ${album.title}, ${album.date.toDateString()}`,
+    description: `Bilder från ${album.title}, ${new Date(album.date).toDateString()}`,
     openGraph: {
       images: [
         {
@@ -55,7 +53,7 @@ export const generateMetadata = async ({
 };
 
 const AlbumPage: FC<AlbumPageProps> = async ({ params: { albumId } }) => {
-  const album = await getAlbum(albumId).catch(() => notFound());
+  const album = await getAlbumWithImagesById(albumId).catch(() => notFound());
 
   return (
     <Fragment>

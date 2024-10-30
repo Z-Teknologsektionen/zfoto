@@ -3,6 +3,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
+import {
+  CACHE_TAGS,
+  dbCache,
+  getGlobalTag,
+  getIdTag,
+  revalidateDbCache,
+} from "@/lib/cache";
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
 import type { Album } from "@prisma/client";
 import { db } from "~/utils/db";
@@ -12,17 +19,17 @@ import {
   imagesOrderBy,
 } from "./helpers";
 
-export const getLatestAlbums = async ({
+type GetLatestAlbumsProps = {
+  count?: number;
+  notIds?: string[];
+  year?: number;
+};
+
+const getLatestAlbumsInternal = async ({
   count,
   notIds,
   year,
-}:
-  | {
-      count?: number;
-      notIds?: string[];
-      year?: number;
-    }
-  | undefined = {}) => {
+}: GetLatestAlbumsProps) => {
   const albums = await db.album.findMany({
     take: count,
     where: {
@@ -60,7 +67,7 @@ export const getLatestAlbums = async ({
   }));
 };
 
-export const getAllAlbumsAsAdmin = async () => {
+const getAllAlbumsAsAdminInternal = async () => {
   const albums = await db.album.findMany({
     include: {
       _count: true,
@@ -78,7 +85,7 @@ export const getAllAlbumsAsAdmin = async () => {
   }));
 };
 
-export const getAlbumWithImagesById = async (id: string) => {
+const getAlbumWithImagesByIdInternal = async (id: string) => {
   const rawAlbum = await db.album.findFirstOrThrow({
     where: {
       id,
@@ -127,7 +134,7 @@ export const getAlbumWithImagesById = async (id: string) => {
   return { ...rawAlbum, coverImageFilename, photographers };
 };
 
-export const getAlbumWithImagesAsAdmin = async (id: string) => {
+const getAlbumWithImagesAsAdminInternal = async (id: string) => {
   const {
     images,
     _count: { images: numberOfImages },
@@ -154,8 +161,17 @@ export const getAlbumWithImagesAsAdmin = async (id: string) => {
   };
 };
 
-export const setReceptionAlbumVisibility = async (isVisible: boolean) =>
-  db.album.updateMany({
+const getAlbumCountFromActiveYearInternal = async (startYear: number) =>
+  db.album.count({
+    where: {
+      date: dateTimeFilterByActiveYear(startYear),
+    },
+  });
+
+const getTotalAlbumCountInternal = async () => db.album.count();
+
+export const setReceptionAlbumVisibility = async (isVisible: boolean) => {
+  const { count } = await db.album.updateMany({
     where: {
       isReception: true,
     },
@@ -164,22 +180,97 @@ export const setReceptionAlbumVisibility = async (isVisible: boolean) =>
     },
   });
 
+  const updatedAlbumIds = (
+    await db.album.findMany({
+      where: { isReception: true },
+      select: { id: true },
+    })
+  ).map(({ id }) => id);
+
+  revalidateDbCache({ tag: CACHE_TAGS.albums, ids: updatedAlbumIds });
+
+  return count;
+};
+
+type UpsertAlbumProps = {
+  images: {
+    filename: string;
+    date: Date | string;
+    isVisible: boolean;
+    isCoverImage: boolean;
+    photographer: string;
+  }[];
+  title: string;
+  date: Date;
+  isVisible: boolean;
+  isReception: boolean;
+};
+
+export const upsertAlbum = async (body: UpsertAlbumProps) => {
+  const {
+    _count: { images: imageCount },
+    ...upsertedAlbum
+  } = await db.album.upsert({
+    where: {
+      title_date: {
+        title: body.title,
+        date: body.date,
+      },
+    },
+    update: {
+      images: {
+        createMany: {
+          data: body.images,
+        },
+      },
+    },
+    create: {
+      title: body.title,
+      date: body.date,
+      isReception: body.isReception,
+      isVisible: body.isVisible,
+      images: {
+        createMany: {
+          data: body.images,
+        },
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      date: true,
+      _count: {
+        select: {
+          images: true,
+        },
+      },
+    },
+  });
+
+  revalidateDbCache({ tag: CACHE_TAGS.albums, id: upsertedAlbum.id });
+
+  return { ...upsertedAlbum, imageCount };
+};
 export const updateAlbumById = async (
   albumId: string,
   data: PrismaTypeToUpdateByIdData<Album>,
-) =>
-  db.album.update({
+) => {
+  const updatedAlbum = await db.album.update({
     where: {
       id: albumId,
     },
     data,
   });
 
+  revalidateDbCache({ tag: CACHE_TAGS.albums, id: albumId });
+
+  return updatedAlbum;
+};
 export const updateManyAlbumsByIds = async (
   albumIds: string[],
   data: PrismaTypeToUpdateByIdData<Album, "title">,
-) =>
-  db.album.updateMany({
+) => {
+  await db.album.updateMany({
     where: {
       id: {
         in: albumIds,
@@ -188,18 +279,47 @@ export const updateManyAlbumsByIds = async (
     data,
   });
 
-export const deleteAlbumById = async (albumId: string) =>
-  db.album.delete({
+  revalidateDbCache({ tag: CACHE_TAGS.albums, ids: albumIds });
+};
+
+export const deleteAlbumById = async (albumId: string) => {
+  await db.album.delete({
     where: {
       id: albumId,
     },
   });
 
-export const getAlbumCountFromActiveYear = async (startYear: number) =>
-  db.album.count({
-    where: {
-      date: dateTimeFilterByActiveYear(startYear),
-    },
-  });
+  revalidateDbCache({ tag: CACHE_TAGS.albums, id: albumId });
+};
 
-export const getTotalAlbumCount = async () => db.album.count();
+export const getLatestAlbums = async (
+  props: GetLatestAlbumsProps | undefined = {},
+) =>
+  dbCache(getLatestAlbumsInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.albums), getGlobalTag(CACHE_TAGS.images)],
+  })(props);
+
+export const getAllAlbumsAsAdmin = async () =>
+  dbCache(getAllAlbumsAsAdminInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.albums)],
+  })();
+
+export const getAlbumWithImagesById = async (id: string) =>
+  dbCache(getAlbumWithImagesByIdInternal, {
+    tags: [getIdTag(id, CACHE_TAGS.albums)],
+  })(id);
+
+export const getAlbumWithImagesAsAdmin = async (id: string) =>
+  dbCache(getAlbumWithImagesAsAdminInternal, {
+    tags: [getIdTag(id, CACHE_TAGS.albums)],
+  })(id);
+
+export const getAlbumCountFromActiveYear = async (startYear: number) =>
+  dbCache(getAlbumCountFromActiveYearInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.albums)],
+  })(startYear);
+
+export const getTotalAlbumCount = async () =>
+  dbCache(getTotalAlbumCountInternal, {
+    tags: [getGlobalTag(CACHE_TAGS.albums)],
+  })();

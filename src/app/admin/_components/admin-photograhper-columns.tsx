@@ -4,10 +4,7 @@ import type { AdminCountsPerPhotographerType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
-import {
-  formatDateTimeString,
-  getLocalDateTimeFromUTC,
-} from "~/utils/date-utils";
+import { formatDateString, getLocalDateTimeFromUTC } from "~/utils/date-utils";
 
 export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>[] =
   [
@@ -62,7 +59,7 @@ export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>
         <DataTableCell center>
           {row.original.firstImage === undefined
             ? "Okänd"
-            : formatDateTimeString(
+            : formatDateString(
                 getLocalDateTimeFromUTC(row.original.firstImage),
               )}
         </DataTableCell>
@@ -77,7 +74,7 @@ export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>
         <DataTableCell center>
           {row.original.latestImage === undefined
             ? "Okänd"
-            : formatDateTimeString(
+            : formatDateString(
                 getLocalDateTimeFromUTC(row.original.latestImage),
               )}
         </DataTableCell>

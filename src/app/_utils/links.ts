@@ -78,13 +78,6 @@ const links: LinkType[] = [
     useInHeader: true,
     useInFooter: true,
   },
-  {
-    label: "ztek.se",
-    href: "https://ztek.se/",
-    newPage: true,
-    order: 99,
-    useInHeader: true,
-  },
 ];
 
 const orderdLinks = links.sort((a, b) => (a.order >= b.order ? 1 : -1));

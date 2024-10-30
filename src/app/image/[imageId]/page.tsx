@@ -24,7 +24,7 @@ export async function generateMetadata({
 
   return {
     title: image.album.title,
-    description: `Bild från ${image.album.title}, ${image.date.toDateString()}`,
+    description: `Bild från ${image.album.title}, ${new Date(image.date).toDateString()}`,
     openGraph: {
       images: [
         {
