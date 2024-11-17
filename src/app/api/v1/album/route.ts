@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const POST = async (request: Request): Promise<Response> => {
   try {
-    const parse = createAlbumAPISchema.safeParse(request.body);
+    const parse = createAlbumAPISchema.safeParse(await request.json());
 
     if (!parse.success) {
       return Response.json(
