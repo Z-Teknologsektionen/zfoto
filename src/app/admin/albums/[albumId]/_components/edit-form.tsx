@@ -36,7 +36,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
 
   const { execute: deleteAlbum, isExecuting: isDeleting } = useDeleteAlbumById({
     onSuccess: () => {
-      router.back();
+      router.push("/admin/albums");
     },
   });
   const { execute: updateAlbum, isExecuting: isUpdating } =
