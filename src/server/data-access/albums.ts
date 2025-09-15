@@ -46,8 +46,8 @@ const getLatestAlbumsInternal = async ({
         },
       },
       date: {
-        lte: new Date(year ?? new Date().getFullYear(), 12),
-        gte: new Date(year ?? 1970, 1),
+        lte: new Date(year ?? new Date().getFullYear(), 11),
+        gte: new Date(year ?? 1970, 0),
       },
     },
     select: {
