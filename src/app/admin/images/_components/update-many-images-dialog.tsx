@@ -28,7 +28,7 @@ import {
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
+import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
 
@@ -82,9 +82,15 @@ export const UpdateManyImagesDialog: FC<{
         toast.error("Alla fält är tomma, inget kommer uppdateras");
         return;
       }
+
+      const data = form.getValues()
+
       updateManyImages({
         imageIds: allIds,
-        data: form.getValues(),
+        data: {
+          ...data,
+          absoluteDate: data.absoluteDate === undefined ? undefined : getUTCFromLocalDate(new Date(data.absoluteDate))
+        },
       });
     },
     [allIds, form, updateManyImages],
