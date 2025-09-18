@@ -2,7 +2,6 @@
 
 import { updateImageSchema } from "@/schemas/image";
 import { updateImageById } from "@/server/data-access/images";
-import { getUTCFromLocalDate } from "~/utils/date-utils";
 import { adminLikeSafeAction } from "../../_actions/safe-action";
 
 export const updateImageByIdAction = adminLikeSafeAction
@@ -22,7 +21,7 @@ export const updateImageByIdAction = adminLikeSafeAction
       updateImageById(imageId, {
         albumId,
         isCoverImage,
-        date: date === undefined ? undefined : getUTCFromLocalDate(date),
+        date,
         filename,
         photographer,
         isVisible,

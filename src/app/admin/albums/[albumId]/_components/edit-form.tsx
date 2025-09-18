@@ -1,6 +1,6 @@
 "use client";
 
-import { albumBaseSchema } from "@/schemas/helpers/zodScheams";
+import { albumBaseSchema } from "@/schemas/helpers/zodSchemas";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
@@ -12,7 +12,7 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
+import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 import { useDeleteAlbumById } from "../../_hooks/use-delete-album-by-id";
 import { useUpdateAlbumById } from "../../_hooks/use-update-album-by-id";
 
@@ -59,7 +59,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
       form={form}
       schema={albumBaseSchema}
       onValid={(values) => {
-        updateAlbum({ albumId: id, ...values });
+        updateAlbum({ albumId: id, ...values, date: getUTCFromLocalDate(values.date) });
       }}
       className="grid gap-4 md:grid-cols-2"
     >
@@ -86,7 +86,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
       <div className="col-span-full flex flex-row justify-end gap-2">
         <DeleteDialog
           title={`Vill du verkligen radera: ${title}`}
-          description="Denna åtgärd går inte att ångra! Alla bilder som tillhör albummet kommer också att raderas!"
+          description="Denna åtgärd går inte att ångra! Alla bilder som tillhör albumet kommer också att raderas!"
           onDelete={() => {
             deleteAlbum({ id });
           }}

@@ -14,24 +14,23 @@ export const AlbumInfo: FC<AlbumInfoProps> = ({
   title,
   photographers,
 }) => {
-  const hasMoreThanOnePhotograher = photographers.length > 1;
-  const formatedDateString = formatDateString(date);
+  const hasMoreThanOnePhotographer = photographers.length > 1;
+  const formattedDateString = formatDateString(date);
 
   return (
     <div className="col-span-full">
       <BackButton />
       <div className="my-4 flex flex-col gap-2">
         <h1 className="hidden text-3xl font-bold md:block">
-          {`${title} | ${formatedDateString}`}
+          {`${title} | ${formattedDateString}`}
         </h1>
         <div className="text-xl font-bold md:hidden">
           <h1 className="text-3xl">{title}</h1>
-          <h1>{formatedDateString}</h1>
+          <h1>{formattedDateString}</h1>
         </div>
         <div className="flex w-fit flex-row items-center justify-center gap-1">
-          <p>{`${
-            hasMoreThanOnePhotograher ? "Fotografer" : "Fotograf"
-          }: ${photographers.join(", ")}`}</p>
+          <p>{`${hasMoreThanOnePhotographer ? "Fotografer" : "Fotograf"
+            }: ${photographers.join(", ")}`}</p>
           <CopyBylineButton photographers={photographers} />
         </div>
       </div>

@@ -31,7 +31,6 @@ export const FilterAlbumsWizard: FC<FilterAlbumsWizardProps> = ({
   return (
     <Select
       onValueChange={(value) => {
-        if (pathname === null) return;
         if (value === "") {
           router.push(pathname);
           return;

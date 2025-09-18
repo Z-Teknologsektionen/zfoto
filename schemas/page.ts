@@ -1,7 +1,7 @@
 import { DocumentIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-export default defineType({
+export const pageType = defineType({
   name: "page",
   title: "Page",
   type: "document",
@@ -18,9 +18,10 @@ export default defineType({
       name: "title",
       title: "Title",
       validation: (rule) => rule.required(),
-      readOnly: ({ currentUser }) => {
-        return !currentUser?.roles.find(({ name }) => name === "administrator");
-      },
+      readOnly: ({ currentUser }) =>
+        currentUser === null
+          ? true
+          : !currentUser.roles.some(({ name }) => name === "administrator"),
     }),
     defineField({
       type: "slug",
@@ -29,9 +30,10 @@ export default defineType({
       options: {
         source: "title",
       },
-      readOnly: ({ currentUser }) => {
-        return !currentUser?.roles.find(({ name }) => name === "administrator");
-      },
+      readOnly: ({ currentUser }) =>
+        currentUser === null
+          ? true
+          : !currentUser.roles.some(({ name }) => name === "administrator"),
     }),
     defineField({
       name: "content",

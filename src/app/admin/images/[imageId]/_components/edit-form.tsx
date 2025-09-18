@@ -2,7 +2,7 @@
 
 import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
 import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
-import { imageBaseSchema } from "@/schemas/helpers/zodScheams";
+import { imageBaseSchema } from "@/schemas/helpers/zodSchemas";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
@@ -14,7 +14,7 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
+import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 
 type EditImageFormProps = {
   id: string;
@@ -62,7 +62,7 @@ export const EditImageForm: FC<EditImageFormProps> = ({
       form={form}
       schema={imageBaseSchema}
       onValid={(values) => {
-        updateImage({ imageId: id, ...values });
+        updateImage({ imageId: id, ...values, date: getUTCFromLocalDate(values.date) });
       }}
       className="grid gap-4 md:grid-cols-2"
     >

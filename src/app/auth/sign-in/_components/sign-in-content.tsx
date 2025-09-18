@@ -10,8 +10,8 @@ import { SignInWithExternalProvider } from "./sign-in-with-external-provider";
 
 export const SignInContent: FC = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get("callbackUrl") ?? undefined;
-  const error = searchParams?.get("error");
+  const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
+  const error = searchParams.get("error");
 
   return (
     <Fragment>

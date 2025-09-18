@@ -140,5 +140,5 @@ export {
   SheetOverlay,
   SheetPortal,
   SheetTitle,
-  SheetTrigger,
+  SheetTrigger
 };

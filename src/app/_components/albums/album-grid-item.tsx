@@ -7,14 +7,14 @@ import { getFullFilePath } from "~/utils/utils";
 import { Skeleton } from "../ui/skeleton";
 
 type AlbumGridItemProps = PublicAlbumType & {
-  usePriorityLoadning?: boolean;
+  usePriorityLoading?: boolean;
 };
 
 export const AlbumGridItem: FC<AlbumGridItemProps> = ({
   id,
   title,
   coverImageFilename,
-  usePriorityLoadning = false,
+  usePriorityLoading = false,
   date,
 }) => (
   <Link
@@ -24,7 +24,7 @@ export const AlbumGridItem: FC<AlbumGridItemProps> = ({
     <Image
       alt=""
       className={`h-full object-cover object-center before:absolute before:inset-0 before:z-0 before:bg-black/50 before:content-[''] after:absolute after:left-1/2 after:top-1/2 after:z-10 after:block after:w-5/6 after:-translate-x-1/2 after:-translate-y-1/2 after:truncate after:object-contain after:text-center after:text-xl after:text-white after:content-['Bild_saknas']`}
-      priority={usePriorityLoadning}
+      priority={usePriorityLoading}
       src={getFullFilePath(coverImageFilename, "thumb")}
       fill
       unoptimized

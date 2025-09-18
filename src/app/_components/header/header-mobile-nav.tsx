@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 import type { FC } from "react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
-import { orderdHeaderLinks } from "~/utils/links";
+import { orderedHeaderLinks } from "~/utils/links";
 import { HeaderNavLink } from "./header-nav-link";
 
 export const HeaderMobileNav: FC = () => {
@@ -21,7 +21,7 @@ export const HeaderMobileNav: FC = () => {
           className="bg-[#333333] text-lg text-[#a7a7a7]"
         >
           <ul className="mt-8 flex flex-col items-center justify-center gap-8">
-            {orderdHeaderLinks.map(({ href, label, newPage }) => (
+            {orderedHeaderLinks.map(({ href, label, newPage }) => (
               <HeaderNavLink
                 key={href}
                 href={href}

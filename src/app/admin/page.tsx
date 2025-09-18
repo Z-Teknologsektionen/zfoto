@@ -13,7 +13,7 @@ import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAuth } from "~/utils/auth";
 import { AdminInfoCard } from "./_components/admin-info-card";
-import { adminPhotographerColumns } from "./_components/admin-photograhper-columns";
+import { adminPhotographerColumns } from "./_components/admin-photographer-columns";
 import { AdminSidebar } from "./_components/admin-sidebar";
 import { PhotographerFilteringToolbar } from "./_components/photographer-filtering-toolbar";
 
@@ -22,7 +22,7 @@ const NUMBER_OF_DECIMALS = 2;
 const DECIMAL_TO_PROCENT = 100;
 
 // eslint-disable-next-line max-lines-per-function
-const AdminDashbord: FC = async () => {
+const AdminDashboard: FC = async () => {
   const session = await getAuth();
   const isAdmin = session?.user.role === Roles.ADMIN;
 
@@ -102,4 +102,4 @@ const AdminDashbord: FC = async () => {
   );
 };
 
-export default AdminDashbord;
+export default AdminDashboard;

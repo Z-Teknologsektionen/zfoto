@@ -1,6 +1,6 @@
 "use client";
 
-import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodScheams";
+import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
 import type { AdminAlbumType } from "@/types/data-access";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
@@ -107,7 +107,7 @@ export const UpdateManyAlbumsDialog: FC<{
             <DialogDescription>
               Alla album kommer redigeras till samma värden, denna åtgärd kommer
               inte gå att ångra. Om alla album har samma värde på ett fält
-              kommer ett standardvärde att visas, annars är fälet tomt.
+              kommer ett standardvärde att visas, annars kommer det vara tomt.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-fit max-h-80">

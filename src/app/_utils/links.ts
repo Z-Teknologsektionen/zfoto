@@ -80,9 +80,9 @@ const links: LinkType[] = [
   },
 ];
 
-const orderdLinks = links.sort((a, b) => (a.order >= b.order ? 1 : -1));
+const orderedLinks = links.sort((a, b) => (a.order >= b.order ? 1 : -1));
 
-const orderdHeaderLinks: SafeLinkType[] = orderdLinks
+const orderedHeaderLinks: SafeLinkType[] = orderedLinks
   .filter((a) => a.useInHeader)
   .map(
     ({
@@ -93,7 +93,7 @@ const orderdHeaderLinks: SafeLinkType[] = orderdLinks
     }) => rest,
   );
 
-const orderdFooterLinks: SafeLinkType[] = orderdLinks
+const orderedFooterLinks: SafeLinkType[] = orderedLinks
   .filter((a) => a.useInFooter)
   .map(
     ({
@@ -104,4 +104,4 @@ const orderdFooterLinks: SafeLinkType[] = orderdLinks
     }) => rest,
   );
 
-export { orderdFooterLinks, orderdHeaderLinks, socialIconLinks };
+export { orderedFooterLinks, orderedHeaderLinks, socialIconLinks };

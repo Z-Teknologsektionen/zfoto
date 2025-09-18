@@ -14,7 +14,7 @@ export const updateManyAlbumsByIdsAction = adminLikeSafeAction
   .action(
     async ({
       parsedInput: {
-        albumIds: albumdIds,
+        albumIds,
         data: { isReception, isVisible, relativeDate },
       },
     }) => {
@@ -22,7 +22,7 @@ export const updateManyAlbumsByIdsAction = adminLikeSafeAction
         const allImages = await db.album.findMany({
           where: {
             id: {
-              in: albumdIds,
+              in: albumIds,
             },
           },
         });
@@ -38,7 +38,7 @@ export const updateManyAlbumsByIdsAction = adminLikeSafeAction
         );
       }
 
-      return updateManyAlbumsByIds(albumdIds, {
+      return updateManyAlbumsByIds(albumIds, {
         isVisible,
         isReception,
       });

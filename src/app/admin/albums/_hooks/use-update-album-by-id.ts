@@ -11,7 +11,7 @@ export const useUpdateAlbumById = (
   const toastId = useId();
   return useAction(updateAlbumByIdAction, {
     onExecute: () => {
-      toast.loading("Updaterar album...", {
+      toast.loading("Uppdaterar album...", {
         id: toastId,
       });
       callbacks?.onExecute?.();
@@ -21,7 +21,7 @@ export const useUpdateAlbumById = (
       callbacks?.onSettled?.();
     },
     onSuccess: ({ data }) => {
-      toast.success(`Album med titel ${data?.title} har nu updaterats!`);
+      toast.success(`Album med titel ${data?.title} har nu uppdaterats!`);
       callbacks?.onSuccess?.();
     },
     onError: defaultOnErrorToastHandler,

@@ -1,3 +1,3 @@
-import page from "./page";
+import { pageType } from "./page";
 
-export const schemaTypes = [page];
+export const schemaTypes = [pageType];

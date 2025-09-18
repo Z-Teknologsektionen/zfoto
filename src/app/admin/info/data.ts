@@ -2,7 +2,7 @@ export const adminCardsInfo = [
   {
     title: "/admin",
     description:
-      'Denna sida är en "dashbord" där det finns lite statistik bland annat hur många bilder och album som finns på hemsidan.',
+      'Denna sida är en "dashboard" där det finns lite statistik bland annat hur många bilder och album som finns på hemsidan.',
     content:
       'De funktioner som finns på denna sidan är "Dölj mottagningsalbum" och "Visa mottagnings album". Dessa används för att snabbt kunna dölja alla gamla mottagningsalbum inför årets mottagning. Förslagsvis döljer man alla mottagningsalbum innan första antagningsbeskedet och börjar visa alla album måndag MV3 efter revelen.',
     canOpen: true,

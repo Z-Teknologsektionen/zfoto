@@ -24,7 +24,7 @@ const MINIMUM_MS_BETWEEN_IMAGE_CHANGE = 200;
 // eslint-disable-next-line max-lines-per-function
 export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const searchParams = useSearchParams();
-  const currentImageId = searchParams?.get("imageId");
+  const currentImageId = searchParams.get("imageId");
 
   const { rateLimitedFunction } = useRateLimit(MINIMUM_MS_BETWEEN_IMAGE_CHANGE);
 

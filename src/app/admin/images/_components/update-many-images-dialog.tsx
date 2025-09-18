@@ -1,7 +1,7 @@
 "use client";
 
 import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
-import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodScheams";
+import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
 import type { AdminImageType } from "@/types/data-access";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
@@ -28,7 +28,7 @@ import {
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC } from "~/utils/date-utils";
+import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
 
@@ -82,9 +82,15 @@ export const UpdateManyImagesDialog: FC<{
         toast.error("Alla fält är tomma, inget kommer uppdateras");
         return;
       }
+
+      const data = form.getValues()
+
       updateManyImages({
         imageIds: allIds,
-        data: form.getValues(),
+        data: {
+          ...data,
+          absoluteDate: data.absoluteDate === undefined ? undefined : getUTCFromLocalDate(new Date(data.absoluteDate))
+        },
       });
     },
     [allIds, form, updateManyImages],
@@ -114,7 +120,7 @@ export const UpdateManyImagesDialog: FC<{
             <DialogDescription>
               Alla bilder kommer redigeras till samma värden, denna åtgärd
               kommer inte gå att ångra. Om alla bilder har samma värde på ett
-              fält kommer ett standardvärde att visas, annars är fälet tomt.
+              fält kommer ett standardvärde att visas, annars kommer det vara tomt.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-fit max-h-80">

@@ -5,7 +5,7 @@ import type {
 } from "@/server/data-access/albums";
 import type {
   getAllImagesAsAdmin,
-  getImagebyId,
+  getImageById,
 } from "@/server/data-access/images";
 import type { getCountsPerPhotographer } from "@/server/data-access/photographers";
 import type { getAllUsersAsAdmin } from "@/server/data-access/users";
@@ -19,7 +19,7 @@ export type PublicAlbumWithImagesType = Prisma.PromiseReturnType<
   typeof getAlbumWithImagesById
 >;
 
-export type PublicImageType = Prisma.PromiseReturnType<typeof getImagebyId>;
+export type PublicImageType = Prisma.PromiseReturnType<typeof getImageById>;
 
 export type AdminImageType = Prisma.PromiseReturnType<
   typeof getAllImagesAsAdmin

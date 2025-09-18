@@ -11,7 +11,7 @@ export const useUpdateImageById = (
   const toastId = useId();
   return useAction(updateImageByIdAction, {
     onExecute: () => {
-      toast.loading("Updaterar bild...", {
+      toast.loading("Uppdaterar bild...", {
         id: toastId,
       });
       callbacks?.onExecute?.();
@@ -21,7 +21,7 @@ export const useUpdateImageById = (
       callbacks?.onSettled?.();
     },
     onSuccess: ({ data }) => {
-      toast.success(`Bild med filnamn: ${data?.filename} har nu updaterats!`);
+      toast.success(`Bild med filnamn: ${data?.filename} har nu uppdaterats!`);
       callbacks?.onSuccess?.();
     },
     onError: defaultOnErrorToastHandler,
