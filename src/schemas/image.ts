@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   imageBaseSchema,
   updateManyImagesBaseSchema,
-} from "./helpers/zodScheams";
+} from "./helpers/zodSchemas";
 import { objectId } from "./helpers/zodTypes";
 
 export const createImageAPISchema = imageBaseSchema.extend({

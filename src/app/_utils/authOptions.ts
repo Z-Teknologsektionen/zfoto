@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
   /*
    * Om du lägger till providers bör du även uppdatera
    * src\app\auth\sign-in\sign-in-content.tsx
-   * med en ny knapp så du kan logga in med den nya providern
+   * med en ny knapp så du kan logga in med den nya metoden
    */
   providers: [
     GoogleProvider({

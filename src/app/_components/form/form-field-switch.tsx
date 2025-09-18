@@ -33,6 +33,7 @@ export const FormFieldSwitch = <
   ...rest
 }: FormFieldSwitchProps<TFieldValues, TTransformedValues>): JSX.Element => (
   <FormField
+    //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}
     name={name}
     render={({ field }) => (

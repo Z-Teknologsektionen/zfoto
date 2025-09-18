@@ -16,12 +16,12 @@ type DataTablePaginationProps<TData> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-const DEAULT_PAGE_SIZES = [10, 30, 90, 300];
+const DEFAULT_PAGE_SIZES = [10, 30, 90, 300];
 
 // eslint-disable-next-line max-lines-per-function
 export const DataTablePagination = <TData,>({
   table,
-  pageSizes = DEAULT_PAGE_SIZES,
+  pageSizes = DEFAULT_PAGE_SIZES,
 }: DataTablePaginationProps<TData>): JSX.Element => (
   <div className="flex items-center justify-between px-2">
     <div />

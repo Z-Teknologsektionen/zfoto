@@ -11,7 +11,7 @@ export const useUpdateManyAlbumsByIds = (
   const toastId = useId();
   return useAction(updateManyAlbumsByIdsAction, {
     onExecute: ({ input: { albumIds } }) => {
-      toast.loading(`Updaterar ${albumIds.length} album...`, {
+      toast.loading(`Uppdaterar ${albumIds.length} album...`, {
         id: toastId,
       });
       callbacks?.onExecute?.();

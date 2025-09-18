@@ -11,7 +11,7 @@ export const useUpdateManyImagesByIds = (
   const toastId = useId();
   return useAction(updateManyImagesByIdsAction, {
     onExecute: ({ input: { imageIds } }) => {
-      toast.loading(`Updaterar ${imageIds.length} bilder...`, {
+      toast.loading(`Uppdaterar ${imageIds.length} bilder...`, {
         id: toastId,
       });
       callbacks?.onExecute?.();

@@ -6,21 +6,11 @@ import { createSafeActionClient } from "next-safe-action";
 import { getAuth } from "~/utils/auth";
 import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
 
-const handleReturnedServerError: SafeActionClientOpts<
+const handleServerError: SafeActionClientOpts<
   string,
   undefined,
   undefined
->["handleReturnedServerError"] = (e) => {
-  if (e instanceof ActionError) return e.message;
-
-  return DEFAULT_ERROR_MESSAGE;
-};
-
-const handleServerErrorLog: SafeActionClientOpts<
-  string,
-  undefined,
-  undefined
->["handleServerErrorLog"] = (e) => {
+>["handleServerError"] = (e) => {
   switch (env.NODE_ENV) {
     case "development":
       // eslint-disable-next-line no-console
@@ -30,11 +20,14 @@ const handleServerErrorLog: SafeActionClientOpts<
       // TODO: Updatera denna till att maila webbgruppen eller likande för bättre hantering
       break;
   }
+
+  if (e instanceof ActionError) return e.message;
+
+  return DEFAULT_ERROR_MESSAGE;
 };
 
 export const baseSafeAction = createSafeActionClient({
-  handleReturnedServerError,
-  handleServerErrorLog,
+  handleServerError,
   defaultValidationErrorsShape: "flattened",
 }).use(async ({ next }) => {
   const session = await getAuth();
@@ -67,10 +60,7 @@ export const adminSafeAction = authSafeAction.use(async ({ ctx, next }) => {
     ctx: {
       session: {
         ...ctx.session,
-        user: {
-          ...ctx.session.user,
-          role: Roles.ADMIN,
-        },
+        user: { ...ctx.session.user, role: Roles.ADMIN },
       },
     },
   });

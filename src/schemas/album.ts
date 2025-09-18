@@ -3,7 +3,7 @@ import {
   albumBaseSchema,
   imageBaseSchema,
   updateManyAlbumsBaseSchema,
-} from "./helpers/zodScheams";
+} from "./helpers/zodSchemas";
 import { objectId } from "./helpers/zodTypes";
 
 export const setReceptionAlbumVisibilitySchema = z.object({

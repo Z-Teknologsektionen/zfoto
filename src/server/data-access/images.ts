@@ -15,7 +15,7 @@ import type { Image } from "@prisma/client";
 import { db } from "~/utils/db";
 import { dateTimeFilterByActiveYear, imagesOrderByForAdmin } from "./helpers";
 
-const getImagebyIdInternal = async (id: string) =>
+const getImageByIdInternal = async (id: string) =>
   db.image.findUniqueOrThrow({
     where: {
       id,
@@ -118,8 +118,8 @@ export const deleteImageById = async (imageId: string) => {
   revalidateDbCache({ tag: CACHE_TAGS.albums, id: deletedImage.albumId });
 };
 
-export const getImagebyId = async (imageId: string) =>
-  dbCache(getImagebyIdInternal, {
+export const getImageById = async (imageId: string) =>
+  dbCache(getImageByIdInternal, {
     tags: [
       getGlobalTag(CACHE_TAGS.images),
       getIdTag(imageId, CACHE_TAGS.images),

@@ -1,6 +1,6 @@
 "use client";
 
-import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodScheams";
+import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
 
 import type { FC } from "react";
 import { useFormContext } from "react-hook-form";

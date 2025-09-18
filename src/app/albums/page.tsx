@@ -51,7 +51,7 @@ const AlbumsPage: FC<AlbumsPageProps> = async ({ searchParams }) => {
               title={title}
               coverImageFilename={coverImageFilename}
               date={date}
-              usePriorityLoadning={idx < NUMBER_OF_IMAGES_TO_PRELOAD}
+              usePriorityLoading={idx < NUMBER_OF_IMAGES_TO_PRELOAD}
             />
           ))
         )}

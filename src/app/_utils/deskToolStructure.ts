@@ -7,7 +7,7 @@ const singleTons: {
   title: string;
 }[] = [];
 
-const excudedIds = [...singleTons.map((s) => s.id)];
+const excludedIds = [...singleTons.map((s) => s.id)];
 
 export const deskToolStructure = deskTool({
   structure: (S) =>
@@ -15,7 +15,7 @@ export const deskToolStructure = deskTool({
       .title("Base")
       .items([
         ...S.documentTypeListItems().filter(
-          (item) => !excudedIds.includes(item.getId() ?? ""),
+          (item) => !excludedIds.includes(item.getId() ?? ""),
         ),
         S.divider(),
         ...singleTons.map((s) =>

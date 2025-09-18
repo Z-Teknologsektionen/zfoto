@@ -14,7 +14,7 @@ import { ImagePopup } from "./_components/image-popup";
 import {
   RecommendedAlbumsGrid,
   RecommendedAlbumsGridSkeleton,
-} from "./_components/recomended-albums-grid";
+} from "./_components/recommended-albums-grid";
 
 type AlbumPageProps = {
   params: { albumId: string };

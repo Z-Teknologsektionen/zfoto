@@ -1,7 +1,7 @@
 "use client";
 
 import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
-import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodScheams";
+import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
 import type { AdminImageType } from "@/types/data-access";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
@@ -120,7 +120,7 @@ export const UpdateManyImagesDialog: FC<{
             <DialogDescription>
               Alla bilder kommer redigeras till samma värden, denna åtgärd
               kommer inte gå att ångra. Om alla bilder har samma värde på ett
-              fält kommer ett standardvärde att visas, annars är fälet tomt.
+              fält kommer ett standardvärde att visas, annars kommer det vara tomt.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-fit max-h-80">

@@ -25,7 +25,7 @@ export const fullDatetimeString = baseString.datetime({
   precision: 3,
   offset: false,
   message:
-    'Otilllåtet datum/tids format. Måste vara på följande format: "YYYY-MM-DDTHH:mm:ss.000Z"',
+    'Otillåtet datum/tids format. Måste vara på följande format: "YYYY-MM-DDTHH:mm:ss.000Z"',
 });
 
 export const fullDatetimeStringToDate = fullDatetimeString.transform(
@@ -51,7 +51,7 @@ export const checkedState = z.custom<CheckedState>(
 
 export const albumTitleString = baseString.min(
   3,
-  "Namnet på albummet måste vara minst ",
+  "Namnet på albumet måste vara minst ",
 );
 
 export const filenameString = baseString

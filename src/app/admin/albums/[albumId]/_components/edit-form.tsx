@@ -1,6 +1,6 @@
 "use client";
 
-import { albumBaseSchema } from "@/schemas/helpers/zodScheams";
+import { albumBaseSchema } from "@/schemas/helpers/zodSchemas";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
@@ -86,7 +86,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
       <div className="col-span-full flex flex-row justify-end gap-2">
         <DeleteDialog
           title={`Vill du verkligen radera: ${title}`}
-          description="Denna åtgärd går inte att ångra! Alla bilder som tillhör albummet kommer också att raderas!"
+          description="Denna åtgärd går inte att ångra! Alla bilder som tillhör albumet kommer också att raderas!"
           onDelete={() => {
             deleteAlbum({ id });
           }}

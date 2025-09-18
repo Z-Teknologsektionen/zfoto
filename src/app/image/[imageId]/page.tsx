@@ -1,4 +1,4 @@
-import { getImagebyId } from "@/server/data-access/images";
+import { getImageById } from "@/server/data-access/images";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { createByline, getFullFilePath } from "~/utils/utils";
 
 export const revalidate = 300;
 
-const getImage = cache(getImagebyId);
+const getImage = cache(getImageById);
 
 type ImagePageProps = {
   params: { imageId: string };

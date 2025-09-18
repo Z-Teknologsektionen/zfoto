@@ -25,18 +25,18 @@ export const SignInWithExternalProvider: FC<
   imageAlt = `${capitalizeString(provider)}s logga`,
   signInText = `Logga in med ${capitalizeString(provider)}`,
 }) => (
-  <Button
-    className="flex w-full flex-row justify-center gap-4"
-    variant="outline"
-    size="lg"
-    onClick={() =>
-      void signIn(provider, {
-        callbackUrl,
-        redirect,
-      })
-    }
-  >
-    <Image alt={imageAlt} src={imageUrl} width={24} height={24} />
-    <p className="font-medium">{signInText}</p>
-  </Button>
-);
+    <Button
+      className="flex w-full flex-row justify-center gap-4"
+      variant="outline"
+      size="lg"
+      onClick={() =>
+        void signIn(provider, {
+          callbackUrl,
+          redirect,
+        })
+      }
+    >
+      <Image alt={imageAlt} src={imageUrl} width={24} height={24} />
+      <p className="font-medium">{signInText}</p>
+    </Button>
+  );
