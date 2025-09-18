@@ -32,7 +32,10 @@ export const dbCache = <T extends (...args: any[]) => Promise<any>>(
   { tags }: { tags: ValidTags[] },
 ) =>
   cache(
-    unstable_cache<T>(cb, undefined, { tags: [...tags, GLOBAL_CACHE_TAG] }),
+    unstable_cache<T>(cb, undefined, {
+      tags: [...tags, GLOBAL_CACHE_TAG],
+      revalidate: 60 * 24 * 24,
+    }),
   );
 
 export const revalidateDbCache = ({
