@@ -144,4 +144,5 @@ export const getTotalImageCount = async () =>
 export const getAllImageFilenames = async () =>
   dbCache(getAllImageFilenamesInternal, {
     tags: [getGlobalTag(CACHE_TAGS.images)],
+    revalidate: 60, // This data needs to be very fresh
   })();

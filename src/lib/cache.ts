@@ -29,12 +29,12 @@ export const clearFullCache = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const dbCache = <T extends (...args: any[]) => Promise<any>>(
   cb: Parameters<typeof unstable_cache<T>>[0],
-  { tags }: { tags: ValidTags[] },
+  { tags, revalidate }: { tags: ValidTags[]; revalidate?: number | false },
 ) =>
   cache(
     unstable_cache<T>(cb, undefined, {
       tags: [...tags, GLOBAL_CACHE_TAG],
-      revalidate: 60 * 24 * 24,
+      revalidate: revalidate ?? 60 * 24 * 24,
     }),
   );
 
