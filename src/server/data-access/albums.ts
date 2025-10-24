@@ -248,6 +248,7 @@ export const upsertAlbum = async (body: UpsertAlbumProps) => {
   });
 
   revalidateDbCache({ tag: CACHE_TAGS.albums, id: upsertedAlbum.id });
+  revalidateDbCache({ tag: CACHE_TAGS.images });
 
   return { ...upsertedAlbum, imageCount };
 };
@@ -290,6 +291,7 @@ export const deleteAlbumById = async (albumId: string) => {
   });
 
   revalidateDbCache({ tag: CACHE_TAGS.albums, id: albumId });
+  revalidateDbCache({ tag: CACHE_TAGS.images });
 };
 
 export const getLatestAlbums = async (
