@@ -6,6 +6,7 @@ import type {
   ComponentPropsWithoutRef,
   ElementRef,
   HTMLAttributes,
+  ReactNode,
 } from "react";
 import { createContext, forwardRef, useContext, useId } from "react";
 import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
@@ -31,7 +32,7 @@ const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>): JSX.Element => (
+}: ControllerProps<TFieldValues, TName>): ReactNode => (
   <FormFieldContext.Provider value={{ name: props.name }}>
     <Controller {...props} />
   </FormFieldContext.Provider>
@@ -180,3 +181,4 @@ export {
   FormMessage,
   useFormField
 };
+

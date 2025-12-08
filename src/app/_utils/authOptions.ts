@@ -4,7 +4,6 @@
 import { env } from "@/env.mjs";
 import { getUserByEmailForSession } from "@/server/data-access/users";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { Roles } from "@prisma/client";
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -20,6 +19,7 @@ import { getServerSession } from "next-auth";
 import type { DefaultJWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import type { Roles } from "prisma/generated/enums";
 import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 

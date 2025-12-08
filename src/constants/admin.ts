@@ -1,4 +1,4 @@
-import { Roles } from "@prisma/client";
+import { Roles } from "prisma/generated/enums";
 
 export const adminLikeRoles = [
   Roles.ADMIN,

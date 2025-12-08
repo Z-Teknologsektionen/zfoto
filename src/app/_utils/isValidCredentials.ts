@@ -1,8 +1,8 @@
 "use server";
 
 import { getUserByEmailWithPassword } from "@/server/data-access/users";
-import type { User } from "@prisma/client";
 import { compare } from "bcrypt";
+import { User } from "prisma/generated/client";
 
 export const isValidCredentials = async (data: {
   password: string;

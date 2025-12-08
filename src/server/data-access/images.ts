@@ -11,7 +11,7 @@ import {
   revalidateDbCache,
 } from "@/lib/cache";
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
-import type { Image } from "@prisma/client";
+import type { Image } from "prisma/generated/client";
 import { db } from "~/utils/db";
 import { dateTimeFilterByActiveYear, imagesOrderByForAdmin } from "./helpers";
 

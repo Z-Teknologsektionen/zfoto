@@ -53,12 +53,12 @@ export const updateManyImagesBaseSchema = z
   .superRefine(({ absoluteDate, relativeDate }, ctx) => {
     if (absoluteDate !== undefined && relativeDate !== undefined) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du kan inte både ange en relativ och en absolut tid",
         path: ["absoluteDate"],
       });
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du kan inte både ange en relativ och en absolut tid",
         path: ["relativeDate"],
       });

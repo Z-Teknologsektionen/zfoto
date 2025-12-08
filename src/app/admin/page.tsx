@@ -8,7 +8,7 @@ import {
   getTotalImageCount,
 } from "@/server/data-access/images";
 import { getCountsPerPhotographer } from "@/server/data-access/photographers";
-import { Roles } from "@prisma/client";
+import { Roles } from "prisma/generated/enums";
 import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAuth } from "~/utils/auth";

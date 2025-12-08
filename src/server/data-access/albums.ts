@@ -11,7 +11,7 @@ import {
   revalidateDbCache,
 } from "@/lib/cache";
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
-import type { Album } from "@prisma/client";
+import { Album } from "prisma/generated/client";
 import { db } from "~/utils/db";
 import {
   coverImageFromAlbumSelect,

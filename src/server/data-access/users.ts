@@ -9,7 +9,7 @@ import {
   getGlobalTag,
   revalidateDbCache,
 } from "@/lib/cache";
-import type { Roles } from "@prisma/client";
+import type { Roles } from "prisma/generated/enums";
 import { db } from "~/utils/db";
 
 const getUserByEmailForSessionInternal = async (email: string) =>

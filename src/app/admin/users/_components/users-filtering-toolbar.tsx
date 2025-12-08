@@ -1,6 +1,7 @@
 "use client";
 
-import { Roles } from "@prisma/client";
+import { Roles } from "prisma/generated/enums";
+import { ReactNode } from "react";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
 import { ToolbarSelectDropdown } from "~/components/data-table/data-table-toolbar-select-dropdown";
@@ -9,7 +10,7 @@ import { ToolbarWrapper } from "~/components/data-table/data-table-toolbar-wrapp
 
 export const UsersFilteringToolbar = <TData,>({
   table,
-}: DataTableToolBarProps<TData>): JSX.Element => {
+}: DataTableToolBarProps<TData>): ReactNode => {
   const roleColumn = table.getColumn("role");
   if (roleColumn === undefined) throw new Error("No role column found");
 

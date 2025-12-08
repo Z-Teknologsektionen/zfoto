@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { Fragment, useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import {
@@ -45,7 +45,7 @@ export const DataTable = <TData, TValue>({
   toolbar: Toolbar,
   usePagination = false,
   noResultText,
-}: DataTableProps<TData, TValue>): JSX.Element => {
+}: DataTableProps<TData, TValue>): ReactNode => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -80,9 +80,9 @@ export const DataTable = <TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

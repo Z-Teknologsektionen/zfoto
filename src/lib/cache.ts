@@ -23,7 +23,7 @@ export const getIdTag = (id: string, tag: keyof typeof CACHE_TAGS) =>
   `id:${id}-${CACHE_TAGS[tag]}` as const;
 
 export const clearFullCache = () => {
-  revalidateTag(GLOBAL_CACHE_TAG);
+  revalidateTag(GLOBAL_CACHE_TAG, "max");
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,11 +47,11 @@ export const revalidateDbCache = ({
   id?: string;
   ids?: string[];
 }) => {
-  revalidateTag(getGlobalTag(tag));
-  if (id !== undefined) revalidateTag(getIdTag(id, tag));
+  revalidateTag(getGlobalTag(tag), "max");
+  if (id !== undefined) revalidateTag(getIdTag(id, tag), "max");
   if (ids !== undefined) {
     ids.forEach((id) => {
-      revalidateTag(getIdTag(id, tag));
+      revalidateTag(getIdTag(id, tag), "max");
     });
   }
 };

@@ -3,7 +3,7 @@
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
@@ -78,7 +78,7 @@ SheetContent.displayName = SheetPrimitive.Content.displayName;
 const SheetHeader = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
+}: React.HTMLAttributes<HTMLDivElement>): ReactNode => (
   <div
     className={cn(
       "flex flex-col space-y-2 text-center sm:text-left",
@@ -92,7 +92,7 @@ SheetHeader.displayName = "SheetHeader";
 const SheetFooter = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
+}: React.HTMLAttributes<HTMLDivElement>): ReactNode => (
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
@@ -142,3 +142,4 @@ export {
   SheetTitle,
   SheetTrigger
 };
+

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
@@ -35,7 +36,7 @@ export const FormFieldInput = <
   description,
   type,
   ...rest
-}: FormFieldInputProps<TFieldValues, TTransformedValues>): JSX.Element => (
+}: FormFieldInputProps<TFieldValues, TTransformedValues>): ReactNode => (
   <FormField
     //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}
@@ -88,7 +89,7 @@ export const FormFieldInputEmail = <
 }: PartialBy<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -109,7 +110,7 @@ export const FormFieldInputPassword = <
 }: PartialBy<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -133,7 +134,7 @@ export const FormFieldInputDateTimeLocal = <
     "onChange" | "type" | "value"
   >,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -155,7 +156,7 @@ export const FormFieldInputNumber = <
 }: Omit<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "onChange" | "type" | "value"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,

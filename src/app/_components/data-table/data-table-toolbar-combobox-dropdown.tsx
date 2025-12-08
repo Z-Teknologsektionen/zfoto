@@ -3,7 +3,7 @@
 import type { Column } from "@tanstack/react-table";
 import { ChevronsUpDown } from "lucide-react";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Command,
@@ -35,7 +35,7 @@ export const ToolbarComboboxDropdown = <TData,>({
   placeholder,
   noOptionsText,
   size,
-}: ToolbarSelectComboboxProps<TData>): JSX.Element => {
+}: ToolbarSelectComboboxProps<TData>): ReactNode => {
   const [open, setOpen] = useState(false);
 
   if (column === undefined) throw new Error("No column found");

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import type {
   FieldValues,
   Path,
@@ -39,7 +40,7 @@ export const FormFieldCheckbox = <
   description,
   resetText = "Återställ",
   ...rest
-}: FormFieldCheckboxProps<TFieldValues, TTransformedValues>): JSX.Element => (
+}: FormFieldCheckboxProps<TFieldValues, TTransformedValues>): ReactNode => (
   <FormField
     //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}

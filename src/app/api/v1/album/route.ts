@@ -1,6 +1,6 @@
 import { createAlbumAPISchema } from "@/schemas/album";
 import { upsertAlbum } from "@/server/data-access/albums";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { Prisma } from "prisma/generated/client";
 
 export const POST = async (request: Request): Promise<Response> => {
   try {
@@ -19,7 +19,7 @@ export const POST = async (request: Request): Promise<Response> => {
 
     return Response.json(createdAlbum, { status: 200 });
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2002") {
         return Response.json(
           {
