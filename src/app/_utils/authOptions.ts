@@ -53,7 +53,8 @@ declare module "next-auth/jwt" {
  */
 
 export const authOptions: NextAuthOptions = {
-  // @ts-expect-error PrismaAdapter is not updated for newer versions of prisma but this works well
+  // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-ignore PrismaAdapter is not updated for newer versions of prisma but this works well
   adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
