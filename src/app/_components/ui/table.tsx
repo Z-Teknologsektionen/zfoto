@@ -1,7 +1,9 @@
 import type { HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
-const Table = ({ ref, className, ...props }: HTMLAttributes<HTMLTableElement> & { ref?: React.RefObject<HTMLTableElement | null> }) => (
+const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
+  ({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
       <table
         ref={ref}
@@ -9,24 +11,34 @@ const Table = ({ ref, className, ...props }: HTMLAttributes<HTMLTableElement> & 
         {...props}
       />
     </div>
-  );
+  ),
+);
 Table.displayName = "Table";
 
-const TableHeader = ({ ref, className, ...props }: HTMLAttributes<HTMLTableSectionElement> & { ref?: React.RefObject<HTMLTableSectionElement | null> }) => (
+const TableHeader = forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
-);
+));
 TableHeader.displayName = "TableHeader";
 
-const TableBody = ({ ref, className, ...props }: HTMLAttributes<HTMLTableSectionElement> & { ref?: React.RefObject<HTMLTableSectionElement | null> }) => (
+const TableBody = forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
-);
+));
 TableBody.displayName = "TableBody";
 
-const TableFooter = ({ ref, className, ...props }: HTMLAttributes<HTMLTableSectionElement> & { ref?: React.RefObject<HTMLTableSectionElement | null> }) => (
+const TableFooter = forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
     className={cn(
@@ -35,10 +47,13 @@ const TableFooter = ({ ref, className, ...props }: HTMLAttributes<HTMLTableSecti
     )}
     {...props}
   />
-);
+));
 TableFooter.displayName = "TableFooter";
 
-const TableRow = ({ ref, className, ...props }: HTMLAttributes<HTMLTableRowElement> & { ref?: React.RefObject<HTMLTableRowElement | null> }) => (
+const TableRow = forwardRef<
+  HTMLTableRowElement,
+  HTMLAttributes<HTMLTableRowElement>
+>(({ className, ...props }, ref) => (
   <tr
     ref={ref}
     className={cn(
@@ -47,10 +62,13 @@ const TableRow = ({ ref, className, ...props }: HTMLAttributes<HTMLTableRowEleme
     )}
     {...props}
   />
-);
+));
 TableRow.displayName = "TableRow";
 
-const TableHead = ({ ref, className, ...props }: ThHTMLAttributes<HTMLTableCellElement> & { ref?: React.RefObject<HTMLTableCellElement | null> }) => (
+const TableHead = forwardRef<
+  HTMLTableCellElement,
+  ThHTMLAttributes<HTMLTableCellElement>
+>(({ className, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
@@ -59,19 +77,25 @@ const TableHead = ({ ref, className, ...props }: ThHTMLAttributes<HTMLTableCellE
     )}
     {...props}
   />
-);
+));
 TableHead.displayName = "TableHead";
 
-const TableCell = ({ ref, className, ...props }: TdHTMLAttributes<HTMLTableCellElement> & { ref?: React.RefObject<HTMLTableCellElement | null> }) => (
+const TableCell = forwardRef<
+  HTMLTableCellElement,
+  TdHTMLAttributes<HTMLTableCellElement>
+>(({ className, ...props }, ref) => (
   <td
     ref={ref}
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
-);
+));
 TableCell.displayName = "TableCell";
 
-const TableCaption = ({ ref, className, ...props }: HTMLAttributes<HTMLTableCaptionElement> & { ref?: React.RefObject<HTMLTableCaptionElement | null> }) => (
+const TableCaption = forwardRef<
+  HTMLTableCaptionElement,
+  HTMLAttributes<HTMLTableCaptionElement>
+>(({ className, ...props }, ref) => (
   <caption
     ref={ref}
     className={cn(
@@ -80,7 +104,7 @@ const TableCaption = ({ ref, className, ...props }: HTMLAttributes<HTMLTableCapt
     )}
     {...props}
   />
-);
+));
 TableCaption.displayName = "TableCaption";
 
 export {

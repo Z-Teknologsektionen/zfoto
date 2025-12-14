@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable no-unused-vars */
+
+import { env } from "@/env.mjs";
+import { getUserByEmailForSession } from "@/server/data-access/users";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { Roles } from "@prisma/client";
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -9,20 +16,15 @@ import type {
   NextAuthOptions,
   Session,
 } from "next-auth";
-import type { DefaultJWT } from "next-auth/jwt";
-import type { Roles } from "prisma/generated/enums";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
+import type { DefaultJWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { env } from "@/env.mjs";
-import { getUserByEmailForSession } from "@/server/data-access/users";
 import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
-  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
-  type Session = {
+  interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       email: string;
       id: string;
@@ -30,19 +32,17 @@ declare module "next-auth" {
       picture: string;
       role: Roles;
     };
-  } & DefaultSession;
+  }
 
-  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
-  type User = {
+  interface User extends DefaultUser {
     role: Roles;
-  } & DefaultUser;
+  }
 }
 
 declare module "next-auth/jwt" {
-  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
-  type JWT = {
+  interface JWT extends DefaultJWT {
     role: Roles;
-  } & DefaultJWT;
+  }
 }
 
 /**
@@ -53,8 +53,6 @@ declare module "next-auth/jwt" {
  */
 
 export const authOptions: NextAuthOptions = {
-  // eslint-disable-next-line ts/ban-ts-comment
-  // @ts-ignore PrismaAdapter is not updated for newer versions of prisma but this works well
   adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
@@ -102,10 +100,7 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user };
     },
     async session({ session }) {
-      const user =
-        session.user?.email !== undefined && session.user.email !== null
-          ? await getUserByEmailForSession(session.user.email)
-          : null;
+      const user = await getUserByEmailForSession(session.user.email);
       return {
         ...session,
         user: { ...session.user, ...user },

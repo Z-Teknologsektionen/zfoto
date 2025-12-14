@@ -1,10 +1,11 @@
 import type { Column } from "@tanstack/react-table";
-import type { FC } from "react";
 import { ArrowUpDown } from "lucide-react";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 
 type DataTableColumnHeaderProps = {
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   column: Column<any>;
   isSortable?: boolean;
 };

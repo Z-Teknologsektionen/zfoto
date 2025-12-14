@@ -1,6 +1,6 @@
+import { getAllAlbumsAsAdmin } from "@/server/data-access/albums";
 import type { FC } from "react";
 import { Fragment } from "react";
-import { getAllAlbumsAsAdmin } from "@/server/data-access/albums";
 import { DataTable } from "~/components/data-table/data-table";
 import { BackButton } from "~/components/layout/back-button";
 import { albumColumns } from "./_components/album-columns";

@@ -1,16 +1,15 @@
 "use client";
 
-import type { DefaultValues } from "react-hook-form";
-import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { DefaultValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import type { Schema, z } from "zod";
 
 type AsyncDefaultValues<TFieldValues> = (
   payload?: unknown,
 ) => Promise<TFieldValues>;
 
-// TODO: Make this more generic to work with refines and transforms
-export const useFormWithZod = <TSchema extends z.ZodObject>({
+export const useFormWithZod = <TSchema extends Schema>({
   schema,
   defaultValues,
   debug = false,
@@ -20,10 +19,10 @@ export const useFormWithZod = <TSchema extends z.ZodObject>({
   debug?: boolean;
   values?: z.input<TSchema> | undefined;
   defaultValues?:
-    | AsyncDefaultValues<z.input<TSchema>>
-    | DefaultValues<z.input<TSchema>>;
+    | AsyncDefaultValues<z.input<typeof schema>>
+    | DefaultValues<z.input<typeof schema>>;
 }) =>
-  useForm<z.input<TSchema>, unknown, z.output<TSchema>>({
+  useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>({
     resolver: async (values, context, options) => {
       const results = await zodResolver(schema)(values, context, options);
       if (debug) {

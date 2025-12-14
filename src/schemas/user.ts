@@ -1,4 +1,4 @@
-import { Roles } from "prisma/generated/enums";
+import { Roles } from "@prisma/client";
 import { z } from "zod";
 
 export const patchUserSchema = z.object({

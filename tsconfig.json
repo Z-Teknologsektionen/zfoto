@@ -1,44 +1,40 @@
 {
   "compilerOptions": {
-    "incremental": true,
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "target": "es2017",
-    "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2023"
-    ],
+    "allowJs": true,
+    "resolveJsonModule": true,
     "moduleDetection": "force",
-    "baseUrl": ".",
+    "isolatedModules": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+
+    /* Bundled projects */
+    "lib": ["dom", "dom.iterable", "ES2023"],
+    "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
+    "incremental": true,
+
+    /* Path Aliases */
+    "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./src/app/_*"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
+      "~/*": ["./src/app/_*"],
+      "@/*": ["./src/*"]
     },
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "checkJs": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    /* Extras */
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "skipLibCheck": true
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": true
   },
   "include": [
     ".eslintrc.cjs",
@@ -47,10 +43,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import type { Row } from "@tanstack/react-table";
-import type { FC } from "react";
-import type { z } from "zod";
+import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
 import type { AdminAlbumType } from "@/types/data-access";
+import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
+import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
+import type { z } from "zod";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import { FormFieldCheckbox } from "~/components/form/form-field-checkbox";
 import { FormFieldRelativeTime } from "~/components/form/form-field-relative-time";
@@ -29,6 +29,7 @@ import { useUpdateManyAlbumsByIds } from "../../_hooks/use-update-many-albums-by
 
 export const UpdateManyAlbumsDialog: FC<{
   selectedRows: Row<AdminAlbumType>[];
+  // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
   const { allIds, isVisible, isReception } = useMemo(() => {
@@ -67,6 +68,7 @@ export const UpdateManyAlbumsDialog: FC<{
 
   const onValid = useCallback(
     (values: z.output<typeof updateManyAlbumsBaseSchema>): undefined => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (Object.values(values).every((el) => el === undefined)) {
         toast.error("Alla fält är tomma, inget kommer uppdateras");
         setOpen(false);

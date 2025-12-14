@@ -1,6 +1,6 @@
-import type { FC } from "react";
-import Link from "next/link";
 import { getLatestAlbums } from "@/server/data-access/albums";
+import Link from "next/link";
+import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import {
   AlbumGridItem,

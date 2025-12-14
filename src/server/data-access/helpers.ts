@@ -1,6 +1,5 @@
-import type { Prisma } from "prisma/generated/client";
 import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
-import "server-only"
+import type { Prisma } from "@prisma/client";
 
 export const dateTimeFilterByActiveYear = (
   startYear: number,

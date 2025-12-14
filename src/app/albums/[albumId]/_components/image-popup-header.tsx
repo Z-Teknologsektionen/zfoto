@@ -1,6 +1,6 @@
-import type { FC } from "react";
 import { Copy, Download, X } from "lucide-react";
 import { useSession } from "next-auth/react";
+import type { FC } from "react";
 import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
@@ -12,7 +12,7 @@ type ImagePopupHeaderProps = {
   closePopup: () => void;
 };
 
- 
+// eslint-disable-next-line max-lines-per-function
 export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
   filename,
   photographer,

@@ -1,5 +1,5 @@
-import type { FC } from "react";
 import Link from "next/link";
+import type { FC } from "react";
 import { buttonVariants } from "~/components/ui/button";
 import { orderedFooterLinks } from "~/utils/links";
 import { cn } from "~/utils/utils";

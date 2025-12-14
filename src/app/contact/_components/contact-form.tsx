@@ -1,7 +1,7 @@
 "use client";
 
-import type { FC } from "react";
 import { contactEmailSchema } from "@/schemas/email";
+import type { FC } from "react";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInput,
@@ -19,7 +19,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { useSendContactEmail } from "../_hooks/use-send-contact-email";
 
-
+// eslint-disable-next-line max-lines-per-function
 export const ContactForm: FC = () => {
   const form = useFormWithZod({
     schema: contactEmailSchema,
@@ -66,7 +66,6 @@ export const ContactForm: FC = () => {
           <FormItem className="col-span-2">
             <FormLabel>Meddelande</FormLabel>
             <FormControl>
-              {/* @ts-expect-error refs don't match but this is valid code */}
               <Textarea placeholder="Skriv ditt meddelande" {...field} />
             </FormControl>
             <FormMessage />

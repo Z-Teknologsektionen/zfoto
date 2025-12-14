@@ -1,8 +1,8 @@
-import type { FC } from "react";
+import { getImageById } from "@/server/data-access/images";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { FC } from "react";
 import { Fragment } from "react";
-import { getImageById } from "@/server/data-access/images";
 import { BackButton } from "~/components/layout/back-button";
 import { getFullFilePath } from "~/utils/utils";
 import { EditImageForm } from "./_components/edit-form";

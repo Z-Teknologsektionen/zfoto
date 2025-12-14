@@ -1,5 +1,3 @@
-import type { FC } from "react";
-import { Roles } from "prisma/generated/enums";
 import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
 import {
   getAlbumCountFromActiveYear,
@@ -10,6 +8,8 @@ import {
   getTotalImageCount,
 } from "@/server/data-access/images";
 import { getCountsPerPhotographer } from "@/server/data-access/photographers";
+import { Roles } from "@prisma/client";
+import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAuth } from "~/utils/auth";
 import { AdminInfoCard } from "./_components/admin-info-card";
@@ -21,6 +21,7 @@ const MINIMUM_NUMBER_OF_PHOTOS_PER_PHOTOGRAPHER = 20;
 const NUMBER_OF_DECIMALS = 2;
 const DECIMAL_TO_PROCENT = 100;
 
+// eslint-disable-next-line max-lines-per-function
 const AdminDashboard: FC = async () => {
   const session = await getAuth();
   const isAdmin = session?.user.role === Roles.ADMIN;

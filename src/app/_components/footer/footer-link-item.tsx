@@ -1,7 +1,7 @@
-import type { FC } from "react";
-import type { SafeLinkType } from "~/utils/links";
 import Link from "next/link";
+import type { FC } from "react";
 import { buttonVariants } from "~/components/ui/button";
+import type { SafeLinkType } from "~/utils/links";
 import { cn } from "~/utils/utils";
 
 export const FooterLinkItem: FC<SafeLinkType> = ({

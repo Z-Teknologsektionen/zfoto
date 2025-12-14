@@ -1,5 +1,8 @@
-import type { Image } from "prisma/generated/client";
-import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
+"use server";
+
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import {
   CACHE_TAGS,
   dbCache,
@@ -7,9 +10,10 @@ import {
   getIdTag,
   revalidateDbCache,
 } from "@/lib/cache";
+import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
+import type { Image } from "@prisma/client";
 import { db } from "~/utils/db";
 import { dateTimeFilterByActiveYear, imagesOrderByForAdmin } from "./helpers";
-import "server-only";
 
 const getImageByIdInternal = async (id: string) =>
   db.image.findUniqueOrThrow({
