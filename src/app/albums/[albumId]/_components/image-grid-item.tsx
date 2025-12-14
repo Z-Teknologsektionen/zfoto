@@ -1,8 +1,8 @@
 "use client";
 
+import type { FC } from "react";
 import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import Image from "next/image";
-import type { FC } from "react";
 import { getFullFilePath } from "~/utils/utils";
 
 type ImageGridItemProps = {

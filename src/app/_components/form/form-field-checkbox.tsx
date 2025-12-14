@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type {
   FieldValues,
   Path,
@@ -39,7 +40,7 @@ export const FormFieldCheckbox = <
   description,
   resetText = "Återställ",
   ...rest
-}: FormFieldCheckboxProps<TFieldValues, TTransformedValues>): JSX.Element => (
+}: FormFieldCheckboxProps<TFieldValues, TTransformedValues>): ReactNode => (
   <FormField
     //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}
@@ -48,6 +49,7 @@ export const FormFieldCheckbox = <
       <FormItem className="flex flex-row items-center justify-between gap-4 rounded-lg border p-4">
         <div className="flex flex-row items-center gap-2">
           <FormControl>
+            {/* @ts-expect-error refs don't match but this is valid code */}
             <Checkbox
               className="size-5"
               {...field}

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import type { AdminAlbumType } from "@/types/data-access";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
@@ -9,7 +10,7 @@ import { UpdateManyAlbumsDialog } from "./update-many-albums-dialog";
 
 export const AlbumsFilteringToolbar = ({
   table,
-}: DataTableToolBarProps<AdminAlbumType>): JSX.Element => {
+}: DataTableToolBarProps<AdminAlbumType>): ReactNode => {
   const selectedRows = table.getFilteredSelectedRowModel().rows;
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
-import { Menu } from "lucide-react";
 import type { FC } from "react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { orderedHeaderLinks } from "~/utils/links";

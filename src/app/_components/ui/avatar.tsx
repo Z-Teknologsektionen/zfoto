@@ -1,14 +1,10 @@
 "use client";
 
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
-import { forwardRef } from "react";
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cn } from "~/utils/utils";
 
-const Avatar = forwardRef<
-  ElementRef<typeof AvatarPrimitive.Root>,
-  ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => (
+const Avatar = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & { ref?: React.RefObject<ElementRef<typeof AvatarPrimitive.Root> | null> }) => (
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
@@ -17,25 +13,19 @@ const Avatar = forwardRef<
     )}
     {...props}
   />
-));
+);
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
-const AvatarImage = forwardRef<
-  ElementRef<typeof AvatarPrimitive.Image>,
-  ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
+const AvatarImage = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof AvatarPrimitive.Image> & { ref?: React.RefObject<ElementRef<typeof AvatarPrimitive.Image> | null> }) => (
   <AvatarPrimitive.Image
     ref={ref}
     className={cn("aspect-square h-full w-full", className)}
     {...props}
   />
-));
+);
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
-const AvatarFallback = forwardRef<
-  ElementRef<typeof AvatarPrimitive.Fallback>,
-  ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
+const AvatarFallback = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> & { ref?: React.RefObject<ElementRef<typeof AvatarPrimitive.Fallback> | null> }) => (
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
@@ -44,7 +34,7 @@ const AvatarFallback = forwardRef<
     )}
     {...props}
   />
-));
+);
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 export { Avatar, AvatarFallback, AvatarImage };

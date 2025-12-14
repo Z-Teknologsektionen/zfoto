@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import type { FC } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -14,7 +14,6 @@ function generateYearsBetweenNowAnd2016(): number[] {
   const endDate = new Date().getFullYear();
   const years = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   for (let i = 2016; i <= endDate; i += 1) years.push(i);
 
   return years;

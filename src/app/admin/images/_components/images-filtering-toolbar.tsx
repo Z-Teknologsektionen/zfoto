@@ -1,8 +1,9 @@
 "use client";
 
+import type { ReactNode} from "react";
 import type { AdminImageType } from "@/types/data-access";
-import { useMemo } from "react";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
+import { useMemo } from "react";
 import { ToolbarComboboxDropdown } from "~/components/data-table/data-table-toolbar-combobox-dropdown";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
 import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";
@@ -11,7 +12,7 @@ import { UpdateManyImagesDialog } from "./update-many-images-dialog";
 
 export const ImagesFilteringToolbar = ({
   table,
-}: DataTableToolBarProps<AdminImageType>): JSX.Element => {
+}: DataTableToolBarProps<AdminImageType>): ReactNode => {
   const photographers = useMemo(() => {
     const values: string[] = table
       .getCoreRowModel()

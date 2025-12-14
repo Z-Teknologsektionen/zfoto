@@ -1,8 +1,8 @@
 "use client";
 
 import type { Column } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 import { ChevronsUpDown } from "lucide-react";
-
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
@@ -28,14 +28,13 @@ type ToolbarSelectComboboxProps<TData> = {
   options: { value: string; label: string }[];
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const ToolbarComboboxDropdown = <TData,>({
   column,
   options,
   placeholder,
   noOptionsText,
   size,
-}: ToolbarSelectComboboxProps<TData>): JSX.Element => {
+}: ToolbarSelectComboboxProps<TData>): ReactNode => {
   const [open, setOpen] = useState(false);
 
   if (column === undefined) throw new Error("No column found");

@@ -1,6 +1,6 @@
-import { clearFullCacheAction } from "@/server/actions/clearFullCacheAction";
-import Link from "next/link";
 import type { FC } from "react";
+import Link from "next/link";
+import { clearFullCacheAction } from "@/server/actions/clearFullCacheAction";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { AdminSidebarReceptionVisibilityButtons } from "./admin-sidebar-reception-visibility-buttons";

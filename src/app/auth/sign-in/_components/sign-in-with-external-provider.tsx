@@ -2,9 +2,9 @@
 
 import type { BuiltInProviderType } from "next-auth/providers/index";
 import type { SignInOptions } from "next-auth/react";
+import type { FC } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import { capitalizeString } from "~/utils/string-utils";
 

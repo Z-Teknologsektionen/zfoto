@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
@@ -31,7 +32,7 @@ export const FormFieldSwitch = <
   label,
   description,
   ...rest
-}: FormFieldSwitchProps<TFieldValues, TTransformedValues>): JSX.Element => (
+}: FormFieldSwitchProps<TFieldValues, TTransformedValues>): ReactNode => (
   <FormField
     //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}
@@ -44,6 +45,7 @@ export const FormFieldSwitch = <
           <FormMessage />
         </div>
         <FormControl>
+          {/* @ts-expect-error refs don't match but this is valid code */}
           <Switch
             {...field}
             checked={field.value}

@@ -7,6 +7,7 @@ import type {
   SortingState,
   Table as TableType,
 } from "@tanstack/react-table";
+import type { ComponentType, ReactNode } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -15,7 +16,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ComponentType } from "react";
 import { Fragment, useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import {
@@ -38,14 +38,14 @@ export type DataTableProps<TData, TValue> = {
   noResultText?: string;
 };
 
-// eslint-disable-next-line max-lines-per-function
+ 
 export const DataTable = <TData, TValue>({
   columns,
   data,
   toolbar: Toolbar,
   usePagination = false,
   noResultText,
-}: DataTableProps<TData, TValue>): JSX.Element => {
+}: DataTableProps<TData, TValue>): ReactNode => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -80,9 +80,9 @@ export const DataTable = <TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

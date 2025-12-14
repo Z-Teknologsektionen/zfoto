@@ -1,5 +1,6 @@
-import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
 import type { Table } from "@tanstack/react-table";
+import type { ReactNode } from "react";
+import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
@@ -15,14 +16,12 @@ type DataTablePaginationProps<TData> = {
   pageSizes?: number[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const DEFAULT_PAGE_SIZES = [10, 30, 90, 300];
 
-// eslint-disable-next-line max-lines-per-function
 export const DataTablePagination = <TData,>({
   table,
   pageSizes = DEFAULT_PAGE_SIZES,
-}: DataTablePaginationProps<TData>): JSX.Element => (
+}: DataTablePaginationProps<TData>): ReactNode => (
   <div className="flex items-center justify-between px-2">
     <div />
     <div className="flex items-center space-x-6 lg:space-x-8">

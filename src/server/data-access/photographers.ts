@@ -1,10 +1,6 @@
-"use server";
-
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { CACHE_TAGS, dbCache, getGlobalTag } from "@/lib/cache";
 import { db } from "~/utils/db";
+import "server-only"
 
 const getCountsPerPhotographerInternal = async () => {
   const images = await db.image.groupBy({

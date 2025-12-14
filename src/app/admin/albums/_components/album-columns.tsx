@@ -1,7 +1,7 @@
 "use client";
 
-import type { AdminAlbumType } from "@/types/data-access";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { AdminAlbumType } from "@/types/data-access";
 import Image from "next/image";
 import Link from "next/link";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";

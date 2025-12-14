@@ -1,4 +1,5 @@
 import type { Column } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Select,
@@ -23,7 +24,7 @@ export const ToolbarSelectDropdown = <TData,>({
   className = "",
   size = "default",
   options,
-}: ToolbarSelectDropdownProps<TData>): JSX.Element => {
+}: ToolbarSelectDropdownProps<TData>): ReactNode => {
   if (column === undefined) throw new Error("No column found");
 
   return (

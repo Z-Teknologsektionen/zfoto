@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
@@ -24,7 +25,6 @@ type FormFieldInputProps<
 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-// eslint-disable-next-line max-lines-per-function
 export const FormFieldInput = <
   TFieldValues extends FieldValues,
   TTransformedValues extends FieldValues,
@@ -35,7 +35,7 @@ export const FormFieldInput = <
   description,
   type,
   ...rest
-}: FormFieldInputProps<TFieldValues, TTransformedValues>): JSX.Element => (
+}: FormFieldInputProps<TFieldValues, TTransformedValues>): ReactNode => (
   <FormField
     //@ts-expect-error TTransformedValues could be initialized to something more specifik than FieldValues
     control={form.control}
@@ -44,17 +44,19 @@ export const FormFieldInput = <
       <FormItem>
         <FormLabel>{label}</FormLabel>
         <FormControl>
+          {/* @ts-expect-error refs don't match but this is valid code */}
           <Input
             {...field}
             type={type}
             onChange={(e) => {
+              // eslint-disable-next-line ts/switch-exhaustiveness-check
               switch (type) {
                 case "number":
                   field.onChange(e.target.valueAsNumber);
                   break;
                 case "datetime-local":
                   field.onChange(
-                    e.target.value !== "" ? e.target.value + ":00.000Z" : "",
+                    e.target.value !== "" ? `${e.target.value}:00.000Z` : "",
                   );
                   break;
                 default:
@@ -88,7 +90,7 @@ export const FormFieldInputEmail = <
 }: PartialBy<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -109,7 +111,7 @@ export const FormFieldInputPassword = <
 }: PartialBy<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -133,7 +135,7 @@ export const FormFieldInputDateTimeLocal = <
     "onChange" | "type" | "value"
   >,
   "label" | "placeholder"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,
@@ -155,7 +157,7 @@ export const FormFieldInputNumber = <
 }: Omit<
   FormFieldInputProps<TFieldValues, TTransformedValues>,
   "onChange" | "type" | "value"
->): JSX.Element =>
+>): ReactNode =>
   FormFieldInput({
     label,
     placeholder,

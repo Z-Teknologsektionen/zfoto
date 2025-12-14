@@ -1,10 +1,11 @@
 "use client";
 
+import type { FC } from "react";
 import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useCallback, type FC } from "react";
+import { useCallback } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
 import { useRateLimit } from "~/hooks/useRateLimitPerSecond";
@@ -21,7 +22,7 @@ type ImagePopupProps = {
 
 const MINIMUM_MS_BETWEEN_IMAGE_CHANGE = 200;
 
-// eslint-disable-next-line max-lines-per-function
+
 export const ImagePopup: FC<ImagePopupProps> = ({ album }) => {
   const searchParams = useSearchParams();
   const currentImageId = searchParams.get("imageId");
