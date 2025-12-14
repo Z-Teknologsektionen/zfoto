@@ -16,10 +16,8 @@ type DataTablePaginationProps<TData> = {
   pageSizes?: number[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const DEFAULT_PAGE_SIZES = [10, 30, 90, 300];
 
-// eslint-disable-next-line max-lines-per-function
 export const DataTablePagination = <TData,>({
   table,
   pageSizes = DEFAULT_PAGE_SIZES,

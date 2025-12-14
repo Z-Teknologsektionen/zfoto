@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import type { Roles } from "prisma/generated/enums";
 import {
   CACHE_TAGS,

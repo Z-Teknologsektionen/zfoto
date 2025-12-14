@@ -13,7 +13,7 @@ export const BasicFormWrapper = <TSchema extends z.ZodObject | z.ZodPipe<z.ZodOb
 }: FormWrapperProps<TSchema>): ReactNode => (
   <Form {...form}>
     <form
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      // eslint-disable-next-line ts/no-misused-promises
       onSubmit={form.handleSubmit(onValid, onInvalid)}
       className={cn(className)}
     >

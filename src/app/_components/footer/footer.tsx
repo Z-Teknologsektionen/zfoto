@@ -40,7 +40,7 @@ export const Footer: FC = async () => {
               alt="Bild på Z-Teknologsektionens logga"
               className="object-contain object-left"
               height={90}
-              quality={100}
+              quality={95}
               src="/ztek.png"
               width={90}
             />

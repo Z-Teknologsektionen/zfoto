@@ -7,7 +7,6 @@ export const metadata: Metadata = {
 };
 
 const AdminLayout: FC<{ children: ReactNode }> = ({ children }) => (
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   <Fragment>{children}</Fragment>
 );
 

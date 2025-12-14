@@ -35,7 +35,6 @@ import { FormFieldRelativeTime } from "../../../_components/form/form-field-rela
 
 export const UpdateManyImagesDialog: FC<{
   selectedRows: Row<AdminImageType>[];
-  // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
   const { absoluteDate, allIds, isVisible, photographer } = useMemo(() => {

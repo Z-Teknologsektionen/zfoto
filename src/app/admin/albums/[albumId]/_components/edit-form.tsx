@@ -24,7 +24,6 @@ type EditAlbumFormProps = {
   date: Date;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   title,
   id,

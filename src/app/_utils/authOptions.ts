@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-/* eslint-disable no-unused-vars */
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -23,7 +21,8 @@ import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
+  type Session = {
     user: DefaultSession["user"] & {
       email: string;
       id: string;
@@ -31,17 +30,19 @@ declare module "next-auth" {
       picture: string;
       role: Roles;
     };
-  }
+  } & DefaultSession;
 
-  interface User extends DefaultUser {
+  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
+  type User = {
     role: Roles;
-  }
+  } & DefaultUser;
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
+  // @ts-expect-error Typescript does not like that session is imported and used but this is the way to set it up according to the documentation
+  type JWT = {
     role: Roles;
-  }
+  } & DefaultJWT;
 }
 
 /**
@@ -52,6 +53,7 @@ declare module "next-auth/jwt" {
  */
 
 export const authOptions: NextAuthOptions = {
+  // @ts-expect-error PrismaAdapter is not updated for newer versions of prisma but this works well
   adapter: PrismaAdapter(db),
   pages: {
     signIn: "/auth/sign-in",
@@ -99,7 +101,10 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user };
     },
     async session({ session }) {
-      const user = await getUserByEmailForSession(session.user.email);
+      const user =
+        session.user?.email !== undefined && session.user.email !== null
+          ? await getUserByEmailForSession(session.user.email)
+          : null;
       return {
         ...session,
         user: { ...session.user, ...user },

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { revalidateTag, unstable_cache } from "next/cache";
 import { cache } from "react";
 
@@ -26,7 +23,6 @@ export const clearFullCache = () => {
   revalidateTag(GLOBAL_CACHE_TAG, "max");
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const dbCache = <T extends (...args: any[]) => Promise<any>>(
   cb: Parameters<typeof unstable_cache<T>>[0],
   { tags, revalidate }: { tags: ValidTags[]; revalidate?: number | false },

@@ -5,7 +5,7 @@ import { Roles } from "prisma/generated/enums";
 import { adminLikeRoles } from "./constants/admin";
 
 export default withAuth(
-  function proxy(request: NextRequestWithAuth) {
+  (request: NextRequestWithAuth) => {
     const { pathname } = request.nextUrl;
     const { token } = request.nextauth;
 

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import type { Album } from "prisma/generated/client";
 import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
 import {
@@ -16,6 +13,7 @@ import {
   dateTimeFilterByActiveYear,
   imagesOrderBy,
 } from "./helpers";
+import "server-only";
 
 type GetLatestAlbumsProps = {
   count?: number;

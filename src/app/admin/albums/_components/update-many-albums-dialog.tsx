@@ -29,7 +29,6 @@ import { useUpdateManyAlbumsByIds } from "../../_hooks/use-update-many-albums-by
 
 export const UpdateManyAlbumsDialog: FC<{
   selectedRows: Row<AdminAlbumType>[];
-  // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
   const { allIds, isVisible, isReception } = useMemo(() => {
@@ -68,7 +67,6 @@ export const UpdateManyAlbumsDialog: FC<{
 
   const onValid = useCallback(
     (values: z.output<typeof updateManyAlbumsBaseSchema>): undefined => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (Object.values(values).every((el) => el === undefined)) {
         toast.error("Alla fält är tomma, inget kommer uppdateras");
         setOpen(false);

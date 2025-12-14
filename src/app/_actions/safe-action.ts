@@ -7,14 +7,10 @@ import { ActionError, DEFAULT_ERROR_MESSAGE } from "./safe-action-helpers";
 
 export const baseSafeAction = createSafeActionClient({
   handleServerError: (e) => {
-    switch (env.NODE_ENV) {
-      case "development":
-        // eslint-disable-next-line no-console
-        console.error(e);
-        break;
-      default:
-        // TODO: Uppdatera denna till att skicka mail till webbgruppen eller likande för bättre hantering
-        break;
+    if (env.NODE_ENV === "development") {
+      console.error(e);
+    } else {
+      // TODO: Uppdatera denna till att skicka mail till webbgruppen eller likande för bättre hantering
     }
 
     if (e instanceof ActionError) return e.message;

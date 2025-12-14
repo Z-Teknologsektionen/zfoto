@@ -1,6 +1,6 @@
-import { getAllUsersAsAdmin } from "@/server/data-access/users";
 import type { FC } from "react";
 import { Fragment } from "react";
+import { getAllUsersAsAdmin } from "@/server/data-access/users";
 import { DataTable } from "~/components/data-table/data-table";
 import { BackButton } from "~/components/layout/back-button";
 import { userColumns } from "./_components/user-columns";

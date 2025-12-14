@@ -19,7 +19,6 @@ type ImageColumnActionsProps = {
   isVisible: boolean;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
   id,
   albumId,

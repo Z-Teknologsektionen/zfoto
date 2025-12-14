@@ -18,7 +18,7 @@ export const FormFieldRelativeTime: FC<{
   label: string;
   description?: string;
   resetText?: string;
-  // eslint-disable-next-line max-lines-per-function
+
 }> = ({ resetText = "Nollställ", description, label }) => {
   const form = useFormContext<
     Pick<z.input<typeof updateManyAlbumsBaseSchema>, "relativeDate">,
@@ -30,7 +30,7 @@ export const FormFieldRelativeTime: FC<{
     <FormField
       control={form.control}
       name={"relativeDate.root" as "relativeDate"}
-      // eslint-disable-next-line max-lines-per-function
+
       render={() => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

@@ -25,7 +25,6 @@ type EditImageFormProps = {
   date: Date;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const EditImageForm: FC<EditImageFormProps> = ({
   isCoverImage,
   date,

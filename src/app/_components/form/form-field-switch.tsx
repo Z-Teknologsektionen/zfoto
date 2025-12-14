@@ -45,6 +45,7 @@ export const FormFieldSwitch = <
           <FormMessage />
         </div>
         <FormControl>
+          {/* @ts-expect-error refs don't match but this is valid code */}
           <Switch
             {...field}
             checked={field.value}
