@@ -1,7 +1,7 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
 import type { AdminCountsPerPhotographerType } from "@/types/data-access";
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableCell } from "~/components/data-table/data-table-cell";
 import { DataTableColumnHeader } from "~/components/data-table/data-table-column-header";
 import { formatDateString, getLocalDateTimeFromUTC } from "~/utils/date-utils";

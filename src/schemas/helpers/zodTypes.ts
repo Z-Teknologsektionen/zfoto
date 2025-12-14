@@ -1,24 +1,25 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 
 export const baseString = z
   .string({
-    error: (issue) =>
-      issue.input === undefined ? "Obligatoriskt fält" : "Måste vara en sträng",
+    invalid_type_error: "Måste vara en sträng",
+    required_error: "Obligatoriskt fält",
   })
   .trim();
 
 export const baseBoolean = z.boolean({
-  error: (issue) =>
-    issue.input === undefined ? "Obligatoriskt fält" : "Måste vara en boolean",
+  invalid_type_error: "Måste vara en boolean",
+  required_error: "Obligatoriskt fält",
 });
 
 export const baseNumber = z.number({
-  error: (issue) =>
-    issue.input === undefined ? "Obligatoriskt fält" : "Måste vara ett nummer",
+  invalid_type_error: "Måste vara ett nummer",
+  required_error: "Obligatoriskt fält",
 });
 
-export const objectId = baseString; //TODO: Add correct validation
+export const objectId = baseString.refine(isValidObjectId, "Ogiltigt objectId");
 
 export const fullDatetimeString = baseString.datetime({
   precision: 3,

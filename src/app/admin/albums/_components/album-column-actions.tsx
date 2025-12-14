@@ -1,9 +1,6 @@
-import type { FC } from "react";
 import type { AdminAlbumType } from "@/types/data-access";
 import { MoreHorizontal } from "lucide-react";
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
-
+import type { FC } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { useUpdateAlbumById } from "../_hooks/use-update-album-by-id";
+
+import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 export const AlbumColumnActions: FC<{ album: AdminAlbumType }> = ({
   album,

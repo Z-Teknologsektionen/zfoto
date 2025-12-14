@@ -1,12 +1,13 @@
 "use client";
 
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   ReactNode,
 } from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
 const DEFAULT_SIDE_OFFSET = 4;
@@ -17,7 +18,10 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
-const TooltipContent = ({ ref, className, sideOffset = DEFAULT_SIDE_OFFSET, ...props }: ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & { ref?: React.RefObject<ElementRef<typeof TooltipPrimitive.Content> | null> }) => (
+const TooltipContent = forwardRef<
+  ElementRef<typeof TooltipPrimitive.Content>,
+  ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = DEFAULT_SIDE_OFFSET, ...props }, ref) => (
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
@@ -27,7 +31,7 @@ const TooltipContent = ({ ref, className, sideOffset = DEFAULT_SIDE_OFFSET, ...p
     )}
     {...props}
   />
-);
+));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 type StandardTooltipProps = {

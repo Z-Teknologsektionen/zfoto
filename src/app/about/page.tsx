@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import type { FC } from "react";
 import { PortableText } from "@portabletext/react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { FC } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getPageBySlug } from "~/utils/fetchDataFromSanity";
 

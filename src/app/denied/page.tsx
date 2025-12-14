@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import type { FC } from "react";
 import Link from "next/link";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 
 export const dynamic = "force-static";

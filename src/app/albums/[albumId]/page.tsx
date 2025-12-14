@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import type { FC } from "react";
-import { notFound } from "next/navigation";
-import { Fragment, Suspense } from "react";
 import {
   getAlbumWithImagesById,
   getLatestAlbums,
 } from "@/server/data-access/albums";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import type { FC } from "react";
+import { Fragment, Suspense } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { getFullFilePath } from "~/utils/utils";
 import { AlbumInfo } from "./_components/album-info";

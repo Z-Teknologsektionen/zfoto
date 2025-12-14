@@ -1,7 +1,7 @@
-import type { FC } from "react";
+import { adminLikeRoles } from "@/constants/admin";
 import Image from "next/image";
 import Link from "next/link";
-import { adminLikeRoles } from "@/constants/admin";
+import type { FC } from "react";
 import { getAuth } from "~/utils/auth";
 import { FooterLinks } from "./footer-links";
 import { FooterSocialIconsRow } from "./footer-social-icons-row";
@@ -40,7 +40,7 @@ export const Footer: FC = async () => {
               alt="Bild på Z-Teknologsektionens logga"
               className="object-contain object-left"
               height={90}
-              quality={95}
+              quality={100}
               src="/ztek.png"
               width={90}
             />

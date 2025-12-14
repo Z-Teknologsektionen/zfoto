@@ -1,6 +1,6 @@
 import type { IconType } from "react-icons";
-import type { NrRange } from "ts-number-range";
 import { LuFacebook, LuInstagram, LuMail } from "react-icons/lu";
+import type { NrRange } from "ts-number-range";
 
 export type LinkType = {
   href: string;

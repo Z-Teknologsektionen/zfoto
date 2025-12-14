@@ -1,7 +1,6 @@
 "use client";
 
 import type { Column } from "@tanstack/react-table";
-import type { ReactNode } from "react";
 import { Input } from "~/components/ui/input";
 import { cn } from "~/utils/utils";
 
@@ -15,7 +14,7 @@ export const ToolbarTextInput = <TData,>({
   column,
   placeholder,
   className,
-}: ToolbarTextInputProps<TData>): ReactNode => {
+}: ToolbarTextInputProps<TData>): JSX.Element => {
   if (column === undefined) throw new Error("No column found");
 
   return (

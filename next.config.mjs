@@ -16,7 +16,6 @@ const config = {
     ];
   },
   images: {
-    qualities: [75, 95],
     remotePatterns: [
       {
         protocol: "https",
@@ -24,8 +23,13 @@ const config = {
       },
     ],
   },
+  reactStrictMode: true,
+  swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

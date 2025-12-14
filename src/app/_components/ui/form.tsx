@@ -1,16 +1,14 @@
 "use client";
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
+import { Slot } from "@radix-ui/react-slot";
 import type {
   ComponentPropsWithoutRef,
-  ComponentRef,
   ElementRef,
   HTMLAttributes,
-  ReactNode,
 } from "react";
+import { createContext, forwardRef, useContext, useId } from "react";
 import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import { Slot } from "@radix-ui/react-slot";
-import { createContext, use, useId } from "react";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/utils/utils";
@@ -33,10 +31,10 @@ const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>): ReactNode => (
-  <FormFieldContext value={{ name: props.name }}>
+}: ControllerProps<TFieldValues, TName>): JSX.Element => (
+  <FormFieldContext.Provider value={{ name: props.name }}>
     <Controller {...props} />
-  </FormFieldContext>
+  </FormFieldContext.Provider>
 );
 
 type FormItemContextValue = {
@@ -48,13 +46,13 @@ const FormItemContext = createContext<FormItemContextValue>(
 );
 
 const useFormField = () => {
-  const fieldContext = use(FormFieldContext);
-  const itemContext = use(FormItemContext);
+  const fieldContext = useContext(FormFieldContext);
+  const itemContext = useContext(FormItemContext);
   const { getFieldState, formState } = useFormContext();
 
   const fieldState = getFieldState(fieldContext.name, formState);
 
-  // eslint-disable-next-line ts/strict-boolean-expressions
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
   if (!fieldContext)
     throw new Error("useFormField should be used within <FormField>");
 
@@ -70,18 +68,23 @@ const useFormField = () => {
   };
 };
 
-const FormItem = ({ ref, className, ...props }: HTMLAttributes<HTMLDivElement> & { ref?: React.RefObject<HTMLDivElement | null> }) => {
-  const id = useId();
+const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => {
+    const id = useId();
 
-  return (
-    <FormItemContext value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
-    </FormItemContext>
-  );
-};
+    return (
+      <FormItemContext.Provider value={{ id }}>
+        <div ref={ref} className={cn("space-y-2", className)} {...props} />
+      </FormItemContext.Provider>
+    );
+  },
+);
 FormItem.displayName = "FormItem";
 
-const FormLabel = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & { ref?: React.RefObject<ElementRef<typeof LabelPrimitive.Root> | null> }) => {
+const FormLabel = forwardRef<
+  ElementRef<typeof LabelPrimitive.Root>,
+  ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
   return (
@@ -95,10 +98,13 @@ const FormLabel = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof
       {...props}
     />
   );
-};
+});
 FormLabel.displayName = "FormLabel";
 
-const FormControl = ({ ref, ...props }: ComponentPropsWithoutRef<typeof Slot> & { ref?: React.RefObject<ComponentRef<typeof Slot> | null> }) => {
+const FormControl = forwardRef<
+  ElementRef<typeof Slot>,
+  ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
@@ -115,10 +121,13 @@ const FormControl = ({ ref, ...props }: ComponentPropsWithoutRef<typeof Slot> & 
       {...props}
     />
   );
-};
+});
 FormControl.displayName = "FormControl";
 
-const FormDescription = ({ ref, className, ...props }: HTMLAttributes<HTMLParagraphElement> & { ref?: React.RefObject<HTMLParagraphElement | null> }) => {
+const FormDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
   const { formDescriptionId } = useFormField();
 
   return (
@@ -132,14 +141,17 @@ const FormDescription = ({ ref, className, ...props }: HTMLAttributes<HTMLParagr
       {...props}
     />
   );
-};
+});
 FormDescription.displayName = "FormDescription";
 
-const FormMessage = ({ ref, className, children, ...props }: HTMLAttributes<HTMLParagraphElement> & { ref?: React.RefObject<HTMLParagraphElement | null> }) => {
+const FormMessage = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
   const body = error === undefined ? children : String(error.message);
 
-  // eslint-disable-next-line ts/strict-boolean-expressions
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!body) return null;
 
   return (
@@ -155,7 +167,7 @@ const FormMessage = ({ ref, className, children, ...props }: HTMLAttributes<HTML
       {body}
     </p>
   );
-};
+});
 FormMessage.displayName = "FormMessage";
 
 export {
@@ -168,4 +180,3 @@ export {
   FormMessage,
   useFormField
 };
-

@@ -1,6 +1,6 @@
+import { env } from "@/env.mjs";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
-import { env } from "@/env.mjs";
 import { deskToolStructure } from "~/utils/deskToolStructure";
 import { schemaTypes } from "./schemas";
 

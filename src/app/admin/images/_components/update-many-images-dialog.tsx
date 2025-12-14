@@ -1,16 +1,14 @@
 "use client";
 
-import type { Row } from "@tanstack/react-table";
-import type { FC } from "react";
-import type { z } from "zod";
-import type { AdminImageType } from "@/types/data-access";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Pen } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
 import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
+import type { AdminImageType } from "@/types/data-access";
+import type { Row } from "@tanstack/react-table";
+import { Pen } from "lucide-react";
+import type { FC } from "react";
+import { useCallback, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import type { z } from "zod";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import { FormFieldCheckbox } from "~/components/form/form-field-checkbox";
 import {
@@ -29,12 +27,14 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
 
 export const UpdateManyImagesDialog: FC<{
   selectedRows: Row<AdminImageType>[];
+  // eslint-disable-next-line max-lines-per-function
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
   const { absoluteDate, allIds, isVisible, photographer } = useMemo(() => {
@@ -55,9 +55,9 @@ export const UpdateManyImagesDialog: FC<{
     };
   }, [selectedRows]);
 
-  const form = useForm({
-    resolver: zodResolver(updateManyImagesBaseSchema),
-    defaultValues: {
+  const form = useFormWithZod({
+    schema: updateManyImagesBaseSchema,
+    values: {
       absoluteDate,
       isVisible,
       photographer,
@@ -66,8 +66,8 @@ export const UpdateManyImagesDialog: FC<{
         minutes: 0,
         seconds: 0,
       },
-    }
-  })
+    },
+  });
 
   const { execute: updateManyImages, isExecuting: isUpdatingMany } =
     useUpdateManyImagesByIds({

@@ -1,7 +1,7 @@
-import type { FC } from "react";
+import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
+import type { FC } from "react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -19,6 +19,7 @@ type ImageColumnActionsProps = {
   isVisible: boolean;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
   id,
   albumId,

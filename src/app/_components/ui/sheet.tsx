@@ -1,10 +1,10 @@
 "use client";
 
-import type {VariantProps} from "class-variance-authority";
-import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { cva  } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
+import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
 const Sheet = SheetPrimitive.Root;
@@ -15,7 +15,10 @@ const SheetClose = SheetPrimitive.Close;
 
 const SheetPortal = SheetPrimitive.Portal;
 
-const SheetOverlay = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay> & { ref?: React.RefObject<ElementRef<typeof SheetPrimitive.Overlay> | null> }) => (
+const SheetOverlay = forwardRef<
+  ElementRef<typeof SheetPrimitive.Overlay>,
+  ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
       "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -24,7 +27,7 @@ const SheetOverlay = ({ ref, className, ...props }: ComponentPropsWithoutRef<typ
     {...props}
     ref={ref}
   />
-);
+));
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
@@ -51,7 +54,10 @@ type SheetContentProps = ComponentPropsWithoutRef<
 > &
   VariantProps<typeof sheetVariants>;
 
-const SheetContent = ({ ref, side = "right", className, children, ...props }: SheetContentProps & { ref?: React.RefObject<ElementRef<typeof SheetPrimitive.Content> | null> }) => (
+const SheetContent = forwardRef<
+  ElementRef<typeof SheetPrimitive.Content>,
+  SheetContentProps
+>(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
@@ -66,13 +72,13 @@ const SheetContent = ({ ref, side = "right", className, children, ...props }: Sh
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>
-);
+));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 const SheetHeader = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): ReactNode => (
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div
     className={cn(
       "flex flex-col space-y-2 text-center sm:text-left",
@@ -86,7 +92,7 @@ SheetHeader.displayName = "SheetHeader";
 const SheetFooter = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>): ReactNode => (
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
@@ -97,7 +103,10 @@ const SheetFooter = ({
 );
 SheetFooter.displayName = "SheetFooter";
 
-const SheetTitle = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof SheetPrimitive.Title> & { ref?: React.RefObject<ElementRef<typeof SheetPrimitive.Title> | null> }) => (
+const SheetTitle = forwardRef<
+  ElementRef<typeof SheetPrimitive.Title>,
+  ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+>(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
     className={cn(
@@ -106,16 +115,19 @@ const SheetTitle = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeo
     )}
     {...props}
   />
-);
+));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
-const SheetDescription = ({ ref, className, ...props }: ComponentPropsWithoutRef<typeof SheetPrimitive.Description> & { ref?: React.RefObject<ElementRef<typeof SheetPrimitive.Description> | null> }) => (
+const SheetDescription = forwardRef<
+  ElementRef<typeof SheetPrimitive.Description>,
+  ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
+>(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
     className={cn("text-sm text-neutral-500 dark:text-neutral-400", className)}
     {...props}
   />
-);
+));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
@@ -130,4 +142,3 @@ export {
   SheetTitle,
   SheetTrigger
 };
-

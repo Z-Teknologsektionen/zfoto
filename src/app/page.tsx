@@ -1,7 +1,7 @@
-import type { FC } from "react";
-import Link from "next/link";
 import { NUMBER_OF_IMAGES_TO_PRELOAD } from "@/constants/album";
 import { getLatestAlbums } from "@/server/data-access/albums";
+import Link from "next/link";
+import type { FC } from "react";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import { SectionWrapper } from "~/components/layout/section-wrapper";

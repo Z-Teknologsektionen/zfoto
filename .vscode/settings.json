@@ -8,8 +8,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.format": "explicit",
-    "source.organizeImports": "never"
+    "source.organizeImports": "explicit"
   },
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "prisma.pinToPrisma6": true
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }
