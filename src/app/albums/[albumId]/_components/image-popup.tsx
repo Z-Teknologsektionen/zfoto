@@ -1,10 +1,11 @@
 "use client";
 
+import type { FC } from "react";
 import type { PublicAlbumWithImagesType } from "@/types/data-access";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import NextImage from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useCallback, type FC } from "react";
+import { useCallback } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { useBodyOverflowToggle } from "~/hooks/useBodyOverflowToggle";
 import { useRateLimit } from "~/hooks/useRateLimitPerSecond";

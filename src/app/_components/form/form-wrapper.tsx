@@ -1,6 +1,6 @@
-import type { FormWrapperProps } from "@/types/form";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { z } from "zod";
+import type { FormWrapperProps } from "@/types/form";
 import { cn } from "~/utils/utils";
 import { BasicFormWrapper } from "./basic-form-wrapper";
 

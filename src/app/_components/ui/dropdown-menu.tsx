@@ -1,14 +1,13 @@
 "use client";
 
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   HTMLAttributes,
 } from "react";
-import { forwardRef } from "react";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { Check, ChevronRight, Circle } from "lucide-react";
 import { cn } from "~/utils/utils";
 
 const DEFAULT_SIDE_OFFSET = 4;

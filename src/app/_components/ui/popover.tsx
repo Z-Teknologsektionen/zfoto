@@ -1,8 +1,7 @@
 "use client";
 
-import * as PopoverPrimitive from "@radix-ui/react-popover";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
-import { forwardRef } from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "~/utils/utils";
 
 const DEFAULT_SIDE_OFFSET = 4;

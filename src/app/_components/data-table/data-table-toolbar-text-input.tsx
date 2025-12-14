@@ -1,7 +1,7 @@
 "use client";
 
 import type { Column } from "@tanstack/react-table";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Input } from "~/components/ui/input";
 import { cn } from "~/utils/utils";
 

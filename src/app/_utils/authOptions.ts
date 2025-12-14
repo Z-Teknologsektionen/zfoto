@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 /* eslint-disable no-unused-vars */
-
-import { env } from "@/env.mjs";
-import { getUserByEmailForSession } from "@/server/data-access/users";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -15,11 +11,14 @@ import type {
   NextAuthOptions,
   Session,
 } from "next-auth";
-import { getServerSession } from "next-auth";
 import type { DefaultJWT } from "next-auth/jwt";
+import type { Roles } from "prisma/generated/enums";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import type { Roles } from "prisma/generated/enums";
+import { env } from "@/env.mjs";
+import { getUserByEmailForSession } from "@/server/data-access/users";
 import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 

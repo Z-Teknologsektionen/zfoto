@@ -1,9 +1,10 @@
 "use client";
 
+import type {FC, PropsWithChildren} from "react";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Fragment, type FC, type PropsWithChildren } from "react";
+import {  Fragment  } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
 type BackButtonProps = {

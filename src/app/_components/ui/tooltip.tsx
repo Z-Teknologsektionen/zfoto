@@ -1,13 +1,12 @@
 "use client";
 
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   ReactNode,
 } from "react";
-import { forwardRef } from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "~/utils/utils";
 
 const DEFAULT_SIDE_OFFSET = 4;

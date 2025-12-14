@@ -1,7 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
 import type { AdminAlbumType } from "@/types/data-access";
-import { ReactNode } from "react";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
 import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";

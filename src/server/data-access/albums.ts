@@ -1,8 +1,8 @@
-"use server";
-
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
+import type { Album } from "prisma/generated/client";
+import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
 import {
   CACHE_TAGS,
   dbCache,
@@ -10,8 +10,6 @@ import {
   getIdTag,
   revalidateDbCache,
 } from "@/lib/cache";
-import type { PrismaTypeToUpdateByIdData } from "@/types/prisma";
-import { Album } from "prisma/generated/client";
 import { db } from "~/utils/db";
 import {
   coverImageFromAlbumSelect,

@@ -1,6 +1,6 @@
 import type { Column } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
 import type { FC } from "react";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 type DataTableColumnHeaderProps = {

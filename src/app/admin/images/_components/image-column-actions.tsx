@@ -1,7 +1,7 @@
-import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
+import type { FC } from "react";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import type { FC } from "react";
+import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,

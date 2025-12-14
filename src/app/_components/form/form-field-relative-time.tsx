@@ -1,10 +1,9 @@
 "use client";
 
-import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
-
 import type { FC } from "react";
-import { useFormContext } from "react-hook-form";
 import type { z } from "zod";
+import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
+import { useFormContext } from "react-hook-form";
 import { FormFieldInputNumber } from "~/components/form/form-field-input";
 import { Button } from "~/components/ui/button";
 import {

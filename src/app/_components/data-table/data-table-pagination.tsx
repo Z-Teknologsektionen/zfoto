@@ -1,7 +1,7 @@
-import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
 import type { Table } from "@tanstack/react-table";
+import type { ReactNode } from "react";
+import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { ReactNode } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Select,

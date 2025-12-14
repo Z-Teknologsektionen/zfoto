@@ -1,6 +1,6 @@
+import { Prisma } from "prisma/generated/client";
 import { createAlbumAPISchema } from "@/schemas/album";
 import { upsertAlbum } from "@/server/data-access/albums";
-import { Prisma } from "prisma/generated/client";
 
 export const POST = async (request: Request): Promise<Response> => {
   try {

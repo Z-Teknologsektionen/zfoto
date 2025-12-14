@@ -1,9 +1,9 @@
 "use client";
 
-import { userSignInSchema } from "@/schemas/user";
 import type { SignInOptions } from "next-auth/react";
-import { signIn } from "next-auth/react";
 import type { FC } from "react";
+import { signIn } from "next-auth/react";
+import { userSignInSchema } from "@/schemas/user";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
   FormFieldInputEmail,

@@ -1,10 +1,10 @@
 "use client";
 
+import type { FC } from "react";
+import { useRouter } from "next/navigation";
 import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
 import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
 import { imageBaseSchema } from "@/schemas/helpers/zodSchemas";
-import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {

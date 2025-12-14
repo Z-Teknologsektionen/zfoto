@@ -1,15 +1,14 @@
 "use client";
 
 import type { DialogProps } from "@radix-ui/react-dialog";
-import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   HTMLAttributes,
 } from "react";
-import { forwardRef } from "react";
+import { Command as CommandPrimitive } from "cmdk";
+import { Search } from "lucide-react";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
 import { cn } from "~/utils/utils";
 

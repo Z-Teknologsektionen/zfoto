@@ -1,8 +1,8 @@
-import { adminLikeRoles } from "@/constants/admin";
-import { Lock } from "lucide-react";
-import Link from "next/link";
 import type { Roles } from "prisma/generated/enums";
 import type { FC } from "react";
+import { Lock } from "lucide-react";
+import Link from "next/link";
+import { adminLikeRoles } from "@/constants/admin";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,

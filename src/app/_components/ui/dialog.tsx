@@ -1,14 +1,13 @@
 "use client";
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   HTMLAttributes,
 } from "react";
-import { forwardRef } from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 import { cn } from "~/utils/utils";
 
 const Dialog = DialogPrimitive.Root;

@@ -1,9 +1,9 @@
 "use client";
 
 import type { Column } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 import { ChevronsUpDown } from "lucide-react";
-
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Command,

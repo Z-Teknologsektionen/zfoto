@@ -7,6 +7,7 @@ import type {
   SortingState,
   Table as TableType,
 } from "@tanstack/react-table";
+import type { ComponentType, ReactNode } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -15,7 +16,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ComponentType, ReactNode } from "react";
 import { Fragment, useState } from "react";
 import { DataTablePagination } from "~/components/data-table/data-table-pagination";
 import {

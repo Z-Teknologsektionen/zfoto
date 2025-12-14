@@ -1,3 +1,5 @@
+import type { FC } from "react";
+import { Roles } from "prisma/generated/enums";
 import { MONTH_INDEX_NOVEMBER } from "@/constants/admin";
 import {
   getAlbumCountFromActiveYear,
@@ -8,8 +10,6 @@ import {
   getTotalImageCount,
 } from "@/server/data-access/images";
 import { getCountsPerPhotographer } from "@/server/data-access/photographers";
-import { Roles } from "prisma/generated/enums";
-import type { FC } from "react";
 import { DataTable } from "~/components/data-table/data-table";
 import { getAuth } from "~/utils/auth";
 import { AdminInfoCard } from "./_components/admin-info-card";

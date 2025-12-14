@@ -5,6 +5,7 @@
 
 import { CACHE_TAGS, dbCache, getGlobalTag } from "@/lib/cache";
 import { db } from "~/utils/db";
+import "server-only"
 
 const getCountsPerPhotographerInternal = async () => {
   const images = await db.image.groupBy({

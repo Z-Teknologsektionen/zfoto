@@ -1,10 +1,10 @@
-import { getImageById } from "@/server/data-access/images";
 import type { Metadata } from "next";
+import type { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { FC } from "react";
 import { cache } from "react";
+import { getImageById } from "@/server/data-access/images";
 import { BackButton } from "~/components/layout/back-button";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { createByline, getFullFilePath } from "~/utils/utils";
