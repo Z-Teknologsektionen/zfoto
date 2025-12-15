@@ -3,7 +3,7 @@ import type { z } from "zod";
 import { cn } from "~/utils/utils";
 import { BasicFormWrapper } from "./basic-form-wrapper";
 
-export const FormWrapper = <TSchema extends z.Schema>({
+export const FormWrapper = <TSchema extends z.ZodObject>({
   className,
   ...props
 }: FormWrapperProps<TSchema>): JSX.Element => (
