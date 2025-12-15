@@ -1,7 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import type { FC } from "react";
+import { useSearchParams } from "next/navigation";
 import { Fragment } from "react";
 import { Separator } from "~/components/ui/separator";
 import { SignInErrorCard } from "./sign-in-error-card";

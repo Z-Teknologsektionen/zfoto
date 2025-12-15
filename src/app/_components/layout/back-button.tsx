@@ -1,10 +1,16 @@
 "use client";
 
+import type { FC, PropsWithChildren } from "react";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Fragment, type FC, type PropsWithChildren } from "react";
+import { Fragment } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
+
+const DEFAULT_CHILDREN = <Fragment>
+  <ChevronLeft />
+  <span>Tillbaka</span>
+</Fragment>
 
 type BackButtonProps = {
   href?: string;
@@ -12,12 +18,7 @@ type BackButtonProps = {
 
 export const BackButton: FC<PropsWithChildren<BackButtonProps>> = ({
   href,
-  children = (
-    <Fragment>
-      <ChevronLeft />
-      <span>Tillbaka</span>
-    </Fragment>
-  ),
+  children = DEFAULT_CHILDREN,
 }) => {
   const router = useRouter();
 

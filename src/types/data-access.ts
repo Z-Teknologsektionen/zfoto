@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import type {
   getAlbumWithImagesById,
   getAllAlbumsAsAdmin,
@@ -9,7 +10,6 @@ import type {
 } from "@/server/data-access/images";
 import type { getCountsPerPhotographer } from "@/server/data-access/photographers";
 import type { getAllUsersAsAdmin } from "@/server/data-access/users";
-import type { Prisma } from "@prisma/client";
 
 export type PublicAlbumType = Prisma.PromiseReturnType<
   typeof getLatestAlbums

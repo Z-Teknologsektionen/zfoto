@@ -1,7 +1,7 @@
-import { adminLikeRoles } from "@/constants/admin";
+import type { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { FC } from "react";
+import { adminLikeRoles } from "@/constants/admin";
 import { getAuth } from "~/utils/auth";
 import { FooterLinks } from "./footer-links";
 import { FooterSocialIconsRow } from "./footer-social-icons-row";

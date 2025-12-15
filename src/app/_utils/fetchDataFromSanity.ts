@@ -1,6 +1,6 @@
-import { env } from "@/env.mjs";
-import { createClient } from "next-sanity";
 import type { PortableTextBlock } from "sanity";
+import { createClient } from "next-sanity";
+import { env } from "@/env.mjs";
 
 const client = createClient({
   projectId: env.NEXT_PUBLIC_SANITY_ID,

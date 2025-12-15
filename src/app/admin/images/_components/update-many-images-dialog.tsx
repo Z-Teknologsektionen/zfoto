@@ -1,16 +1,16 @@
 "use client";
 
-import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
-import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
+import type { Row } from "@tanstack/react-table";
+import type { FC } from "react";
+import type { z } from "zod";
 import type { AdminImageType } from "@/types/data-access";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
-import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import type { z } from "zod";
+import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
+import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import { FormFieldCheckbox } from "~/components/form/form-field-checkbox";
 import {
@@ -35,7 +35,7 @@ import { FormFieldRelativeTime } from "../../../_components/form/form-field-rela
 
 export const UpdateManyImagesDialog: FC<{
   selectedRows: Row<AdminImageType>[];
-  // eslint-disable-next-line max-lines-per-function
+   
 }> = ({ selectedRows }) => {
   const [open, setOpen] = useState(false);
   const { absoluteDate, allIds, isVisible, photographer } = useMemo(() => {

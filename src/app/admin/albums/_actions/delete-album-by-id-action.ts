@@ -1,8 +1,8 @@
 "use server";
 
+import { z } from "zod";
 import { objectId } from "@/schemas/helpers/zodTypes";
 import { deleteAlbumById } from "@/server/data-access/albums";
-import { z } from "zod";
 import { adminLikeSafeAction } from "~/actions/safe-action";
 
 export const deleteAlbumByIdAction = adminLikeSafeAction

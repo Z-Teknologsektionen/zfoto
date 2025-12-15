@@ -1,6 +1,6 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { createAlbumAPISchema } from "@/schemas/album";
 import { upsertAlbum } from "@/server/data-access/albums";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export const POST = async (request: Request): Promise<Response> => {
   try {

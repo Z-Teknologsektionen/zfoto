@@ -1,7 +1,7 @@
+import type { FC } from "react";
 import type { PublicAlbumType } from "@/types/data-access";
 import Image from "next/image";
 import Link from "next/link";
-import type { FC } from "react";
 import { formatDateString } from "~/utils/date-utils";
 import { getFullFilePath } from "~/utils/utils";
 import { Skeleton } from "../ui/skeleton";

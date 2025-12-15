@@ -28,7 +28,7 @@ type ToolbarSelectComboboxProps<TData> = {
   options: { value: string; label: string }[];
 };
 
-// eslint-disable-next-line max-lines-per-function
+ 
 export const ToolbarComboboxDropdown = <TData,>({
   column,
   options,
