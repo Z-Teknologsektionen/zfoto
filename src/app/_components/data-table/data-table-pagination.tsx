@@ -1,6 +1,5 @@
 import type { Table } from "@tanstack/react-table";
-import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -58,7 +57,7 @@ export const DataTablePagination = <TData,>({
           disabled={!table.getCanPreviousPage()}
         >
           <span className="sr-only">Gå till första sidan</span>
-          <DoubleChevronLeftIcon className="size-4" />
+          <ChevronsLeftIcon className="size-4" />
         </Button>
         <Button
           variant="outline"
@@ -91,7 +90,7 @@ export const DataTablePagination = <TData,>({
           disabled={!table.getCanNextPage()}
         >
           <span className="sr-only">Gå till sista sidan</span>
-          <DoubleChevronRightIcon className="size-4" />
+          <ChevronsRightIcon className="size-4" />
         </Button>
       </div>
     </div>

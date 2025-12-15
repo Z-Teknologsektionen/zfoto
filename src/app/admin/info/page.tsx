@@ -1,6 +1,6 @@
-import type {FC} from "react";
+import type { FC } from "react";
 import Link from "next/link";
-import {  Fragment } from "react";
+import { Fragment } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { buttonVariants } from "~/components/ui/button";
 import {
@@ -30,6 +30,9 @@ const InformationPage: FC = () => (
           om Webbgruppen uppdaterar något så kanske inte all nedanstående
           information stämmer. Då får man be Webbgruppen att uppdatera
           nedanstående texter.
+        </CardDescription>
+        <CardDescription>
+          För att göra ändringar som inte är listade nedan (som ex statiska texter eller logotyper) får man kontakta Webbgruppen men förhoppningsvis ändras inte dessa så ofta!
         </CardDescription>
       </div>
     </SectionWrapper>
