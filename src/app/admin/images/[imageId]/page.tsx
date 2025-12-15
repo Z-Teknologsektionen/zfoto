@@ -7,10 +7,11 @@ import { BackButton } from "~/components/layout/back-button";
 import { getFullFilePath } from "~/utils/utils";
 import { EditImageForm } from "./_components/edit-form";
 
-type ImageAdminPageProps = { params: { imageId: string } };
+type ImageAdminPageProps = PageProps<"/admin/images/[imageId]">;
 
 const ImageAdminPage: FC<ImageAdminPageProps> = async ({ params }) => {
-  const image = await getImageById(params.imageId).catch(() => notFound());
+  const { imageId } = await params
+  const image = await getImageById(imageId).catch(() => notFound());
   return (
     <Fragment>
       <div className="container">

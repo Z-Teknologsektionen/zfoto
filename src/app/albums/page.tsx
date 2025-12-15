@@ -13,16 +13,15 @@ export const metadata: Metadata = {
   title: "Album",
 };
 
-type AlbumsPageProps = {
-  searchParams: { year: string | undefined };
-};
+type AlbumsPageProps = PageProps<"/albums">
 
 const AlbumsPage: FC<AlbumsPageProps> = async ({ searchParams }) => {
+  const { year: rawYear } = await searchParams
   const year =
-    (searchParams.year !== undefined &&
-      searchParams.year !== "" &&
+    (rawYear !== undefined &&
+      rawYear !== "" &&
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      parseInt(searchParams.year.toString())) ||
+      parseInt(rawYear.toString())) ||
     undefined;
 
   const albums = await getLatestAlbums({
