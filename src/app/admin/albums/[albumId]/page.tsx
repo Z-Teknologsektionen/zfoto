@@ -8,10 +8,11 @@ import { imageColumns } from "../../images/_components/image-columns";
 import { ImagesFilteringToolbar } from "../../images/_components/images-filtering-toolbar";
 import { EditAlbumForm } from "./_components/edit-form";
 
-type AlbumAdminPageProps = { params: { albumId: string } };
+type AlbumAdminPageProps = PageProps<"/admin/albums/[albumId]">;
 
 const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
-  const album = await getAlbumWithImagesAsAdmin(params.albumId).catch(() =>
+  const { albumId } = await params
+  const album = await getAlbumWithImagesAsAdmin(albumId).catch(() =>
     notFound(),
   );
 

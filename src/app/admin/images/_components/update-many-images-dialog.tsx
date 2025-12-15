@@ -3,10 +3,12 @@
 import { useUpdateManyImagesByIds } from "@/app/admin/_hooks/use-update-many-images-by-ids";
 import { updateManyImagesBaseSchema } from "@/schemas/helpers/zodSchemas";
 import type { AdminImageType } from "@/types/data-access";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Row } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import type { z } from "zod";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
@@ -27,7 +29,6 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { useFormWithZod } from "~/hooks/use-form-with-zod";
 import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
@@ -55,8 +56,8 @@ export const UpdateManyImagesDialog: FC<{
     };
   }, [selectedRows]);
 
-  const form = useFormWithZod({
-    schema: updateManyImagesBaseSchema,
+  const form = useForm({
+    resolver: zodResolver(updateManyImagesBaseSchema),
     values: {
       absoluteDate,
       isVisible,
