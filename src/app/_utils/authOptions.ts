@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-/* eslint-disable no-unused-vars */
-
-import { env } from "@/env.mjs";
-import { getUserByEmailForSession } from "@/server/data-access/users";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { Roles } from "@prisma/client";
 import type {
   GetServerSidePropsContext,
@@ -16,14 +10,18 @@ import type {
   NextAuthOptions,
   Session,
 } from "next-auth";
-import { getServerSession } from "next-auth";
 import type { DefaultJWT } from "next-auth/jwt";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { env } from "@/env.mjs";
+import { getUserByEmailForSession } from "@/server/data-access/users";
 import { db } from "~/utils/db";
 import { isValidCredentials } from "./isValidCredentials";
 
 declare module "next-auth" {
+  // eslint-disable-next-line ts/consistent-type-definitions
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       email: string;
@@ -34,12 +32,14 @@ declare module "next-auth" {
     };
   }
 
+  // eslint-disable-next-line ts/consistent-type-definitions
   interface User extends DefaultUser {
     role: Roles;
   }
 }
 
 declare module "next-auth/jwt" {
+  // eslint-disable-next-line ts/consistent-type-definitions
   interface JWT extends DefaultJWT {
     role: Roles;
   }

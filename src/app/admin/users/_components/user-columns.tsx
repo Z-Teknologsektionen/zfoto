@@ -1,8 +1,8 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
 import type { AdminUserType } from "@/types/data-access";
 import { Roles } from "@prisma/client";
-import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -85,7 +85,7 @@ export const userColumns: ColumnDef<AdminUserType>[] = [
                 //TODO: Move to server action
                 <DropdownMenuItem
                   key={role}
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                  // eslint-disable-next-line ts/no-misused-promises
                   onClick={async () => {
                     const res = await fetch(`/api/users/${row.original.id}`, {
                       method: "PATCH",
@@ -98,7 +98,7 @@ export const userColumns: ColumnDef<AdminUserType>[] = [
                     }
                     router.refresh();
                     toast.success("Uppdaterat!");
-                    return;
+
                   }}
                 >
                   <span>{`Ge roll "${formatRole(role)}"`}</span>

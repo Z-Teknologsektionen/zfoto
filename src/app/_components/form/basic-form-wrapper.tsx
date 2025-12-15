@@ -1,5 +1,5 @@
-import type { FormWrapperProps } from "@/types/form";
 import type { z } from "zod";
+import type { FormWrapperProps } from "@/types/form";
 import { cn } from "~/utils/utils";
 import { Form } from "../ui/form";
 
@@ -12,7 +12,7 @@ export const BasicFormWrapper = <TSchema extends z.ZodObject | z.ZodPipe<z.ZodOb
 }: FormWrapperProps<TSchema>): JSX.Element => (
   <Form {...form}>
     <form
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      // eslint-disable-next-line ts/no-misused-promises
       onSubmit={form.handleSubmit(onValid, onInvalid)}
       className={cn(className)}
     >

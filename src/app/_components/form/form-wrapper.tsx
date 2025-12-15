@@ -1,5 +1,5 @@
-import type { FormWrapperProps } from "@/types/form";
 import type { z } from "zod";
+import type { FormWrapperProps } from "@/types/form";
 import { cn } from "~/utils/utils";
 import { BasicFormWrapper } from "./basic-form-wrapper";
 

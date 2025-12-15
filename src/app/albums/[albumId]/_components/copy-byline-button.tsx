@@ -1,7 +1,7 @@
 "use client";
 
-import { Copy } from "lucide-react";
 import type { FC } from "react";
+import { Copy } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { StandardTooltip } from "~/components/ui/tooltip";
 import { createByline } from "~/utils/utils";

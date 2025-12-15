@@ -1,7 +1,7 @@
 "use client";
 
-import { Roles } from "@prisma/client";
 import type { DataTableToolBarProps } from "~/components/data-table/data-table";
+import { Roles } from "@prisma/client";
 import { ToolbarGroup } from "~/components/data-table/data-table-toolbar-group";
 import { ToolbarSelectDropdown } from "~/components/data-table/data-table-toolbar-select-dropdown";
 import { ToolbarTextInput } from "~/components/data-table/data-table-toolbar-text-input";

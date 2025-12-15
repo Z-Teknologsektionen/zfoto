@@ -1,5 +1,6 @@
+import type {FC} from "react";
 import Link from "next/link";
-import { Fragment, type FC } from "react";
+import {  Fragment } from "react";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { buttonVariants } from "~/components/ui/button";
 import {
