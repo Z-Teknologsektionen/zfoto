@@ -5,7 +5,7 @@ export const GET = async (_request: Request): Promise<Response> => {
     const filenames = await getAllImageFilenames();
 
     return Response.json(filenames, { status: 200 });
-  } catch (err) {
+  } catch {
     return Response.json({ error: "Unknown error" }, { status: 500 });
   }
 };

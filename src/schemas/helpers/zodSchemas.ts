@@ -20,15 +20,15 @@ export const albumBaseSchema = z.object({
   title: albumTitleString,
   isVisible: isVisibleBoolean,
   isReception: isReceptionBoolean,
-  date: validDateInputsToDate.optional().default(new Date()),
+  date: validDateInputsToDate.optional().prefault(new Date()),
 });
 
 export const imageBaseSchema = z.object({
   filename: filenameString,
-  photographer: photographerString.optional().default("zFoto"),
+  photographer: photographerString.optional().prefault("zFoto"),
   isVisible: isVisibleBoolean,
   isCoverImage: isCoverImageBoolean,
-  date: validDateInputsToDate.optional().default(new Date()),
+  date: validDateInputsToDate.optional().prefault(new Date()),
 });
 
 export const relativeDate = z.object({
@@ -53,12 +53,12 @@ export const updateManyImagesBaseSchema = z
   .superRefine(({ absoluteDate, relativeDate }, ctx) => {
     if (absoluteDate !== undefined && relativeDate !== undefined) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du kan inte både ange en relativ och en absolut tid",
         path: ["absoluteDate"],
       });
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du kan inte både ange en relativ och en absolut tid",
         path: ["relativeDate"],
       });

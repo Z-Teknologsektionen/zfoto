@@ -1,6 +1,10 @@
-import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@sanity/icons";
 import type { Table } from "@tanstack/react-table";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -15,10 +19,8 @@ type DataTablePaginationProps<TData> = {
   pageSizes?: number[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const DEFAULT_PAGE_SIZES = [10, 30, 90, 300];
 
-// eslint-disable-next-line max-lines-per-function
 export const DataTablePagination = <TData,>({
   table,
   pageSizes = DEFAULT_PAGE_SIZES,
@@ -60,7 +62,7 @@ export const DataTablePagination = <TData,>({
           disabled={!table.getCanPreviousPage()}
         >
           <span className="sr-only">Gå till första sidan</span>
-          <DoubleChevronLeftIcon className="size-4" />
+          <ChevronsLeftIcon className="size-4" />
         </Button>
         <Button
           variant="outline"
@@ -93,7 +95,7 @@ export const DataTablePagination = <TData,>({
           disabled={!table.getCanNextPage()}
         >
           <span className="sr-only">Gå till sista sidan</span>
-          <DoubleChevronRightIcon className="size-4" />
+          <ChevronsRightIcon className="size-4" />
         </Button>
       </div>
     </div>

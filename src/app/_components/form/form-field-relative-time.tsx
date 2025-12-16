@@ -1,10 +1,10 @@
 "use client";
 
-import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
-
 import type { FC } from "react";
-import { useFormContext } from "react-hook-form";
+
 import type { z } from "zod";
+import type { updateManyAlbumsBaseSchema } from "@/schemas/helpers/zodSchemas";
+import { useFormContext } from "react-hook-form";
 import { FormFieldInputNumber } from "~/components/form/form-field-input";
 import { Button } from "~/components/ui/button";
 import {
@@ -19,7 +19,6 @@ export const FormFieldRelativeTime: FC<{
   label: string;
   description?: string;
   resetText?: string;
-  // eslint-disable-next-line max-lines-per-function
 }> = ({ resetText = "Nollställ", description, label }) => {
   const form = useFormContext<
     Pick<z.input<typeof updateManyAlbumsBaseSchema>, "relativeDate">,
@@ -31,7 +30,6 @@ export const FormFieldRelativeTime: FC<{
     <FormField
       control={form.control}
       name={"relativeDate.root" as "relativeDate"}
-      // eslint-disable-next-line max-lines-per-function
       render={() => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

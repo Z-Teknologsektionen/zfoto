@@ -1,15 +1,15 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { DefaultValues } from "react-hook-form";
+import type { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { Schema, z } from "zod";
 
 type AsyncDefaultValues<TFieldValues> = (
   payload?: unknown,
 ) => Promise<TFieldValues>;
 
-export const useFormWithZod = <TSchema extends Schema>({
+export const useFormWithZod = <TSchema extends z.ZodObject>({
   schema,
   defaultValues,
   debug = false,

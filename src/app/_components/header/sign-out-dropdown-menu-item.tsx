@@ -1,8 +1,8 @@
 "use client";
 
+import type { FC } from "react";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
-import type { FC } from "react";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 export const SignOutDropdownMenuItem: FC = () => (

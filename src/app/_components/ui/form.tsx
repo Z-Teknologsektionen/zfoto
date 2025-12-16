@@ -1,14 +1,14 @@
 "use client";
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
-import { Slot } from "@radix-ui/react-slot";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   HTMLAttributes,
 } from "react";
-import { createContext, forwardRef, useContext, useId } from "react";
 import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
+import { Slot } from "@radix-ui/react-slot";
+import { createContext, forwardRef, useContext, useId, useMemo } from "react";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/utils/utils";
@@ -31,11 +31,15 @@ const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>): JSX.Element => (
-  <FormFieldContext.Provider value={{ name: props.name }}>
-    <Controller {...props} />
-  </FormFieldContext.Provider>
-);
+}: ControllerProps<TFieldValues, TName>): JSX.Element => {
+  const value = useMemo(() => ({ name: props.name }), [props.name]);
+
+  return (
+    <FormFieldContext.Provider value={value}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  );
+};
 
 type FormItemContextValue = {
   id: string;
@@ -52,7 +56,7 @@ const useFormField = () => {
 
   const fieldState = getFieldState(fieldContext.name, formState);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/strict-boolean-expressions
+  // eslint-disable-next-line ts/strict-boolean-expressions
   if (!fieldContext)
     throw new Error("useFormField should be used within <FormField>");
 
@@ -71,9 +75,10 @@ const useFormField = () => {
 const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     const id = useId();
+    const value = useMemo(() => ({ id }), [id]);
 
     return (
-      <FormItemContext.Provider value={{ id }}>
+      <FormItemContext.Provider value={value}>
         <div ref={ref} className={cn("space-y-2", className)} {...props} />
       </FormItemContext.Provider>
     );
@@ -151,7 +156,7 @@ const FormMessage = forwardRef<
   const { error, formMessageId } = useFormField();
   const body = error === undefined ? children : String(error.message);
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  // eslint-disable-next-line ts/strict-boolean-expressions
   if (!body) return null;
 
   return (
@@ -178,5 +183,5 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField
+  useFormField,
 };

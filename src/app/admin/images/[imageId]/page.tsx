@@ -1,16 +1,17 @@
-import { getImageById } from "@/server/data-access/images";
+import type { FC } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import type { FC } from "react";
 import { Fragment } from "react";
+import { getImageById } from "@/server/data-access/images";
 import { BackButton } from "~/components/layout/back-button";
 import { getFullFilePath } from "~/utils/utils";
 import { EditImageForm } from "./_components/edit-form";
 
-type ImageAdminPageProps = { params: { imageId: string } };
+type ImageAdminPageProps = PageProps<"/admin/images/[imageId]">;
 
 const ImageAdminPage: FC<ImageAdminPageProps> = async ({ params }) => {
-  const image = await getImageById(params.imageId).catch(() => notFound());
+  const { imageId } = await params;
+  const image = await getImageById(imageId).catch(() => notFound());
   return (
     <Fragment>
       <div className="container">

@@ -1,15 +1,12 @@
 "use server";
 
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
+import type { Roles } from "@prisma/client";
 import {
   CACHE_TAGS,
   dbCache,
   getGlobalTag,
   revalidateDbCache,
 } from "@/lib/cache";
-import type { Roles } from "@prisma/client";
 import { db } from "~/utils/db";
 
 const getUserByEmailForSessionInternal = async (email: string) =>

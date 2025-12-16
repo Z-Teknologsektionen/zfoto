@@ -4,7 +4,7 @@ export const adminCardsInfo = [
     description:
       'Denna sida är en "dashboard" där det finns lite statistik bland annat hur många bilder och album som finns på hemsidan.',
     content:
-      'De funktioner som finns på denna sidan är "Dölj mottagningsalbum" och "Visa mottagnings album". Dessa används för att snabbt kunna dölja alla gamla mottagningsalbum inför årets mottagning. Förslagsvis döljer man alla mottagningsalbum innan första antagningsbeskedet och börjar visa alla album måndag MV3 efter revelen.',
+      'De funktioner som finns på denna sidan är "Dölj mottagningsalbum" och "Visa mottagnings album". Dessa används för att snabbt kunna dölja alla gamla mottagningsalbum inför årets mottagning. Förslagsvis döljer man alla mottagningsalbum innan första antagningsbeskedet och börjar visa alla album måndag MV3 efter revealen.',
     canOpen: true,
   },
   {
@@ -43,13 +43,5 @@ export const adminCardsInfo = [
     content:
       "Denna sida ger möjlighet att redigera fotograf, datum, om det är omslagsbild samt om bilden ska visas på hemsidan eller inte",
     canOpen: false,
-  },
-  {
-    title: "/studio",
-    description:
-      "Tanken är att detta i framtiden skall flyttas till en “/admin” sida men fram tills det är skapat kan man redigera innehållet här.",
-    content:
-      "Här kan du logga in med ditt Google-konto för att redigera texterna som visas på /policy och /about. ",
-    canOpen: true,
   },
 ];

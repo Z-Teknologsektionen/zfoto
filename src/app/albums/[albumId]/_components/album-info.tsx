@@ -29,8 +29,9 @@ export const AlbumInfo: FC<AlbumInfoProps> = ({
           <h1>{formattedDateString}</h1>
         </div>
         <div className="flex w-fit flex-row items-center justify-center gap-1">
-          <p>{`${hasMoreThanOnePhotographer ? "Fotografer" : "Fotograf"
-            }: ${photographers.join(", ")}`}</p>
+          <p>{`${
+            hasMoreThanOnePhotographer ? "Fotografer" : "Fotograf"
+          }: ${photographers.join(", ")}`}</p>
           <CopyBylineButton photographers={photographers} />
         </div>
       </div>

@@ -1,12 +1,12 @@
 "use client";
 
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   FC,
   ReactNode,
 } from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { forwardRef } from "react";
 import { cn } from "~/utils/utils";
 
@@ -58,5 +58,5 @@ export {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
+  TooltipTrigger,
 };

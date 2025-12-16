@@ -1,7 +1,7 @@
-import { NUMBER_OF_IMAGES_TO_PRELOAD } from "@/constants/album";
-import { getLatestAlbums } from "@/server/data-access/albums";
 import type { Metadata } from "next";
 import type { FC } from "react";
+import { NUMBER_OF_IMAGES_TO_PRELOAD } from "@/constants/album";
+import { getLatestAlbums } from "@/server/data-access/albums";
 import { AlbumGrid } from "~/components/albums/album-grid";
 import { AlbumGridItem } from "~/components/albums/album-grid-item";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
@@ -13,16 +13,14 @@ export const metadata: Metadata = {
   title: "Album",
 };
 
-type AlbumsPageProps = {
-  searchParams: { year: string | undefined };
-};
+type AlbumsPageProps = PageProps<"/albums">;
 
 const AlbumsPage: FC<AlbumsPageProps> = async ({ searchParams }) => {
+  const { year: rawYear } = await searchParams;
   const year =
-    (searchParams.year !== undefined &&
-      searchParams.year !== "" &&
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      parseInt(searchParams.year.toString())) ||
+    (rawYear !== undefined &&
+      rawYear !== "" &&
+      Number.parseInt(rawYear.toString())) ||
     undefined;
 
   const albums = await getLatestAlbums({

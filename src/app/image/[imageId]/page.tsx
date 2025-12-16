@@ -1,10 +1,10 @@
-import { getImageById } from "@/server/data-access/images";
 import type { Metadata } from "next";
+import type { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { FC } from "react";
 import { cache } from "react";
+import { getImageById } from "@/server/data-access/images";
 import { BackButton } from "~/components/layout/back-button";
 import { SectionWrapper } from "~/components/layout/section-wrapper";
 import { createByline, getFullFilePath } from "~/utils/utils";
@@ -13,13 +13,12 @@ export const revalidate = 300;
 
 const getImage = cache(getImageById);
 
-type ImagePageProps = {
-  params: { imageId: string };
-};
+type ImagePageProps = PageProps<"/image/[imageId]">;
 
 export async function generateMetadata({
-  params: { imageId },
+  params,
 }: ImagePageProps): Promise<Metadata> {
+  const { imageId } = await params;
   const image = await getImage(imageId);
 
   return {
@@ -37,7 +36,8 @@ export async function generateMetadata({
 }
 
 const ImagePage: FC<ImagePageProps> = async ({ params }) => {
-  const image = await getImage(params.imageId).catch(() => notFound());
+  const { imageId } = await params;
+  const image = await getImage(imageId).catch(() => notFound());
 
   const byline = createByline(image.photographer);
 

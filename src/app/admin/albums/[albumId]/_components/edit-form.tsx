@@ -1,8 +1,8 @@
 "use client";
 
-import { albumBaseSchema } from "@/schemas/helpers/zodSchemas";
-import { useRouter } from "next/navigation";
 import type { FC } from "react";
+import { useRouter } from "next/navigation";
+import { albumBaseSchema } from "@/schemas/helpers/zodSchemas";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
@@ -12,7 +12,10 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
+import {
+  getLocalDateTimeFromUTC,
+  getUTCFromLocalDate,
+} from "~/utils/date-utils";
 import { useDeleteAlbumById } from "../../_hooks/use-delete-album-by-id";
 import { useUpdateAlbumById } from "../../_hooks/use-update-album-by-id";
 
@@ -24,7 +27,6 @@ type EditAlbumFormProps = {
   date: Date;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   title,
   id,
@@ -59,7 +61,11 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
       form={form}
       schema={albumBaseSchema}
       onValid={(values) => {
-        updateAlbum({ albumId: id, ...values, date: getUTCFromLocalDate(values.date) });
+        updateAlbum({
+          albumId: id,
+          ...values,
+          date: getUTCFromLocalDate(values.date),
+        });
       }}
       className="grid gap-4 md:grid-cols-2"
     >
