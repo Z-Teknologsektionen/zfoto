@@ -13,12 +13,12 @@ export const revalidate = 300;
 
 const getImage = cache(getImageById);
 
-type ImagePageProps = PageProps<"/image/[imageId]">
+type ImagePageProps = PageProps<"/image/[imageId]">;
 
 export async function generateMetadata({
   params,
 }: ImagePageProps): Promise<Metadata> {
-  const { imageId } = await params
+  const { imageId } = await params;
   const image = await getImage(imageId);
 
   return {
@@ -36,7 +36,7 @@ export async function generateMetadata({
 }
 
 const ImagePage: FC<ImagePageProps> = async ({ params }) => {
-  const { imageId } = await params
+  const { imageId } = await params;
   const image = await getImage(imageId).catch(() => notFound());
 
   const byline = createByline(image.photographer);

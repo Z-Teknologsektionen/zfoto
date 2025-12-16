@@ -3,7 +3,9 @@ import type { FormWrapperProps } from "@/types/form";
 import { cn } from "~/utils/utils";
 import { Form } from "../ui/form";
 
-export const BasicFormWrapper = <TSchema extends z.ZodObject | z.ZodPipe<z.ZodObject>>({
+export const BasicFormWrapper = <
+  TSchema extends z.ZodObject | z.ZodPipe<z.ZodObject>,
+>({
   form,
   onInvalid,
   onValid,

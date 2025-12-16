@@ -60,8 +60,8 @@ export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>
           {row.original.firstImage === undefined
             ? "Okänd"
             : formatDateString(
-              getLocalDateTimeFromUTC(row.original.firstImage),
-            )}
+                getLocalDateTimeFromUTC(row.original.firstImage),
+              )}
         </DataTableCell>
       ),
     },
@@ -75,8 +75,8 @@ export const adminPhotographerColumns: ColumnDef<AdminCountsPerPhotographerType>
           {row.original.latestImage === undefined
             ? "Okänd"
             : formatDateString(
-              getLocalDateTimeFromUTC(row.original.latestImage),
-            )}
+                getLocalDateTimeFromUTC(row.original.latestImage),
+              )}
         </DataTableCell>
       ),
     },

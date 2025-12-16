@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
-const DEFAULT_CHILDREN = <Fragment>
-  <ChevronLeft />
-  <span>Tillbaka</span>
-</Fragment>
+const DEFAULT_CHILDREN = (
+  <Fragment>
+    <ChevronLeft />
+    <span>Tillbaka</span>
+  </Fragment>
+);
 
 type BackButtonProps = {
   href?: string;

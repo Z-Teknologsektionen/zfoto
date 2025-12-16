@@ -11,7 +11,7 @@ import { EditAlbumForm } from "./_components/edit-form";
 type AlbumAdminPageProps = PageProps<"/admin/albums/[albumId]">;
 
 const AlbumAdminPage: FC<AlbumAdminPageProps> = async ({ params }) => {
-  const { albumId } = await params
+  const { albumId } = await params;
   const album = await getAlbumWithImagesAsAdmin(albumId).catch(() =>
     notFound(),
   );

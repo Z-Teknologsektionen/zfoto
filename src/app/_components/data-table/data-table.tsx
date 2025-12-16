@@ -38,7 +38,6 @@ export type DataTableProps<TData, TValue> = {
   noResultText?: string;
 };
 
- 
 export const DataTable = <TData, TValue>({
   columns,
   data,

@@ -16,7 +16,7 @@ import {
   RecommendedAlbumsGridSkeleton,
 } from "./_components/recommended-albums-grid";
 
-type AlbumPageProps = PageProps<"/albums/[albumId]">
+type AlbumPageProps = PageProps<"/albums/[albumId]">;
 
 export const revalidate = 300;
 export const dynamicParams = true;
@@ -32,7 +32,7 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
   params,
 }: AlbumPageProps): Promise<Metadata> => {
-  const { albumId } = await params
+  const { albumId } = await params;
   const album = await getAlbumWithImagesById(albumId);
 
   return {
@@ -50,7 +50,7 @@ export const generateMetadata = async ({
 };
 
 const AlbumPage: FC<AlbumPageProps> = async ({ params }) => {
-  const { albumId } = await params
+  const { albumId } = await params;
   const album = await getAlbumWithImagesById(albumId).catch(() => notFound());
 
   return (

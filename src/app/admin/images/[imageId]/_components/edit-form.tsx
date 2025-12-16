@@ -14,7 +14,10 @@ import {
 import { FormFieldSwitch } from "~/components/form/form-field-switch";
 import { Button } from "~/components/ui/button";
 import { useFormWithZod } from "~/hooks/use-form-with-zod";
-import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
+import {
+  getLocalDateTimeFromUTC,
+  getUTCFromLocalDate,
+} from "~/utils/date-utils";
 
 type EditImageFormProps = {
   id: string;
@@ -25,7 +28,6 @@ type EditImageFormProps = {
   date: Date;
 };
 
- 
 export const EditImageForm: FC<EditImageFormProps> = ({
   isCoverImage,
   date,
@@ -62,7 +64,11 @@ export const EditImageForm: FC<EditImageFormProps> = ({
       form={form}
       schema={imageBaseSchema}
       onValid={(values) => {
-        updateImage({ imageId: id, ...values, date: getUTCFromLocalDate(values.date) });
+        updateImage({
+          imageId: id,
+          ...values,
+          date: getUTCFromLocalDate(values.date),
+        });
       }}
       className="grid gap-4 md:grid-cols-2"
     >

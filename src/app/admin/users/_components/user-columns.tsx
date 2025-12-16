@@ -98,7 +98,6 @@ export const userColumns: ColumnDef<AdminUserType>[] = [
                     }
                     router.refresh();
                     toast.success("Uppdaterat!");
-
                   }}
                 >
                   <span>{`Ge roll "${formatRole(role)}"`}</span>

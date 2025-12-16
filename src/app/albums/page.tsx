@@ -13,10 +13,10 @@ export const metadata: Metadata = {
   title: "Album",
 };
 
-type AlbumsPageProps = PageProps<"/albums">
+type AlbumsPageProps = PageProps<"/albums">;
 
 const AlbumsPage: FC<AlbumsPageProps> = async ({ searchParams }) => {
-  const { year: rawYear } = await searchParams
+  const { year: rawYear } = await searchParams;
   const year =
     (rawYear !== undefined &&
       rawYear !== "" &&

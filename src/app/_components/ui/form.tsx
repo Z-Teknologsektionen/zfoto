@@ -32,13 +32,13 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>): JSX.Element => {
-  const value = useMemo(() => ({ name: props.name }), [props.name])
+  const value = useMemo(() => ({ name: props.name }), [props.name]);
 
   return (
     <FormFieldContext.Provider value={value}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  )
+  );
 };
 
 type FormItemContextValue = {
@@ -75,7 +75,7 @@ const useFormField = () => {
 const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     const id = useId();
-    const value = useMemo(() => ({ id }), [id])
+    const value = useMemo(() => ({ id }), [id]);
 
     return (
       <FormItemContext.Provider value={value}>
@@ -183,5 +183,5 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField
+  useFormField,
 };

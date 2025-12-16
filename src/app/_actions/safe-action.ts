@@ -12,8 +12,8 @@ const handleServerError: SafeActionClientOpts<
   undefined
 >["handleServerError"] = (e) => {
   if (env.NODE_ENV === "development") {
-      console.error(e);
-  }else {    
+    console.error(e);
+  } else {
     // TODO: Updatera denna till att maila webbgruppen eller likande för bättre hantering
   }
 

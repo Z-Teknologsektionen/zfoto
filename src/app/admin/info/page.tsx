@@ -32,7 +32,9 @@ const InformationPage: FC = () => (
           nedanstående texter.
         </CardDescription>
         <CardDescription>
-          För att göra ändringar som inte är listade nedan (som ex statiska texter eller logotyper) får man kontakta Webbgruppen men förhoppningsvis ändras inte dessa så ofta!
+          För att göra ändringar som inte är listade nedan (som ex statiska
+          texter eller logotyper) får man kontakta Webbgruppen men
+          förhoppningsvis ändras inte dessa så ofta!
         </CardDescription>
       </div>
     </SectionWrapper>

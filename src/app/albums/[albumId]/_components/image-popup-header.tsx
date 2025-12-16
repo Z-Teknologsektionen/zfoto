@@ -12,7 +12,6 @@ type ImagePopupHeaderProps = {
   closePopup: () => void;
 };
 
- 
 export const ImagePopupHeader: FC<ImagePopupHeaderProps> = ({
   filename,
   photographer,

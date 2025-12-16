@@ -10,7 +10,7 @@ import { EditImageForm } from "./_components/edit-form";
 type ImageAdminPageProps = PageProps<"/admin/images/[imageId]">;
 
 const ImageAdminPage: FC<ImageAdminPageProps> = async ({ params }) => {
-  const { imageId } = await params
+  const { imageId } = await params;
   const image = await getImageById(imageId).catch(() => notFound());
   return (
     <Fragment>

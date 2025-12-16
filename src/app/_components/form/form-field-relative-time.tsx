@@ -19,7 +19,6 @@ export const FormFieldRelativeTime: FC<{
   label: string;
   description?: string;
   resetText?: string;
-   
 }> = ({ resetText = "Nollställ", description, label }) => {
   const form = useFormContext<
     Pick<z.input<typeof updateManyAlbumsBaseSchema>, "relativeDate">,
@@ -31,7 +30,6 @@ export const FormFieldRelativeTime: FC<{
     <FormField
       control={form.control}
       name={"relativeDate.root" as "relativeDate"}
-       
       render={() => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

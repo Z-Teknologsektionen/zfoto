@@ -19,7 +19,6 @@ type ImageColumnActionsProps = {
   isVisible: boolean;
 };
 
- 
 export const ImageColumnActions: FC<ImageColumnActionsProps> = ({
   id,
   albumId,

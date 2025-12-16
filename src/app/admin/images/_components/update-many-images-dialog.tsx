@@ -29,7 +29,10 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { getLocalDateTimeFromUTC, getUTCFromLocalDate } from "~/utils/date-utils";
+import {
+  getLocalDateTimeFromUTC,
+  getUTCFromLocalDate,
+} from "~/utils/date-utils";
 import { getValueIfUnique } from "~/utils/utils";
 import { FormFieldRelativeTime } from "../../../_components/form/form-field-relative-time";
 
@@ -83,13 +86,16 @@ export const UpdateManyImagesDialog: FC<{
         return;
       }
 
-      const data = form.getValues()
+      const data = form.getValues();
 
       updateManyImages({
         imageIds: allIds,
         data: {
           ...data,
-          absoluteDate: data.absoluteDate === undefined ? undefined : getUTCFromLocalDate(new Date(data.absoluteDate))
+          absoluteDate:
+            data.absoluteDate === undefined
+              ? undefined
+              : getUTCFromLocalDate(new Date(data.absoluteDate)),
         },
       });
     },
@@ -120,7 +126,8 @@ export const UpdateManyImagesDialog: FC<{
             <DialogDescription>
               Alla bilder kommer redigeras till samma värden, denna åtgärd
               kommer inte gå att ångra. Om alla bilder har samma värde på ett
-              fält kommer ett standardvärde att visas, annars kommer det vara tomt.
+              fält kommer ett standardvärde att visas, annars kommer det vara
+              tomt.
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-fit max-h-80">

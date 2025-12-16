@@ -21,7 +21,6 @@ const MINIMUM_NUMBER_OF_PHOTOS_PER_PHOTOGRAPHER = 20;
 const NUMBER_OF_DECIMALS = 2;
 const DECIMAL_TO_PROCENT = 100;
 
- 
 const AdminDashboard: FC = async () => {
   const session = await getAuth();
   const isAdmin = session?.user.role === Roles.ADMIN;
