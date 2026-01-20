@@ -2,7 +2,7 @@
 
 import type { FC } from "react";
 import { useRouter } from "next/navigation";
-import { albumBaseSchema } from "@/schemas/helpers/zodSchemas";
+import { updateAlbumSchema } from "@/schemas/album";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
@@ -26,6 +26,8 @@ type EditAlbumFormProps = {
   isReception: boolean;
   date: Date;
 };
+
+const albumBaseSchema = updateAlbumSchema.omit({ id: true }).required();
 
 export const EditAlbumForm: FC<EditAlbumFormProps> = ({
   title,
@@ -62,7 +64,7 @@ export const EditAlbumForm: FC<EditAlbumFormProps> = ({
       schema={albumBaseSchema}
       onValid={(values) => {
         updateAlbum({
-          albumId: id,
+          id,
           ...values,
           date: getUTCFromLocalDate(values.date),
         });
