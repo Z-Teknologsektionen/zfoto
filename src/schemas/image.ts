@@ -1,16 +1,33 @@
 import { z } from "zod";
+import { updateManyImagesBaseSchema } from "./helpers/zodSchemas";
 import {
-  imageBaseSchema,
-  updateManyImagesBaseSchema,
-} from "./helpers/zodSchemas";
-import { objectId } from "./helpers/zodTypes";
+  filenameString,
+  isCoverImageBoolean,
+  isVisibleBoolean,
+  objectId,
+  photographerString,
+  validDateInputsToDate,
+} from "./helpers/zodTypes";
 
-export const createImageAPISchema = imageBaseSchema.extend({
-  albumId: objectId,
-});
-
-export const updateImageSchema = imageBaseSchema
+export const createImageAPISchema = z
+  .object({
+    filename: filenameString,
+    photographer: photographerString.default("zFoto"),
+    isVisible: isVisibleBoolean.optional().default(true),
+    isCoverImage: isCoverImageBoolean.optional().default(false),
+    date: validDateInputsToDate.optional().default(new Date()),
+  })
   .extend({
+    albumId: objectId,
+  });
+
+export const updateImageSchema = z
+  .object({
+    filename: filenameString,
+    photographer: photographerString,
+    isVisible: isVisibleBoolean,
+    isCoverImage: isCoverImageBoolean,
+    date: validDateInputsToDate,
     albumId: objectId,
   })
   .partial()

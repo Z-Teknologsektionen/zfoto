@@ -24,7 +24,7 @@ export const objectId = baseString.refine(isValidObjectId, "Ogiltigt objectId");
 export const fullDatetimeString = baseString.datetime({
   precision: 3,
   offset: false,
-  message:
+  error:
     'Otillåtet datum/tids format. Måste vara på följande format: "YYYY-MM-DDTHH:mm:ss.000Z"',
 });
 
@@ -60,7 +60,7 @@ export const filenameString = baseString
     "Filnamnet måste vara minst 5 tecken långt men förslagsvis även innehålla datumet då bilden togs",
   )
   .includes(".", {
-    message: "Filnamn måste innehålla en punkt före filändelsen ",
+    error: "Filnamn måste innehålla en punkt före filändelsen ",
   });
 
 export const photographerString = baseString
@@ -70,8 +70,8 @@ export const photographerString = baseString
     `Får inte innehålla ". Använd ' eller motsvarande istället.`,
   );
 
-export const isVisibleBoolean = baseBoolean.optional().default(true);
+export const isVisibleBoolean = baseBoolean;
 
-export const isCoverImageBoolean = baseBoolean.optional().default(false);
+export const isCoverImageBoolean = baseBoolean;
 
-export const isReceptionBoolean = baseBoolean.optional().default(false);
+export const isReceptionBoolean = baseBoolean;

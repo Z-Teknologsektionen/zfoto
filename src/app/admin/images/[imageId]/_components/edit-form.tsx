@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { useRouter } from "next/navigation";
 import { useDeleteImageById } from "@/app/admin/_hooks/use-delete-image-by-id";
 import { useUpdateImageById } from "@/app/admin/_hooks/use-update-image-by-id";
-import { imageBaseSchema } from "@/schemas/helpers/zodSchemas";
+import { updateImageSchema } from "@/schemas/image";
 import { DeleteDialog } from "~/components/dialog/delete-dialog";
 import { BasicFormWrapper } from "~/components/form/basic-form-wrapper";
 import {
@@ -27,6 +27,13 @@ type EditImageFormProps = {
   isCoverImage: boolean;
   date: Date;
 };
+
+const imageBaseSchema = updateImageSchema
+  .omit({
+    albumId: true,
+    imageId: true,
+  })
+  .required();
 
 export const EditImageForm: FC<EditImageFormProps> = ({
   isCoverImage,

@@ -43,7 +43,7 @@ export const AlbumColumnActions: FC<{ album: AdminAlbumType }> = ({
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            updateAlbum({ albumId: album.id, isVisible: !album.isVisible });
+            updateAlbum({ id: album.id, isVisible: !album.isVisible });
           }}
         >
           {`${album.isVisible ? "Dölj" : "Visa"} album`}
@@ -51,7 +51,7 @@ export const AlbumColumnActions: FC<{ album: AdminAlbumType }> = ({
         <DropdownMenuItem
           onClick={() => {
             updateAlbum({
-              albumId: album.id,
+              id: album.id,
               isReception: !album.isReception,
             });
           }}

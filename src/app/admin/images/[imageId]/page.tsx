@@ -33,6 +33,7 @@ const ImageAdminPage: FC<ImageAdminPageProps> = async ({ params }) => {
             height={400}
             width={400}
             className="mx-auto block object-contain object-center"
+            unoptimized
           />
         </div>
       </section>

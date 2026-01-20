@@ -4,32 +4,12 @@ import {
   indeterminateToUndefined,
 } from "./zodTransforms";
 import {
-  albumTitleString,
   checkedState,
   emptyString,
-  filenameString,
-  isCoverImageBoolean,
-  isReceptionBoolean,
-  isVisibleBoolean,
   photographerString,
   validDateInputsToDate,
   wholeNumberMinMax,
 } from "./zodTypes";
-
-export const albumBaseSchema = z.object({
-  title: albumTitleString,
-  isVisible: isVisibleBoolean,
-  isReception: isReceptionBoolean,
-  date: validDateInputsToDate.optional().prefault(new Date()),
-});
-
-export const imageBaseSchema = z.object({
-  filename: filenameString,
-  photographer: photographerString.optional().prefault("zFoto"),
-  isVisible: isVisibleBoolean,
-  isCoverImage: isCoverImageBoolean,
-  date: validDateInputsToDate.optional().prefault(new Date()),
-});
 
 export const relativeDate = z.object({
   hours: wholeNumberMinMax(-23, 23).catch(0),
