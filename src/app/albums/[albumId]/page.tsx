@@ -3,6 +3,10 @@ import type { FC } from "react";
 import { notFound } from "next/navigation";
 import { Fragment, Suspense } from "react";
 import {
+  getSeasonalRobots,
+  requireAuthForHiddenContent,
+} from "@/lib/seasonal-access";
+import {
   getAlbumWithImagesById,
   getLatestAlbums,
 } from "@/server/data-access/albums";
@@ -46,12 +50,15 @@ export const generateMetadata = async ({
       ],
       authors: album.photographers,
     },
+    robots: getSeasonalRobots(album.isVisible),
   };
 };
 
 const AlbumPage: FC<AlbumPageProps> = async ({ params }) => {
   const { albumId } = await params;
   const album = await getAlbumWithImagesById(albumId).catch(() => notFound());
+
+  await requireAuthForHiddenContent(album.isVisible, `/albums/${albumId}`);
 
   return (
     <Fragment>
