@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/zFoto.ico",
+        url: "/favicon.ico",
       },
       {
         url: "/zFoto.svg",

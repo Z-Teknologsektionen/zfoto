@@ -19,9 +19,9 @@ export const Header: FC = async () => {
           <Image
             alt="zFotos logotyp"
             className="object-contain object-center"
-            height="40"
+            height="50"
             src="/zFoto.svg"
-            width="40"
+            width="50"
           />
           <span className="ml-4 mr-6 text-lg font-semibold">zFoto</span>
         </Link>
