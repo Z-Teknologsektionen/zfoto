@@ -97,6 +97,7 @@ const getAlbumWithImagesByIdInternal = async (id: string) => {
     select: {
       id: true,
       title: true,
+      isVisible: true,
       images: {
         where: {
           isVisible: {

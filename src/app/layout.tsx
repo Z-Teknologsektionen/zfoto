@@ -3,6 +3,7 @@ import type { FC, ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { Fragment } from "react";
 import { Toaster } from "react-hot-toast";
+import { getBaseUrl } from "@/lib/site-url";
 import { Footer } from "~/components/footer/footer";
 import { Header } from "~/components/header/header";
 import { Providers } from "./_components/layout/providers";
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   title: { default: "zFoto", template: "%s | zFoto" },
   description:
     "Vill du se de senaste bilderna från Z-Teknologsektionens arrangemang? Då är du på rätt ställe, här finns mängder av bilder att tillgå!",
-  metadataBase: new URL("https://zfoto.ztek.se"),
+  metadataBase: new URL(getBaseUrl()),
   icons: {
     icon: [
       {
